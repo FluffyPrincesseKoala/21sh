@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/03/19 21:02:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/03/20 17:54:58 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@
 # define NOFOD			"No such file or directory\n"
 # define E_CHDIR	    -1
 # define LEFT			tputs(tgoto(tgetstr("le", NULL), 0 , 0), 1, ft_putchar)
+# define RIGHT			tputs(tgoto(tgetstr("nd", NULL), 0 , 0), 1, ft_putchar)
 
 typedef struct			s_vect
 {
@@ -46,7 +47,7 @@ typedef struct			s_vect
 	struct s_vect		*next;
 }						t_vect;
 
-typedef struct			s_sh
+typedef struct			s_bash
 {
 	char				**env;
 	char				**venv;
@@ -54,7 +55,13 @@ typedef struct			s_sh
 	char				**args;
 	t_vect				*cmds;
 	char				*prompt;
-}						t_sh;
+
+	int					prompt_len;
+	int					column_count;
+	int					iterator;
+	char				*cmd_in;
+	char				*cmd_out;
+}						t_bash;
 
 typedef struct			s_built
 {
