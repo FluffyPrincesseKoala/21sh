@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2020/03/17 18:17:40 by cylemair         ###   ########.fr        #
+#    Updated: 2020/03/27 20:22:42 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,13 @@ NAME	=	21sh
 RM		=	rm -rf
 
 SRC		=	srcs/main.c 		\
+			srcs/vector.c		\
+			srcs/getter.c		\
+			srcs/string.c		\
+			srcs/termi.c		\
+			srcs/array.c		\
+			srcs/exec.c			\
+			srcs/tmp.c			\
 
 OBJS	=	$(SRC:.c=.o)
 
