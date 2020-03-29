@@ -12,12 +12,6 @@
 
 #include "21sh.h"
 
-static void	free_two_var_to_feet_norm(char **a, char **b)
-{
-	ft_strdel(a);
-	ft_strdel(b);
-}
-
 char		*build_path(t_bash data, t_vect *lst)
 {
 	int		i;
@@ -40,33 +34,61 @@ char		*build_path(t_bash data, t_vect *lst)
 			free_array(paths);
 			return (tmp);
 		}
-		free_two_var_to_feet_norm(&tmp, &tmp2);
+		ft_strdel(tmp);ft_strdel(tmp2);
 	}
-	free_two_var_to_feet_norm(&tmp, &tmp2);
+	ft_strdel(tmp);ft_strdel(tmp2)
 	free_array(paths);
 	return (NULL);
 }
 
-int			exec_cmd(t_bash data, char *path, t_vect *cmd)
+static void print_failed_fork_error(pid_t pid)
+{
+	ft_putstr_fd("fork failed at ", 2);
+	ft_putnbr_fd((int)pid, 2);
+	ft_putchar('\n');
+	exit(-1)
+}
+
+static void make_redirections(int **redirections, int left, int right)
+{
+	// make sur in wich sens to dup fd
+	// make sur right exists
+	// make a copy of left
+	// dup
+	// close right
+
+	int i;
+
+	i = 0;
+	while (redirections && redirections[i])
+	{
+		dup2(redirections[i][right], redirections[i][left]);
+		close(redirections[i][right]);
+		i++;
+	}
+	// after exec restore
+	// in reverse order
+	// restore left with the copy we made
+}
+
+static void	execute_command(t_bash data, char *path, t_vect *command)
+{
+	make_redirections(command->redirections, 0, 1)
+	execve_return = execve(path, command->arg, data.env);
+	make_redirections(command->redirections, 1, 0)
+	if execve_return >= 0
+		exit(0);
+}
+
+void		handle_fork(t_bash data, char *path, t_vect *cmd)
 {
 	int		status;
 	pid_t	cpid;
 
 	cpid = fork();
-	if (cpid < 0)
-	{
-		ft_putstr_fd("fork faild at ", 2);
-		ft_putnbr_fd((int)cpid, 2);
-		ft_putchar('\n');
-		exit(-1);
-	}
-	else if (cpid == 0)
-	{
-		if (execve(path, cmd->arg, data.env) < 0)
-			return (-1);
-		else
-			exit(0);
-	}
+	if (fork_failed(cpid))
+		print_failed_fork_error(pid);
+	else if (is_child(cpid))
+		execute_command(data, path, cmd);
 	wait(&status);
-	return ((status < 0) ? -1 : 0);
 }

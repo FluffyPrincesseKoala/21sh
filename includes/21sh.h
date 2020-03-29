@@ -45,6 +45,8 @@
 # define LEFT			tputs(tgoto(tgetstr("le", NULL), 0 , 0), 1, &pchar)
 # define RIGHT			tputs(tgoto(tgetstr("nd", NULL), 0 , 0), 1, &pchar)
 # define CLEAR			tputs(tgetstr("cl", NULL), 1, &pchar)
+# define FORK_FAILED(x) x < 0
+# define IS_CHILD(x)	x == 0
 
 typedef struct			s_vect
 {
