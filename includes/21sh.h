@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/03/27 20:15:55 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/02 19:06:57 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,10 @@
 # define NODIR	    	"Not a directory\n"
 # define DENY		    "Permission denied\n"
 # define UNOW		    "Command not found\n"
-# define SYNTAX         "Syntax error\n"
+# define SYNTAX         "21sh: syntax error near unexpected symbol "
 # define NOFOD			"No such file or directory\n"
 # define E_CHDIR	    -1
+# define ONLY_WCHAR		(count_delim(data.vector->line, ' ') != ft_strlen(data.vector->line))
 # define LEFT			tputs(tgoto(tgetstr("le", NULL), 0 , 0), 1, &pchar)
 # define RIGHT			tputs(tgoto(tgetstr("nd", NULL), 0 , 0), 1, &pchar)
 # define CLEAR			tputs(tgetstr("cl", NULL), 1, &pchar)
@@ -50,7 +51,9 @@ typedef struct			s_vect
 {
 	char				*line;
 	char				**arg;
+
 	struct s_vect		*next;
+	
 	struct s_vect		*up;
 	struct s_vect		*down;
 }						t_vect;
@@ -63,6 +66,8 @@ typedef struct			s_bash
 	char				**args;
 	t_vect				*vector;
 	char				*prompt;
+	int					count_separator;
+	char				*error;
 
 	int					prompt_len;
 	int					column_count;
@@ -103,8 +108,8 @@ int			array_total_len(char **array);
 
 int			init_term();
 int			conf_term();
-void		handle_new_entry(t_bash *data, char *entry);
-void		goto_iterator(t_bash data);
+int			handle_new_entry(t_bash *data, char *entry, int pos);
+int			goto_iterator(t_bash data, int pos);
 void		arrow_key(t_bash *data, char *buff);
 
 /*
@@ -127,5 +132,6 @@ t_vect		*format_line(t_bash *data);
 void		loop(t_bash data);
 char		*build_path(t_bash data, t_vect *lst);
 int			exec_cmd(t_bash data, char *path, t_vect *cmd);
+int			print_rest(char *str, int pos, char *old);
 
 #endif

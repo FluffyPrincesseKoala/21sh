@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/24 18:42:41 by cylemair          #+#    #+#             */
-/*   Updated: 2020/03/24 20:31:38 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/02 19:11:47 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ void		push_entry(t_bash *data, char *entry)
 		tmp = addchar((*data).vector->line, entry[0], (*data).iterator);
 	else
 		tmp = ft_strndup(entry, 1);
-	ft_strdel(&(*data).vector->line);
+	if (ft_strlen((*data).vector->line))
+		ft_strdel(&(*data).vector->line);
 	(*data).vector->line = ft_strdup(tmp);
 	ft_strdel(&tmp);
 }
 
-void		handle_new_entry(t_bash *data, char *entry)
+int		handle_new_entry(t_bash *data, char *entry, int pos)
 {
 	if (!(*data).vector->line)
 		(*data).vector->line = ft_strndup(entry, 1);
@@ -51,7 +52,7 @@ void		handle_new_entry(t_bash *data, char *entry)
 			pull_line(&(*data).vector);
 		push_entry(&(*data), entry);
 	}
-	print_rest((*data).vector->line, (*data).iterator, NULL);
-	(*data).iterator++;
-	goto_iterator((*data));
+	pos = print_rest((*data).vector->line, pos, NULL);
+	goto_iterator((*data), pos);
+	return (pos);
 }

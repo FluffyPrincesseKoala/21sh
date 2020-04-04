@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2020/03/26 16:38:08 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/03/31 20:52:31 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char		**copy_array(char **array)
 	int		i;
 
 	i = 0;
+	new = NULL;
 	while (array[i])
 		i++;
 	if (!(new = malloc(sizeof(char*) * (i + 1))))

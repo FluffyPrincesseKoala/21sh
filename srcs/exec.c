@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/03/27 20:21:52 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/02 17:04:29 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char		*build_path(t_bash data, t_vect *lst)
 	tmp = NULL;
 	tmp2 = NULL;
 	paths = ft_strsplit(getenv("PATH"), ':');
-	while (paths && paths[++i])
+	while (paths && paths[++i] && lst->arg[0])
 	{
 		tmp2 = ft_strjoin(paths[i], "/");
 		tmp = (tmp2) ? ft_strjoin(tmp2, lst->arg[0]) : NULL;
@@ -62,10 +62,8 @@ int			exec_cmd(t_bash data, char *path, t_vect *cmd)
 	}
 	else if (cpid == 0)
 	{
-		if (execve(path, cmd->arg, data.env) < 0)
-			return (-1);
-		else
-			exit(0);
+		execve(path, cmd->arg, data.env);
+		return (-1);
 	}
 	wait(&status);
 	return ((status < 0) ? -1 : 0);

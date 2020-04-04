@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 19:25:39 by cylemair          #+#    #+#             */
-/*   Updated: 2020/03/26 16:34:55 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/01 21:13:50 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void		free_vector(t_vect **head)
 		lst = *head;
 		while (lst)
 		{
-			free_array(lst->arg);
+			if (lst->arg)
+				free_array(lst->arg);
 			ft_strdel(&lst->line);
 			lst_next = lst->next;
 			free(lst);

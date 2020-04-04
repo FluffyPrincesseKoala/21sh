@@ -6,13 +6,13 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/06 18:18:06 by cylemair          #+#    #+#             */
-/*   Updated: 2020/02/06 14:13:31 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/03/20 19:25:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_vect		*vect_new(char **arg)
+t_vect		*vect_new(char **arg, char *line)
 {
 	t_vect	*list;
 

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:00:02 by cylemair          #+#    #+#             */
-/*   Updated: 2020/03/27 20:25:13 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/02 19:15:23 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,16 +120,106 @@ void		free_array(char **array)
 	array = NULL;
 }
 
+char		**array_merge(char **array, char **add, int pos)
+{
+	int		j;
+	int		i;
+	int		k;
+	char	**new;
+
+	j = 0;
+	i = 0;
+	k = 0;
+	if (!(new = malloc(sizeof(char*) * (array_len(array) + array_len(add)))))
+		return (NULL);
+	while (array[i])
+	{
+		if (i == pos)
+		{
+			while (add[j])
+			{
+				new[k] = ft_strdup(add[j]);
+				j++;
+				k++;
+			}
+		}
+		else
+		{
+			new[k] = ft_strdup(array[i]);
+			k++;
+		}
+		i++;
+	}
+	new[k] = NULL;
+	return (new);
+}
+
+// char		**split_separator(char *line, char *separator)
+// {
+// 	char	**ret;
+// 	char	**tmp;
+// 	int		i;
+// 	int		j;
+
+// 	i = 0;
+// 	tmp = ft_strsplit(line, separator[i]);
+// 	while (separator[i])
+// 	{
+// 		j = 0;
+// 		if (!tmp)
+// 	}
+// }
+
+char		**array_ncpy(char **src, int size, int start)
+{
+	char	**new;
+	int		l;
+
+
+	if (!(new = malloc(sizeof(char*) * (size + 1))))
+	return (NULL);
+	l = 0;
+	while (l != size)
+	{
+		new[l] = ft_strdup(src[start]);
+		start++;
+		l++;
+	}
+	new[l] = NULL;
+	return (new);
+}
+
+t_vect		*new_arg(char **arg, t_vect *new)
+{
+	if (new->arg)
+	{
+		new = vect_add(&new, vect_new(arg, NULL));
+		free_array(arg);
+	}
+	else if (new)
+	{
+		new->arg = copy_array(arg);
+		free_array(arg);
+	}
+	return (new);
+}
+
 t_vect		*format_line(t_bash *data)
 {
 	t_vect	*new;
 	char	*tmp;
+	char	**tmpbis;
+	char	**tmpbbis;
 	char	**table;
 	int		i;
+	int		len;
+	int l = 0;
 
-	i = -1;
+	i = 0;
 	new = NULL;
 	tmp = NULL;
+	tmpbis = NULL;
+	tmpbbis = NULL;
 	table = NULL;
 	
 	/*
@@ -138,34 +228,61 @@ t_vect		*format_line(t_bash *data)
 	*/
 	if ((*data).vector->line)
 		tmp = replace_delim((*data).vector->line, '\t', ' ');
-	if (tmp)
-		table = ft_strsplit(tmp, ' ');
-
 	/*
 	**	create unique vector (ne gere pas ';' '|' '<' ...etc)
 	**	printf("%screate unique vector%s\n", CYAN, RESET);
 	*/
-	if (table)
+	if (tmp)
 	{
-		(*data).vector->arg = copy_array(table);
-		free_array(table);
+		if (array_len(table = ft_strsplit(tmp, ' ')))
+		{
+			new = vect_new(NULL, (*data).vector->line);
+			(*data).count_separator = 0;
+			while (table[i] && !(*data).error)
+			{
+				len = 0;
+				while (table[i+len] && (table[i+len][0] != '|') && (table[i+len][0] != ';'))
+					len++;
+				if (len)
+				{
+					tmpbis = array_ncpy(table, len, i);
+					new = new_arg(tmpbis, new);
+					i += len;
+				}
+				else if (((table[i+len][0] == '|') || (table[i+len][0] == ';')) && !i)
+				{
+					ft_strdel(&(*data).error);
+					(*data).error = ft_strjoin(SYNTAX, table[i+len]);
+				}
+				else
+				{
+					(*data).count_separator++;
+					i++;
+				}
+			}
+			free_array(table);
+			new->up = (*data).vector->up;
+			new->down = (*data).vector->down;
+			if ((*data).vector)
+				free_vector(&(*data).vector);
+			(*data).vector = new;
+		}
 	}
-	//printf("%sPush history%s\n", CYAN, RESET);
 	(*data).vector->down = vect_new(NULL, NULL);
 	(*data).vector->down->up = (*data).vector;
-	return ((*data).vector->down);
+	(*data).vector = (*data).vector->down;
+	ft_strdel(&tmp);
+	return ((*data).vector);
 }
 
 void		loop(t_bash data)
 {
 	char	buff[4086];
 	char	*path;
+	t_vect	*lst;
 
 	data.cmd_in = ft_strdup("");
-	data.iterator = 0;
-	data.column_count = tgetnum("co");
-	data.prompt_len = prompt();
-	data.vector = vect_new(NULL, NULL);
+	data.error = NULL;
 	while (42)
 	{
 		read(0, buff, 6);
@@ -174,18 +291,39 @@ void		loop(t_bash data)
 		else if (ft_strnequ(buff, "\n", 1))
 		{
 			ft_putchar(buff[0]);
-			data.vector = format_line(&data);
-			if ((path = build_path(data, data.vector->up)))
+			if (data.vector->line && ONLY_WCHAR)
 			{
-				if (!access(path, X_OK))
-					exec_cmd(data, path, data.vector->up);
+				data.vector = format_line(&data);
+				lst = (data.vector->up->arg) ? data.vector->up : NULL;
+				while (lst && !data.error)
+				{
+					if ((path = build_path(data, lst)) && !access(path, X_OK))
+						exec_cmd(data, path, lst);
+					else if (lst->arg && !access((const char*)lst->arg[0], X_OK))
+						exec_cmd(data, lst->arg[0], data.vector);
+					else
+					{
+						pstr(RED);
+						pstr(lst->arg[0]);
+						pstr(" : ");
+						pstr("Command not found\n");
+						pstr(RESET);
+					}
+					lst = lst->next;
+				}
+				if (data.error)
+				{
+					pstr(RED);
+					pstr(data.error);
+					pstr("\n");
+					pstr(RESET);
+					ft_strdel(&data.error);
+				}
 			}
-			else if (!access((const char*)data.vector->up->arg[0], X_OK))
-				exec_cmd(data, data.vector->up->arg[0], data.vector);			
 			data.iterator = 0;
 			data.prompt_len = prompt();
 		}
 		else if (ft_isprint(buff[0]))
-			handle_new_entry(&data, buff);
+			data.iterator = handle_new_entry(&data, buff, data.iterator);
 	}
 }
