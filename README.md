@@ -13,20 +13,36 @@
 # handle_execution_redirections commit
 
 ## 21sh.h
+> #define   NEW_FILE_MODE   S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
+* add structure
+> typedef struct			s_redirection \
+> { \
+> 	int					    in_fd; \
+> 	int					    out_fd; \
+> 	int					    backup_fd; \
+> 	char				    *opened_file;\
+>   struct s_redirection	*next;\
+> }						t_redirection
 * in s_vect, add
-> 	int				*redirections[2];
+> t_redirection		*redirections;
 * in function declarations
-> bool fork_failed(pid_t pid);
-> bool is_child(pid_t pid);
+> bool fork_failed(pid_t pid); \
+> bool is_child(pid_t pid); \
+> bool handle_redirections(t_redirection *redirection, int position); \
+> void restore_directions(t_redirection *redirection);
 * rename
-> exec_cmd
-* into
-> handle_fork
+> exec_cmd -> handle_fork
 
 ## Makefile
 * add signals.c
 * add functions_not_macros.c
 
-## Not forget
-* to handle execve errors
-* to handle dupe errors
+## Not forget to
+* add free_redirections to free_vect
+* handle execve errors
+* handle dup2 errors
+* properly wrap open used in exec.c/is_out_fd_authorized
+* handle close errors
+* learn more about usable fd to make our backups
+* handle wait status
+* handle mallocs failure

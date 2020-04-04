@@ -49,35 +49,11 @@ static void print_failed_fork_error(pid_t pid)
 	exit(-1)
 }
 
-static void make_redirections(int **redirections, int left, int right)
-{
-	// make sur in wich sens to dup fd
-	// make sur right exists
-	// make a copy of left
-	// dup
-	// close right
-
-	int i;
-
-	i = 0;
-	while (redirections && redirections[i])
-	{
-		dup2(redirections[i][right], redirections[i][left]);
-		close(redirections[i][right]);
-		i++;
-	}
-	// after exec restore
-	// in reverse order
-	// restore left with the copy we made
-}
-
 static void	execute_command(t_bash data, char *path, t_vect *command)
 {
-	make_redirections(command->redirections, 0, 1)
-	execve_return = execve(path, command->arg, data.env);
-	make_redirections(command->redirections, 1, 0)
-	if execve_return >= 0
-		exit(0);
+	if handle_redirections(command->redirections, 0)
+		execve(path, command->arg, data.env);
+	restore_directions(command->redirections)
 }
 
 void		handle_fork(t_bash data, char *path, t_vect *cmd)
