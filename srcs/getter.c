@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/24 18:42:41 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/02 19:11:47 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/09 19:31:36 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int		handle_new_entry(t_bash *data, char *entry, int pos)
 			pull_line(&(*data).vector);
 		push_entry(&(*data), entry);
 	}
-	pos = print_rest((*data).vector->line, pos, NULL);
-	goto_iterator((*data), pos);
+	print_rest((*data).vector->line, pos, NULL);
+	pos = goto_iterator((*data), ++pos);
 	return (pos);
 }

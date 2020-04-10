@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/02 19:06:57 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/10 20:43:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/resource.h>
 # include <sys/wait.h>
 # include <signal.h>
+# include <sys/ioctl.h>
 # include <stdio.h>
 
 #include <term.h>
@@ -42,9 +43,19 @@
 # define SYNTAX         "21sh: syntax error near unexpected symbol "
 # define NOFOD			"No such file or directory\n"
 # define E_CHDIR	    -1
-# define ONLY_WCHAR		(count_delim(data.vector->line, ' ') != ft_strlen(data.vector->line))
+# define LINE		    data.vector->line
+# define VECT		    data.vector
+# define VECT_UP	    data.vector->up
+# define VECT_DOWN	    data.vector->down
+# define MAX_X		    tgetnum("co")
+# define MAX_Y		    tgetnum("li")
+# define ONLY_WCHAR		(count_delim(LINE, ' ') != ft_strlen(LINE))
+# define UP				tputs(tgoto(tgetstr("up", NULL), 0 , 0), 1, &pchar)
+# define CDOWN			tputs(tgoto(tgetstr("do", NULL), 0 , 0), 1, &pchar)
 # define LEFT			tputs(tgoto(tgetstr("le", NULL), 0 , 0), 1, &pchar)
 # define RIGHT			tputs(tgoto(tgetstr("nd", NULL), 0 , 0), 1, &pchar)
+# define SAVE_C			tputs(tgoto(tgetstr("sc", NULL), 0 , 0), 1, &pchar)
+# define RESET_C		tputs(tgoto(tgetstr("rc", NULL), 0 , 0), 1, &pchar)
 # define CLEAR			tputs(tgetstr("cl", NULL), 1, &pchar)
 
 typedef struct			s_vect
@@ -90,6 +101,7 @@ t_vect		*vect_new(char **arg, char *line);
 t_vect		*vect_add(t_vect **head, t_vect *new);
 t_vect		*vect_push(t_vect **head, t_vect *new);
 size_t		count_lst(t_vect *head);
+t_vect		*link_history(t_vect **head, t_vect *new);
 void		pull_line(t_vect **head);
 void		free_vector(t_vect **head);
 
@@ -121,6 +133,7 @@ int			pstr(char const *str);
 int			pchar(int c);
 size_t		count_delim(char *str, int delim);
 char		*replace_delim(char *str, char delim, char new);
+char		*replace_substr(char *str, char *old, char *new);
 
 /*
 **	OTHER STUFF
@@ -133,5 +146,11 @@ void		loop(t_bash data);
 char		*build_path(t_bash data, t_vect *lst);
 int			exec_cmd(t_bash data, char *path, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
+
+/*
+**	DEBUG & UNIT_TEST
+*/
+
+void		debug_loop_try_termcaps(t_bash data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:25:06 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/02 19:08:34 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/10 21:27:17 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int			print_rest(char *str, int pos, char *old)
 		ft_putchar(str[pos]);
 		pos++;
 	}
-	if (old)
+	if (old && pos < ft_strlen(old))
 	{
 		i = pos;
 		while (old[i])
@@ -70,15 +70,44 @@ int			print_rest(char *str, int pos, char *old)
 
 int		goto_iterator(t_bash data, int pos)
 {
+	struct winsize w;
 	int		len;
+	int		max;
+	int		y;
+	int		x;
 
 	if (pos < ft_strlen(data.vector->line))
 	{
+		ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+		max = w.ws_col;
 		len = ft_strlen(data.vector->line);
 		while (len > pos)
 		{
-			LEFT;
-			len--;
+			if (len + data.prompt_len >= max)
+			{
+				y = (len + data.prompt_len) / max;
+				x = (len + data.prompt_len) % max;
+				if (!x && y)
+				{
+					UP;
+					len--;
+					while (x != max)
+					{
+						RIGHT;
+						x++;
+					}
+				}
+				else
+				{
+					len--;
+					LEFT;
+				}
+			}
+			else
+			{
+				LEFT;
+				len--;	
+			}
 		}
 	}
 	return (pos);
@@ -118,7 +147,12 @@ char		*delchar(char *ref, int pos)
 void		arrow_key(t_bash *data, char *buff)
 {
 	int		len;
+	int		max;
+	int		prompt;
+	int		y;
+	int		x;
 	char	*tmp;
+	struct winsize w;
 
 	if (ft_strnequ(buff, "\033[A", 3))
 	{
@@ -133,7 +167,8 @@ void		arrow_key(t_bash *data, char *buff)
 			** copy actual vector to vect->down
 			*/
 			(*data).vector = (*data).vector->up;
-			(*data).iterator = print_rest((*data).vector->line, (*data).iterator, (*data).vector->down->line);
+			(*data).iterator = print_rest((*data).vector->line, (*data).iterator,
+							((*data).vector->down) ? (*data).vector->down->line : NULL);
 		}
 	}
 	else if (ft_strnequ(buff, "\033[B", 3))
@@ -155,8 +190,23 @@ void		arrow_key(t_bash *data, char *buff)
 	}
 	else if (ft_strnequ(buff, "\033[C", 3))
 	{
+		//if (((*data).iterator + (*data).prompt_len) < (tgetnum("co")))
 		if ((*data).iterator < ft_strlen((*data).vector->line))
 		{
+    		ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+			max = w.ws_col;
+			prompt = (*data).prompt_len;
+			if (prompt + ft_strlen((*data).vector->line) >= max)
+			{
+				y = ((*data).iterator + (*data).prompt_len) / max;
+				x = ((*data).iterator + (*data).prompt_len) % max;
+				if (x == max - 1)
+				{
+					CDOWN;
+					(*data).iterator++;
+					return ;
+				}
+			}
 			(*data).iterator++;
 			RIGHT;
 		}
@@ -165,6 +215,25 @@ void		arrow_key(t_bash *data, char *buff)
 	{
 		if ((*data).iterator)
 		{
+    		ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+			max = w.ws_col;
+			prompt = (*data).prompt_len;
+			if ((*data).iterator + (*data).prompt_len >= max)
+			{
+				y = ((*data).iterator + (*data).prompt_len) / max;
+				x = ((*data).iterator + (*data).prompt_len) % max;
+				if (!x && y)
+				{
+					UP;
+					(*data).iterator--;
+					while (x != max)
+					{
+						RIGHT;
+						x++;
+					}
+					return ;
+				}
+			}
 			(*data).iterator--;
 			LEFT;
 		}
@@ -192,6 +261,8 @@ void		arrow_key(t_bash *data, char *buff)
 		len = ft_strlen((*data).vector->line);
 		if (len && (tmp = delchar((*data).vector->line, --(*data).iterator)))
 		{
+			if ((*data).vector->down)
+				pull_line(&(*data).vector);
 			print_rest_del(tmp, (*data).iterator, (*data).vector->line);
 			ft_strdel(&(*data).vector->line);
 			(*data).vector->line = tmp;
@@ -199,6 +270,8 @@ void		arrow_key(t_bash *data, char *buff)
 		}
 		else if (len == 1)
 		{
+			if ((*data).vector->down)
+				pull_line(&(*data).vector);
 			print_rest_del(NULL, (*data).iterator, (*data).vector->line);
 			ft_strdel(&(*data).vector->line);
 		}
@@ -206,18 +279,52 @@ void		arrow_key(t_bash *data, char *buff)
 	else if (ft_strnequ(buff, "\033[1;5D", 6) && (*data).iterator)
 	{
 		//ctrl + left
-		while ((*data).iterator && (*data).vector->line[(*data).iterator] != ' ')
+		len = (*data).iterator;
+		while (len)
+		{
+			if (len)
+			{
+				len--;
+				(*data).iterator--;
+				LEFT;
+			}
+			if ((*data).vector->line[(*data).iterator] == ' ')
+			{
+				(*data).iterator = len;
+				len = 0;
+			}
+		}
+	}
+	else if (ft_strnequ(buff, "\033[1;5C", 6))
+	{
+		//ctrl + right
+		len = (*data).iterator;
+		while (len < ft_strlen((*data).vector->line))
+		{
+			if (len < ft_strlen((*data).vector->line))
+			{
+				len++;
+				(*data).iterator++;
+				RIGHT;
+			}
+			if ((*data).vector->line[(*data).iterator] == ' ')
+			{
+				(*data).iterator = len;
+				len = ft_strlen((*data).vector->line);
+			}
+		}
+	}
+	else if (ft_strnequ(buff, "\033[H", 3))
+	{
+		while ((*data).iterator)
 		{
 			(*data).iterator--;
 			LEFT;
 		}
 	}
-	else if (ft_strnequ(buff, "\033[1;5C", 6))
+	else if (ft_strnequ(buff, "\033[F", 3))
 	{
-		int len = (*data).iterator;
-		//ctrl + right
-		while ((*data).iterator < ft_strlen((*data).vector->line)
-			&& (*data).vector->line[(*data).iterator] != ' ')
+		while ((*data).iterator < ft_strlen((*data).vector->line))
 		{
 			(*data).iterator++;
 			RIGHT;

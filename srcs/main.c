@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:43:13 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/02 18:59:11 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/10 20:42:26 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ int			main(int argc, char **argv, char **env)
 	{
 		CLEAR;
 		//hello();
-		data.column_count = tgetnum("co");
 		data.prompt_len = prompt();
 		data.vector = vect_new(NULL, NULL);
+//		debug_loop_try_termcaps(data);
 		loop(data);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 19:25:39 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/01 21:13:50 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/06 21:24:53 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,23 @@ void		free_vector(t_vect **head)
 	t_vect	*lst;
 	t_vect	*lst_next;
 
+	// free all pts first
+	// recurse on lst->next
+	// memset ton vecteur à 0
+	// free(lst)
+
 	if (head)
 	{
 		lst = *head;
 		while (lst)
 		{
 			if (lst->arg)
+			{
 				free_array(lst->arg);
+				lst->arg = NULL;
+			}
 			ft_strdel(&lst->line);
+			lst->line = NULL;
 			lst_next = lst->next;
 			free(lst);
 			lst = lst_next;
@@ -91,4 +100,21 @@ size_t		count_lst(t_vect *head)
 		lst = lst->next;
 	}
 	return (count);
+}
+
+t_vect		*link_history(t_vect **head, t_vect *new)
+{
+	t_vect	*lst;
+
+	if (head && *head)
+	{
+		lst = *head;
+		lst->down = (new) ? new : vect_new(NULL, NULL);
+		lst->down->up = lst;
+		if (lst->up)
+			lst->up->down = lst;
+		lst = lst->down;
+		return (lst);
+	}
+	return (new);
 }
