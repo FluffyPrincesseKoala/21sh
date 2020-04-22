@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2020/04/10 19:57:26 by cylemair         ###   ########.fr        #
+#    Updated: 2020/04/22 20:14:13 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,12 @@ INC		=	./includes/	\
 
 INCLU	:=	$(addprefix -I, $(INC))
 
+INCPATH	=	./includes/
+
+HEADER	=	21sh.h
+
+HEADERS	=	$(addprefix $(INCPATH), $(HEADER))
+
 NAME	=	21sh
 
 RM		=	rm -rf
@@ -34,15 +40,17 @@ SRC		=	srcs/main.c 			\
 			srcs/exec.c				\
 			srcs/tmp.c				\
 			srcs/replace_substr.c	\
+			srcs/arrow.c			\
+			srcs/key.c				\
 
 OBJS	=	$(SRC:.c=.o)
 
-all: $(NAME) $(SRC)
+all: $(NAME) $(SRC) $(HEADERS)
 
-srcs/%.o: srcs/%.c
+srcs/%.o: srcs/%.c $(HEADERS)
 	@$(CC) $(INCLU) -c $< -o $@
 
-$(NAME): $(OBJS) $(SRC)
+$(NAME): $(OBJS) $(SRC) $(HEADERS)
 	@make -C libft/
 	@$(CC) -o $(NAME) $(OBJS) $(LDFLAGS)
 

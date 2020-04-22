@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/10 20:43:34 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/22 20:15:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@
 # define SYNTAX         "21sh: syntax error near unexpected symbol "
 # define NOFOD			"No such file or directory\n"
 # define E_CHDIR	    -1
-# define LINE		    data.vector->line
-# define VECT		    data.vector
-# define VECT_UP	    data.vector->up
-# define VECT_DOWN	    data.vector->down
-# define MAX_X		    tgetnum("co")
-# define MAX_Y		    tgetnum("li")
+# define LINE		    (*data).vector->line
+# define VECT		    (*data).vector
+# define VECT_UP	    (*data).vector->up
+# define VECT_DOWN	    (*data).vector->down
+# define CUR_X		    (data->iterator + data->prompt_len) % w.ws_col
+# define CUR_Y		    (data->iterator + data->prompt_len) / w.ws_col
 # define ONLY_WCHAR		(count_delim(LINE, ' ') != ft_strlen(LINE))
 # define UP				tputs(tgoto(tgetstr("up", NULL), 0 , 0), 1, &pchar)
 # define CDOWN			tputs(tgoto(tgetstr("do", NULL), 0 , 0), 1, &pchar)
@@ -64,7 +64,6 @@ typedef struct			s_vect
 	char				**arg;
 
 	struct s_vect		*next;
-	
 	struct s_vect		*up;
 	struct s_vect		*down;
 }						t_vect;
@@ -73,18 +72,12 @@ typedef struct			s_bash
 {
 	char				**env;
 	char				**venv;
-	char				*cmd;
-	char				**args;
 	t_vect				*vector;
-	char				*prompt;
-	int					count_separator;
+	int					iterator;
 	char				*error;
 
 	int					prompt_len;
-	int					column_count;
-	int					iterator;
-	char				*cmd_in;
-	char				*cmd_out;
+	int					count_separator;
 }						t_bash;
 
 typedef struct			s_built
@@ -92,6 +85,12 @@ typedef struct			s_built
 	void				(*f)(struct s_bash *, struct s_vect *);
 	char				*name;
 }						t_built;
+
+typedef struct			s_key
+{
+	void				(*f)(struct s_bash *);
+	char				*name;
+}						t_key;
 
 /*
 **	t_vect manipulation (keep current and old entry)
@@ -122,7 +121,21 @@ int			init_term();
 int			conf_term();
 int			handle_new_entry(t_bash *data, char *entry, int pos);
 int			goto_iterator(t_bash data, int pos);
+
 void		arrow_key(t_bash *data, char *buff);
+
+void		key_last(t_bash *data);
+void		key_start(t_bash *data);
+void		key_back(t_bash *data);
+void		key_suppr(t_bash *data);
+
+void		ctrl_right(t_bash *data);
+void		ctrl_left(t_bash *data);
+
+void		arrow_left(t_bash *data);
+void		arrow_right(t_bash *data);
+void		arrow_down(t_bash *data);
+void		arrow_up(t_bash *data);
 
 /*
 **	STRING FORMATING
@@ -142,7 +155,7 @@ char		*replace_substr(char *str, char *old, char *new);
 void		hello();
 int			prompt();
 t_vect		*format_line(t_bash *data);
-void		loop(t_bash data);
+void		loop(t_bash *data);
 char		*build_path(t_bash data, t_vect *lst);
 int			exec_cmd(t_bash data, char *path, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);

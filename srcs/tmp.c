@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:00:02 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/10 20:38:24 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/22 19:51:41 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,6 @@ int			prompt()
 	len += pstr(" > ");
 	pstr(RESET);
 	return (len);
-}
-
-int			left_space_on_line(t_bash data)
-{
-	ft_putnbr(data.column_count - data.prompt_len - data.iterator);
-	return (data.column_count - data.prompt_len - data.iterator);
 }
 
 void		free_array(char **array)
@@ -223,8 +217,8 @@ t_vect		*read_separator(char **table, t_bash *data)
 	int		i;
 
 	i = 0;
-	new = vect_new(NULL, (*data).vector->line);
-	while (table[i] && !(*data).error)
+	new = vect_new(NULL, data->vector->line);
+	while (table[i] && !data->error)
 	{
 		if ((len = next_delim(table, i)))
 		{
@@ -234,8 +228,8 @@ t_vect		*read_separator(char **table, t_bash *data)
 		}
 		else if (((table[i+len][0] == '|') || (table[i+len][0] == ';')) && !i)
 		{
-			ft_strdel(&(*data).error);
-			(*data).error = ft_strjoin(SYNTAX, table[i+len]);
+			ft_strdel(&data->error);
+			data->error = ft_strjoin(SYNTAX, table[i+len]);
 		}
 		else
 			i++;
@@ -259,10 +253,10 @@ t_vect		*format_line(t_bash *data)
 	**	formating to create a vector
 	**	printf("%sformating to create a vector%s\n", CYAN, RESET);
 	*/
-	if ((*data).vector->line)
+	if (data->vector->line)
 	{
-		lol = replace_substr((*data).vector->line, ";", " ; ");
-		tmp = replace_substr((lol) ? lol : (*data).vector->line, "|", " | ");
+		lol = replace_substr(data->vector->line, ";", " ; ");
+		tmp = replace_substr((lol) ? lol : data->vector->line, "|", " | ");
 		ft_strdel(&lol);
 	}
 	/*
@@ -275,16 +269,16 @@ t_vect		*format_line(t_bash *data)
 		{
 			new = read_separator(table, data);
 			free_array(table);
-			new->up = (*data).vector->up;
-			new->down = (*data).vector->down;
-			if ((*data).vector)
-				free_vector(&(*data).vector);
-			(*data).vector = new;
+			new->up = data->vector->up;
+			new->down = data->vector->down;
+			if (data->vector)
+				free_vector(&data->vector);
+			data->vector = new;
 		}
 	}
-	(*data).vector = link_history(&(*data).vector, vect_new(NULL, NULL));
+	data->vector = link_history(&data->vector, vect_new(NULL, NULL));
 	ft_strdel(&tmp);
-	return ((*data).vector);
+	return (data->vector);
 }
 
 static void		exec_onebyone(t_bash data)
@@ -305,61 +299,59 @@ static void		exec_onebyone(t_bash data)
 	}
 }
 
-void		loop(t_bash data)
+void		loop(t_bash *data)
 {
 	char	buff[4086];
 
-	data.error = NULL;
 	while (42)
 	{
-		data.column_count = MAX_X;
 		read(0, buff, 6);
 		if (ft_strnequ(buff, "\033", 1) || buff[0] == 127)
-			arrow_key(&data, buff);
+			arrow_key(data, buff);
 		else if (ft_strnequ(buff, "\n", 1))
 		{
 			ft_putchar(buff[0]);
-			if (data.vector->line && ONLY_WCHAR)
+			if (data->vector->line && (count_delim(LINE, ' ') != ft_strlen(LINE)))
 			{
-				data.vector = format_line(&data);
-				exec_onebyone(data);
-				if (data.error)
+				data->vector = format_line(data);
+				exec_onebyone((*data));
+				if (data->error)
 				{
-					put_error(data.error, NULL);
-					ft_strdel(&data.error);
+					put_error(data->error, NULL);
+					ft_strdel(&data->error);
 				}
 			}
-			data.iterator = 0;
-			data.prompt_len = prompt();
+			data->iterator = 0;
+			data->prompt_len = prompt();
 		}
 		else if (ft_isprint(buff[0]))
-			data.iterator = handle_new_entry(&data, buff, data.iterator);
+			data->iterator = handle_new_entry(data, buff, data->iterator);
 	}
 }
 
-void		debug_loop_try_termcaps(t_bash data)
-{
-	char	buff[4086];
+// void		debug_loop_try_termcaps(t_bash data)
+// {
+// 	char	buff[4086];
 
-	data.error = NULL;
-	while (42)
-	{
-		data.column_count = MAX_X;
-		read(0, buff, 6);
-		if (ft_strnequ(buff, "\033", 1) || buff[0] == 127)
-			arrow_key(&data, buff);
-		else if (ft_strnequ(buff, "\n", 1))
-		{
-			if (data.vector->line && ONLY_WCHAR)
-			{
-				data.vector = format_line(&data);
-				tputs(tgoto(tgetstr(data.vector->up->line, NULL), 0 , 0), 1, &pchar);
-//				exec_onebyone(data);
-			}
-			data.iterator = 0;
-			data.prompt_len = prompt();
-		}
-		else if (ft_isprint(buff[0]))
-			data.iterator = handle_new_entry(&data, buff, data.iterator);
-	}
-}
+// 	data.error = NULL;
+// 	while (42)
+// 	{
+// 		data.column_count = MAX_X;
+// 		read(0, buff, 6);
+// 		if (ft_strnequ(buff, "\033", 1) || buff[0] == 127)
+// 			arrow_key(&data, buff);
+// 		else if (ft_strnequ(buff, "\n", 1))
+// 		{
+// 			if (data.vector->line && ONLY_WCHAR)
+// 			{
+// 				data.vector = format_line(&data);
+// 				tputs(tgoto(tgetstr(data.vector->up->line, NULL), 0 , 0), 1, &pchar);
+// //				exec_onebyone(data);
+// 			}
+// 			data.iterator = 0;
+// 			data.prompt_len = prompt();
+// 		}
+// 		else if (ft_isprint(buff[0]))
+// 			data.iterator = handle_new_entry(&data, buff, data.iterator);
+// 	}
+// }

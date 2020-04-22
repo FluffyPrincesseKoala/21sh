@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/24 18:42:41 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/09 19:31:36 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/22 19:44:28 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,27 @@ void		push_entry(t_bash *data, char *entry)
 	char	*tmp;
 
 	tmp = NULL;
-	if ((*data).iterator || (*data).vector->line)
-		tmp = addchar((*data).vector->line, entry[0], (*data).iterator);
+	if (data->iterator || data->vector->line)
+		tmp = addchar(data->vector->line, entry[0], data->iterator);
 	else
 		tmp = ft_strndup(entry, 1);
-	if (ft_strlen((*data).vector->line))
-		ft_strdel(&(*data).vector->line);
-	(*data).vector->line = ft_strdup(tmp);
+	if (ft_strlen(data->vector->line))
+		ft_strdel(&data->vector->line);
+	data->vector->line = ft_strdup(tmp);
 	ft_strdel(&tmp);
 }
 
 int		handle_new_entry(t_bash *data, char *entry, int pos)
 {
-	if (!(*data).vector->line)
-		(*data).vector->line = ft_strndup(entry, 1);
+	if (!data->vector->line)
+		data->vector->line = ft_strndup(entry, 1);
 	else
 	{
-		if ((*data).vector->down)
-			pull_line(&(*data).vector);
+		if (data->vector->down)
+			pull_line(&data->vector);
 		push_entry(&(*data), entry);
 	}
-	print_rest((*data).vector->line, pos, NULL);
-	pos = goto_iterator((*data), ++pos);
+	print_rest(data->vector->line, pos, NULL);
+	goto_iterator(*data, ++pos);
 	return (pos);
 }
