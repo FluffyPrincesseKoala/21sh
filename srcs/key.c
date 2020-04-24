@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 17:18:17 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/22 21:30:41 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/24 16:36:10 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,15 +90,17 @@ void				key_back(t_bash *data)
 	char			*tmp;
 	int				len;
 
-	len = ft_strlen(data->vector->line);
-	if (data->iterator && len
+	if (data->iterator && (len = ft_strlen(data->vector->line))
 		&& (tmp = delchar(data->vector->line, data->iterator - 1)))
 	{
 		if (data->vector->down)
 			pull_line(&data->vector);
 		arrow_left(data);
+		SAVE_C;
+		len = data->iterator;
 		print_rest(tmp, data->iterator, data->vector->line);
-		goto_iterator(*data, data->iterator);
+		RESET_C;
+		data->iterator = len;
 		ft_strdel(&data->vector->line);
 		data->vector->line = tmp;
 	}

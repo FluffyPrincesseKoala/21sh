@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:25:06 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/22 21:41:50 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/24 17:24:46 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ int					goto_iterator(t_bash data, int pos)
 	len = (data.vector->line) ? ft_strlen(data.vector->line) : 0;
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 	max = w.ws_col;
-	if (pos < len)
+	if (pos <= len)
 	{
-		while (len > pos)
+		while (len >= pos)
 		{
 			y = (len + data.prompt_len) / max;
 			x = (len + data.prompt_len) % max;
@@ -69,7 +69,7 @@ int					goto_iterator(t_bash data, int pos)
 		while (pos > len)
 		{
 			y = (pos + data.prompt_len) / max;
-			x = (y == 1) ? (pos + data.prompt_len) % max : pos % max;
+			x = (pos + data.prompt_len) % max;
 			if (pos + data.prompt_len >= max && !x && y)
 			{
 				UP;
@@ -128,6 +128,8 @@ void				ctrl_left(t_bash *data)
 
 	len = data->iterator;
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+	if (len)
+		len--;
 	while (len && data->vector->line[len] == ' ')
 		len--;
 	while (len && data->vector->line[len] != ' ')
@@ -144,7 +146,7 @@ void				ctrl_left(t_bash *data)
 		}
 		else
 			LEFT;
-		data->iterator--;
+		(*data).iterator--;
 	}
 }
 
@@ -160,8 +162,25 @@ void				ctrl_down(t_bash *data)
 		x = CUR_X;
 	else
 		x = data->iterator % w.ws_col;
-	while (CUR_Y != y + 1 && CUR_Y < ((ft_strlen(data->vector->line) + data->prompt_len) / w.ws_col))
+	while (CUR_Y != y + 1
+		&& CUR_Y < LEN_Y)
 		arrow_right(data);
+}
+
+void				ctrl_up(t_bash *data)
+{
+	struct winsize	w;
+	int				y;
+	int				x;
+
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+	y = CUR_Y;
+	if (y == 0)
+		return ;
+	else
+		x = data->iterator % w.ws_col;
+	while (CUR_Y != y - 1)
+		arrow_left(data);
 }
 
 void		arrow_key(t_bash *data, char *buff)
@@ -184,6 +203,8 @@ void		arrow_key(t_bash *data, char *buff)
 		ctrl_right(data);
 	else if (ft_strnequ(buff, "\033[1;5B", 6))
 		ctrl_down(data);
+	else if (ft_strnequ(buff, "\033[1;5A", 6))
+		ctrl_up(data);		
 	else if (ft_strnequ(buff, "\033[H", 3))
 		key_start(data);
 	else if (ft_strnequ(buff, "\033[F", 3))

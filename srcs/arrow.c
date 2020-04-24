@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 16:20:13 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/22 19:23:42 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/24 17:04:56 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,32 +66,40 @@ void				arrow_right(t_bash *data)
 
 void				arrow_down(t_bash *data)
 {
+	int				len;
+
 	if (data->vector->down)
 	{
 		if (data->iterator)
-		{
-			data->iterator = 0;
-			data->iterator = goto_iterator(*data, data->iterator);
-		}
+			key_start(data);
+		SAVE_C;
 		data->vector = data->vector->down;
 		data->iterator = print_rest(data->vector->line, data->iterator,
 		(data->vector->up) ? data->vector->up->line : NULL);
-		data->iterator = goto_iterator(*data, data->iterator);
+		RESET_C;
+		len = data->iterator;
+		data->iterator = 0;
+		while (len--)
+			arrow_right(data);
 	}
 }
 
 void				arrow_up(t_bash *data)
 {
+	int				len;
+
 	if (data->vector->up)
 	{
 		if (data->iterator)
-		{
-			data->iterator = 0;
-			data->iterator = goto_iterator(*data, data->iterator);
-		}
+			key_start(data);
+		SAVE_C;
 		data->vector = data->vector->up;
 		data->iterator = print_rest(data->vector->line, data->iterator,
 			(data->vector->down) ? data->vector->down->line : NULL);
-		data->iterator = goto_iterator(*data, data->iterator);
+		RESET_C;
+		len = data->iterator;
+		data->iterator = 0;
+		while (len--)
+			arrow_right(data);
 	}
 }

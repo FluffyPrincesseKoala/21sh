@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/22 20:15:24 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/24 17:20:23 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,13 @@
 # define SYNTAX         "21sh: syntax error near unexpected symbol "
 # define NOFOD			"No such file or directory\n"
 # define E_CHDIR	    -1
-# define LINE		    (*data).vector->line
-# define VECT		    (*data).vector
-# define VECT_UP	    (*data).vector->up
-# define VECT_DOWN	    (*data).vector->down
+# define LINE		    data->vector->line
+# define VECT		    data->vector
+# define VECT_UP	    data->vector->up
+# define VECT_DOWN	    data->vector->down
 # define CUR_X		    (data->iterator + data->prompt_len) % w.ws_col
 # define CUR_Y		    (data->iterator + data->prompt_len) / w.ws_col
+# define LEN_Y			(ft_strlen(LINE) + data->prompt_len) / w.ws_col
 # define ONLY_WCHAR		(count_delim(LINE, ' ') != ft_strlen(LINE))
 # define UP				tputs(tgoto(tgetstr("up", NULL), 0 , 0), 1, &pchar)
 # define CDOWN			tputs(tgoto(tgetstr("do", NULL), 0 , 0), 1, &pchar)
