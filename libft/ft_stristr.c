@@ -1,39 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/19 16:38:08 by cylemair          #+#    #+#             */
-/*   Updated: 2018/12/19 16:38:08 by cylemair         ###   ########.fr       */
+/*   Created: 2020/04/19 18:20:37 by cylemair          #+#    #+#             */
+/*   Updated: 2020/04/19 16:37:54 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char				*ft_strsub(char const *s, unsigned int start, size_t len)
+int     ft_stristr(const char *str, const char *to_find)
 {
-	char			*new;
-	unsigned int	i;
-	unsigned int	j;
+    int     i;
+    int     j;
 
-	i = 0;
-	j = 0;
-	if (!s || !(new = ft_strnew(len)))
-		return (NULL);
-	while (s[j] && j != start)
-		j += 1;
-	if (j == start)
-	{
-		while (i != len && s[j])
-		{
-			new[i] = (char)s[j];
-			j += 1;
-			i += 1;
-		}
-		new[i] = 0;
-		return (new);
-	}
-	return (NULL);
+    i = 0;
+    if (ft_strlen(to_find) == 0)
+        return (0);
+    while (str[i])
+    {
+        j = 0;
+        while (str[i] == to_find[j])
+        {
+            if (to_find[j + 1] == '\0')
+                return (i - j);
+            i += 1;
+            j += 1;
+        }
+    }
+    return (-1);
 }

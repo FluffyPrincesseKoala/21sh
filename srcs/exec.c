@@ -29,7 +29,7 @@ char		*build_path(t_bash data, t_vect *lst)
 		tmp2 = ft_strjoin(paths[i], "/");
 		tmp = (tmp2) ? ft_strjoin(tmp2, lst->arg[0]) : NULL;
 		if (tmp && !(ret = access((const char*)tmp, F_OK)))
-		{
+	
 			ft_strdel(&tmp2);
 			free_array(paths);
 			return (tmp);

@@ -83,5 +83,7 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char const *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
 char				*ft_strndup(const char *str, size_t size);
+int					ft_stristr(const char *str, const char *to_find);
+int					ft_str_is_digits(const char *s);
 
 #endif

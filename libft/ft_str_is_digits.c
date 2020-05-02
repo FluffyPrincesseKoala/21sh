@@ -1,39 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsub.c                                        :+:      :+:    :+:   */
+/*   ft_str_is_digits.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/19 16:38:08 by cylemair          #+#    #+#             */
-/*   Updated: 2018/12/19 16:38:08 by cylemair         ###   ########.fr       */
+/*   Created: 2020/04/24 12:46:15 by cylemair          #+#    #+#             */
+/*   Updated: 2020/04/24 12:50:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char				*ft_strsub(char const *s, unsigned int start, size_t len)
-{
-	char			*new;
-	unsigned int	i;
-	unsigned int	j;
+/*
+** These functions check whether s, is a string that contains digits only. 
+** The values return are 0 if s is null or s does not match the condition,
+** 1 eitherway.
+*/
 
-	i = 0;
-	j = 0;
-	if (!s || !(new = ft_strnew(len)))
-		return (NULL);
-	while (s[j] && j != start)
-		j += 1;
-	if (j == start)
-	{
-		while (i != len && s[j])
-		{
-			new[i] = (char)s[j];
-			j += 1;
-			i += 1;
-		}
-		new[i] = 0;
-		return (new);
-	}
-	return (NULL);
+int ft_str_is_digits(const char *s)
+{
+    int i;
+
+    if (!s)
+        return (0);
+    i = 0;
+    while (s[i])
+        if (!ft_isdigit(s[i]))
+            return (0);
+    return (1);
 }

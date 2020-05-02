@@ -12,12 +12,12 @@
 
 #include "21sh.h"
 
-bool    fork_failed(pid_t pid)
+int    fork_failed(pid_t pid)
 {
     return (pid < 0);
 }
 
-bool    is_child(pid_t pid)
+int    is_child(pid_t pid)
 {
     return (pid == 0)
 }

@@ -7,53 +7,46 @@
 ## main
 * call set_up_signals() in main function or during setup process
 
+## Makefile
+* add signals.c
+
 ## Ideas
 * add a libft function that takes two string as arguments : string to write and macro-string for color
 
 # handle_execution_redirections commit
 
 ## 21sh.h
-> #define   NEW_FILE_MODE   S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
-* add structure
-> typedef struct			s_redirection \
-> { \
-> 	int					    in_fd; \
-> 	int					    out_fd; \
-> 	int					    backup_fd; \
-> 	char				    *opened_file;\
->   struct s_redirection	*next;\
-> }						t_redirection
+> #include "redirections.h"
 * in s_vect, add
 > t_redirection		*redirections;
-* in function declarations
-> bool fork_failed(pid_t pid); \
-> bool is_child(pid_t pid); \
-> bool handle_redirections(t_redirection *redirection, int position); \
-> void restore_directions(t_redirection *redirection); \
-> void free_redirection(t_redirection *redirection); 
-* those three functions declaration may totally change depends of your needs for the lexer
-> void set_up_in_redirection(t_vect *cmd, char *in_fd); \
-> void set_up_out_redirection(t_vect *cmd, char *out_fd); \
-> void set_up_file_redirection(t_vect *cmd, char *file);
+* in s_bash, add
+> t_redirection_set_up *redirections_set_up;
+* in s_bash change char *error; to char error[256] ans readapt your use of error in the rest of the code
 * rename
 > exec_cmd -> handle_fork
+* declare
+> int fork_failed(pid_t pid);
+> int is_child(pid_t pid);
+
+## Other Updates
+* add free_redirections to free_vect
 
 ## Makefile
-* add setup_redirections.c
-* add manage_redirections.c
-* add signals.c
+* add redirections_execution.c
+* add redirections_setup.c
+* add redirections_struct.c
+* add redirections_tools.c
 * add functions_not_macros.c
 
 ## Not forget to
-* add free_redirections to free_vect
+* Set all concerned functions as static
+* change error formating
+* change return values for explicit MACROs
 * handle execve errors
 * handle dup2 errors
 * properly wrap open used in exec.c/is_out_fd_authorized
 * handle close errors
 * learn more about usable fd to make our backups
 * handle wait status
-* handle mallocs failure
-
-## Next step
-* handle the 4 redirection type
-* setup correctly default redirections fd
+* handle malloc failures
+* check files header!
