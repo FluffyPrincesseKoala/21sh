@@ -25,15 +25,18 @@ static void     insert_new_redirection(t_vect *cmd, t_redirection *new)
         cmd->redirection = new;
 }
 
-t_redirection   *new_redirection(t_vect *cmd, int default_in, int default_out)
+t_redirection   *new_redirection(t_vect *cmd, char *operator,
+    int default_in, int default_out)
 {
     t_redirection   *new;
     t_redirection   *cursor;
 
     if (!new = ft_memalloc(sizeof(t_redirection)))
         return NULL;
-    new->in_fd = default_in;
-    new->out_fd = default_out;
+    if (!new->operator = ft_strdup(operator))
+        return NULL;
+    new->left_fd = default_in;
+    new->right_fd = default_out;
     insert_new_redirection(cmd, new);
     return (new);
 }
@@ -43,6 +46,7 @@ void        free_redirection(t_redirection *redirection)
     if (redirection->next)
         free_redirection(redirection->next);
     redirection->next = NULL;
-    ft_strdel(out_file);
+    ft_strdel(file_word);
+    ft_strdel(operator);
     free(redirection);
 }

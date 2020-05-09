@@ -25,7 +25,7 @@
 * rename
 > exec_cmd -> handle_fork
 * declare
-> int fork_failed(pid_t pid);
+> int fork_failed(pid_t pid);\
 > int is_child(pid_t pid);
 
 ## Other Updates
@@ -44,7 +44,7 @@
 * change return values for explicit MACROs
 * handle execve errors
 * handle dup2 errors
-* properly wrap open used in exec.c/is_out_fd_authorized
+* properly wrap open used in exec.c/is_right_fd_authorized
 * handle close errors
 * learn more about usable fd to make our backups
 * handle wait status
