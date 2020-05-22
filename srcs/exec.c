@@ -51,7 +51,8 @@ static void print_failed_fork_error(pid_t pid)
 
 static void	execute_command(t_bash data, char *path, t_vect *command)
 {
-	if handle_redirections(command->redirections, 0)
+	handle_redirections(data, command->redirections, 0)
+	if (!error_occuredd(ata->error))
 		execve(path, command->arg, data.env);
 	restore_directions(command->redirections)
 }

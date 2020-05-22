@@ -21,3 +21,8 @@ int    is_child(pid_t pid)
 {
     return (pid == 0)
 }
+
+int     error_occured(char *error)
+{
+    return (error[0] != NULL)
+}

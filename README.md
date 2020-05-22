@@ -21,14 +21,16 @@
 > t_redirection		*redirections;
 * in s_bash, add
 > t_redirection_set_up *redirections_set_up;
-* in s_bash change char *error; to char error[256] ans readapt your use of error in the rest of the code
+* in s_bash change char *error; to char error[256]; and readapt your use of error in the rest of the code
 * rename
 > exec_cmd -> handle_fork
 * declare
 > int fork_failed(pid_t pid);\
 > int is_child(pid_t pid);
+> int error_occured(char *error);
 
 ## Other Updates
+* call initialize_redirection_set_up_functions(t_bash *data) when you first initialize data
 * add free_redirections to free_vect
 
 ## Makefile
@@ -44,7 +46,7 @@
 * change return values for explicit MACROs
 * handle execve errors
 * handle dup2 errors
-* properly wrap open used in exec.c/is_right_fd_authorized
+* properly wrap open used in exec.c/is_file_word_authorized
 * handle close errors
 * learn more about usable fd to make our backups
 * handle wait status

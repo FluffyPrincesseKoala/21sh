@@ -12,18 +12,22 @@
 
 #include "21sh.h"
 
-static bool is_right_fd_authorized(t_redirection *redirection)
+static int	is_file_word_authorized(t_bash *data, t_redirection *redirection)
 {
 	if (redirection->file_word)
 	{
 		new_fd = open(
-			redirections->file_word, O_WRONLY | O_CREAT, NEW_FILE_MODE);
+			redirections->file_word, redirection->flags, NEW_FILE_MODE);
 		if (new_fd == -1)
-			return (false);
+		{
+			data->error = "error opening file";
+			free_redirection(redirection);
+			return (FALSE);
+		}
 		else
 			redirection->right_fd = new_fd;
 	}
-	return (true);
+	return (TRUE);
 }
 
 static void	get_backup_fd(t_redirection *redirection, int n)
@@ -31,20 +35,23 @@ static void	get_backup_fd(t_redirection *redirection, int n)
 	redirection->backup_fd = 600 + n;
 }
 
-bool        handle_redirections(t_redirection *redirection, int position)
+void        handle_redirections(t_bash *data, t_redirection *redirection, int position)
 {
-	if (!is_right_fd_authorized(redirection)
-        free_redirection(redirection);
-		return (false);
+	// take CLOSE_FD (== -1) into account
+	if (!is_file_word_authorized(redirection)
+		return ;
 	get_backup_fd(redirection, position);
 	dup2(redirection->left_fd, redirection->backup_fd);
-	dup2(redirection->right_fd, redirection->left_fd);
-	if (redirection->file_word)
-		close(redirection->file_word);
+	if (redirection->right_fd == CLOSE_FD)
+		close(redirection->left_fd);
+	else 
+	{
+		dup2(redirection->right_fd, redirection->left_fd);
+		if (redirection->file_word)
+			close(redirection->right_fd);
+	}
 	if (redirection->next)
-		return (handle_redirections(redirection->next, position+1));
-	else
-		return true;
+		handle_redirections(redirection->next, position+1);
 }
 
 void	    restore_directions(t_redirection *redirection)

@@ -94,6 +94,7 @@ void    set_up_stdout_and_stderr_redirection(t_bash *data, t_vect *cmd,
     stdout_redirection->left_fd = STDOUT;
     stdout_redirection->right_fd = NO_RIGHT_FD;
     stdout_redirection->file_word = search_file_word(data, arg, substring_index);
-    stdout_redirection->next = new_redirection(
-        cmd, SIMPLE_OUTPUT_REDIRECTION, STDERR, STDOUT);
+    stdout_redirection->next = new_redirection(cmd, SIMPLE_OUTPUT_REDIRECTION);
+    stdout_redirection->next->left_fd = STDERR;
+    stdout_redirection->next->right_fd = STDOUT;
 }
