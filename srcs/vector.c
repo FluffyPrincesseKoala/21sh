@@ -6,19 +6,19 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 19:25:39 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/06 21:24:53 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/29 15:53:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-t_vect		*vect_new(char **arg, char *line)
+t_vect		*vect_new(t_lst *args, char *line)
 {
 	t_vect	*list;
 
 	if (!(list = (t_vect*)malloc(sizeof(t_vect))))
 		return (NULL);
-	list->arg = (arg) ? copy_array(arg) : NULL;
+	list->args = (args) ? args : NULL;
 	list->line = (line) ? ft_strdup(line) : NULL;
 	list->next = NULL;
 	list->up = NULL;
@@ -55,11 +55,8 @@ void		free_vector(t_vect **head)
 		lst = *head;
 		while (lst)
 		{
-			if (lst->arg)
-			{
-				free_array(lst->arg);
-				lst->arg = NULL;
-			}
+			if (lst->args)
+				lstfree(&lst->args);
 			ft_strdel(&lst->line);
 			lst->line = NULL;
 			lst_next = lst->next;
@@ -85,21 +82,6 @@ t_vect		*vect_push(t_vect **head, t_vect *new)
 	}
 	else
 		return (new);
-}
-
-size_t		count_lst(t_vect *head)
-{
-	t_vect	*lst;
-	size_t	count;
-
-	count = 0;
-	lst = head;
-	while (lst)
-	{
-		count++;
-		lst = lst->next;
-	}
-	return (count);
 }
 
 t_vect		*link_history(t_vect **head, t_vect *new)

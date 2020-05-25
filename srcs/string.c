@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:31:27 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/09 15:31:06 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/05/02 19:27:19 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,34 +78,5 @@ static char	*stracat(char **tmp, char *ret, int *i)
 		i[1]++;
 		i[2]++;
 	}
-	return (ret);
-}
-
-char		*replace_delim(char *str, char delim, char new)
-{
-	char	*ret;
-	char	**tmp;
-	size_t	len;
-	int		i[3];
-
-	i[1] = 0;
-	i[0] = 0;
-	tmp = ft_strsplit(str, delim);
-	len = array_total_len(tmp) + array_len(tmp);
-	if (!(ret = malloc(sizeof(char) * (len + 1))))
-		return (NULL);
-	while (tmp[i[0]])
-	{
-		i[2] = 0;
-		ret = (tmp[i[0]][i[2]]) ? stracat(tmp, ret, i) : ret;
-		i[0]++;
-		if (tmp[i[0]])
-		{
-			ret[i[1]] = new;
-			i[1]++;
-		}
-	}
-	ret[i[1]] = '\0';
-	free_array(tmp);
 	return (ret);
 }

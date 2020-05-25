@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/24 17:20:23 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/05/19 17:54:59 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define UNOW		    "Command not found\n"
 # define SYNTAX         "21sh: syntax error near unexpected symbol "
 # define NOFOD			"No such file or directory\n"
+# define HOOK_MALLOC	"Malloc return NULL value"
 # define E_CHDIR	    -1
 # define LINE		    data->vector->line
 # define VECT		    data->vector
@@ -59,10 +60,16 @@
 # define RESET_C		tputs(tgoto(tgetstr("rc", NULL), 0 , 0), 1, &pchar)
 # define CLEAR			tputs(tgetstr("cl", NULL), 1, &pchar)
 
+typedef struct			s_lst
+{
+	char				*content;
+	struct s_lst		*next;
+}						t_lst;
+
 typedef struct			s_vect
 {
 	char				*line;
-	char				**arg;
+	t_lst				*args;
 
 	struct s_vect		*next;
 	struct s_vect		*up;
@@ -77,6 +84,7 @@ typedef struct			s_bash
 	int					iterator;
 	char				*error;
 
+	int					enclose;
 	int					prompt_len;
 	int					count_separator;
 }						t_bash;
@@ -97,11 +105,12 @@ typedef struct			s_key
 **	t_vect manipulation (keep current and old entry)
 */
 
-t_vect		*vect_new(char **arg, char *line);
+t_vect		*vect_new(t_lst *args, char *line);
 t_vect		*vect_add(t_vect **head, t_vect *new);
 t_vect		*vect_push(t_vect **head, t_vect *new);
 size_t		count_lst(t_vect *head);
 t_vect		*link_history(t_vect **head, t_vect *new);
+t_lst		*pop_lst_from_array(char **src, int size, int start);
 void		pull_line(t_vect **head);
 void		free_vector(t_vect **head);
 
@@ -132,6 +141,8 @@ void		key_suppr(t_bash *data);
 
 void		ctrl_right(t_bash *data);
 void		ctrl_left(t_bash *data);
+void		ctrl_down(t_bash *data);
+void		ctrl_up(t_bash *data);
 
 void		arrow_left(t_bash *data);
 void		arrow_right(t_bash *data);
@@ -143,11 +154,13 @@ void		arrow_up(t_bash *data);
 */
 
 char		*addchar(char *str, char c, int pos);
+char		*replace_delim(char *str, char delim, char new);
 int			pstr(char const *str);
 int			pchar(int c);
 size_t		count_delim(char *str, int delim);
 char		*replace_delim(char *str, char delim, char new);
 char		*replace_substr(char *str, char *old, char *new);
+char		*merge_string_from_array(char **src, int size, int start);
 
 /*
 **	OTHER STUFF
@@ -155,16 +168,39 @@ char		*replace_substr(char *str, char *old, char *new);
 
 void		hello();
 int			prompt();
-t_vect		*format_line(t_bash *data);
 void		loop(t_bash *data);
 char		*build_path(t_bash data, t_vect *lst);
 int			exec_cmd(t_bash data, char *path, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
 
 /*
+**	PARSING
+*/
+
+t_vect		*new_arg(t_lst *args, t_vect *new);
+int			next_delim(char **array, int start);
+t_vect		*read_separator(char **table, t_bash *data);
+t_vect		*format_line(t_bash *data);
+void		get_var(t_lst **head, char **env);
+
+/*
+**	LIST STUFF
+*/
+
+t_lst		*lstnew(char *content);
+void		lstadd(t_lst **head, t_lst *new);
+void		lstfree(t_lst **head);
+char		**lst_to_array(t_lst *head);
+
+/*
 **	DEBUG & UNIT_TEST
 */
 
 void		debug_loop_try_termcaps(t_bash data);
+char		*findenv(char **env, char *var);
+int			lendelim(char *str, char delim, int start);
+size_t		count_delim(char *str, int delim);
+int			handle_expend(t_bash *data, char *entry, int pos);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/19 17:11:08 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/29 18:44:14 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,19 @@ int			array_total_len(char **array)
 		i++;
 	}
 	return (len);
+}
+
+void		free_array(char **array)
+{
+	int		i;
+
+	i = 0;
+	while (array && array[i])
+	{
+		ft_strdel(&array[i]);
+		i++;
+	}
+	if (array)
+		free(array);
+	array = NULL;
 }

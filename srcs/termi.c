@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:25:06 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/24 17:24:46 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/05/18 15:48:26 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,7 @@ void				ctrl_left(t_bash *data)
 	int				x;
 	int				len;
 
-	len = data->iterator;
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	if (len)
+	if ((len = data->iterator) && ioctl(STDOUT_FILENO, TIOCGWINSZ, &w))
 		len--;
 	while (len && data->vector->line[len] == ' ')
 		len--;
