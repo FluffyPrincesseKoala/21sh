@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/05/19 17:54:59 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/05/27 17:17:29 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ typedef struct			s_bash
 	char				*error;
 
 	int					enclose;
+	int					expend;
+	int					start_expend;
 	int					prompt_len;
 	int					count_separator;
 }						t_bash;
@@ -182,6 +184,10 @@ int			next_delim(char **array, int start);
 t_vect		*read_separator(char **table, t_bash *data);
 t_vect		*format_line(t_bash *data);
 void		get_var(t_lst **head, char **env);
+int			len_between_last_delim(char *str, char delim, int start);
+int			get_curent_line(char *str, int pos);
+int			lendelim(char *str, char delim, int start);
+size_t		count_delim(char *str, int delim);
 
 /*
 **	LIST STUFF
@@ -198,8 +204,6 @@ char		**lst_to_array(t_lst *head);
 
 void		debug_loop_try_termcaps(t_bash data);
 char		*findenv(char **env, char *var);
-int			lendelim(char *str, char delim, int start);
-size_t		count_delim(char *str, int delim);
 int			handle_expend(t_bash *data, char *entry, int pos);
 
 

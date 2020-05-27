@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:00:02 by cylemair          #+#    #+#             */
-/*   Updated: 2020/05/18 15:52:29 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/05/27 17:24:37 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,8 +118,8 @@ int		lendelim(char *str, char delim, int start)
 {
 	int	i;
 
-	i = start;
-	while (str && str[i] && str[i] != delim)
+	i = 0;
+	while (str && str[i + start] && str[i + start] != delim)
 		i++;
 	return (i);
 }
@@ -171,7 +171,7 @@ int			enclose_line(char *str)
 	while (separator[i])
 	{
 		j = 0;
-		while (str[j])
+		while (str && str[j])
 		{
 			if (str[j] == separator[i])
 				stack += (stack) ? 1 : -1;
@@ -188,6 +188,7 @@ void		loop(t_bash *data)
 {
 	char	buff[4086];
 
+	data->start_expend = 0;
 	while (42)
 	{
 		read(0, buff, 6);
@@ -196,10 +197,19 @@ void		loop(t_bash *data)
 		else if (ft_strnequ(buff, "\n", 1))
 		{
 			if ((data->enclose = enclose_line(LINE)))
+			{
+				data->expend = 0;
+				// go end of line
+				key_last(data);
 				data->iterator = handle_expend(data, buff, data->iterator);
+				data->expend = 1;
+				data->start_expend = data->iterator;
+			}
 			else if (LINE && (count_delim(LINE, ' ') != ft_strlen(LINE)))
 			{
 				ft_putchar(buff[0]);
+				data->expend = 0;
+				data->start_expend = 0;
 				data->vector = format_line(data);
 				exec_onebyone((*data));
 				if (data->error)

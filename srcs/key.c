@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 17:18:17 by cylemair          #+#    #+#             */
-/*   Updated: 2020/05/05 17:32:35 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/05/27 17:59:41 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,17 @@ void				key_last(t_bash *data)
 	prompt = data->prompt_len;
 	while (data->iterator < ft_strlen(data->vector->line))
 	{
-		y = (data->iterator + prompt) / w.ws_col;
-		x = (data->iterator + prompt) % w.ws_col;
-		if (x == w.ws_col - 1)
+		if (!data->expend && !get_curent_line(LINE, data->iterator))
+		{
+			y = (data->iterator + prompt) / w.ws_col;
+			x = (data->iterator + prompt) % w.ws_col;
+		}
+		else
+		{
+			y = get_curent_line(LINE, data->iterator);
+			x = len_between_last_delim(LINE, '\n', data->iterator);
+		}
+		if (x == w.ws_col - 1 || LINE[data->iterator] == '\n')
 			CDOWN;
 		else
 			RIGHT;
@@ -66,18 +74,44 @@ void				key_start(t_bash *data)
 	int				prompt;
 	int				y;
 	int				x;
+	int				cur;
+	int				last;
 
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 	prompt = data->prompt_len;
-	while (data->iterator)
+	cur = 0;
+	last = 0;
+	while (data->iterator && data->iterator != data->start_expend)
 	{
-		y = (data->iterator + prompt) / w.ws_col;
-		x = (data->iterator + prompt) % w.ws_col;
-		if (!x && y)
+		if (!data->expend && !get_curent_line(LINE, data->iterator))
+		{
+			y = (data->iterator + prompt) / w.ws_col;
+			x = (data->iterator + prompt) % w.ws_col;
+		}
+		else
+		{
+			y = get_curent_line(LINE, data->iterator);
+			x = len_between_last_delim(LINE, '\n', data->iterator);
+		}
+		if (LINE[data->iterator - 1] == '\n')
+		{
+			UP;
+			while (last && --last)
+				LEFT;
+			last = len_between_last_delim(LINE, '\n', data->iterator - 1);
+			cur = (y == 1) ? prompt + last + 1 : last;
+			while (--cur)
+				RIGHT;
+		}
+		else if (!x && y)
 		{
 			UP;
 			while (x++ != w.ws_col)
 				RIGHT;
+			int lapin = w.ws_col - ((y == 1) ? prompt : 0) + lendelim(LINE, '\n', 0);
+			while (LINE[data->iterator - 1] == '\n'
+			&& x-- > lapin)
+				LEFT;
 		}
 		else
 			LEFT;
