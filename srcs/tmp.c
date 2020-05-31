@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:00:02 by cylemair          #+#    #+#             */
-/*   Updated: 2020/05/27 17:24:37 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/05/28 15:04:04 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,7 @@ void		loop(t_bash *data)
 	char	buff[4086];
 
 	data->start_expend = 0;
+	data->expend_up = 0;
 	while (42)
 	{
 		read(0, buff, 6);
@@ -196,6 +197,7 @@ void		loop(t_bash *data)
 			arrow_key(data, buff);
 		else if (ft_strnequ(buff, "\n", 1))
 		{
+			data->expend_up = 0;
 			if ((data->enclose = enclose_line(LINE)))
 			{
 				data->expend = 0;

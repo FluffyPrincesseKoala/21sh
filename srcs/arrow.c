@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 16:20:13 by cylemair          #+#    #+#             */
-/*   Updated: 2020/05/27 18:02:53 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/05/28 17:50:37 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,24 @@ void				arrow_up(t_bash *data)
 	int				len;
 	int				delim_len;
 
-	if (data->vector->up)
+	if (data->expend && !data->expend_up)
+	{
+		data->expend_up = 1;
+		len = ft_strlen(LINE) - (delim_len = len_between_last_delim(LINE, '\n', data->iterator));
+		clean_line = ft_strndup(LINE, len + 1);
+		if ((tmp = ft_strjoin(clean_line, ft_strndup(LINE, len))))
+		{
+			len = ft_strlen(clean_line);
+			ft_strdel(&data->vector->line);
+			ft_strdel(&clean_line);
+			LINE = tmp;
+		}
+		while (--delim_len)
+			arrow_left(data);
+		data->iterator = print_rest(LINE, len, NULL);
+		delim_len = len_between_last_delim(LINE, '\n', data->iterator - 1);
+	}
+	else if (data->vector->up)
 	{
 		if (!data->expend)
 		{
@@ -189,32 +206,30 @@ void				arrow_up(t_bash *data)
 		}
 		else
 		{
-			len = ft_strlen(LINE) - (delim_len = len_between_last_delim(LINE, '\n', data->iterator));
+			len = ft_strlen(LINE)
+				- (delim_len = len_between_last_delim(LINE, '\n', data->iterator));
 			clean_line = ft_strndup(LINE, len + 1);
-			if ((tmp = ft_strjoin(clean_line, data->vector->up->line)))
+
+			t_vect *upvector = data->vector->up;
+			int count = data->expend_up;
+			while (--count && upvector->up)
+				upvector = upvector->up;
+
+			if (!count)
 			{
-				ft_strdel(&data->vector->line);
-				ft_strdel(&clean_line);
-				LINE = tmp;
+				if (data->iterator)
+					key_start(data);
+				if ((tmp = ft_strjoin(clean_line, upvector->line)))
+				{
+					ft_strdel(&clean_line);
+					clean_line = ft_strdup(LINE); // pass old LINE into clean_line
+					ft_strdel(&LINE);
+					LINE = tmp;
+				}
+				data->iterator = print_rest(LINE, data->iterator, clean_line);
+				data->expend_up++;
 			}
-			while (delim_len--)
-				arrow_left(data);
-			data->iterator = print_rest(LINE, data->iterator, NULL);
-		}
-	}
-	else if (data->expend)
-	{
-		len = ft_strlen(LINE) - (delim_len = len_between_last_delim(LINE, '\n', data->iterator));
-		clean_line = ft_strndup(LINE, len);
-		if ((tmp = ft_strjoin(clean_line, clean_line)))
-		{
-			len = ft_strlen(clean_line);
-			ft_strdel(&data->vector->line);
 			ft_strdel(&clean_line);
-			LINE = tmp;
 		}
-		while (--delim_len)
-			LEFT;
-		data->iterator = print_rest(LINE, len, NULL);
 	}
 }

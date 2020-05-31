@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 17:18:17 by cylemair          #+#    #+#             */
-/*   Updated: 2020/05/27 17:59:41 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/05/28 15:33:23 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ void				key_start(t_bash *data)
 			while (last && --last)
 				LEFT;
 			last = len_between_last_delim(LINE, '\n', data->iterator - 1);
+			if (data->start_expend == last)
+				RIGHT;
 			cur = (y == 1) ? prompt + last + 1 : last;
 			while (--cur)
 				RIGHT;

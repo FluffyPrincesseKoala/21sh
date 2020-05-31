@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/05/27 17:17:29 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/05/28 14:58:11 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ typedef struct			s_bash
 	int					enclose;
 	int					expend;
 	int					start_expend;
+	int					expend_up;
 	int					prompt_len;
 	int					count_separator;
 }						t_bash;
