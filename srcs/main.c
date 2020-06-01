@@ -12,27 +12,38 @@
 
 #include "21sh.h"
 
-int			main(int argc, char **argv, char **env)
+t_bash	*initialize_bash(char **env)
+{
+	t_bash	*data;
+
+	if (!(data = malloc(sizeof(t_bash))))
+		return (NULL);
+	if (!(data->env = copy_array(env)))
+		return (NULL);
+	data->venv = env;
+	data->iterator = 0;
+	data->count_separator = 0;
+	data->error = NULL;
+	if (!(data->vector = vect_new(NULL, NULL)))
+		return (NULL);
+	data->prompt_len = prompt();
+
+	return (data);
+}
+
+int		main(int argc, char **argv, char **env)
 {
 	t_bash	*data;
 	
 	(void)argc;
 	(void)argv;
-	if (!(data = malloc(sizeof(t_bash))))
-		return (1);
 	if (!conf_term())
 	{
 		CLEAR;
-		//hello();
-		data->env = copy_array(env);
-		data->venv = env;
-		data->iterator = 0;
-		data->count_separator = 0;
-		data->error = NULL;
-		data->vector = vect_new(NULL, NULL);
-		data->prompt_len = prompt();
-//		debug_loop_try_termcaps(data);
-		loop(data);
+		if (!(data = initialize_bash(env)))
+			puterror("c'est pas bien");
+		else
+			loop(data);
 	}
 	return (0);
 }

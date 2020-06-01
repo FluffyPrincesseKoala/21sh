@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2020/05/07 17:38:41 by cylemair         ###   ########.fr        #
+#    Updated: 2020/06/01 12:03:24 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,6 +46,7 @@ SRC		=	srcs/main.c 			\
 			srcs/convert.c			\
 			srcs/separator.c		\
 			srcs/get_var.c			\
+			srcs/end_of_line.c			\
 
 OBJS	=	$(SRC:.c=.o)
 

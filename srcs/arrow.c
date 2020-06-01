@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 16:20:13 by cylemair          #+#    #+#             */
-/*   Updated: 2020/05/28 17:50:37 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/01 12:42:58 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void				arrow_right(t_bash *data)
 		{
 			data->iterator++;
 			CDOWN;
-			if (data->enclose)
+			if (data->expend)
 				RIGHT;
 		}
 		else

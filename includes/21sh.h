@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/05/28 14:58:11 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/01 12:30:09 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@
 # define SAVE_C			tputs(tgoto(tgetstr("sc", NULL), 0 , 0), 1, &pchar)
 # define RESET_C		tputs(tgoto(tgetstr("rc", NULL), 0 , 0), 1, &pchar)
 # define CLEAR			tputs(tgetstr("cl", NULL), 1, &pchar)
+# define TRUE			1
+# define FALSE			0
 
 typedef struct			s_lst
 {
@@ -189,6 +191,7 @@ int			len_between_last_delim(char *str, char delim, int start);
 int			get_curent_line(char *str, int pos);
 int			lendelim(char *str, char delim, int start);
 size_t		count_delim(char *str, int delim);
+int   		handle_eol(t_bash *data, char *buff);
 
 /*
 **	LIST STUFF

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:00:02 by cylemair          #+#    #+#             */
-/*   Updated: 2020/05/28 15:04:04 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/01 12:41:01 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,17 @@ void		hello()
 
 int			prompt()
 {
-	char	*tmp = getenv("USER");
+	char	*var = getenv("USER");
 	int		len;
 
 	len = 0;
 	pstr(BLUE);
-	len += pstr(tmp);
+	len += pstr(var);
 	pstr(RESET);
 	len += pchar('@');
-	tmp = getenv("PWD");
+	var = getenv("PWD");
 	pstr(GREEN);
-	len += pstr(tmp);
+	len += pstr(var);
 	pstr(CYAN);
 	len += pstr(" > ");
 	pstr(RESET);
@@ -158,7 +158,7 @@ static void		exec_onebyone(t_bash data)
 	}
 }
 
-int			enclose_line(char *str)
+int			pending_line(char *str)
 {
 	char	*separator;
 	int		stack;
@@ -197,37 +197,7 @@ void		loop(t_bash *data)
 			arrow_key(data, buff);
 		else if (ft_strnequ(buff, "\n", 1))
 		{
-			data->expend_up = 0;
-			if ((data->enclose = enclose_line(LINE)))
-			{
-				data->expend = 0;
-				// go end of line
-				key_last(data);
-				data->iterator = handle_expend(data, buff, data->iterator);
-				data->expend = 1;
-				data->start_expend = data->iterator;
-			}
-			else if (LINE && (count_delim(LINE, ' ') != ft_strlen(LINE)))
-			{
-				ft_putchar(buff[0]);
-				data->expend = 0;
-				data->start_expend = 0;
-				data->vector = format_line(data);
-				exec_onebyone((*data));
-				if (data->error)
-				{
-					put_error(data->error, NULL);
-					ft_strdel(&data->error);
-				}
-				data->iterator = 0;
-				data->prompt_len = prompt();
-			}
-			else
-			{
-				ft_putchar(buff[0]);
-				data->iterator = 0;
-				data->prompt_len = prompt();
-			}
+			handle_eol(data, buff);
 		}
 		else if (ft_isprint(buff[0]))
 		{
