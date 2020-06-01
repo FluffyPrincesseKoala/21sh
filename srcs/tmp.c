@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:00:02 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/01 12:41:01 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/01 16:19:06 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void		hello()
 	ft_putstr(RESET);
 }
 
-int			prompt()
+int			prompt(int short_prompt)
 {
 	char	*var = getenv("USER");
 	int		len;

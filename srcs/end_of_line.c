@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/01 11:55:45 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/01 16:17:14 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/01 16:18:47 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int         handle_eol(t_bash *data, char *buff)
         data->vector = format_line(data); // 4 & 5
         exec_one_by_one(*data);
 		data->iterator = 0;
-		data->prompt_len = prompt();
+		data->prompt_len = prompt(data->expend);
     }
 	prompt_new_line(data);
 }

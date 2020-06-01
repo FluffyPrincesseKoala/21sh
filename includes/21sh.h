@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/01 12:30:09 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/01 16:19:16 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ char		*merge_string_from_array(char **src, int size, int start);
 */
 
 void		hello();
-int			prompt();
+int			prompt(int short_prompt);
 void		loop(t_bash *data);
 char		*build_path(t_bash data, t_vect *lst);
 int			exec_cmd(t_bash data, char *path, t_vect *cmd);
