@@ -6,11 +6,18 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:00:02 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/01 16:19:06 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/02 16:23:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
+
+void		puterror(char *error)
+{
+	ft_putstr_fd(RED, 2);
+	ft_putstr_fd(error, 2);
+	ft_putstr_fd(RESET, 2);
+}
 
 int init_term()
 {
@@ -82,21 +89,25 @@ void		hello()
 
 int			prompt(int short_prompt)
 {
-	char	*var = getenv("USER");
 	int		len;
 
 	len = 0;
-	pstr(BLUE);
-	len += pstr(var);
-	pstr(RESET);
-	len += pchar('@');
-	var = getenv("PWD");
-	pstr(GREEN);
-	len += pstr(var);
-	pstr(CYAN);
-	len += pstr(" > ");
-	pstr(RESET);
-	SAVE_C;
+	if (!short_prompt)
+	{
+		pstr(BLUE);
+		len += pstr(getenv("USER"));
+		pstr(RESET);
+		len += pchar('@');
+		pstr(GREEN);
+		len += pstr(getenv("PWD"));
+		pstr(CYAN);
+		len += pstr(" > ");
+		pstr(RESET);
+	}
+	else
+	{
+		len += pstr(">");
+	}
 	return (len);
 }
 
@@ -140,12 +151,13 @@ char		*findenv(char **env, char *var)
 	return (NULL);
 }
 
-static void		exec_onebyone(t_bash data)
+void		exec_onebyone(t_bash data)
 {
 	t_vect	*lst;
 	char	*path;
 
-	lst = (data.vector->up->args) ? data.vector->up : NULL;
+	ft_putchar('\n');
+	lst = (data.vector) ? data.vector : NULL;
 	while (lst && !data.error)
 	{
 		if ((path = build_path(data, lst)) && !access(path, X_OK))
@@ -187,24 +199,23 @@ int			pending_line(char *str)
 void		loop(t_bash *data)
 {
 	char	buff[4086];
+	int		is_key;
 
+	is_key = 0;
 	data->start_expend = 0;
 	data->expend_up = 0;
 	while (42)
 	{
 		read(0, buff, 6);
-		if (ft_strnequ(buff, "\033", 1) || buff[0] == 127)
-			arrow_key(data, buff);
-		else if (ft_strnequ(buff, "\n", 1))
+		if (ft_strnequ(buff, "\n", 1))
 		{
 			handle_eol(data, buff);
 		}
-		else if (ft_isprint(buff[0]))
+		if (ft_strnequ(buff, "\033", 1) || buff[0] == 127)
+			arrow_key(data, buff);
+		else if (ft_isprint(buff[0]) || data->expend)
 		{
-			if (data->enclose)
-				data->iterator = handle_expend(data, buff, data->iterator);
-			else
-				data->iterator = handle_new_entry(data, buff, data->iterator);
+			data->iterator = handle_new_entry(data, buff, data->iterator);
 		}
 	}
 }

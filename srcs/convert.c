@@ -6,29 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:37:15 by cylemair          #+#    #+#             */
-/*   Updated: 2020/05/02 19:28:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/03 18:32:57 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
-
-t_lst		*pop_lst_from_array(char **src, int size, int start)
-{
-	t_lst	*new;
-	int		i;
-
-	i = 0;
-	new = NULL;
-	while (i != size)
-	{
-		if (new)
-			lstadd(&new, lstnew(src[start + i]));
-		else
-			new = lstnew(src[start + i]);
-		i++;
-	}
-	return (new);
-}
 
 char		*merge_string_from_array(char **src, int size, int start)
 {

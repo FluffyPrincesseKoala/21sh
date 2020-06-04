@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:43:13 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/22 19:49:09 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/02 15:42:58 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_bash	*initialize_bash(char **env)
 {
 	t_bash	*data;
 
-	if (!(data = malloc(sizeof(t_bash))))
+	if (!(data = ft_memalloc(sizeof(t_bash))))
 		return (NULL);
 	if (!(data->env = copy_array(env)))
 		return (NULL);
@@ -26,7 +26,7 @@ t_bash	*initialize_bash(char **env)
 	data->error = NULL;
 	if (!(data->vector = vect_new(NULL, NULL)))
 		return (NULL);
-	data->prompt_len = prompt();
+	data->prompt_len = prompt(0);
 
 	return (data);
 }
@@ -40,6 +40,7 @@ int		main(int argc, char **argv, char **env)
 	if (!conf_term())
 	{
 		CLEAR;
+		hello();
 		if (!(data = initialize_bash(env)))
 			puterror("c'est pas bien");
 		else

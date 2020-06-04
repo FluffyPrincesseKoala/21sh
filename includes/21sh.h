@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/01 16:19:16 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/03 18:33:05 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,12 @@
 # define CLEAR			tputs(tgetstr("cl", NULL), 1, &pchar)
 # define TRUE			1
 # define FALSE			0
+# define NOQUOTE		0
 
 typedef struct			s_lst
 {
 	char				*content;
+	int					quote;
 	struct s_lst		*next;
 }						t_lst;
 
@@ -72,6 +74,7 @@ typedef struct			s_vect
 {
 	char				*line;
 	t_lst				*args;
+	char				separator;
 
 	struct s_vect		*next;
 	struct s_vect		*up;
@@ -115,7 +118,6 @@ t_vect		*vect_add(t_vect **head, t_vect *new);
 t_vect		*vect_push(t_vect **head, t_vect *new);
 size_t		count_lst(t_vect *head);
 t_vect		*link_history(t_vect **head, t_vect *new);
-t_lst		*pop_lst_from_array(char **src, int size, int start);
 void		pull_line(t_vect **head);
 void		free_vector(t_vect **head);
 
@@ -177,6 +179,7 @@ void		loop(t_bash *data);
 char		*build_path(t_bash data, t_vect *lst);
 int			exec_cmd(t_bash data, char *path, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
+void		puterror(char *error);
 
 /*
 **	PARSING
@@ -184,21 +187,23 @@ int			print_rest(char *str, int pos, char *old);
 
 t_vect		*new_arg(t_lst *args, t_vect *new);
 int			next_delim(char **array, int start);
-t_vect		*read_separator(char **table, t_bash *data);
-t_vect		*format_line(t_bash *data);
+void		read_separator(char **table, t_bash *data);
+void		format_line(t_bash *data);
 void		get_var(t_lst **head, char **env);
 int			len_between_last_delim(char *str, char delim, int start);
 int			get_curent_line(char *str, int pos);
 int			lendelim(char *str, char delim, int start);
 size_t		count_delim(char *str, int delim);
 int   		handle_eol(t_bash *data, char *buff);
+int			pending_line(char *str);
 
 /*
 **	LIST STUFF
 */
 
-t_lst		*lstnew(char *content);
+t_lst		*lstnew(char *content, int quote);
 void		lstadd(t_lst **head, t_lst *new);
+void		lst_add_after(t_lst *this_one, t_lst *next);
 void		lstfree(t_lst **head);
 char		**lst_to_array(t_lst *head);
 
@@ -209,6 +214,6 @@ char		**lst_to_array(t_lst *head);
 void		debug_loop_try_termcaps(t_bash data);
 char		*findenv(char **env, char *var);
 int			handle_expend(t_bash *data, char *entry, int pos);
-
+void		exec_onebyone(t_bash data);
 
 #endif

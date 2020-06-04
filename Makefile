@@ -6,11 +6,11 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2020/06/01 12:03:24 by cylemair         ###   ########.fr        #
+#    Updated: 2020/06/02 13:00:01 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC		=	clang -g3
+CC		=	gcc -g3
 
 CFLAGS	+=	-Werror -Wall -Wextra
 
