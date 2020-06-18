@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:00:02 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/02 16:23:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/12 17:15:18 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int		lendelim(char *str, char delim, int start)
 {
 	int	i;
 
-	i = 0;
+	i = (str[start] == delim) ? 1 : 0;
 	while (str && str[i + start] && str[i + start] != delim)
 		i++;
 	return (i);
@@ -179,7 +179,7 @@ int			pending_line(char *str)
 
 	i = 0;
 	stack = 0;
-	separator = ft_strdup("\'\"");
+	separator = ft_strdup("\'\""); // free
 	while (separator[i])
 	{
 		j = 0;
@@ -211,7 +211,7 @@ void		loop(t_bash *data)
 		{
 			handle_eol(data, buff);
 		}
-		if (ft_strnequ(buff, "\033", 1) || buff[0] == 127)
+		else if (ft_strnequ(buff, "\033", 1) || buff[0] == 127)
 			arrow_key(data, buff);
 		else if (ft_isprint(buff[0]) || data->expend)
 		{

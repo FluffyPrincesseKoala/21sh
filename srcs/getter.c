@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/24 18:42:41 by cylemair          #+#    #+#             */
-/*   Updated: 2020/05/22 19:28:50 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/12 18:05:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,16 @@ void		push_entry(t_bash *data, char *entry, char **line)
 	ft_strdel(&tmp);
 }
 
+/*
+**	if !LINE		: create it
+**	if VECT_DOWN	: pull_line 
+**	push_entry
+**
+**	fill t_term
+**	print
+**	go to cursor
+*/
+
 int		handle_new_entry(t_bash *data, char *entry, int pos)
 {
 	if (!data->vector->line)
@@ -52,6 +62,7 @@ int		handle_new_entry(t_bash *data, char *entry, int pos)
 			pull_line(&data->vector);
 		push_entry(data, entry, &data->vector->line);
 	}
+	
 	SAVE_C;
 	data->iterator = pos;
 	print_rest(data->vector->line, pos, NULL);

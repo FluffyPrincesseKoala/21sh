@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 17:18:17 by cylemair          #+#    #+#             */
-/*   Updated: 2020/05/28 15:33:23 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/12 12:07:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,7 @@ void				key_last(t_bash *data)
 	prompt = data->prompt_len;
 	while (data->iterator < ft_strlen(data->vector->line))
 	{
-		if (!data->expend && !get_curent_line(LINE, data->iterator))
-		{
-			y = (data->iterator + prompt) / w.ws_col;
-			x = (data->iterator + prompt) % w.ws_col;
-		}
-		else
-		{
-			y = get_curent_line(LINE, data->iterator);
-			x = len_between_last_delim(LINE, '\n', data->iterator);
-		}
+		init_xy(data, &x, &y, w.ws_col);
 		if (x == w.ws_col - 1 || LINE[data->iterator] == '\n')
 			CDOWN;
 		else
@@ -83,16 +74,7 @@ void				key_start(t_bash *data)
 	last = 0;
 	while (data->iterator && data->iterator != data->start_expend)
 	{
-		if (!data->expend && !get_curent_line(LINE, data->iterator))
-		{
-			y = (data->iterator + prompt) / w.ws_col;
-			x = (data->iterator + prompt) % w.ws_col;
-		}
-		else
-		{
-			y = get_curent_line(LINE, data->iterator);
-			x = len_between_last_delim(LINE, '\n', data->iterator);
-		}
+		init_xy(data, &x, &y, w.ws_col);
 		if (LINE[data->iterator - 1] == '\n')
 		{
 			UP;

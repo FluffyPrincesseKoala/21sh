@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/03 18:33:05 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/17 16:19:05 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,21 @@
 # define FALSE			0
 # define NOQUOTE		0
 
+typedef struct			s_term
+{
+	int					x;
+	int					y;
+
+	int					line_start;
+	int					line_end;
+
+	char				*line;
+	int					iterator;
+
+	struct s_term		*next;
+	struct s_term		*prev;
+}						t_term;
+
 typedef struct			s_lst
 {
 	char				*content;
@@ -89,6 +104,9 @@ typedef struct			s_bash
 	int					iterator;
 	char				*error;
 
+	t_term				*cursor;
+
+	int					history_stack;
 	int					enclose;
 	int					expend;
 	int					start_expend;
@@ -135,9 +153,9 @@ int			array_total_len(char **array);
 */
 
 int			init_term();
+void		init_xy(t_bash *data, int *x, int *y, int ws_col);
 int			conf_term();
 int			handle_new_entry(t_bash *data, char *entry, int pos);
-int			goto_iterator(t_bash data, int pos);
 
 void		arrow_key(t_bash *data, char *buff);
 
@@ -168,6 +186,7 @@ size_t		count_delim(char *str, int delim);
 char		*replace_delim(char *str, char delim, char new);
 char		*replace_substr(char *str, char *old, char *new);
 char		*merge_string_from_array(char **src, int size, int start);
+void		push_entry(t_bash *data, char *entry, char **line);
 
 /*
 **	OTHER STUFF
@@ -191,7 +210,7 @@ void		read_separator(char **table, t_bash *data);
 void		format_line(t_bash *data);
 void		get_var(t_lst **head, char **env);
 int			len_between_last_delim(char *str, char delim, int start);
-int			get_curent_line(char *str, int pos);
+int			get_curent_line(char *str, int pos, int max, int prompt);
 int			lendelim(char *str, char delim, int start);
 size_t		count_delim(char *str, int delim);
 int   		handle_eol(t_bash *data, char *buff);
