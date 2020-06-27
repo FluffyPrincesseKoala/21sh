@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/01 11:55:45 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/02 15:25:56 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/12 18:42:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,33 +47,6 @@ static int  is_all_whitespaces(char *str)
 	return (1);
 }
 
-// char				*pouette(char **s1, char **s2)
-// {
-// 	char			*new;
-
-// 	if (s1 && s2 && s1 && s2)
-// 	{
-// 		if (!(new = malloc(sizeof(char) * (ft_strlen(s1)
-// 			+ ft_strlen(s2) + 1))))
-// 			return (NULL);
-// 		new = ft_strcpy(new, s1);
-// 		new = ft_strcat(new, s2);
-// 		ft_strdel(&s1);
-// 		ft_strdel(&s2);
-// 	}
-// 	else if (!s1)
-// 	{
-// 		new = ft_strdup(s2);
-// 		ft_strdel(&s2);
-// 	}
-// 	else
-// 	{
-// 		new = ft_strdup(s1);
-// 		ft_strdel(&s1);
-// 	}
-// 	return (new);
-// }
-
 static void update_pending_line(t_bash *data)
 {
 	VECT_UP->line = str_join_free(&VECT_UP->line, &LINE);
@@ -89,20 +62,15 @@ int			handle_eol(t_bash *data, char *buff)
 	*/
 
 	if (data->expend)
-	{
- //       printf("1st if eol\n");
 		update_pending_line(data);  // concat previous and current line
-	}
 	else if (is_all_whitespaces(LINE))
-	{
-		printf("2nd if eol\n");
-		ft_strdel(&LINE); 
-	}
+		ft_strdel(&LINE);
 	if (LINE && !is_pending_line(data)) 
 	{
-//        printf("3rd if eol\n");
-		format_line(data); 
-		exec_onebyone(*data);
+		ft_putchar('\n');
+		format_line(data);
+		search_redirections_in_cmd(data, VECT);
+		handle_fork(data, VECT);
 	}
 	new_line(data);
 }

@@ -6,19 +6,13 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/29 16:01:03 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/27 09:06:56 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-static void	free_two_var_to_feet_norm(char **a, char **b)
-{
-	ft_strdel(a);
-	ft_strdel(b);
-}
-
-char		*build_path(t_bash data, t_vect *lst)
+char		*build_path(t_bash *data, t_vect *lst)
 {
 	int		i;
 	char	*tmp;
@@ -30,7 +24,7 @@ char		*build_path(t_bash data, t_vect *lst)
 	tmp = NULL;
 	tmp2 = NULL;
 	paths = ft_strsplit(getenv("PATH"), ':');
-	while (paths && paths[++i] && lst->args->content)
+	while (paths && paths[++i] && lst->args && lst->args->content)
 	{
 		tmp2 = ft_strjoin(paths[i], "/");
 		tmp = (tmp2) ? ft_strjoin(tmp2, lst->args->content) : NULL;
@@ -40,31 +34,51 @@ char		*build_path(t_bash data, t_vect *lst)
 			free_array(paths);
 			return (tmp);
 		}
-		free_two_var_to_feet_norm(&tmp, &tmp2);
+		ft_strdel(&tmp);ft_strdel(&tmp2);
 	}
-	free_two_var_to_feet_norm(&tmp, &tmp2);
+	ft_strdel(&tmp);ft_strdel(&tmp2);
 	free_array(paths);
 	return (NULL);
 }
 
-int			exec_cmd(t_bash data, char *path, t_vect *cmd)
+static void print_failed_fork_error(pid_t pid)
 {
+	ft_putstr_fd("fork failed at ", 2);
+	ft_putnbr_fd((int)pid, 2);
+	ft_putchar('\n');
+	exit(-1);
+}
+
+static void	execute_command(t_bash *data, t_redirection *redirections,
+	char *path, char **args_array)
+{
+	if (redirections)
+		handle_redirections(data, redirections, 0);
+	if (!error_occured(data->error))
+		execve(path, args_array, data->env);
+	//if (command->redirections)
+	//	restore_directions(command->redirections);
+}
+
+void		handle_fork(t_bash *data, t_vect *command)
+{
+	char **args_array;
+	char *path;
 	int		status;
-	char	**arg;
 	pid_t	cpid;
 
-	arg = lst_to_array(cmd->args);
-	cpid = fork();
-	if (cpid < 0)
+	while(command)
 	{
-		ft_putstr_fd("fork faild at ", 2);
-		ft_putnbr_fd((int)cpid, 2);
-		ft_putchar('\n');
-		exit(-1);
+		args_array = arg_to_array(data, command->args);
+		path = build_path(data, command);
+		cpid = fork();
+		if (fork_failed(cpid))
+			print_failed_fork_error(cpid);
+		else if (is_child(cpid))
+			execute_command(data, command->redirections, path, args_array);
+		wait(&status);
+		command = command->next;
+		free_array(args_array);
+		ft_strdel(&path);
 	}
-	else if (cpid == 0)
-		execve(path, arg, data.env);
-	wait(&status);
-	free_array(arg);
-	return ((status < 0) ? -1 : 0);
 }

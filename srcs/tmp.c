@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:00:02 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/02 16:23:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/12 15:20:23 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,24 +151,23 @@ char		*findenv(char **env, char *var)
 	return (NULL);
 }
 
-void		exec_onebyone(t_bash data)
-{
-	t_vect	*lst;
-	char	*path;
-
-	ft_putchar('\n');
-	lst = (data.vector) ? data.vector : NULL;
-	while (lst && !data.error)
-	{
-		if ((path = build_path(data, lst)) && !access(path, X_OK))
-			exec_cmd(data, path, lst);
-		else if (lst->args && !access((const char*)lst->args->content, X_OK))
-			exec_cmd(data, lst->args->content, data.vector);
-		else
-			put_error(lst->args->content, UNOW);
-		lst = lst->next;
-	}
-}
+//oid		exec_onebyone(t_bash data)
+//
+//t_vect	*lst;
+//char	*path;
+////ft_putchar('\n');
+//lst = (data.vector) ? data.vector : NULL;
+//while (lst && !data.error)
+//{
+//	if ((path = build_path(data, lst)) && !access(path, X_OK))
+//		exec_cmd(data, path, lst);
+//	else if (lst->args && !access((const char*)lst->args->content, X_OK))
+//		exec_cmd(data, lst->args->content, data.vector);
+//	else
+//		put_error(lst->args->content, UNOW);
+//	lst = lst->next;
+//}
+//
 
 int			pending_line(char *str)
 {
