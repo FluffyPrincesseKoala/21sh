@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/01 11:55:45 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/12 18:42:34 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/28 14:47:37 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ int			handle_eol(t_bash *data, char *buff)
 		ft_putchar('\n');
 		format_line(data);
 		search_redirections_in_cmd(data, VECT);
-		handle_fork(data, VECT);
+		if (!data->error)
+			handle_fork(data, VECT);
 	}
 	new_line(data);
 }

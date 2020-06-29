@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/27 09:06:56 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/28 15:45:26 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	execute_command(t_bash *data, t_redirection *redirections,
 {
 	if (redirections)
 		handle_redirections(data, redirections, 0);
-	if (!error_occured(data->error))
+	if (!data->error)
 		execve(path, args_array, data->env);
 	//if (command->redirections)
 	//	restore_directions(command->redirections);

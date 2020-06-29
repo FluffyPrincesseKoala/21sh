@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 12:26:04 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/27 09:37:01 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/28 15:44:21 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ char    **arg_to_array(t_bash *data, t_arg *arg)
     int     i;
 
     if (!(array = malloc(sizeof(char*) * (args_len(arg) + 1))))
-        ft_strcpy("error malloc", data->error);
+        data->error = MALLOC_ERROR;
     else
     {
         i = 0;

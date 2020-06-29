@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/12 17:21:32 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/28 14:49:41 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct			s_vect
 	struct s_vect				*down;
 }						t_vect;
 
-typedef	void			(t_setup_ptr)(t_vect *, t_arg *, t_redirection *, char *);
+typedef	void			(t_setup_ptr)(t_vect *, t_arg *, t_redirection *, int *);
 
 typedef struct			s_redirection_setup
 {
@@ -71,7 +71,7 @@ typedef struct			s_bash
 	char						**venv;
 	t_vect						*vector;
 	int							iterator;
-	char						error[256];
+	int							error;
 
 	int							enclose;
 	int							expend;

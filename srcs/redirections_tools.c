@@ -6,33 +6,33 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/27 09:07:12 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/28 15:44:55 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-int     search_left_fd(t_arg *arg, int operator_index, int def, char *error)
+int     search_left_fd(t_arg *arg, int operator_index, int def, int *error)
 {
     char *substring;
 
     if (operator_index > 0)
     {
         if (!(substring = ft_strsub(arg->content, 0, operator_index)))
-                ft_strcpy("error malloc", error);
+            *error = MALLOC_ERROR;
         else if (ft_str_is_digits(substring))
             return ft_atoi(substring);
         else if (ft_strlen(substring) == 1 && substring[0] == '&')
             return (STDOUT_AND_STDERR);
         else
             if (!insert_new_arg(arg->previous, substring))
-                ft_strcpy("error malloc", error);
+                *error = MALLOC_ERROR;
         ft_strdel(&substring);
     }
     return def;
 }
 
-int     search_right_fd(t_arg *arg, char *substring, char *error)
+int     search_right_fd(t_arg *arg, char *substring, int *error)
 {
     if (substring[0] == '&')
     {
@@ -41,9 +41,11 @@ int     search_right_fd(t_arg *arg, char *substring, char *error)
         else if (substring[1] == CLOSE_DIRECTION)
         {
             if (ft_strlen(substring) != 2)
+            {
                 if (!insert_new_arg(
                     arg, ft_strsub(substring, 2, ft_strlen(substring) - 2)));
-                    ft_strcpy("error malloc", error);
+                    *error = MALLOC_ERROR;
+            }
             return (CLOSE_FD);
         }
         else
@@ -52,7 +54,7 @@ int     search_right_fd(t_arg *arg, char *substring, char *error)
     return (NO_RIGHT_FD);
 }
 
-char    *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, char *error)
+char    *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, int *error)
 {
     char *file;
 
@@ -60,16 +62,16 @@ char    *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, char *er
     if (substring_index != ft_strlen(arg->content))
     {
         if (!(file = ft_strsub(arg->content, substring_index, ft_strlen(arg->content))))
-            ft_strcpy("error malloc", error);
+            *error = MALLOC_ERROR;
     }
     else if (arg->next && arg->next->content)
     {
         if(!(file = ft_strdup(arg->next->content)))
-            ft_strcpy("error malloc", error);
+            *error = MALLOC_ERROR;
         del_one_arg(arg->next, cmd);
     }
     else
-        ft_strcpy("error fin de commande innatendue", error);
+        *error = UNEXPECT_COMMAND_END_ERROR;
     return file;
 }
 
@@ -83,8 +85,8 @@ int     is_stdout_and_stderr_redirection(int left_fd,int right_fd)
         return FALSE;
 }
 
-void    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg, 
-    int substring_index, char *error)
+void    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
+    int substring_index, int *error)
 {
     t_redirection   *stdout_redirection;
 

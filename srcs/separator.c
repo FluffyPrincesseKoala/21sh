@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/12 18:40:12 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/28 14:39:41 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,14 +130,14 @@ static void	handle_quote(t_bash *data, char **table, int i, int len, char quote)
 			if (add_arg(&VECT->args, new_arg(quoted_string, quote)))
 				return;
 	}
-	ft_strcpy(HOOK_MALLOC, data->error);
+	data->error = MALLOC_ERROR;
 }
 
 static void	handle_word(t_bash *data, char *str)
 {
 	if (!str || !VECT)
 	{
-		ft_strcpy(HOOK_MALLOC, data->error);
+		data->error = MALLOC_ERROR;
 		return ;
 	}
 	add_arg(&VECT->args, new_arg(str, NOQUOTE));
@@ -150,7 +150,7 @@ void		words_as_args(char **table, t_bash *data)
 	int		i;
 
 	i = 0;
-	while (table[i] && !error_occured(data->error))
+	while (table[i] && !data->error)
 	{
 		if ((len = len_next_quote(table, i, '\'')))
 		{
@@ -237,7 +237,7 @@ void		get_post_separator_args(t_bash *data, t_arg *lst, int index, int len)
 			return ;
 		ft_strdel(&substring);
 	}
-	ft_strcpy(HOOK_MALLOC, data->error);
+	data->error = MALLOC_ERROR;
 }
 
 void		parse_args(t_bash *data, t_vect *current)
@@ -276,7 +276,7 @@ void		format_line(t_bash *data)
 		words_as_args(table, data);
 		free_array(table);
 	}
-	if (VECT->args && !error_occured(data->error))
+	if (VECT->args && !data->error)
 	{
 		loop = VECT;
 		while (loop)

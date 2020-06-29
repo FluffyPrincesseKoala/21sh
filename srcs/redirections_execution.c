@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:12:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/12 12:13:04 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/28 14:38:15 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	is_file_word_authorized(t_bash *data, t_redirection *redirection)
 			redirection->file_word, redirection->flags, NEW_FILE_MODE);
 		if (new_fd == -1)
 		{
-			ft_strcpy("error opening file", data->error);
+			data->error = OPEN_ERROR;
 			free_redirection(redirection);
 			return (FALSE);
 		}

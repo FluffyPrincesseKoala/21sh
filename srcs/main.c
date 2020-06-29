@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:43:13 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/12 17:28:47 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/28 14:51:28 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,11 @@ int		main(int argc, char **argv, char **env)
 		CLEAR;
 		hello();
 		if (!(data = initialize_bash(env)))
-			puterror("c'est pas bien");
+			puterror(MALLOC_ERROR);
 		else
 			loop(data);
 	}
+	if (data && data->error)
+		ft_putnbr(data->error);
 	return (0);
 }

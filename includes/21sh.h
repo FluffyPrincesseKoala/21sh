@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/12 19:25:31 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/28 14:40:58 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,11 @@
 # define AMBIGUOUS -2
 # define NO_RIGHT_FD 0
 
+# define MALLOC_ERROR 1
+# define AMBIGUOUS_REDIRECTION_ERROR 2
+# define UNEXPECT_COMMAND_END_ERROR 3
+# define OPEN_ERROR 4
+
 /*
 **	t_vect manipulation (keep current and old entry)
 */
@@ -153,10 +158,9 @@ void		loop(t_bash *data);
 char		*build_path(t_bash *data, t_vect *lst);
 void		handle_fork(t_bash *data, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
-void		puterror(char *error);
+void		puterror(int error);
 int			fork_failed(pid_t pid);
 int			is_child(pid_t pid);
-int			error_occured(char *error);
 void 		set_up_signals();
 
 /*
@@ -227,12 +231,12 @@ void            search_redirections_in_cmd(t_bash *data, t_vect *cmd);
 **  TOOLS
 */
 
-int             search_right_fd(t_arg *arg, char *substring, char *error);
-int				search_left_fd(t_arg *arg, int operator_index, int def, char *error);
-char            *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, char *error);
+int             search_right_fd(t_arg *arg, char *substring, int *error);
+int				search_left_fd(t_arg *arg, int operator_index, int def, int *error);
+char            *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, int *error);
 int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
-void		    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg, int substring_index, char *error);
-
+void		    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
+    int substring_index, int *error);
 /*
 ** EXECUTION
 */

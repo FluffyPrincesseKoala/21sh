@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/29 17:12:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/12 15:33:10 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/28 14:36:55 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,4 @@ int    is_child(pid_t pid)
     
     else
         return (FALSE);   
-}
-
-int     error_occured(char *error)
-{
-    if (error[0] != '\0')
-        return (TRUE);
-    
-    else
-        return (FALSE);
 }

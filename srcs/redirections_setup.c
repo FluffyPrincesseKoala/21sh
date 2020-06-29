@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/27 09:38:06 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/28 15:44:40 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 
 static void         set_up_simple_output_redirection(
-    t_vect *cmd, t_arg *arg, t_redirection *new, char *error)
+    t_vect *cmd, t_arg *arg, t_redirection *new, int *error)
 {
     int             operator_index;
     int             substring_index;
@@ -28,11 +28,11 @@ static void         set_up_simple_output_redirection(
     else if (new->right_fd == NO_RIGHT_FD)
         new->file_word = search_file_word(cmd, arg, substring_index, error);
     else if (new->right_fd == AMBIGUOUS)
-        ft_strcpy("error redirection ambigue", error);
+        *error = AMBIGUOUS_REDIRECTION_ERROR;
 }
 
 static void         set_up_appending_output_redirection(
-    t_vect *cmd, t_arg *arg, t_redirection *new, char *error)
+    t_vect *cmd, t_arg *arg, t_redirection *new, int *error)
 {
     int             operator_index;
     int             substring_index;
@@ -49,7 +49,7 @@ static void         set_up_appending_output_redirection(
 }
 
 static void         set_up_input_redirection(
-    t_vect *cmd, t_arg *arg, t_redirection *new, char *error)
+    t_vect *cmd, t_arg *arg, t_redirection *new, int *error)
 {
     int operator_index;
     int substring_index;
@@ -61,7 +61,7 @@ static void         set_up_input_redirection(
     if (new->right_fd == NO_RIGHT_FD)
         new->file_word = search_file_word(cmd, arg, substring_index, error);
     else if (new->right_fd == AMBIGUOUS)
-        ft_strcpy("error redirection ambigue", error);
+        *error = AMBIGUOUS_REDIRECTION_ERROR;
 }
 
 t_redirection_setup    *search_redirections_in_arg(
@@ -94,13 +94,13 @@ void                search_redirections_in_cmd(t_bash *data, t_vect *cmd)
             data->redirections_setup, arg->content))
         {
             setup_redirection->f(
-                cmd, arg, new_redirection(cmd, setup_redirection->flags), data->error);
+                cmd, arg, new_redirection(cmd, setup_redirection->flags), &(data->error));
             del_one_arg(arg, cmd);
             arg = cmd->args;
         }
         else
             arg = arg->next;
-        if (error_occured(data->error))
+        if (data->error)
             arg = NULL;
     }
 }

@@ -6,16 +6,16 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:00:02 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/12 15:20:23 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/28 14:50:59 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-void		puterror(char *error)
+void		puterror(int error)
 {
 	ft_putstr_fd(RED, 2);
-	ft_putstr_fd(error, 2);
+	ft_putchar_fd(error, 2);
 	ft_putstr_fd(RESET, 2);
 }
 
@@ -207,14 +207,16 @@ void		loop(t_bash *data)
 	{
 		read(0, buff, 6);
 		if (ft_strnequ(buff, "\n", 1))
-		{
 			handle_eol(data, buff);
-		}
+		if (data->error)
+			break;
 		if (ft_strnequ(buff, "\033", 1) || buff[0] == 127)
 			arrow_key(data, buff);
 		else if (ft_isprint(buff[0]) || data->expend)
 		{
 			data->iterator = handle_new_entry(data, buff, data->iterator);
 		}
+		if (data->error)
+			break;
 	}
 }
