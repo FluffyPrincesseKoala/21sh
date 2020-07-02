@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 16:20:13 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/12 18:17:15 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/07/01 21:03:31 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,88 +81,46 @@ void				move_cursor_to_last_new_line(t_bash *data, int max)
 
 void				arrow_left(t_bash *data)
 {
-	struct winsize	w;
-	int				y;
-	int				x;
+	int				count;
 
 	if (data->iterator)
 	{
-   		ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-		init_xy(data, &x, &y, w.ws_col);
-		if (data->iterator + data->prompt_len >= w.ws_col)
+		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
+		data->cursor = find_node_by_iterator(&data->cursor,	data->iterator,
+											ft_strlen(LINE));
+		if (data->cursor->x || data->cursor->y)
 		{
-			if (!x && y)
+			LEFT;
+			if (data->cursor->x == 0 && data->cursor->y)
 			{
 				UP;
-				data->iterator--;
-				while (x++ != w.ws_col)
+				if (data->cursor->y <= 1)
+					count = data->prompt_len + ((data->cursor->y < 1)
+					? data->cursor->line_end : data->cursor->prev->line_end);
+				else
+					count = data->cursor->prev->line_end;
+				while (--count)
 					RIGHT;
-				return ;
 			}
-		}
-		if (data->vector->line[data->iterator - 1] == '\n' && !data->expend)
-			move_cursor_to_last_new_line(data, w.ws_col);
-		else if (!data->expend || !(data->vector->line[data->iterator - 1] == '\n'))
-		{
 			data->iterator--;
-			LEFT;
 		}
+		clear_struct(&data->cursor);
 	}
 }
 
 void				arrow_right(t_bash *data)
 {
-	struct winsize	w;
-	int				y;
-	int				x;
-
-	if (data->iterator < ft_strlen(data->vector->line))
+	if (data->iterator < ft_strlen(LINE))
 	{
-    	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-		init_xy(data, &x, &y, w.ws_col);
-		if (data->prompt_len + ft_strlen(data->vector->line) >= w.ws_col
-		|| (data->expend && len_between_last_delim(LINE, '\n', data->iterator) >= w.ws_col))
-		{
-			if (x == w.ws_col - 1)
-			{
-				CDOWN;
-				data->iterator++;
-				return ;
-			}
-		}
-		if (data->vector->line[data->iterator] == '\n')
-		{
-			data->iterator++;
+		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
+		data->cursor = find_node_by_iterator(&data->cursor, data->iterator,
+											ft_strlen(LINE));
+		if (data->cursor->x + 1 == data->cursor->line_end)
 			CDOWN;
-		}
 		else
-		{
-			data->iterator++;
 			RIGHT;
-		}
-	}
-}
-
-void				arrow_down(t_bash *data) // update me plz :'(
-{
-	int				len;
-	int				count;
-	char			*old;
-
-	old = NULL;
-	if (VECT_DOWN)
-	{
-		data->history_stack -= (data->history_stack > 0) ?  1 : 0;
-		key_start(data);
-		SAVE_C;
-		data->vector = data->vector->down;
-		data->iterator = print_rest(data->vector->line, data->iterator,
-		(data->vector->up) ? data->vector->up->line : NULL);
-		RESET_C;
-		len = data->iterator;
-		data->iterator = 0;
-		while (len--)
-			arrow_right(data);
+		data->iterator++;
+		clear_struct(&data->cursor);
 	}
 }
 
@@ -207,6 +165,23 @@ static void			lost_cursor(int prompt_len, int line_len)
 		CDOWN;
 }
 
+static void			clear_term(char *str)
+{
+	int				i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		if (str[i] == '\n')
+		{
+			ft_putchar('\n');
+		}
+		else
+			ft_putchar(' ');
+		i++;
+	}
+}
+
 void				arrow_up(t_bash *data)
 {
 	int		count;
@@ -219,6 +194,9 @@ void				arrow_up(t_bash *data)
 		data->history_stack++;
 		old = ft_strdup(LINE); // Fédaration départementale des Dormeur Ukrainien Pentoufalart
 		key_start(data);
+		SAVE_C;
+		clear_term(old);
+		RESET_C;
 		if (!VECT_DOWN)
 		{
 			count = data->history_stack;
@@ -227,11 +205,42 @@ void				arrow_up(t_bash *data)
 		}
 		else
 			VECT = VECT_UP;
-		count = print_rest(LINE, data->iterator, old);
+		count = print_rest(LINE, data->iterator, NULL);
 		if (count > (len = ft_strlen(LINE)) && old)
 			move_n_left(data, count - data->iterator);
 		lost_cursor(data->prompt_len, count);
 		data->iterator = len;
 		ft_strdel(&old);
+	//	if (data->vector->down)
+	//		pull_line(&data->vector);
+	}
+}
+
+void				arrow_down(t_bash *data) // update me plz :'(
+{
+	int				len;
+	int				count;
+	char			*old;
+
+	if (VECT_DOWN || data->history_stack)
+	{
+		data->history_stack--;
+		old = ft_strdup(LINE);
+		key_start(data);
+		SAVE_C;
+		clear_term(old);
+		RESET_C;
+		if (!VECT_DOWN)
+		{
+			count = data->history_stack;
+			while (count-- > 0 && VECT_UP)
+				VECT = VECT_UP;
+		}
+		else
+			VECT = VECT_DOWN;
+		data->iterator = print_rest(LINE, data->iterator, NULL);
+		ft_strdel(&old);
+//		if (data->vector->down)
+//			pull_line(&data->vector);
 	}
 }

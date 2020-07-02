@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 17:18:17 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/12 12:07:34 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/07/01 21:04:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,48 +58,51 @@ void				key_last(t_bash *data)
 		data->iterator++;		
 	}
 }
-
+/*
+**	
+*/
 void				key_start(t_bash *data)
 {
-	struct winsize	w;
-	int				prompt;
-	int				y;
-	int				x;
-	int				cur;
-	int				last;
+	int				prompt_len;
+	int				count;
 
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	prompt = data->prompt_len;
-	cur = 0;
-	last = 0;
-	while (data->iterator && data->iterator != data->start_expend)
+	if (data->iterator)
 	{
-		init_xy(data, &x, &y, w.ws_col);
-		if (LINE[data->iterator - 1] == '\n')
+		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
+		data->cursor = find_node_by_iterator(&data->cursor, data->iterator,
+											ft_strlen(LINE));
+		currsor_info(data->cursor);
+		count = data->cursor->iterator;
+		while (count--)
 		{
-			UP;
-			while (last && --last)
+			if (data->cursor->x)
+			{
 				LEFT;
-			last = len_between_last_delim(LINE, '\n', data->iterator - 1);
-			if (data->start_expend == last)
-				RIGHT;
-			cur = (y == 1) ? prompt + last + 1 : last;
-			while (--cur)
-				RIGHT;
+				data->cursor->x--;
+			}
+			else if (data->cursor->y)
+			{
+				UP;
+				if (!--data->cursor->y)
+				{
+			 		prompt_len = data->prompt_len;
+			 		while (prompt_len--)
+		 				RIGHT;
+				}
+			}
 		}
-		else if (!x && y)
-		{
-			UP;
-			while (x++ != w.ws_col)
-				RIGHT;
-			int lapin = w.ws_col - ((y == 1) ? prompt : 0) + lendelim(LINE, '\n', 0);
-			while (LINE[data->iterator - 1] == '\n'
-			&& x-- > lapin)
-				LEFT;
-		}
-		else
-			LEFT;
-		data->iterator--;
+		// while (data->cursor->x--)
+		// 	LEFT;
+		// if (data->cursor->y)
+		// {
+		// 	while (data->cursor->y--)
+		// 		UP;
+		// 	prompt_len = data->prompt_len;
+		// 	while (prompt_len--)
+		// 		RIGHT;
+		// }
+		data->iterator = 0;
+		clear_struct(&data->cursor);
 	}
 }
 

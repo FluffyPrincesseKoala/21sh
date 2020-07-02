@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/17 16:19:05 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/07/01 21:00:11 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@
 # define SAVE_C			tputs(tgoto(tgetstr("sc", NULL), 0 , 0), 1, &pchar)
 # define RESET_C		tputs(tgoto(tgetstr("rc", NULL), 0 , 0), 1, &pchar)
 # define CLEAR			tputs(tgetstr("cl", NULL), 1, &pchar)
+# define GOTO(X,Y)		tputs(tgoto(tgetstr("cm", NULL), X, Y), 1, &pchar)
 # define TRUE			1
 # define FALSE			0
 # define NOQUOTE		0
@@ -186,7 +187,7 @@ size_t		count_delim(char *str, int delim);
 char		*replace_delim(char *str, char delim, char new);
 char		*replace_substr(char *str, char *old, char *new);
 char		*merge_string_from_array(char **src, int size, int start);
-void		push_entry(t_bash *data, char *entry, char **line);
+void		push_entry(t_bash *data, char *entry, char **line, int pos);
 
 /*
 **	OTHER STUFF
@@ -227,6 +228,17 @@ void		lstfree(t_lst **head);
 char		**lst_to_array(t_lst *head);
 
 /*
+**	CURSOR TERM STRUCT
+*/
+
+void		charadd_to_term(t_bash *data, char c, int pos);
+int			get_win_max_col();
+void		init_cursor(t_bash *data);
+void		fit_line_in_terminal(t_bash *data, t_term **cursor, char *str, int max);
+t_term		*find_node_by_iterator(t_term **head, int idx, int idx_max);
+void		clear_struct(t_term **cursor);
+
+/*
 **	DEBUG & UNIT_TEST
 */
 
@@ -234,5 +246,7 @@ void		debug_loop_try_termcaps(t_bash data);
 char		*findenv(char **env, char *var);
 int			handle_expend(t_bash *data, char *entry, int pos);
 void		exec_onebyone(t_bash data);
+void		currsor_info(t_term *curr);
+void		info(char *str);
 
 #endif

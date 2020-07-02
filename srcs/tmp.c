@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:00:02 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/12 17:15:18 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/29 17:20:13 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,12 @@ int				conf_term()
 
 void		hello()
 {
-	int		column_count = tgetnum("co");
+	struct winsize	w;
+	int		column_count;
 	int		i = 0;
+
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+	column_count = w.ws_col;
 	ft_putstr(CYAN);
 	ft_putstr("*");
 	while (i < (column_count - 2))
@@ -204,6 +208,7 @@ void		loop(t_bash *data)
 	is_key = 0;
 	data->start_expend = 0;
 	data->expend_up = 0;
+	
 	while (42)
 	{
 		read(0, buff, 6);
@@ -213,7 +218,7 @@ void		loop(t_bash *data)
 		}
 		else if (ft_strnequ(buff, "\033", 1) || buff[0] == 127)
 			arrow_key(data, buff);
-		else if (ft_isprint(buff[0]) || data->expend)
+		else if (ft_isprint(buff[0]) && !ft_strnequ(buff, "\n", 1))
 		{
 			data->iterator = handle_new_entry(data, buff, data->iterator);
 		}

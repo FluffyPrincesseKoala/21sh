@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/01 11:55:45 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/12 17:25:55 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/07/01 13:37:54 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int  is_pending_line(t_bash *data)
 {
 	if (data->expend = pending_line(LINE))
 	{
-		push_entry(data, "\n", &data->vector->line);
+		push_entry(data, "\n", &data->vector->line, ft_strlen(LINE));
 		ft_putchar('\n');
 	}
 	return (data->expend);
@@ -38,24 +38,13 @@ static void new_line(t_bash *data)
 	data->history_stack = 0;
 }
 
-static int  is_all_whitespaces(char *str)
-{
-	int		i;
-
-	i = 0;
-	while (str && str[i])
-	{
-		if (!ft_iswhitespace(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 static void update_pending_line(t_bash *data)
 {
-	push_entry(data, "\n", &data->vector->line);
-	ft_putchar('\n');
+	if (pending_line(LINE) && !data->expend)
+	{
+		push_entry(data, "\n", &data->vector->line, data->iterator++);
+		ft_putchar('\n');
+	}
 	VECT_UP->line = str_join_free(&VECT_UP->line, &LINE);
 	VECT = VECT_UP;
 	free_vector(&VECT_DOWN);
@@ -79,7 +68,7 @@ int			handle_eol(t_bash *data, char *buff)
 	}
 	if (LINE && !is_pending_line(data)) 
 	{
-	//	key_last(data);
+		key_last(data);
 		format_line(data); 
 		exec_onebyone(*data);
 	}

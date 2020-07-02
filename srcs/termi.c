@@ -6,11 +6,21 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:25:06 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/11 19:10:52 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/27 02:46:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
+
+void	info(char *str)
+{
+	SAVE_C;
+	GOTO(0, 0);
+	hello();
+	GOTO(0, 0);
+	ft_putendl(str);
+	RESET_C;
+}
 
 int					print_rest(char *str, int pos, char *old)
 {
@@ -24,7 +34,10 @@ int					print_rest(char *str, int pos, char *old)
 		while (old[pos])
 		{
 			if (old[pos] == '\n')
+			{
+				info("SHIT");
 				ft_putchar('\n');
+			}
 			else
 				ft_putchar(' ');
 			pos++;

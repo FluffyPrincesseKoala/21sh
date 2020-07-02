@@ -65,6 +65,7 @@ SRCS	=		ft_strlen.c			\
 				ft_lstdel.c			\
 				get_next_line.c		\
 				ft_strndup.c		\
+				whitespaces.c
 
 HEAD	=		libft.h
 
