@@ -1,12 +1,3 @@
-includes/21sh.h
-libft/Makefile
-libft/libft.h
+changed_file.txt
 srcs/arrow.c
 srcs/cursor.c
-srcs/end_of_line.c
-srcs/getter.c
-srcs/key.c
-srcs/main.c
-srcs/string.c
-srcs/termi.c
-srcs/tmp.c

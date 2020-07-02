@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 16:20:13 by cylemair          #+#    #+#             */
-/*   Updated: 2020/07/01 21:03:31 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/07/02 12:59:04 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,27 +86,29 @@ void				arrow_left(t_bash *data)
 	if (data->iterator)
 	{
 		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
-		data->cursor = find_node_by_iterator(&data->cursor,	data->iterator,
-											ft_strlen(LINE));
-		if (data->cursor->x || data->cursor->y)
+		if (data->cursor)
 		{
-			LEFT;
-			if (data->cursor->x == 0 && data->cursor->y)
+			data->cursor = find_node_by_iterator(&data->cursor,	data->iterator,
+												ft_strlen(LINE));
+			if (data->cursor->x || data->cursor->y)
 			{
-				UP;
-				if (data->cursor->y <= 1)
-					count = data->prompt_len + ((data->cursor->y < 1)
-					? data->cursor->line_end : data->cursor->prev->line_end);
-				else
-					count = data->cursor->prev->line_end;
-				while (--count)
-					RIGHT;
+				LEFT;
+				if (data->cursor->x == 0 && data->cursor->y)
+				{
+					UP;
+					if (data->cursor->y <= 1)
+						count = data->prompt_len + data->cursor->line_end;
+					else
+						count = data->cursor->line_end;
+					while (--count)
+						RIGHT;
+				}
+				data->iterator--;
 			}
-			data->iterator--;
+			clear_struct(&data->cursor);
 		}
-		clear_struct(&data->cursor);
-	}
-}
+	}	
+}	
 
 void				arrow_right(t_bash *data)
 {

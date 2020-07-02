@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 18:05:26 by cylemair          #+#    #+#             */
-/*   Updated: 2020/07/01 21:15:27 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/07/02 13:00:42 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,16 @@ void	currsor_info(t_term *curr)
 t_term 	*init_xy_curr(t_term *curr, int count, int i, int max)
 {
 	curr->iterator = count;
-	curr->x = (curr->line[i] || i == max) ? i : 0;
-	curr->y = get_y_cursor(curr);
+	if (curr->line[i] || count == max)
+	{
+		curr->x = i;
+		curr->y = get_y_cursor(curr);
+	}
+	else
+	{
+		curr->x = 0;
+		curr->y = get_y_cursor(curr) + 1;
+	}
 	currsor_info(curr);
 	return (curr);
 }
@@ -170,11 +178,13 @@ void	fit_line_in_terminal(t_bash *data, t_term **cursor, char *str, int max)
 	int		i;
 	int		j;
 	int		x_max;
+	int		len;
 	char	*new_line;
 
 	i = 0;
 	j = 0;
-	if (!(new_line = ft_memalloc(sizeof(char) * (max + 1))))
+	if (!str
+	|| !(new_line = ft_memalloc(sizeof(char) * ((len = ft_strlen(str)) + 1))))
 		return ;
 	while (str && str[i])
 	{
@@ -195,12 +205,12 @@ void	fit_line_in_terminal(t_bash *data, t_term **cursor, char *str, int max)
 			}
 			new_line[j] = '\0';
 			link_cursor(cursor, new_cursor_struct(new_line, j, i - j));
-			ft_bzero(new_line, max);
+			ft_bzero(new_line, len);
 			j = 0;
 		}
 	}
 	link_cursor(cursor, new_cursor_struct(new_line, x_max, i - j));
-	ft_bzero(new_line, max);
+	ft_bzero(new_line, len);
 }
 
 void				init_cursor(t_bash *data)
