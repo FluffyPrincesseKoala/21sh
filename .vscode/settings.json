@@ -1,0 +1,10 @@
+{
+	"C_Cpp.dimInactiveRegions": true,
+	"files.associations": {
+		"*.js": "typescriptreact",
+		"*.c": "c",
+		"term.h": "c",
+		"curses.h": "c",
+		"21sh.h": "c"
+	}
+}
