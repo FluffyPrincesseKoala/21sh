@@ -55,11 +55,11 @@ void				key_last(t_bash *data)
 			CDOWN;
 		else
 			RIGHT;
-		data->iterator++;		
+		data->iterator++;
 	}
 }
 /*
-**	
+**
 */
 void				key_start(t_bash *data)
 {
@@ -91,16 +91,6 @@ void				key_start(t_bash *data)
 				}
 			}
 		}
-		// while (data->cursor->x--)
-		// 	LEFT;
-		// if (data->cursor->y)
-		// {
-		// 	while (data->cursor->y--)
-		// 		UP;
-		// 	prompt_len = data->prompt_len;
-		// 	while (prompt_len--)
-		// 		RIGHT;
-		// }
 		data->iterator = 0;
 		clear_struct(&data->cursor);
 	}

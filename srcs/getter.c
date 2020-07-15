@@ -15,7 +15,7 @@
 void		pull_line(t_vect **head)
 {
 	t_vect	*lst;
-	
+
 	if (head && *head)
 	{
 		lst = *head;
@@ -44,7 +44,7 @@ void		push_entry(t_bash *data, char *entry, char **line, int pos)
 
 /*
 **	if !LINE		: create it
-**	if VECT_DOWN	: pull_line 
+**	if VECT_DOWN	: pull_line
 **	push_entry
 **
 **	fill t_term

@@ -208,7 +208,7 @@ void		loop(t_bash *data)
 	is_key = 0;
 	data->start_expend = 0;
 	data->expend_up = 0;
-	
+
 	while (42)
 	{
 		read(0, buff, 6);

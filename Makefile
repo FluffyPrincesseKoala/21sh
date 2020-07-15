@@ -58,15 +58,17 @@ srcs/%.o: srcs/%.c $(HEADERS)
 
 $(NAME): $(OBJS) $(SRC) $(HEADERS)
 	@make -C libft/
+	@printf '\033[38;5;29m building: \033[38;5;50m $(NAME) \033[0m\n'
 	@$(CC) -o $(NAME) $(OBJS) $(LDFLAGS)
 
 clean:
 	@make clean -C libft/
-	$(RM) $(OBJS)
+	@printf '\033[38;5;29m delete: \033[1;31m $(OBJS) \033[0m\n'
+	@$(RM) $(OBJS) &>/dev/null
 
 fclean: clean
 	@make fclean -C libft/
-	@$(RM) $(NAME)
+	@$(RM) $(NAME) &>/dev/null
 
 re: fclean all
 

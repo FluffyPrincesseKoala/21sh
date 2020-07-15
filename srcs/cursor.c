@@ -45,7 +45,7 @@ void				clear_struct(t_term **cursor)
 {
 	t_term			*cur;
 	t_term			*nxt;
-	
+
 	if (*cursor)
 	{
 		cur = *cursor;
@@ -161,7 +161,7 @@ t_term	*find_node_by_iterator(t_term **head, int idx, int idx_max)
 		}
 		*head = curr;
 	}
-	return (init_xy_curr(*head, count, i, idx_max));
+	return ((*head) ? init_xy_curr(*head, count, i, idx_max) : NULL);
 }
 
 int		get_win_max_col(void)

@@ -175,6 +175,8 @@ void		arrow_right(t_bash *data);
 void		arrow_down(t_bash *data);
 void		arrow_up(t_bash *data);
 
+void		move_left(t_bash *data);
+void		move_right(t_bash *data);
 /*
 **	STRING FORMATING
 */

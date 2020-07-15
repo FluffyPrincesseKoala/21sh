@@ -76,17 +76,19 @@ RM		=		rm -rf
 all: $(NAME)
 
 $(OBJS): $(SRCS)
-	@$(CC) $(CFLAGS) -c $(SRCS)
+	@$(CC) $(CFLAGS) -c $(SRCS) &>/dev/null
 
 $(NAME): $(OBJS)
+	@printf '\033[38;5;29m libft building \033[38;5;50m libft.a\033[0m\n'
 	@ar rc $(NAME) $(OBJS)
 	@ranlib $(NAME)
 
 clean:
-	@$(RM) $(OBJS)
+	@printf '\033[38;5;29m libft delete: \033[1;31m $(OBJS) \033[0m\n'
+	@$(RM) $(OBJS) &>/dev/null
 
 fclean: clean
-	@$(RM) $(NAME)
+	@$(RM) $(NAME) &>/dev/null
 
 re: fclean all
 

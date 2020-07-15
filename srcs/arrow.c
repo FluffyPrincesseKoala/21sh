@@ -79,10 +79,43 @@ void				move_cursor_to_last_new_line(t_bash *data, int max)
 		RIGHT;
 }
 
-void				arrow_left(t_bash *data)
+static int			move_to_endline(t_term *cursor, int prompt_len)
 {
 	int				count;
+	int				new_x;
 
+	count = 0;
+	if (cursor->y <= 1)
+		count = prompt_len + cursor->line_end;
+	else
+		count = cursor->line_end;
+	if (cursor->prev)
+		cursor = cursor->prev;
+	new_x = count;
+	while (--count)
+		RIGHT;
+	return (new_x);
+}
+
+void				move_left(t_bash *data)
+{
+	if (data->cursor->x || data->cursor->y)
+	{
+		LEFT;
+		if (data->cursor->x == 0 && data->cursor->y)
+		{
+			UP;
+			data->cursor->x = move_to_endline(data->cursor, data->prompt_len);
+			data->cursor->y--;
+		}
+		else
+			data->cursor->x--;
+		data->iterator--;
+	}
+}
+
+void				arrow_left(t_bash *data)
+{
 	if (data->iterator)
 	{
 		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
@@ -90,25 +123,29 @@ void				arrow_left(t_bash *data)
 		{
 			data->cursor = find_node_by_iterator(&data->cursor,	data->iterator,
 												ft_strlen(LINE));
-			if (data->cursor->x || data->cursor->y)
-			{
-				LEFT;
-				if (data->cursor->x == 0 && data->cursor->y)
-				{
-					UP;
-					if (data->cursor->y <= 1)
-						count = data->prompt_len + data->cursor->line_end;
-					else
-						count = data->cursor->line_end;
-					while (--count)
-						RIGHT;
-				}
-				data->iterator--;
-			}
+			move_left(data);
 			clear_struct(&data->cursor);
 		}
-	}	
-}	
+	}
+}
+
+void				move_right(t_bash *data)
+{
+	if (data->cursor->x + 1 == data->cursor->line_end)
+	{
+		if (data->cursor->next)
+			data->cursor = data->cursor->next;
+		data->cursor->x = 0;
+		data->cursor->y++;
+		CDOWN;
+	}
+	else
+	{
+		data->cursor->x++;
+		RIGHT;
+	}
+	data->iterator++;
+}
 
 void				arrow_right(t_bash *data)
 {
@@ -117,11 +154,7 @@ void				arrow_right(t_bash *data)
 		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
 		data->cursor = find_node_by_iterator(&data->cursor, data->iterator,
 											ft_strlen(LINE));
-		if (data->cursor->x + 1 == data->cursor->line_end)
-			CDOWN;
-		else
-			RIGHT;
-		data->iterator++;
+		move_right(data);
 		clear_struct(&data->cursor);
 	}
 }

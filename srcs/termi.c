@@ -50,57 +50,38 @@ int					print_rest(char *str, int pos, char *old)
 **	add function ptr like that "void (*f)()"
 */
 
+static int			is_whitespaces(char c)
+{
+	if (c == ' ' || c == '\n' || c == '\0' || c == '\t')
+		return (1);
+	return (0);
+}
+
 void				ctrl_right(t_bash *data)
 {
-	struct winsize	w;
-	int				y;
-	int				x;
+	t_term			*curr;
 	int				len;
 
-	len = data->iterator;
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	while (data->vector->line[len] && data->vector->line[len] == ' ')
-		len++;
-	while (data->vector->line[len] && data->vector->line[len] != ' ')
-		len++;
-	while (data->iterator != len)
+	if (data->iterator < (len = ft_strlen(LINE)))
 	{
-		y = (data->iterator + data->prompt_len) / w.ws_col;
-		x = (data->iterator + data->prompt_len) % w.ws_col;
-		if (x == w.ws_col - 1)
-			CDOWN;
-		else
-			RIGHT;
-		data->iterator++;		
+		while (data->iterator < len && is_whitespaces(LINE[data->iterator]))
+			arrow_right(data);
+		while (data->iterator < len && !is_whitespaces(LINE[data->iterator]))
+			arrow_right(data);
 	}
 }
 
 void				ctrl_left(t_bash *data)
 {
-	struct winsize	w;
-	int				y;
-	int				x;
+	t_term			*curr;
 	int				len;
 
-	if ((len = data->iterator) && ioctl(STDOUT_FILENO, TIOCGWINSZ, &w))
-		len--;
-	while (len && data->vector->line[len] == ' ')
-		len--;
-	while (len && data->vector->line[len] != ' ')
-		len--;
-	while (data->iterator != len)
+	if (data->iterator)
 	{
-		y = (data->iterator + data->prompt_len) / w.ws_col;
-		x = (data->iterator + data->prompt_len) % w.ws_col;
-		if (!x && y)
-		{
-			UP;
-			while (x++ != w.ws_col)
-				RIGHT;
-		}
-		else
-			LEFT;
-		(*data).iterator--;
+		while (data->iterator && is_whitespaces(LINE[data->iterator]))
+			arrow_left(data);
+		while (data->iterator && !is_whitespaces(LINE[data->iterator]))
+			arrow_left(data);
 	}
 }
 
@@ -166,7 +147,7 @@ void		arrow_key(t_bash *data, char *buff)
 	else if (ft_strnequ(buff, "\033[1;5B", 6))
 		ctrl_down(data);
 	else if (ft_strnequ(buff, "\033[1;5A", 6))
-		ctrl_up(data);		
+		ctrl_up(data);
 	else if (ft_strnequ(buff, "\033[H", 3))
 		key_start(data);
 	else if (ft_strnequ(buff, "\033[F", 3))
