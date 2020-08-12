@@ -18,7 +18,9 @@ void	info(char *str)
 	GOTO(0, 0);
 	hello();
 	GOTO(0, 0);
-	ft_putendl(str);
+	ft_putchar('[');
+	ft_putstr(str);
+	ft_putchar(']');
 	RESET_C;
 }
 

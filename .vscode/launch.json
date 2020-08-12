@@ -5,22 +5,15 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"name": "Python : Fichier actuel",
-			"type": "python",
-			"request": "launch",
-			"program": "${file}",
-			"console": "integratedTerminal"
-		},
-		{
 			"name": "(gdb) Lancer",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${workspaceFolder}/21sh",
+			"program": "${cwd}/21sh",
 			"args": [],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
-			"externalConsole": true,
+			"externalConsole": false,
 			"MIMode": "gdb",
 			"setupCommands": [
 				{
@@ -30,13 +23,5 @@
 				}
 			]
 		},
-		{
-			"name": "Debug",
-			"type": "gdb",
-			"request": "launch",
-			"target": "./bin/executable",
-			"cwd": "${workspaceRoot}",
-			"valuesFormatting": "parseText"
-		}
 	]
 }

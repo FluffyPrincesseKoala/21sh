@@ -5,7 +5,8 @@
 			"type": "shell",
 			"label": "Make",
 			"command": "make",
-			"group": "build"
+			"group": "build",
+			"problemMatcher": []
 		},
 		{
 			"type": "shell",

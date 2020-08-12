@@ -64,11 +64,11 @@ $(NAME): $(OBJS) $(SRC) $(HEADERS)
 clean:
 	@make clean -C libft/
 	@printf '\033[38;5;29m delete: \033[1;31m $(OBJS) \033[0m\n'
-	@$(RM) $(OBJS) &>/dev/null
+	@$(RM) $(OBJS)
 
 fclean: clean
 	@make fclean -C libft/
-	@$(RM) $(NAME) &>/dev/null
+	@$(RM) $(NAME)
 
 re: fclean all
 

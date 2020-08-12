@@ -44,6 +44,7 @@
 # define NOFOD			"No such file or directory\n"
 # define HOOK_MALLOC	"Malloc return NULL value"
 # define E_CHDIR	    -1
+# define IDX		    data->iterator
 # define LINE		    data->vector->line
 # define VECT		    data->vector
 # define VECT_UP	    data->vector->up
@@ -202,7 +203,7 @@ char		*build_path(t_bash data, t_vect *lst);
 int			exec_cmd(t_bash data, char *path, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
 void		puterror(char *error);
-
+void		clear_term(char *str);
 /*
 **	PARSING
 */

@@ -200,7 +200,7 @@ static void			lost_cursor(int prompt_len, int line_len)
 		CDOWN;
 }
 
-static void			clear_term(char *str)
+void			clear_term(char *str)
 {
 	int				i;
 

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/01 11:55:45 by cylemair          #+#    #+#             */
-/*   Updated: 2020/07/01 13:37:54 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/07/30 16:12:37 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int  is_pending_line(t_bash *data)
 {
 	if (data->expend = pending_line(LINE))
 	{
+		key_last(data);
 		push_entry(data, "\n", &data->vector->line, ft_strlen(LINE));
 		ft_putchar('\n');
 	}
@@ -68,6 +69,7 @@ int			handle_eol(t_bash *data, char *buff)
 	}
 	if (LINE && !is_pending_line(data)) 
 	{
+		info("LAPIN");
 		key_last(data);
 		format_line(data); 
 		exec_onebyone(*data);

@@ -99,51 +99,53 @@ void				key_start(t_bash *data)
 void				key_back(t_bash *data)
 {
 	char			*tmp;
-	int				len;
+	char			*old;
+	int				expected;
 
-	len = 0;
-	if (data->iterator && (len = ft_strlen(data->vector->line))
-		&& (tmp = delchar(data->vector->line, data->iterator - 1)))
+	if (IDX && ft_strlen(LINE))
 	{
 		if (data->vector->down)
 			pull_line(&data->vector);
-		arrow_left(data);
+		tmp = delchar(LINE, IDX - 1);
+		old = LINE;
+		LINE = tmp;
+		expected = IDX;
+		key_start(data);
 		SAVE_C;
-		len = data->iterator;
-		print_rest(tmp, data->iterator, data->vector->line);
+		clear_term(old);
 		RESET_C;
-		data->iterator = len;
-		ft_strdel(&data->vector->line);
-		data->vector->line = tmp;
-	}
-	else if (data->iterator == len && len == 1)
-	{
-		if (data->vector->down)
-			pull_line(&data->vector);
-		print_rest(NULL, data->iterator, data->vector->line);
-		ft_strdel(&data->vector->line);
+		IDX = print_rest(LINE, 0, NULL);
+		while (IDX != expected)
+			arrow_left(data);
+
 	}
 }
-
+/*
+**	delete char at iterator position
+**	clear old line
+** 	print newline
+**	go to position
+*/
 void				key_suppr(t_bash *data)
 {
 	char			*tmp;
-	int				len;
+	char			*old;
+	int				expected;
 
-	len = ft_strlen(data->vector->line);
-	if (len == 1 && data->iterator == 0)
+	if (ft_strlen(LINE))
 	{
+		if (data->vector->down)
+			pull_line(&data->vector);
+		tmp = delchar(LINE, IDX);
+		old = LINE;
+		LINE = tmp;
+		expected = IDX;
+		key_start(data);
 		SAVE_C;
-		print_rest(NULL, data->iterator, data->vector->line);
-		ft_strdel(&data->vector->line);
+		clear_term(old);
 		RESET_C;
-	}
-	else if (data->iterator < len && (tmp = delchar(data->vector->line, data->iterator)))
-	{
-		SAVE_C;
-		print_rest(tmp, data->iterator, data->vector->line);
-		ft_strdel(&data->vector->line);
-		data->vector->line = tmp;
-		RESET_C;
+		IDX = print_rest(LINE, 0, NULL);
+		while (IDX != expected)
+			arrow_left(data);
 	}
 }

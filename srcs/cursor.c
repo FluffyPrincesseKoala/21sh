@@ -101,7 +101,7 @@ void	link_cursor(t_term **head, t_term *new)
 
 static void cursor_print(t_term *curr)
 {
-	printf("x:%d y:%d ls:%d le:%d idx:%d c:[%c] len:%d\n[%s]\n",curr->x, curr->y,
+	printf("x:%d y:%d ls:%d le:%d idx:%d c:[%c] len:%ld\n[%s]\n",curr->x, curr->y,
 	curr->line_start, curr->line_end, curr->iterator,
 	curr->line[curr->x], ft_strlen(curr->line), curr->line);
 }
@@ -129,7 +129,7 @@ t_term 	*init_xy_curr(t_term *curr, int count, int i, int max)
 		curr->x = 0;
 		curr->y = get_y_cursor(curr) + 1;
 	}
-	currsor_info(curr);
+	//currsor_info(curr);
 	return (curr);
 }
 /*
