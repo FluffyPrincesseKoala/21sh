@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsub.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:38:08 by cylemair          #+#    #+#             */
-/*   Updated: 2018/12/19 16:38:08 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/03 19:19:02 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,27 @@ char				*ft_strsub(char const *s, unsigned int start, size_t len)
 		return (new);
 	}
 	return (NULL);
+}
+
+char	*ft_strsub_free(char **s, unsigned int start, unsigned int len)
+{
+	char			*ret;
+	unsigned int	i;
+
+	if (!len)
+	{
+		ft_strdel(s);
+		return (NULL);
+	}
+	if (!s || !*s || !(ret = ft_strnew(len)))
+		return (NULL);
+	i = start;
+	while (i - start < len)
+	{
+		ret[i - start] = (*s)[i];
+		i += 1;
+	}
+	ret[i - start] = '\0';
+	ft_strdel(s);
+	return (ret);
 }

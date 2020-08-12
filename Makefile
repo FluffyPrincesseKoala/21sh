@@ -6,11 +6,11 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2020/04/22 20:14:13 by cylemair         ###   ########.fr        #
+#    Updated: 2020/06/12 18:06:17 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC		=	clang -g3
+CC		=	gcc -g3
 
 CFLAGS	+=	-Werror -Wall -Wextra
 
@@ -42,6 +42,12 @@ SRC		=	srcs/main.c 			\
 			srcs/replace_substr.c	\
 			srcs/arrow.c			\
 			srcs/key.c				\
+			srcs/lst.c				\
+			srcs/convert.c			\
+			srcs/separator.c		\
+			srcs/get_var.c			\
+			srcs/end_of_line.c		\
+			srcs/cursor.c			\
 
 OBJS	=	$(SRC:.c=.o)
 
@@ -52,11 +58,13 @@ srcs/%.o: srcs/%.c $(HEADERS)
 
 $(NAME): $(OBJS) $(SRC) $(HEADERS)
 	@make -C libft/
+	@printf '\033[38;5;29m building: \033[38;5;50m $(NAME) \033[0m\n'
 	@$(CC) -o $(NAME) $(OBJS) $(LDFLAGS)
 
 clean:
 	@make clean -C libft/
-	$(RM) $(OBJS)
+	@printf '\033[38;5;29m delete: \033[1;31m $(OBJS) \033[0m\n'
+	@$(RM) $(OBJS)
 
 fclean: clean
 	@make fclean -C libft/

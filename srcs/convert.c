@@ -1,41 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   convert.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/19 16:33:27 by cylemair          #+#    #+#             */
-/*   Updated: 2020/02/20 14:45:56 by cylemair         ###   ########.fr       */
+/*   Created: 2020/04/29 18:37:15 by cylemair          #+#    #+#             */
+/*   Updated: 2020/06/03 18:32:57 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdio.h>
+#include "21sh.h"
 
-char		*ft_strjoin(char const *s1, char const *s2)
+char		*merge_string_from_array(char **src, int size, int start)
 {
 	char	*new;
+	int		count;
 	int		i;
 	int		j;
+	int		p;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	while (s1 && s1[i])
-		i++;
-	while (s2 && s2[j])
-		j++;
-	if ((new = malloc(sizeof(char) * (i + j + 1))) == NULL)
+	count = -1;
+	new = NULL;
+	while (++i != size)
+		count += ft_strlen(src[start + i]);
+	if (!(new = malloc(sizeof(char) * (count + i + 1))))
 		return (NULL);
 	i = 0;
-	j = 0;
-	while (s1 && s1[i])
+	while (i != size)
 	{
-		new[i] = (char)s1[i];
-		i += 1;
+		p = -1;
+		while (src[start + i][++p])
+		{
+			new[j] = src[start + i][p];
+			j++;
+		}
+		i++;
+		if (i != size)
+		{
+			new[j] = ' ';
+			j++;
+		}
 	}
-	while (s2 && s2[j])
-		new[i++] = s2[j++];
-	new[i] = '\0';
+	new[j] = '\0';
 	return (new);
 }

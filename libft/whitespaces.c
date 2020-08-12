@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isprint.c                                       :+:      :+:    :+:   */
+/*   whitespaces.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/19 16:28:54 by cylemair          #+#    #+#             */
-/*   Updated: 2018/12/19 16:28:55 by cylemair         ###   ########.fr       */
+/*   Created: 2020/06/28 13:26:08 by cylemair          #+#    #+#             */
+/*   Updated: 2020/06/28 13:26:52 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_isprint(int c)
+int			is_all_whitespaces(char *str)
 {
-	if (c >= 32 && c <= 126)
-		return (1);
-	return (0);
+	int		i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		if (!ft_iswhitespace(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:32:46 by cylemair          #+#    #+#             */
-/*   Updated: 2020/02/11 16:49:57 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/10 15:58:07 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char		*ft_strdup(const char *src)
 	char	*str;
 	int		i;
 
-	if (!(str = (char *)malloc(sizeof(char) * (ft_strlen(src) + 1))))
+	if (!src || !(str = (char *)malloc(sizeof(char) * (ft_strlen(src) + 1))))
 		return (NULL);
 	i = 0;
 	while (src[i])

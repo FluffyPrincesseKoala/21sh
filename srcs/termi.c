@@ -6,11 +6,23 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:25:06 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/24 17:24:46 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/27 02:46:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
+
+void	info(char *str)
+{
+	SAVE_C;
+	GOTO(0, 0);
+	hello();
+	GOTO(0, 0);
+	ft_putchar('[');
+	ft_putstr(str);
+	ft_putchar(']');
+	RESET_C;
+}
 
 int					print_rest(char *str, int pos, char *old)
 {
@@ -23,68 +35,14 @@ int					print_rest(char *str, int pos, char *old)
 	{
 		while (old[pos])
 		{
-			ft_putchar(' ');
+			if (old[pos] == '\n')
+			{
+				info("SHIT");
+				ft_putchar('\n');
+			}
+			else
+				ft_putchar(' ');
 			pos++;
-		}
-	}
-	return (pos);
-}
-
-int					goto_iterator(t_bash data, int pos)
-{
-	struct winsize	w;
-	int				len;
-	int				max;
-	int				y;
-	int				x;
-
-	len = (data.vector->line) ? ft_strlen(data.vector->line) : 0;
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	max = w.ws_col;
-	if (pos <= len)
-	{
-		while (len >= pos)
-		{
-			y = (len + data.prompt_len) / max;
-			x = (len + data.prompt_len) % max;
-			if (len + data.prompt_len >= max && !x && y >= 1)
-			{
-				UP;
-				len--;
-				while (x != max)
-				{
-					RIGHT;
-					x++;
-				}
-			}
-			else
-			{
-				LEFT;
-				len--;	
-			}
-		}
-	}
-	else if (pos > len)
-	{
-		while (pos > len)
-		{
-			y = (pos + data.prompt_len) / max;
-			x = (pos + data.prompt_len) % max;
-			if (pos + data.prompt_len >= max && !x && y)
-			{
-				UP;
-				pos--;
-				while (x != max)
-				{
-					RIGHT;
-					x++;
-				}
-			}
-			else
-			{
-				LEFT;
-				pos--;	
-			}
 		}
 	}
 	return (pos);
@@ -94,59 +52,38 @@ int					goto_iterator(t_bash data, int pos)
 **	add function ptr like that "void (*f)()"
 */
 
+static int			is_whitespaces(char c)
+{
+	if (c == ' ' || c == '\n' || c == '\0' || c == '\t')
+		return (1);
+	return (0);
+}
+
 void				ctrl_right(t_bash *data)
 {
-	struct winsize	w;
-	int				y;
-	int				x;
+	t_term			*curr;
 	int				len;
 
-	len = data->iterator;
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	while (data->vector->line[len] && data->vector->line[len] == ' ')
-		len++;
-	while (data->vector->line[len] && data->vector->line[len] != ' ')
-		len++;
-	while (data->iterator != len)
+	if (data->iterator < (len = ft_strlen(LINE)))
 	{
-		y = (data->iterator + data->prompt_len) / w.ws_col;
-		x = (data->iterator + data->prompt_len) % w.ws_col;
-		if (x == w.ws_col - 1)
-			CDOWN;
-		else
-			RIGHT;
-		data->iterator++;		
+		while (data->iterator < len && is_whitespaces(LINE[data->iterator]))
+			arrow_right(data);
+		while (data->iterator < len && !is_whitespaces(LINE[data->iterator]))
+			arrow_right(data);
 	}
 }
 
 void				ctrl_left(t_bash *data)
 {
-	struct winsize	w;
-	int				y;
-	int				x;
+	t_term			*curr;
 	int				len;
 
-	len = data->iterator;
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	if (len)
-		len--;
-	while (len && data->vector->line[len] == ' ')
-		len--;
-	while (len && data->vector->line[len] != ' ')
-		len--;
-	while (data->iterator != len)
+	if (data->iterator)
 	{
-		y = (data->iterator + data->prompt_len) / w.ws_col;
-		x = (data->iterator + data->prompt_len) % w.ws_col;
-		if (!x && y)
-		{
-			UP;
-			while (x++ != w.ws_col)
-				RIGHT;
-		}
-		else
-			LEFT;
-		(*data).iterator--;
+		while (data->iterator && is_whitespaces(LINE[data->iterator]))
+			arrow_left(data);
+		while (data->iterator && !is_whitespaces(LINE[data->iterator]))
+			arrow_left(data);
 	}
 }
 
@@ -155,16 +92,19 @@ void				ctrl_down(t_bash *data)
 	struct winsize	w;
 	int				y;
 	int				x;
+	int				expected;
 
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	y = CUR_Y;
-	if (y == 0)
-		x = CUR_X;
-	else
-		x = data->iterator % w.ws_col;
-	while (CUR_Y != y + 1
-		&& CUR_Y < LEN_Y)
-		arrow_right(data);
+	if (!data->expend)
+	{
+		init_xy(data, &x, &y, w.ws_col);
+		expected = y + 1;
+		while (y != expected && data->iterator < ft_strlen(LINE))
+		{
+			init_xy(data, &x, &y, w.ws_col);
+			arrow_right(data);
+		}
+	}
 }
 
 void				ctrl_up(t_bash *data)
@@ -172,15 +112,20 @@ void				ctrl_up(t_bash *data)
 	struct winsize	w;
 	int				y;
 	int				x;
+	int				expected;
+
 
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	y = CUR_Y;
-	if (y == 0)
-		return ;
-	else
-		x = data->iterator % w.ws_col;
-	while (CUR_Y != y - 1)
-		arrow_left(data);
+	init_xy(data, &x, &y, w.ws_col);
+	if (y && !data->expend)
+	{
+		expected = y - 1;
+		while (y != expected)
+		{
+			init_xy(data, &x, &y, w.ws_col);
+			arrow_left(data);
+		}
+	}
 }
 
 void		arrow_key(t_bash *data, char *buff)
@@ -204,7 +149,7 @@ void		arrow_key(t_bash *data, char *buff)
 	else if (ft_strnequ(buff, "\033[1;5B", 6))
 		ctrl_down(data);
 	else if (ft_strnequ(buff, "\033[1;5A", 6))
-		ctrl_up(data);		
+		ctrl_up(data);
 	else if (ft_strnequ(buff, "\033[H", 3))
 		key_start(data);
 	else if (ft_strnequ(buff, "\033[F", 3))

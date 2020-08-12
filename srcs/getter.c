@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/24 18:42:41 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/24 13:31:13 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/29 14:50:13 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void		pull_line(t_vect **head)
 {
 	t_vect	*lst;
-	
+
 	if (head && *head)
 	{
 		lst = *head;
@@ -27,20 +27,30 @@ void		pull_line(t_vect **head)
 	}
 }
 
-void		push_entry(t_bash *data, char *entry)
+void		push_entry(t_bash *data, char *entry, char **line, int pos)
 {
 	char	*tmp;
 
 	tmp = NULL;
-	if (data->iterator || data->vector->line)
-		tmp = addchar(data->vector->line, entry[0], data->iterator);
+	if (data->iterator || *line)
+		tmp = addchar(*line, entry[0], pos);
 	else
 		tmp = ft_strndup(entry, 1);
-	if (ft_strlen(data->vector->line))
-		ft_strdel(&data->vector->line);
-	data->vector->line = ft_strdup(tmp);
+	if (ft_strlen(*line))
+		ft_strdel(&*line);
+	*line = ft_strdup(tmp);
 	ft_strdel(&tmp);
 }
+
+/*
+**	if !LINE		: create it
+**	if VECT_DOWN	: pull_line
+**	push_entry
+**
+**	fill t_term
+**	print
+**	go to cursor
+*/
 
 int		handle_new_entry(t_bash *data, char *entry, int pos)
 {
@@ -50,7 +60,7 @@ int		handle_new_entry(t_bash *data, char *entry, int pos)
 	{
 		if (data->vector->down)
 			pull_line(&data->vector);
-		push_entry(&(*data), entry);
+		push_entry(data, entry, &data->vector->line, data->iterator);
 	}
 	SAVE_C;
 	data->iterator = pos;

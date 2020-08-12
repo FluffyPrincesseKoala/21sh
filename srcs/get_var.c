@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 18:59:31 by cylemair          #+#    #+#             */
-/*   Updated: 2020/03/06 15:46:47 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/05/07 18:02:07 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "21sh.h"
 
 static char		**split_var(char **env, char *str)
 {
@@ -63,27 +63,22 @@ static char		*use_shell_var(char **env, char *str)
 	return (ret);
 }
 
-void			get_var(t_vect **head, char **env)
+void			get_var(t_lst **head, char **env)
 {
-	t_vect		*lst;
+	t_lst		*lst;
 	char		*tmp;
-	int			i;
 
 	lst = NULL;
 	if (head)
 		lst = *head;
 	while (lst)
 	{
-		i = -1;
-		while (lst->arg[++i])
+		if (lst->content && ft_strchr(lst->content, '$'))
 		{
-			if (lst->arg[i] && ft_strchr(lst->arg[i], '$'))
-			{
-				tmp = use_shell_var(env, lst->arg[i]);
-				ft_strdel(&lst->arg[i]);
-				lst->arg[i] = ft_strdup(tmp);
-				ft_strdel(&tmp);
-			}
+			tmp = use_shell_var(env, lst->content);
+			ft_strdel(&lst->content);
+			lst->content = ft_strdup(tmp);
+			ft_strdel(&tmp);
 		}
 		lst = lst->next;
 	}

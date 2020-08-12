@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 14:45:40 by cylemair          #+#    #+#             */
-/*   Updated: 2020/01/28 12:02:56 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/28 13:25:06 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int					ft_isdigit(int c);
 int					ft_isalnum(int c);
 int					ft_isprint(int c);
 int					ft_isascii(int c);
+int					ft_iswhitespace(int c);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
 void				*ft_memset(void *s, int c, size_t n);
@@ -83,5 +84,7 @@ void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char const *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
 char				*ft_strndup(const char *str, size_t size);
-
+int					ft_stristr(const char *str, const char *to_find);
+char				*ft_strsub_free(char **s, unsigned int start, unsigned int len);
+int					is_all_whitespaces(char *str);
 #endif

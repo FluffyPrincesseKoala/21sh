@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/02 17:04:29 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/04/29 16:01:03 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ char		*build_path(t_bash data, t_vect *lst)
 	tmp = NULL;
 	tmp2 = NULL;
 	paths = ft_strsplit(getenv("PATH"), ':');
-	while (paths && paths[++i] && lst->arg[0])
+	while (paths && paths[++i] && lst->args->content)
 	{
 		tmp2 = ft_strjoin(paths[i], "/");
-		tmp = (tmp2) ? ft_strjoin(tmp2, lst->arg[0]) : NULL;
+		tmp = (tmp2) ? ft_strjoin(tmp2, lst->args->content) : NULL;
 		if (tmp && !(ret = access((const char*)tmp, F_OK)))
 		{
 			ft_strdel(&tmp2);
@@ -50,8 +50,10 @@ char		*build_path(t_bash data, t_vect *lst)
 int			exec_cmd(t_bash data, char *path, t_vect *cmd)
 {
 	int		status;
+	char	**arg;
 	pid_t	cpid;
 
+	arg = lst_to_array(cmd->args);
 	cpid = fork();
 	if (cpid < 0)
 	{
@@ -61,10 +63,8 @@ int			exec_cmd(t_bash data, char *path, t_vect *cmd)
 		exit(-1);
 	}
 	else if (cpid == 0)
-	{
-		execve(path, cmd->arg, data.env);
-		return (-1);
-	}
+		execve(path, arg, data.env);
 	wait(&status);
+	free_array(arg);
 	return ((status < 0) ? -1 : 0);
 }
