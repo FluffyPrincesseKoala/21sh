@@ -118,11 +118,16 @@ void				arrow_left(t_bash *data)
 {
 	if (data->iterator)
 	{
+		if (data->is_select == 1)
+		{
+			uncolor(data);
+			unselect(data);
+		}
 		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
 		if (data->cursor)
 		{
 			data->cursor = find_node_by_iterator(&data->cursor,	data->iterator,
-												ft_strlen(LINE));
+												get_win_max_col(), data->prompt_len);
 			move_left(data);
 			clear_struct(&data->cursor);
 		}
@@ -151,9 +156,14 @@ void				arrow_right(t_bash *data)
 {
 	if (data->iterator < ft_strlen(LINE))
 	{
+		if (data->is_select == 1)
+		{
+			uncolor(data);
+			unselect(data);
+		}
 		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
 		data->cursor = find_node_by_iterator(&data->cursor, data->iterator,
-											ft_strlen(LINE));
+												get_win_max_col(), data->prompt_len);
 		move_right(data);
 		clear_struct(&data->cursor);
 	}

@@ -154,4 +154,12 @@ void		arrow_key(t_bash *data, char *buff)
 		key_start(data);
 	else if (ft_strnequ(buff, "\033[F", 3))
 		key_last(data);
+	else if (ft_strnequ(buff, "\033[1;2D", 6))
+		select_back(data);
+	else if (ft_strnequ(buff, "\033[1;2C", 6))
+		select_next(data);
+	else if (ft_strnequ(buff, "\033x", 2))
+		select_copy(data);
+	else if (ft_strnequ(buff, "\033v", 2))
+		select_paste(data);
 }

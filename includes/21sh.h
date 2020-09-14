@@ -32,6 +32,7 @@
 # include "../libft/get_next_line.h"
 # include "../libft/libft.h"
 
+# define BACK_BLUE		"\033[46m"
 # define BLUE			"\033[38;5;61m"
 # define GREEN			"\033[38;5;29m"
 # define CYAN			"\033[38;5;50m"
@@ -115,6 +116,12 @@ typedef struct			s_bash
 	int					expend_up;
 	int					prompt_len;
 	int					count_separator;
+
+	int					start_select;
+	int					is_select;
+	int					select_direction;
+	int					end_select;
+	char				*copied;
 }						t_bash;
 
 typedef struct			s_built
@@ -238,8 +245,19 @@ void		charadd_to_term(t_bash *data, char c, int pos);
 int			get_win_max_col();
 void		init_cursor(t_bash *data);
 void		fit_line_in_terminal(t_bash *data, t_term **cursor, char *str, int max);
-t_term		*find_node_by_iterator(t_term **head, int idx, int idx_max);
+t_term		*find_node_by_iterator(t_term **head, int idx, int idx_max, int plen);
 void		clear_struct(t_term **cursor);
+
+/*
+**	SELECT COPY CUT & PASTE
+*/
+
+void    	select_back(t_bash *data);
+void    	select_next(t_bash *data);
+void    	select_copy(t_bash *data);
+void    	select_paste(t_bash *data);
+void		uncolor(t_bash *data);
+void		unselect(t_bash *data);
 
 /*
 **	DEBUG & UNIT_TEST

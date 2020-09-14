@@ -5,6 +5,7 @@
 		"*.c": "c",
 		"term.h": "c",
 		"curses.h": "c",
-		"21sh.h": "c"
+		"21sh.h": "c",
+		"cstdlib": "c"
 	}
 }

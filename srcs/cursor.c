@@ -119,7 +119,7 @@ void	currsor_info(t_term *curr)
 t_term 	*init_xy_curr(t_term *curr, int count, int i, int max)
 {
 	curr->iterator = count;
-	if (curr->line[i] || count == max)
+	if (count < max && count < curr->line_end)
 	{
 		curr->x = i;
 		curr->y = get_y_cursor(curr);
@@ -129,7 +129,7 @@ t_term 	*init_xy_curr(t_term *curr, int count, int i, int max)
 		curr->x = 0;
 		curr->y = get_y_cursor(curr) + 1;
 	}
-	//currsor_info(curr);
+	currsor_info(curr);
 	return (curr);
 }
 /*
@@ -137,7 +137,7 @@ t_term 	*init_xy_curr(t_term *curr, int count, int i, int max)
 **	goto current iterator
 **	fill & return struct
 */
-t_term	*find_node_by_iterator(t_term **head, int idx, int idx_max)
+t_term	*find_node_by_iterator(t_term **head, int idx, int idx_max, int plen)
 {
 	t_term	*curr;
 	int		i;
@@ -156,12 +156,13 @@ t_term	*find_node_by_iterator(t_term **head, int idx, int idx_max)
 				i++;
 			}
 			if (count == idx)
-				return (init_xy_curr(curr, count, i, idx_max));
+				return (init_xy_curr(curr, count, i,
+					(!get_y_cursor(curr) ? idx_max - plen : idx_max)));
 			curr = curr->next;
 		}
 		*head = curr;
 	}
-	return ((*head) ? init_xy_curr(*head, count, i, idx_max) : NULL);
+	return ((*head) ? init_xy_curr(*head, count, i, idx_max - plen) : NULL);
 }
 
 int		get_win_max_col(void)
@@ -189,12 +190,6 @@ void	fit_line_in_terminal(t_bash *data, t_term **cursor, char *str, int max)
 	while (str && str[i])
 	{
 		x_max = (!*cursor) ? max - data->prompt_len : max ;
-		if (j != x_max && str[i] != '\n')
-		{
-			new_line[j] = str[i];
-			j++;
-			i++;
-		}
 		if (j == x_max || str[i] == '\n')
 		{
 			if ( str[i] == '\n')
@@ -207,6 +202,12 @@ void	fit_line_in_terminal(t_bash *data, t_term **cursor, char *str, int max)
 			link_cursor(cursor, new_cursor_struct(new_line, j, i - j));
 			ft_bzero(new_line, len);
 			j = 0;
+		}
+		if (j != x_max && str[i] != '\n')
+		{
+			new_line[j] = str[i];
+			j++;
+			i++;
 		}
 	}
 	link_cursor(cursor, new_cursor_struct(new_line, x_max, i - j));

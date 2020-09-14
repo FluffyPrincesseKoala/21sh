@@ -58,9 +58,8 @@ void				key_last(t_bash *data)
 		data->iterator++;
 	}
 }
-/*
-**
-*/
+
+
 void				key_start(t_bash *data)
 {
 	int				prompt_len;
@@ -70,8 +69,7 @@ void				key_start(t_bash *data)
 	{
 		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
 		data->cursor = find_node_by_iterator(&data->cursor, data->iterator,
-											ft_strlen(LINE));
-		currsor_info(data->cursor);
+												get_win_max_col(), data->prompt_len);
 		count = data->cursor->iterator;
 		while (count--)
 		{
@@ -107,25 +105,18 @@ void				key_back(t_bash *data)
 		if (data->vector->down)
 			pull_line(&data->vector);
 		tmp = delchar(LINE, IDX - 1);
+		expected = IDX - 1;
+		arrow_left(data);
 		old = LINE;
 		LINE = tmp;
-		expected = IDX;
-		key_start(data);
 		SAVE_C;
-		clear_term(old);
+		print_rest(NULL, IDX, old);
 		RESET_C;
-		IDX = print_rest(LINE, 0, NULL);
-		while (IDX != expected)
-			arrow_left(data);
-
+		print_rest(LINE, IDX, NULL);
+		RESET_C;
 	}
 }
-/*
-**	delete char at iterator position
-**	clear old line
-** 	print newline
-**	go to position
-*/
+
 void				key_suppr(t_bash *data)
 {
 	char			*tmp;
@@ -137,15 +128,13 @@ void				key_suppr(t_bash *data)
 		if (data->vector->down)
 			pull_line(&data->vector);
 		tmp = delchar(LINE, IDX);
+		expected = IDX;
 		old = LINE;
 		LINE = tmp;
-		expected = IDX;
-		key_start(data);
 		SAVE_C;
-		clear_term(old);
+		print_rest(NULL, IDX, old);
 		RESET_C;
-		IDX = print_rest(LINE, 0, NULL);
-		while (IDX != expected)
-			arrow_left(data);
+		print_rest(LINE, IDX, NULL);
+		RESET_C;
 	}
 }

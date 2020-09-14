@@ -48,6 +48,7 @@ SRC		=	srcs/main.c 			\
 			srcs/get_var.c			\
 			srcs/end_of_line.c		\
 			srcs/cursor.c			\
+			srcs/select.c			\
 
 OBJS	=	$(SRC:.c=.o)
 
