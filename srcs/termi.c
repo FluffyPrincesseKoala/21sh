@@ -48,6 +48,13 @@ int					print_rest(char *str, int pos, char *old)
 	return (pos);
 }
 
+<<<<<<< HEAD
+=======
+/*
+**	add function ptr like that "void (*f)()"
+*/
+
+>>>>>>> e7188ec344740364d31604d8c921d619072946ef
 static int			is_whitespaces(char c)
 {
 	if (c == ' ' || c == '\n' || c == '\0' || c == '\t')

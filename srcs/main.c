@@ -33,9 +33,9 @@ t_bash	*initialize_bash(char **env)
 int		main(int argc, char **argv, char **env)
 {
 	t_bash	*data;
-
 	(void)argc;
 	(void)argv;
+
 	if (!conf_term())
 	{
 		CLEAR;

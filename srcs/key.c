@@ -70,24 +70,7 @@ void				key_start(t_bash *data)
 		data->cursor = find_node_by_iterator(&data->cursor, data->iterator,
 												get_win_max_col(), data->prompt_len);
 		while (IDX)
-		{
 			move_left(data);
-			// if (data->cursor->x)
-			// {
-			// 	LEFT;
-			// 	data->cursor->x--;
-			// }
-			// else if (data->cursor->y)
-			// {
-			// 	UP;
-			// 	if (!--data->cursor->y)
-			// 	{
-			//  		prompt_len = data->prompt_len;
-			//  		while (prompt_len--)
-		 	// 			RIGHT;
-			// 	}
-			// }
-		}
 		clear_struct(&data->cursor);
 	}
 }
