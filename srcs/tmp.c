@@ -216,7 +216,8 @@ void		loop(t_bash *data)
 		{
 			handle_eol(data, buff);
 		}
-		else if (ft_strnequ(buff, "\033", 1) || buff[0] == 127)
+		else if (ft_strnequ(buff, "\033", 1) || buff[0] == 127
+		|| buff[0] == '\017' || buff[0] == '\002')
 			arrow_key(data, buff);
 		else if (ft_isprint(buff[0]) && !ft_strnequ(buff, "\n", 1))
 		{

@@ -32,6 +32,7 @@
 # include "../libft/get_next_line.h"
 # include "../libft/libft.h"
 
+# define BACK_BLUE		"\033[46m"
 # define BLUE			"\033[38;5;61m"
 # define GREEN			"\033[38;5;29m"
 # define CYAN			"\033[38;5;50m"
@@ -44,6 +45,7 @@
 # define NOFOD			"No such file or directory\n"
 # define HOOK_MALLOC	"Malloc return NULL value"
 # define E_CHDIR	    -1
+# define IDX		    data->iterator
 # define LINE		    data->vector->line
 # define VECT		    data->vector
 # define VECT_UP	    data->vector->up
@@ -66,14 +68,11 @@
 
 typedef struct			s_term
 {
-	int					x;
-	int					y;
-
 	int					line_start;
-	int					line_end;
+	int					x_max;
+	int					line_len;
 
 	char				*line;
-	int					iterator;
 
 	struct s_term		*next;
 	struct s_term		*prev;
@@ -106,6 +105,8 @@ typedef struct			s_bash
 	char				*error;
 
 	t_term				*cursor;
+	int					x;
+	int					y;
 
 	int					history_stack;
 	int					enclose;
@@ -114,6 +115,12 @@ typedef struct			s_bash
 	int					expend_up;
 	int					prompt_len;
 	int					count_separator;
+
+	int					start_select;
+	int					is_select;
+	int					select_direction;
+	int					end_select;
+	char				*copied;
 }						t_bash;
 
 typedef struct			s_built
@@ -202,7 +209,7 @@ char		*build_path(t_bash data, t_vect *lst);
 int			exec_cmd(t_bash data, char *path, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
 void		puterror(char *error);
-
+void		clear_term(char *str);
 /*
 **	PARSING
 */
@@ -237,8 +244,21 @@ void		charadd_to_term(t_bash *data, char c, int pos);
 int			get_win_max_col();
 void		init_cursor(t_bash *data);
 void		fit_line_in_terminal(t_bash *data, t_term **cursor, char *str, int max);
-t_term		*find_node_by_iterator(t_term **head, int idx, int idx_max);
+t_term		*find_node_by_iterator(t_term **head, int idx, int idx_max, int plen);
 void		clear_struct(t_term **cursor);
+int			get_y_cursor(t_term *src);
+
+/*
+**	SELECT COPY CUT & PASTE
+*/
+
+void    	select_back(t_bash *data);
+void    	select_next(t_bash *data);
+void    	select_copy(t_bash *data);
+void    	select_paste(t_bash *data);
+void		uncolor(t_bash *data);
+void		unselect(t_bash *data);
+char		*str_add_sub(char *str, char *sub, int pos);
 
 /*
 **	DEBUG & UNIT_TEST
@@ -248,7 +268,7 @@ void		debug_loop_try_termcaps(t_bash data);
 char		*findenv(char **env, char *var);
 int			handle_expend(t_bash *data, char *entry, int pos);
 void		exec_onebyone(t_bash data);
-void		currsor_info(t_term *curr);
+void		currsor_info(t_term *curr, int count);
 void		info(char *str);
 
 #endif

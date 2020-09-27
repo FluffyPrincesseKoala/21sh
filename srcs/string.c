@@ -42,6 +42,35 @@ char		*addchar(char *str, char c, int pos)
 	return (new);
 }
 
+char		*str_add_sub(char *str, char *sub, int pos)
+{
+	char	*new;
+	int		i;
+	int		j;
+	int		k;
+
+	i = -1;
+	j = -1;
+	k = 0;
+	if (!(new = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(sub) + 1))))
+		return (NULL);
+	while (str && str[++i])
+	{
+		if (i == pos)
+		{
+			while (sub[k])
+			{
+				new[++j] = sub[k];
+				k++;
+			}
+		}
+		else
+			new[++j] = str[i];
+	}
+	new[++j] = '\0';
+	return (new);
+}
+
 int pstr(char const *str)
 {
 	if (str)

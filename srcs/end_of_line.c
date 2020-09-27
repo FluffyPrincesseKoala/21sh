@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/01 11:55:45 by cylemair          #+#    #+#             */
-/*   Updated: 2020/07/01 13:37:54 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/07/30 16:12:37 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int  is_pending_line(t_bash *data)
 {
 	if (data->expend = pending_line(LINE))
 	{
+		key_last(data);
 		push_entry(data, "\n", &data->vector->line, ft_strlen(LINE));
 		ft_putchar('\n');
 	}
@@ -49,6 +50,8 @@ static void update_pending_line(t_bash *data)
 	VECT = VECT_UP;
 	free_vector(&VECT_DOWN);
 	VECT_DOWN = NULL;
+	data->y++;
+	data->x = 0;
 }
 
 int			handle_eol(t_bash *data, char *buff)
@@ -64,12 +67,13 @@ int			handle_eol(t_bash *data, char *buff)
 	else if (is_all_whitespaces(LINE))
 	{
 		ft_putchar('\n');
-		ft_strdel(&LINE); 
+		ft_strdel(&LINE);
 	}
-	if (LINE && !is_pending_line(data)) 
+	if (LINE && !is_pending_line(data))
 	{
+		info("LAPIN");
 		key_last(data);
-		format_line(data); 
+		format_line(data);
 		exec_onebyone(*data);
 	}
 	new_line(data);

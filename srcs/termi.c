@@ -18,7 +18,9 @@ void	info(char *str)
 	GOTO(0, 0);
 	hello();
 	GOTO(0, 0);
-	ft_putendl(str);
+	ft_putchar('[');
+	ft_putstr(str);
+	ft_putchar(']');
 	RESET_C;
 }
 
@@ -45,10 +47,6 @@ int					print_rest(char *str, int pos, char *old)
 	}
 	return (pos);
 }
-
-/*
-**	add function ptr like that "void (*f)()"
-*/
 
 static int			is_whitespaces(char c)
 {
@@ -152,4 +150,12 @@ void		arrow_key(t_bash *data, char *buff)
 		key_start(data);
 	else if (ft_strnequ(buff, "\033[F", 3))
 		key_last(data);
+	else if (ft_strnequ(buff, "\033[1;2D", 6))
+		select_back(data);
+	else if (ft_strnequ(buff, "\033[1;2C", 6))
+		select_next(data);
+	else if (ft_strnequ(buff, "\017", 1))
+		select_copy(data);
+	else if (ft_strnequ(buff, "\002", 1))
+		select_paste(data);
 }

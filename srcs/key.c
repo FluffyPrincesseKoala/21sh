@@ -58,40 +58,36 @@ void				key_last(t_bash *data)
 		data->iterator++;
 	}
 }
-/*
-**
-*/
+
+
 void				key_start(t_bash *data)
 {
 	int				prompt_len;
-	int				count;
 
 	if (data->iterator)
 	{
 		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
 		data->cursor = find_node_by_iterator(&data->cursor, data->iterator,
-											ft_strlen(LINE));
-		currsor_info(data->cursor);
-		count = data->cursor->iterator;
-		while (count--)
+												get_win_max_col(), data->prompt_len);
+		while (IDX)
 		{
-			if (data->cursor->x)
-			{
-				LEFT;
-				data->cursor->x--;
-			}
-			else if (data->cursor->y)
-			{
-				UP;
-				if (!--data->cursor->y)
-				{
-			 		prompt_len = data->prompt_len;
-			 		while (prompt_len--)
-		 				RIGHT;
-				}
-			}
+			move_left(data);
+			// if (data->cursor->x)
+			// {
+			// 	LEFT;
+			// 	data->cursor->x--;
+			// }
+			// else if (data->cursor->y)
+			// {
+			// 	UP;
+			// 	if (!--data->cursor->y)
+			// 	{
+			//  		prompt_len = data->prompt_len;
+			//  		while (prompt_len--)
+		 	// 			RIGHT;
+			// 	}
+			// }
 		}
-		data->iterator = 0;
 		clear_struct(&data->cursor);
 	}
 }
@@ -99,51 +95,44 @@ void				key_start(t_bash *data)
 void				key_back(t_bash *data)
 {
 	char			*tmp;
-	int				len;
+	char			*old;
+	int				expected;
 
-	len = 0;
-	if (data->iterator && (len = ft_strlen(data->vector->line))
-		&& (tmp = delchar(data->vector->line, data->iterator - 1)))
+	if (IDX && ft_strlen(LINE))
 	{
 		if (data->vector->down)
 			pull_line(&data->vector);
+		tmp = delchar(LINE, IDX - 1);
+		expected = IDX - 1;
 		arrow_left(data);
+		old = LINE;
+		LINE = tmp;
 		SAVE_C;
-		len = data->iterator;
-		print_rest(tmp, data->iterator, data->vector->line);
+		print_rest(NULL, IDX, old);
 		RESET_C;
-		data->iterator = len;
-		ft_strdel(&data->vector->line);
-		data->vector->line = tmp;
-	}
-	else if (data->iterator == len && len == 1)
-	{
-		if (data->vector->down)
-			pull_line(&data->vector);
-		print_rest(NULL, data->iterator, data->vector->line);
-		ft_strdel(&data->vector->line);
+		print_rest(LINE, IDX, NULL);
+		RESET_C;
 	}
 }
 
 void				key_suppr(t_bash *data)
 {
 	char			*tmp;
-	int				len;
+	char			*old;
+	int				expected;
 
-	len = ft_strlen(data->vector->line);
-	if (len == 1 && data->iterator == 0)
+	if (ft_strlen(LINE))
 	{
+		if (data->vector->down)
+			pull_line(&data->vector);
+		tmp = delchar(LINE, IDX);
+		expected = IDX;
+		old = LINE;
+		LINE = tmp;
 		SAVE_C;
-		print_rest(NULL, data->iterator, data->vector->line);
-		ft_strdel(&data->vector->line);
+		print_rest(NULL, IDX, old);
 		RESET_C;
-	}
-	else if (data->iterator < len && (tmp = delchar(data->vector->line, data->iterator)))
-	{
-		SAVE_C;
-		print_rest(tmp, data->iterator, data->vector->line);
-		ft_strdel(&data->vector->line);
-		data->vector->line = tmp;
+		print_rest(LINE, IDX, NULL);
 		RESET_C;
 	}
 }

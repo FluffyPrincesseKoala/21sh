@@ -79,37 +79,34 @@ void				move_cursor_to_last_new_line(t_bash *data, int max)
 		RIGHT;
 }
 
-static int			move_to_endline(t_term *cursor, int prompt_len)
+static int			move_to_endline(t_bash *data, int prompt_len)
 {
 	int				count;
-	int				new_x;
 
-	count = 0;
-	if (cursor->y <= 1)
-		count = prompt_len + cursor->line_end;
+	if (data->cursor->prev)
+		data->cursor = data->cursor->prev;
+	if (data->y <= 1)
+		count = prompt_len + data->cursor->line_len;
 	else
-		count = cursor->line_end;
-	if (cursor->prev)
-		cursor = cursor->prev;
-	new_x = count;
+		count = data->cursor->line_len;
 	while (--count)
 		RIGHT;
-	return (new_x);
+	return (data->cursor->line_len);
 }
 
 void				move_left(t_bash *data)
 {
-	if (data->cursor->x || data->cursor->y)
+	if (data->x || data->y)
 	{
 		LEFT;
-		if (data->cursor->x == 0 && data->cursor->y)
+		if (data->x == 0 && data->y)
 		{
 			UP;
-			data->cursor->x = move_to_endline(data->cursor, data->prompt_len);
-			data->cursor->y--;
+			data->x = move_to_endline(data, data->prompt_len) - 1;
+			data->y--;
 		}
 		else
-			data->cursor->x--;
+			data->x--;
 		data->iterator--;
 	}
 }
@@ -118,11 +115,16 @@ void				arrow_left(t_bash *data)
 {
 	if (data->iterator)
 	{
+		if (data->is_select == 1)
+		{
+			uncolor(data);
+			unselect(data);
+		}
 		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
 		if (data->cursor)
 		{
 			data->cursor = find_node_by_iterator(&data->cursor,	data->iterator,
-												ft_strlen(LINE));
+												get_win_max_col(), data->prompt_len);
 			move_left(data);
 			clear_struct(&data->cursor);
 		}
@@ -131,17 +133,17 @@ void				arrow_left(t_bash *data)
 
 void				move_right(t_bash *data)
 {
-	if (data->cursor->x + 1 == data->cursor->line_end)
+	if (data->x + 1 == data->cursor->x_max || data->x == data->cursor->line_len) //move down on right trigger
 	{
 		if (data->cursor->next)
 			data->cursor = data->cursor->next;
-		data->cursor->x = 0;
-		data->cursor->y++;
+		data->x = 0;
+		data->y++;
 		CDOWN;
 	}
 	else
 	{
-		data->cursor->x++;
+		data->x++;
 		RIGHT;
 	}
 	data->iterator++;
@@ -151,9 +153,14 @@ void				arrow_right(t_bash *data)
 {
 	if (data->iterator < ft_strlen(LINE))
 	{
+		if (data->is_select == 1)
+		{
+			uncolor(data);
+			unselect(data);
+		}
 		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
 		data->cursor = find_node_by_iterator(&data->cursor, data->iterator,
-											ft_strlen(LINE));
+												get_win_max_col(), data->prompt_len);
 		move_right(data);
 		clear_struct(&data->cursor);
 	}
@@ -200,7 +207,7 @@ static void			lost_cursor(int prompt_len, int line_len)
 		CDOWN;
 }
 
-static void			clear_term(char *str)
+void			clear_term(char *str)
 {
 	int				i;
 
@@ -220,7 +227,6 @@ static void			clear_term(char *str)
 void				arrow_up(t_bash *data)
 {
 	int		count;
-	int		len;
 	char	*old;
 
 	old = NULL;
@@ -241,10 +247,11 @@ void				arrow_up(t_bash *data)
 		else
 			VECT = VECT_UP;
 		count = print_rest(LINE, data->iterator, NULL);
-		if (count > (len = ft_strlen(LINE)) && old)
-			move_n_left(data, count - data->iterator);
-		lost_cursor(data->prompt_len, count);
-		data->iterator = len;
+		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
+		data->cursor = find_node_by_iterator(&data->cursor, ft_strlen(LINE), get_win_max_col(), data->prompt_len);
+		data->x = ft_strlen(data->cursor->line);
+		data->y = get_y_cursor(data->cursor);
+		data->iterator = ft_strlen(LINE);
 		ft_strdel(&old);
 	//	if (data->vector->down)
 	//		pull_line(&data->vector);

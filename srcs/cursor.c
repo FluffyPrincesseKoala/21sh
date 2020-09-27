@@ -64,18 +64,16 @@ void				clear_struct(t_term **cursor)
 	}
 }
 
-t_term				*new_cursor_struct(char *line, int end, int start)
+t_term				*new_cursor_struct(char *line, int start, int max, int prompt)
 {
 	t_term			*cursor;
 
 	if (!(cursor = ft_memalloc(sizeof(t_term))))
 		return (NULL);
 	cursor->line = (line) ? ft_strdup(line) : NULL;
-	cursor->line_end = end;
+	cursor->x_max = (start == 0) ? max - prompt : max;
 	cursor->line_start = start;
-	cursor->iterator = 0;
-	cursor->x = 0;
-	cursor->y = 0;
+	cursor->line_len = ft_strlen(line);
 	cursor->next = NULL;
 	cursor->prev = NULL;
 }
@@ -99,45 +97,29 @@ void	link_cursor(t_term **head, t_term *new)
 	}
 }
 
-static void cursor_print(t_term *curr)
-{
-	printf("x:%d y:%d ls:%d le:%d idx:%d c:[%c] len:%d\n[%s]\n",curr->x, curr->y,
-	curr->line_start, curr->line_end, curr->iterator,
-	curr->line[curr->x], ft_strlen(curr->line), curr->line);
-}
+// static void cursor_print(t_term *curr, int count)
+// {
+// 	printf("x:%d y:%d ls:%d le:%d idx:%d c:[%c] len:%ld\n[%s]\n",curr->x, curr->y,
+// 	curr->line_start, curr->line_end, count,
+// 	curr->line[curr->x], ft_strlen(curr->line), curr->line);
+// }
 
-void	currsor_info(t_term *curr)
+void	currsor_info(t_term *curr, int count)
 {
 	SAVE_C;
 	GOTO(0, 0);
 	hello();
 	GOTO(0, 0);
-	cursor_print(curr);
+	//cursor_print(curr, count);
 	RESET_C;
 }
 
-t_term 	*init_xy_curr(t_term *curr, int count, int i, int max)
-{
-	curr->iterator = count;
-	if (curr->line[i] || count == max)
-	{
-		curr->x = i;
-		curr->y = get_y_cursor(curr);
-	}
-	else
-	{
-		curr->x = 0;
-		curr->y = get_y_cursor(curr) + 1;
-	}
-	currsor_info(curr);
-	return (curr);
-}
 /*
 **	goto cursor_struct that contain current line
 **	goto current iterator
 **	fill & return struct
 */
-t_term	*find_node_by_iterator(t_term **head, int idx, int idx_max)
+t_term	*find_node_by_iterator(t_term **head, int total_len, int idx_max, int plen)
 {
 	t_term	*curr;
 	int		i;
@@ -150,18 +132,23 @@ t_term	*find_node_by_iterator(t_term **head, int idx, int idx_max)
 		while (curr)
 		{
 			i = 0;
-			while (curr->line && curr->line[i] && count != idx)
+			while (curr->line && curr->line[i] && count != total_len)
 			{
 				count++;
 				i++;
 			}
-			if (count == idx)
-				return (init_xy_curr(curr, count, i, idx_max));
+			if (i < curr->line_len && count == total_len)
+			{
+				return (curr);
+			}
 			curr = curr->next;
+			if (count == total_len)
+			{
+				return (curr);
+			}
 		}
-		*head = curr;
 	}
-	return ((*head) ? init_xy_curr(*head, count, i, idx_max) : NULL);
+	return (NULL);
 }
 
 int		get_win_max_col(void)
@@ -188,28 +175,28 @@ void	fit_line_in_terminal(t_bash *data, t_term **cursor, char *str, int max)
 		return ;
 	while (str && str[i])
 	{
-		x_max = (!*cursor) ? max - data->prompt_len : max ;
+		x_max = (!*cursor) ? max - data->prompt_len : max;
 		if (j != x_max && str[i] != '\n')
 		{
 			new_line[j] = str[i];
 			j++;
 			i++;
 		}
-		if (j == x_max || str[i] == '\n')
+		else
 		{
-			if ( str[i] == '\n')
+			if (str[i] == '\n')
 			{
 				new_line[j] = str[i];
 				j++;
 				i++;
 			}
 			new_line[j] = '\0';
-			link_cursor(cursor, new_cursor_struct(new_line, j, i - j));
-			ft_bzero(new_line, len);
+			link_cursor(cursor, new_cursor_struct(new_line, i - j, max, data->prompt_len));
 			j = 0;
+			ft_bzero(new_line, len);
 		}
 	}
-	link_cursor(cursor, new_cursor_struct(new_line, x_max, i - j));
+	link_cursor(cursor, new_cursor_struct(new_line, i - j, max, data->prompt_len));
 	ft_bzero(new_line, len);
 }
 
