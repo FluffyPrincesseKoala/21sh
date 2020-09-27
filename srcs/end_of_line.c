@@ -26,6 +26,7 @@ static int  is_pending_line(t_bash *data)
 static void prompt_new_line(t_bash *data)
 {
 	data->iterator = 0;
+	data->x = 0;
 	data->prompt_len = prompt(data->expend);
 }
 

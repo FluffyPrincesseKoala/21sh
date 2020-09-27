@@ -119,7 +119,7 @@ void	currsor_info(t_term *curr, int count)
 **	goto current iterator
 **	fill & return struct
 */
-t_term	*find_node_by_iterator(t_term **head, int total_len, int idx_max, int plen)
+t_term	*find_cursor_node(t_term **head, int total_len, int idx_max, int plen)
 {
 	t_term	*curr;
 	int		i;
@@ -137,15 +137,11 @@ t_term	*find_node_by_iterator(t_term **head, int total_len, int idx_max, int ple
 				count++;
 				i++;
 			}
-			if (i < curr->line_len && count == total_len)
-			{
+			if ((i < curr->line_len && count == total_len) || !curr->next)
 				return (curr);
-			}
 			curr = curr->next;
 			if (count == total_len)
-			{
 				return (curr);
-			}
 		}
 	}
 	return (NULL);
@@ -160,7 +156,7 @@ int		get_win_max_col(void)
 	return (0);
 }
 
-void	fit_line_in_terminal(t_bash *data, t_term **cursor, char *str, int max)
+void	fill_term_struct(t_bash *data, t_term **cursor, char *str, int max)
 {
 	int		i;
 	int		j;

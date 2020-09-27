@@ -66,10 +66,10 @@ void				key_start(t_bash *data)
 
 	if (data->iterator)
 	{
-		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
-		data->cursor = find_node_by_iterator(&data->cursor, data->iterator,
+		fill_term_struct(data, &data->cursor, LINE, get_win_max_col());
+		data->cursor = find_cursor_node(&data->cursor, data->iterator,
 												get_win_max_col(), data->prompt_len);
-		while (IDX)
+		while (IDX && (data->x || data->y))
 			move_left(data);
 		clear_struct(&data->cursor);
 	}

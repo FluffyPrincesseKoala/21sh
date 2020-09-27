@@ -243,8 +243,8 @@ char		**lst_to_array(t_lst *head);
 void		charadd_to_term(t_bash *data, char c, int pos);
 int			get_win_max_col();
 void		init_cursor(t_bash *data);
-void		fit_line_in_terminal(t_bash *data, t_term **cursor, char *str, int max);
-t_term		*find_node_by_iterator(t_term **head, int idx, int idx_max, int plen);
+void		fill_term_struct(t_bash *data, t_term **cursor, char *str, int max);
+t_term		*find_cursor_node(t_term **head, int idx, int idx_max, int plen);
 void		clear_struct(t_term **cursor);
 int			get_y_cursor(t_term *src);
 

@@ -12,6 +12,21 @@
 
 #include "21sh.h"
 
+static void	custom_info(int x, int y, t_term *cursor)
+{
+	SAVE_C;
+	GOTO(0, 0);
+	hello();
+	GOTO(0, 0);
+	ft_putstr("[x:");
+	ft_putnbr(x);
+	ft_putstr("]\t");
+	ft_putstr("[y:");
+	ft_putnbr(y);
+	ft_putstr("]\t");
+	RESET_C;
+}
+
 int			len_between_last_delim(char *str, char delim, int start)
 {
 	int				i;
@@ -120,12 +135,13 @@ void				arrow_left(t_bash *data)
 			uncolor(data);
 			unselect(data);
 		}
-		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
+		fill_term_struct(data, &data->cursor, LINE, get_win_max_col());
 		if (data->cursor)
 		{
-			data->cursor = find_node_by_iterator(&data->cursor,	data->iterator,
+			data->cursor = find_cursor_node(&data->cursor,	data->iterator,
 												get_win_max_col(), data->prompt_len);
 			move_left(data);
+			custom_info(data->x, data->y, data->cursor);
 			clear_struct(&data->cursor);
 		}
 	}
@@ -133,7 +149,8 @@ void				arrow_left(t_bash *data)
 
 void				move_right(t_bash *data)
 {
-	if (data->x + 1 == data->cursor->x_max || data->x == data->cursor->line_len) //move down on right trigger
+	if (data->x + 1 == data->cursor->x_max || data->x == data->cursor->line_len
+	|| data->cursor->line[data->x] == '\n')
 	{
 		if (data->cursor->next)
 			data->cursor = data->cursor->next;
@@ -158,10 +175,11 @@ void				arrow_right(t_bash *data)
 			uncolor(data);
 			unselect(data);
 		}
-		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
-		data->cursor = find_node_by_iterator(&data->cursor, data->iterator,
+		fill_term_struct(data, &data->cursor, LINE, get_win_max_col());
+		data->cursor = find_cursor_node(&data->cursor, data->iterator,
 												get_win_max_col(), data->prompt_len);
 		move_right(data);
+		custom_info(data->x, data->y, data->cursor);
 		clear_struct(&data->cursor);
 	}
 }
@@ -247,11 +265,12 @@ void				arrow_up(t_bash *data)
 		else
 			VECT = VECT_UP;
 		count = print_rest(LINE, data->iterator, NULL);
-		fit_line_in_terminal(data, &data->cursor, LINE, get_win_max_col());
-		data->cursor = find_node_by_iterator(&data->cursor, ft_strlen(LINE), get_win_max_col(), data->prompt_len);
+		fill_term_struct(data, &data->cursor, LINE, get_win_max_col());
+		data->cursor = find_cursor_node(&data->cursor, ft_strlen(LINE), get_win_max_col(), data->prompt_len);
 		data->x = ft_strlen(data->cursor->line);
 		data->y = get_y_cursor(data->cursor);
 		data->iterator = ft_strlen(LINE);
+		custom_info(data->x, data->y, data->cursor);
 		ft_strdel(&old);
 	//	if (data->vector->down)
 	//		pull_line(&data->vector);
@@ -280,7 +299,16 @@ void				arrow_down(t_bash *data) // update me plz :'(
 		}
 		else
 			VECT = VECT_DOWN;
-		data->iterator = print_rest(LINE, data->iterator, NULL);
+		count = print_rest(LINE, data->iterator, NULL);
+		fill_term_struct(data, &data->cursor, LINE, get_win_max_col());
+		data->cursor = find_cursor_node(&data->cursor, ft_strlen(LINE), get_win_max_col(), data->prompt_len);
+		if (data->cursor)
+		{
+			data->x = ft_strlen(data->cursor->line);
+			data->y = get_y_cursor(data->cursor);
+		}
+		custom_info(data->x, data->y, data->cursor);
+		data->iterator = ft_strlen(LINE);
 		ft_strdel(&old);
 //		if (data->vector->down)
 //			pull_line(&data->vector);
