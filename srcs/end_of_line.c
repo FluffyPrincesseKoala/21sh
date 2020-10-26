@@ -64,7 +64,7 @@ int			handle_eol(t_bash *data, char *buff)
 	if (data->vector->down)
 		pull_line(&data->vector);
 	if (data->expend)
-		update_pending_line(data);  // concat previous and current line
+		update_pending_line(data);
 	else if (is_all_whitespaces(LINE))
 	{
 		ft_putchar('\n');

@@ -96,6 +96,9 @@ int			prompt(int short_prompt)
 	int		len;
 
 	len = 0;
+
+	if (short_prompt == -1)
+	 return (0);
 	if (!short_prompt)
 	{
 		pstr(BLUE);
@@ -194,9 +197,13 @@ int			pending_line(char *str)
 			j++;
 		}
 		if (stack)
+		{
+			ft_strdel(&separator);
 			return (stack);
+		}
 		i++;
 	}
+	ft_strdel(&separator);
 	return (stack);
 }
 
@@ -213,15 +220,11 @@ void		loop(t_bash *data)
 	{
 		read(0, buff, 6);
 		if (ft_strnequ(buff, "\n", 1))
-		{
 			handle_eol(data, buff);
-		}
 		else if (ft_strnequ(buff, "\033", 1) || buff[0] == 127
 		|| buff[0] == '\017' || buff[0] == '\002')
 			arrow_key(data, buff);
 		else if (ft_isprint(buff[0]) && !ft_strnequ(buff, "\n", 1))
-		{
 			data->iterator = handle_new_entry(data, buff, data->iterator);
-		}
 	}
 }

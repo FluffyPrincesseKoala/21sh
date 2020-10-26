@@ -36,7 +36,7 @@ int			len_next_quote(char **array, int start, int quote)
 			&& ((b = ft_strrchr(array[start + len], quote)) && a != b))
 			return (1);
 		else
-		{		
+		{
 			while (array && array[start + ++len]
 			&& count)
 			{
@@ -78,7 +78,7 @@ char		**replace_subarray_by_string(char **array, char *str, int size, int start)
 			i += size;
 		}
 		else
-		{		
+		{
 			new[j] = ft_strdup(array[i]);
 			i++;
 		}
@@ -186,7 +186,7 @@ void		words_as_args(char **table, t_bash *data)
 ** avoir une variable dans t_lst, qui indique si quote ou pas
 ** reparser pour les separateur en ignorant les args qui sont des quote
 */
- 
+
 static char	*space_separator(char *line)
 {
 	char	*ret;
