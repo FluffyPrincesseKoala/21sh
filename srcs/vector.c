@@ -6,17 +6,17 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 19:25:39 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/03 17:43:32 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/12 17:39:02 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-t_vect		*vect_new(t_lst *args, char *line)
+t_vect		*vect_new(t_arg *args, char *line)
 {
 	t_vect	*list;
 
-	if (!(list = (t_vect*)malloc(sizeof(t_vect))))
+	if (!(list = (t_vect*)ft_memalloc(sizeof(t_vect))))
 		return (NULL);
 	list->args = (args) ? args : NULL;
 	list->line = (line) ? ft_strdup(line) : NULL;
@@ -40,6 +40,26 @@ t_vect		*vect_add(t_vect **head, t_vect *new)
 	return (*head);
 }
 
+void		free_all_vectors(t_vect *vect)
+{
+	if (vect)
+	{
+		ft_strdel(&vect->line);
+		free_all_args(vect->args);
+		free_all_vectors(vect->next);
+		free_all_vectors(vect->up);
+		free_all_vectors(vect->down);
+		if (vect->redirections)
+			free_redirection(vect->redirections);
+		vect->args = NULL;
+		vect->next = NULL;
+		vect->up = NULL;
+		vect->down = NULL;
+		vect->redirections = NULL;
+		free(vect);
+	}
+}
+
 void		free_vector(t_vect **head)
 {
 	t_vect	*lst;
@@ -56,7 +76,8 @@ void		free_vector(t_vect **head)
 		while (lst)
 		{
 			if (lst->args)
-				lstfree(&lst->args);
+				free_all_args(lst->args);
+			lst->args = NULL;
 			ft_strdel(&lst->line);
 			lst->line = NULL;
 			lst_next = lst->next;

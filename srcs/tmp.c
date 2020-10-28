@@ -12,7 +12,7 @@
 
 #include "21sh.h"
 
-void		puterror(char *error)
+void		put_error_msg(char *error)
 {
 	ft_putstr_fd(RED, 2);
 	ft_putstr_fd(error, 2);
@@ -158,25 +158,6 @@ char		*findenv(char **env, char *var)
 	return (NULL);
 }
 
-void		exec_onebyone(t_bash data)
-{
-	t_vect	*lst;
-	char	*path;
-
-	ft_putchar('\n');
-	lst = (data.vector) ? data.vector : NULL;
-	while (lst && !data.error)
-	{
-		if ((path = build_path(data, lst)) && !access(path, X_OK))
-			exec_cmd(data, path, lst);
-		else if (lst->args && !access((const char*)lst->args->content, X_OK))
-			exec_cmd(data, lst->args->content, data.vector);
-		else
-			put_error(lst->args->content, UNOW);
-		lst = lst->next;
-	}
-}
-
 int			pending_line(char *str)
 {
 	char	*separator;
@@ -186,7 +167,7 @@ int			pending_line(char *str)
 
 	i = 0;
 	stack = 0;
-	separator = ft_strdup("\'\""); // free
+	separator = ft_strdup("\'\"");
 	while (separator[i])
 	{
 		j = 0;
@@ -221,10 +202,12 @@ void		loop(t_bash *data)
 		read(0, buff, 6);
 		if (ft_strnequ(buff, "\n", 1))
 			handle_eol(data, buff);
-		else if (ft_strnequ(buff, "\033", 1) || buff[0] == 127
-		|| buff[0] == '\017' || buff[0] == '\002')
+		else if (!data->error && (ft_strnequ(buff, "\033", 1)
+		|| buff[0] == 127 || buff[0] == '\017' || buff[0] == '\002'))
 			arrow_key(data, buff);
-		else if (ft_isprint(buff[0]) && !ft_strnequ(buff, "\n", 1))
+		else if (!data->error && ft_isprint(buff[0]) && !ft_strnequ(buff, "\n", 1))
 			data->iterator = handle_new_entry(data, buff, data->iterator);
+		if (data->error)
+			break;
 	}
 }

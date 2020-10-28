@@ -24,9 +24,9 @@ char				*ft_strsub(char const *s, unsigned int start, size_t len)
 		return (NULL);
 	while (s[j] && j != start)
 		j += 1;
-	if (s[j] == s[start])
+	if (j == start)
 	{
-		while (i != len)
+		while (i != len && s[j])
 		{
 			new[i] = (char)s[j];
 			j += 1;

@@ -87,4 +87,6 @@ char				*ft_strndup(const char *str, size_t size);
 int					ft_stristr(const char *str, const char *to_find);
 char				*ft_strsub_free(char **s, unsigned int start, unsigned int len);
 int					is_all_whitespaces(char *str);
+int					ft_str_is_digits(const char *s);
+
 #endif

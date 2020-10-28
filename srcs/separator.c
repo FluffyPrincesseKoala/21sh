@@ -6,13 +6,13 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/03 19:20:29 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/28 14:39:41 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-static void set_arg_to_vect(t_bash *data, t_lst *args)
+static void set_arg_to_vect(t_bash *data, t_arg *args)
 {
 	if (VECT->args)
 		vect_add(&VECT, vect_new(args, NULL));
@@ -36,7 +36,7 @@ int			len_next_quote(char **array, int start, int quote)
 			&& ((b = ft_strrchr(array[start + len], quote)) && a != b))
 			return (1);
 		else
-		{
+		{		
 			while (array && array[start + ++len]
 			&& count)
 			{
@@ -78,7 +78,7 @@ char		**replace_subarray_by_string(char **array, char *str, int size, int start)
 			i += size;
 		}
 		else
-		{
+		{		
 			new[j] = ft_strdup(array[i]);
 			i++;
 		}
@@ -126,36 +126,26 @@ static void	handle_quote(t_bash *data, char **table, int i, int len, char quote)
 
 	if ((string_with_quote = merge_string_from_array(table, len, i)))
 	{
-		if (!(quoted_string = del_all_delim_in(string_with_quote, quote)))
-		{
-			ft_strdel(&data->error); // remove when static table
-			data->error = ft_strdup(HOOK_MALLOC);
-			return ;
-		}
-		lstadd(&VECT->args, lstnew(quoted_string, quote));
-		ft_strdel(&quoted_string);
+		if (quoted_string = del_all_delim_in(string_with_quote, quote))
+			if (add_arg(&VECT->args, new_arg(quoted_string, quote)))
+				return;
 	}
-	else
-	{
-		ft_strdel(&data->error); // remove when static table
-		data->error = ft_strdup(HOOK_MALLOC);
-	}
+	data->error = MALLOC_ERROR;
 }
 
 static void	handle_word(t_bash *data, char *str)
 {
 	if (!str || !VECT)
 	{
-		ft_strdel(&data->error);
-		data->error = ft_strdup(HOOK_MALLOC);
+		data->error = MALLOC_ERROR;
 		return ;
 	}
-	lstadd(&VECT->args, lstnew(str, NOQUOTE));
+	add_arg(&VECT->args, new_arg(str, NOQUOTE));
 }
 
 void		words_as_args(char **table, t_bash *data)
 {
-	t_lst	*args;
+	t_arg	*args;
 	int		len;
 	int		i;
 
@@ -175,7 +165,7 @@ void		words_as_args(char **table, t_bash *data)
 		}
 		else
 		{
-			handle_word(data, table[i]);
+			handle_word(data, ft_strdup(table[i]));
 			i++;
 		}
 	}
@@ -183,10 +173,10 @@ void		words_as_args(char **table, t_bash *data)
 
 /*
 ** récupérer les quote, créer args au fur et à mesure
-** avoir une variable dans t_lst, qui indique si quote ou pas
+** avoir une variable dans t_arg, qui indique si quote ou pas
 ** reparser pour les separateur en ignorant les args qui sont des quote
 */
-
+ 
 static char	*space_separator(char *line)
 {
 	char	*ret;
@@ -225,7 +215,7 @@ static int	contains_sperator(char *str)
 	return (-1);
 }
 
-void		detach_args(t_vect *current, t_lst *last_arg_before_doomsday)
+void		detach_args(t_vect *current, t_arg *last_arg_before_doomsday)
 {
 	if (last_arg_before_doomsday->next)
 	{
@@ -234,29 +224,25 @@ void		detach_args(t_vect *current, t_lst *last_arg_before_doomsday)
 	}
 }
 
-void		get_post_separator_args(t_bash *data, t_lst *lst, int index, int len)
+void		get_post_separator_args(t_bash *data, t_arg *lst, int index, int len)
 {
-	char	*sub_string;
-	t_lst	*new_arg;
+	char	*substring;
+	t_arg	*new;
 
-	sub_string = NULL;
-	new_arg = NULL;
-	if (sub_string = ft_strsub(lst->content, index, len - index))
+	substring = NULL;
+	new = NULL;
+	if (substring = ft_strsub(lst->content, index, len - index))
 	{
-		if ((new_arg = lstnew(sub_string, 0)))
-		{
-			lst_add_after(lst, new_arg);
+		if (insert_new_arg(lst, substring))
 			return ;
-		}
-		ft_strdel(&sub_string);
+		ft_strdel(&substring);
 	}
-	ft_strdel(&data->error);
-	data->error = ft_strdup(HOOK_MALLOC);
+	data->error = MALLOC_ERROR;
 }
 
 void		parse_args(t_bash *data, t_vect *current)
 {
-	t_lst	*lst;
+	t_arg	*arg;
 	unsigned int	i;
 	unsigned int	len;
 	unsigned int	separator_idx;
@@ -264,20 +250,19 @@ void		parse_args(t_bash *data, t_vect *current)
 	i = 0;
 	len = 0;
 	separator_idx = 0;
-	if (current->args)
-		lst = current->args;
-	while (lst)
+	arg = current->args;
+	while (arg)
 	{
-		if ((separator_idx = contains_sperator(lst->content)) != -1
-		&& !lst->quote)
+		if ((separator_idx = contains_sperator(arg->content)) != -1
+		&& !arg->quote)
 		{
-			current->separator = lst->content[separator_idx];
-			if ((len = ft_strlen(lst->content)) != separator_idx + 1)
-				get_post_separator_args(data, lst, separator_idx + 1, len);
-			detach_args(current, lst);
-			lst->content = ft_strsub_free(&lst->content, 0, separator_idx);
+			current->separator = arg->content[separator_idx];
+			if ((len = ft_strlen(arg->content)) != separator_idx + 1)
+				get_post_separator_args(data, arg, separator_idx + 1, len);
+			detach_args(current, arg);
+			arg->content = ft_strsub_free(&arg->content, 0, separator_idx);
 		}
-		lst = lst->next;
+		arg = arg->next;
 	}
 }
 

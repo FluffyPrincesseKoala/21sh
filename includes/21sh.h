@@ -27,10 +27,10 @@
 # include <stdio.h>
 
 #include <term.h>
-//#include <curses.h>
 
 # include "../libft/get_next_line.h"
 # include "../libft/libft.h"
+# include "structs.h"
 
 # define BACK_BLUE		"\033[46m"
 # define BLUE			"\033[38;5;61m"
@@ -66,83 +66,38 @@
 # define FALSE			0
 # define NOQUOTE		0
 
-typedef struct			s_term
-{
-	int					line_start;
-	int					x_max;
-	int					line_len;
 
-	char				*line;
+# define SIMPLE_OUTPUT_REDIRECTION ">"
+# define APPENDING_OUTPUT_REDIRECTION ">>"
+# define INPUT_REDIRECTION "<"
+# define CLOSE_DIRECTION '-'
 
-	struct s_term		*next;
-	struct s_term		*prev;
-}						t_term;
+# define NEW_FILE_MODE	S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
+# define SIMPLE_OUTPUT_FLAGS O_WRONLY | O_CREAT
+# define APPENDING_OUTPUT_FLAGS SIMPLE_OUTPUT_FLAGS | O_APPEND
+# define INPUT_FLAGS O_RDONLY
 
-typedef struct			s_lst
-{
-	char				*content;
-	int					quote;
-	struct s_lst		*next;
-}						t_lst;
+# define STDOUT 1
+# define STDERR 2
+# define STDIN 0
+# define STDOUT_AND_STDERR -1
+# define CLOSE_FD -1
+# define AMBIGUOUS -2
+# define NO_RIGHT_FD 0
 
-typedef struct			s_vect
-{
-	char				*line;
-	t_lst				*args;
-	char				separator;
-
-	struct s_vect		*next;
-	struct s_vect		*up;
-	struct s_vect		*down;
-}						t_vect;
-
-typedef struct			s_bash
-{
-	char				**env;
-	char				**venv;
-	t_vect				*vector;
-	int					iterator;
-	char				*error;
-
-	t_term				*cursor;
-	int					x;
-	int					y;
-
-	int					history_stack;
-	int					enclose;
-	int					expend;
-	int					start_expend;
-	int					expend_up;
-	int					prompt_len;
-	int					count_separator;
-
-	int					start_select;
-	int					is_select;
-	int					select_direction;
-	int					end_select;
-	char				*copied;
-}						t_bash;
-
-typedef struct			s_built
-{
-	void				(*f)(struct s_bash *, struct s_vect *);
-	char				*name;
-}						t_built;
-
-typedef struct			s_key
-{
-	void				(*f)(struct s_bash *);
-	char				*name;
-}						t_key;
+# define MALLOC_ERROR 1
+# define AMBIGUOUS_REDIRECTION_ERROR 2
+# define UNEXPECT_COMMAND_END_ERROR 3
+# define OPEN_ERROR 4
 
 /*
 **	t_vect manipulation (keep current and old entry)
 */
 
-t_vect		*vect_new(t_lst *args, char *line);
+t_vect		*vect_new(t_arg *args, char *line);
 t_vect		*vect_add(t_vect **head, t_vect *new);
 t_vect		*vect_push(t_vect **head, t_vect *new);
-size_t		count_lst(t_vect *head);
+size_t		count_arg(t_vect *head);
 t_vect		*link_history(t_vect **head, t_vect *new);
 void		pull_line(t_vect **head);
 void		free_vector(t_vect **head);
@@ -155,6 +110,9 @@ void		free_array(char **array);
 char		**copy_array(char **array);
 int			array_len(char **array);
 int			array_total_len(char **array);
+void		print_array(char **array);
+
+
 
 /*
 **	STDIN & TERM RELATED
@@ -205,22 +163,26 @@ void		push_entry(t_bash *data, char *entry, char **line, int pos);
 void		hello();
 int			prompt(int short_prompt);
 void		loop(t_bash *data);
-char		*build_path(t_bash data, t_vect *lst);
-int			exec_cmd(t_bash data, char *path, t_vect *cmd);
+char		*build_path(t_bash *data, t_vect *lst);
+void		handle_fork(t_bash *data, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
-void		puterror(char *error);
+void		puterror(int error);
+int			fork_failed(pid_t pid);
+int			is_child(pid_t pid);
+void 		set_up_signals();
 void		clear_term(char *str);
+
 /*
 **	PARSING
 */
 
-t_vect		*new_arg(t_lst *args, t_vect *new);
+//t_vect		*new_arg(t_arg *args, t_vect *new);
 int			next_delim(char **array, int start);
 void		read_separator(char **table, t_bash *data);
 void		format_line(t_bash *data);
-void		get_var(t_lst **head, char **env);
+void		get_var(t_arg **head, char **env);
 int			len_between_last_delim(char *str, char delim, int start);
-int			get_curent_line(char *str, int pos, int max, int prompt);
+int			get_curent_line(char *str, int pos);
 int			lendelim(char *str, char delim, int start);
 size_t		count_delim(char *str, int delim);
 int   		handle_eol(t_bash *data, char *buff);
@@ -230,11 +192,32 @@ int			pending_line(char *str);
 **	LIST STUFF
 */
 
-t_lst		*lstnew(char *content, int quote);
-void		lstadd(t_lst **head, t_lst *new);
-void		lst_add_after(t_lst *this_one, t_lst *next);
-void		lstfree(t_lst **head);
-char		**lst_to_array(t_lst *head);
+void		free_all_vectors(t_vect *vect);
+t_arg		*lstnew(char *content, int quote);
+void		lstadd(t_arg **head, t_arg *new);
+void		lst_add_after(t_arg *this_one, t_arg *next);
+void		lstfree(t_arg **head);
+char		**lst_to_array(t_arg *head);
+
+/*
+**	DEBUG & UNIT_TEST
+*/
+
+void		debug_loop_try_termcaps(t_bash data);
+char		*findenv(char **env, char *var);
+int			handle_expend(t_bash *data, char *entry, int pos);
+void		exec_onebyone(t_bash data);
+
+/*
+** ARGS
+*/
+
+t_arg   	*new_arg(char *content, char quote);
+t_arg  		*add_arg(t_arg **head, t_arg *new);
+int    		insert_new_arg(t_arg *previous, char *s);
+char    	**arg_to_array(t_bash *data, t_arg *arg);
+void		del_one_arg(t_arg *arg, t_vect *cmd);
+void    	free_all_args(t_arg *arg);
 
 /*
 **	CURSOR TERM STRUCT
@@ -270,5 +253,40 @@ int			handle_expend(t_bash *data, char *entry, int pos);
 void		exec_onebyone(t_bash data);
 void		currsor_info(t_term *curr, int count);
 void		info(char *str);
+
+/*
+** REDIRECTIONS
+*/
+
+/*
+**	STRUCT
+*/
+
+t_redirection   *new_redirection(t_vect *cmd, int flags);
+void            free_redirection(t_redirection *redirection);
+
+/*
+** SET UP
+*/
+
+t_bash			*initialize_redirection_set_up_functions(t_bash *data);
+void            search_redirections_in_cmd(t_bash *data, t_vect *cmd);
+
+/*
+**  TOOLS
+*/
+
+int             search_right_fd(t_arg *arg, char *substring, int *error);
+int				search_left_fd(t_arg *arg, int operator_index, int def, int *error);
+char            *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, int *error);
+int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
+void		    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
+				int substring_index, int *error);
+/*
+** EXECUTION
+*/
+
+void            handle_redirections(t_bash *data, t_redirection *redirection, int position);
+void            restore_directions(t_redirection *redirection);
 
 #endif

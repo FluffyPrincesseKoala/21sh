@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2020/04/29 18:44:14 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/06/12 17:47:43 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,18 @@ void		free_array(char **array)
 	if (array)
 		free(array);
 	array = NULL;
+}
+
+void		print_array(char **array)
+{
+	int i;
+
+	i=0;
+	ft_putchar('\n');
+	while (array && array[i])
+	{
+		ft_putstr(array[i]);
+		ft_putchar('\n');
+		i++;
+	}
 }

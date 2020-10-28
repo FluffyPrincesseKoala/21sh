@@ -31,24 +31,31 @@ NAME	=	21sh
 
 RM		=	rm -rf
 
-SRC		=	srcs/main.c 			\
-			srcs/vector.c			\
-			srcs/getter.c			\
-			srcs/string.c			\
-			srcs/termi.c			\
-			srcs/array.c			\
-			srcs/exec.c				\
-			srcs/tmp.c				\
-			srcs/replace_substr.c	\
-			srcs/arrow.c			\
-			srcs/key.c				\
-			srcs/lst.c				\
-			srcs/convert.c			\
-			srcs/separator.c		\
-			srcs/get_var.c			\
-			srcs/end_of_line.c		\
-			srcs/cursor.c			\
-			srcs/select.c			\
+SRC		=	srcs/main.c 					\
+			srcs/vector.c					\
+			srcs/getter.c					\
+			srcs/string.c					\
+			srcs/termi.c					\
+			srcs/array.c					\
+			srcs/exec.c						\
+			srcs/tmp.c						\
+			srcs/replace_substr.c			\
+			srcs/arrow.c					\
+			srcs/key.c						\
+			srcs/lst.c						\
+			srcs/convert.c					\
+			srcs/separator.c				\
+			srcs/get_var.c					\
+			srcs/end_of_line.c				\
+			srcs/cursor.c					\
+			srcs/select.c					\
+			srcs/signals.c					\
+			srcs/redirections_execution.c	\
+			srcs/redirections_setup.c		\
+			srcs/redirections_struct.c		\
+			srcs/redirections_tools.c		\
+			srcs/functions_not_macros.c		\
+			srcs/args.c						\
 
 OBJS	=	$(SRC:.c=.o)
 

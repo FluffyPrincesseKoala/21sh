@@ -23,6 +23,20 @@ static int  is_pending_line(t_bash *data)
 	return (data->expend);
 }
 
+static int  is_all_whitespaces(char *str)
+{
+	int		i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		if (!ft_iswhitespace(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 static void prompt_new_line(t_bash *data)
 {
 	data->iterator = 0;
@@ -75,7 +89,9 @@ int			handle_eol(t_bash *data, char *buff)
 		info("LAPIN");
 		key_last(data);
 		format_line(data);
-		exec_onebyone(*data);
+		search_redirections_in_cmd(data, VECT);
+		if (!data->error)
+			handle_fork(data, VECT);
 	}
 	new_line(data);
 }

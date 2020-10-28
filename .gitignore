@@ -4,4 +4,4 @@ libft/*.o
 libft/libft.a
 21sh
 vgcore.*
-changed_file.txt
+a.out
