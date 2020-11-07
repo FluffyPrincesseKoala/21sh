@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 12:26:04 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/28 15:44:21 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/07/10 12:30:51 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void    detach_arg(t_arg *arg, t_vect *cmd)
 void del_one_arg(t_arg *arg, t_vect *cmd)
 {
     detach_arg(arg, cmd);
-    ft_strdel(&arg->content);
+    ft_strdel(&CONTENT);
     free(arg);
     arg = NULL;
 }
@@ -84,7 +84,7 @@ size_t  args_len(t_arg *arg)
     len = 0;
     while (arg)
     {
-        if (arg->content)
+        if (CONTENT)
             len++;
         arg = arg->next;
     }
@@ -103,9 +103,9 @@ char    **arg_to_array(t_bash *data, t_arg *arg)
         i = 0;
         while (arg)
         {
-            if (arg->content)
+            if (CONTENT)
             {
-                array[i] = ft_strdup(arg->content);
+                array[i] = ft_strdup(CONTENT);
                 i++;
             }
             arg = arg->next;
@@ -119,7 +119,7 @@ void    free_all_args(t_arg *arg)
 {
     if (arg)
     {
-        ft_strdel(&arg->content);
+        ft_strdel(&CONTENT);
         free_all_args(arg->next);
         arg->previous = NULL;
         arg->next = NULL;

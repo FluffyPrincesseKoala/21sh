@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:43:13 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/28 14:51:28 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/07/10 12:34:12 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ void	*free_bash(t_bash *data)
 	data->env = NULL;
 	data->venv = NULL;
 	free_all_vectors(data->vector);
-	free_redirections_setup(data->redirections_setup);
-	data->redirections_setup = NULL;
+	free_redirections_setup(REDIRECTION_SETUP);
+	REDIRECTION_SETUP = NULL;
 	free(data);
 	return (NULL);
 }
@@ -54,7 +54,7 @@ t_bash	*initialize_bash(char **env)
 	if (!(data->vector = vect_new(NULL, NULL)))
 		return (free_bash(data));
 	data->prompt_len = prompt(0);
-	if (!(data->redirections_setup = malloc(sizeof(t_redirection_setup) * 4)))
+	if (!(REDIRECTION_SETUP = malloc(sizeof(t_redirection_setup) * 4)))
 		return (free_bash(data));
 	if (!(initialize_redirection_set_up_functions(data)))
 		return (free_bash(data));

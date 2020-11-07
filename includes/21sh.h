@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/12 18:37:19 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/28 14:40:58 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/09/19 16:25:21 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,36 +33,38 @@
 # include "../libft/libft.h"
 # include "structs.h"
 
-# define BLUE			"\033[38;5;61m"
-# define GREEN			"\033[38;5;29m"
-# define CYAN			"\033[38;5;50m"
-# define RED 	    	"\033[1;31m"
-# define RESET		    "\033[0m"
-# define NODIR	    	"Not a directory\n"
-# define DENY		    "Permission denied\n"
-# define UNOW		    "Command not found\n"
-# define SYNTAX         "21sh: syntax error near unexpected symbol "
-# define NOFOD			"No such file or directory\n"
-# define HOOK_MALLOC	"Malloc return NULL value"
-# define E_CHDIR	    -1
-# define LINE		    data->vector->line
-# define VECT		    data->vector
-# define VECT_UP	    data->vector->up
-# define VECT_DOWN	    data->vector->down
-# define CUR_X		    (data->iterator + data->prompt_len) % w.ws_col
-# define CUR_Y		    (data->iterator + data->prompt_len) / w.ws_col
-# define LEN_Y			(ft_strlen(LINE) + data->prompt_len) / w.ws_col
-# define ONLY_WCHAR		(count_delim(LINE, ' ') != ft_strlen(LINE))
-# define UP				tputs(tgoto(tgetstr("up", NULL), 0 , 0), 1, &pchar)
-# define CDOWN			tputs(tgoto(tgetstr("do", NULL), 0 , 0), 1, &pchar)
-# define LEFT			tputs(tgoto(tgetstr("le", NULL), 0 , 0), 1, &pchar)
-# define RIGHT			tputs(tgoto(tgetstr("nd", NULL), 0 , 0), 1, &pchar)
-# define SAVE_C			tputs(tgoto(tgetstr("sc", NULL), 0 , 0), 1, &pchar)
-# define RESET_C		tputs(tgoto(tgetstr("rc", NULL), 0 , 0), 1, &pchar)
-# define CLEAR			tputs(tgetstr("cl", NULL), 1, &pchar)
-# define TRUE			1
-# define FALSE			0
-# define NOQUOTE		0
+# define BLUE			    "\033[38;5;61m"
+# define GREEN			    "\033[38;5;29m"
+# define CYAN			    "\033[38;5;50m"
+# define RED 	    	    "\033[1;31m"
+# define RESET		        "\033[0m"
+# define NODIR	    	    "Not a directory\n"
+# define DENY		        "Permission denied\n"
+# define UNOW		        "Command not found\n"
+# define SYNTAX             "21sh: syntax error near unexpected symbol "
+# define NOFOD			    "No such file or directory\n"
+# define HOOK_MALLOC	    "Malloc return NULL value"
+# define E_CHDIR	        -1
+# define CONTENT            arg->content
+# define LINE		        data->vector->line
+# define VECT		        data->vector
+# define VECT_UP	        data->vector->up
+# define VECT_DOWN	        data->vector->down
+# define REDIRECTION_SETUP  data->redirections_setup
+# define CUR_X		        (data->iterator + data->prompt_len) % w.ws_col
+# define CUR_Y		        (data->iterator + data->prompt_len) / w.ws_col
+# define LEN_Y			    (ft_strlen(LINE) + data->prompt_len) / w.ws_col
+# define ONLY_WCHAR		    (count_delim(LINE, ' ') != ft_strlen(LINE))
+# define UP				    tputs(tgoto(tgetstr("up", NULL), 0 , 0), 1, &pchar)
+# define CDOWN			    tputs(tgoto(tgetstr("do", NULL), 0 , 0), 1, &pchar)
+# define LEFT			    tputs(tgoto(tgetstr("le", NULL), 0 , 0), 1, &pchar)
+# define RIGHT			    tputs(tgoto(tgetstr("nd", NULL), 0 , 0), 1, &pchar)
+# define SAVE_C			    tputs(tgoto(tgetstr("sc", NULL), 0 , 0), 1, &pchar)
+# define RESET_C		    tputs(tgoto(tgetstr("rc", NULL), 0 , 0), 1, &pchar)
+# define CLEAR			    tputs(tgetstr("cl", NULL), 1, &pchar)
+# define TRUE			    1
+# define FALSE			    0
+# define NOQUOTE		    0
 
 # define SIMPLE_OUTPUT_REDIRECTION ">"
 # define APPENDING_OUTPUT_REDIRECTION ">>"
@@ -221,10 +223,11 @@ t_redirection   *new_redirection(t_vect *cmd, int flags);
 void            free_redirection(t_redirection *redirection);
 
 /*
-** SET UP
+** SET UP and PARSING
 */
 
 t_bash			*initialize_redirection_set_up_functions(t_bash *data);
+void            set_up_pipe_redirection(t_redirection *new);
 void            search_redirections_in_cmd(t_bash *data, t_vect *cmd);
 
 /*
@@ -241,6 +244,7 @@ void		    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
 ** EXECUTION
 */
 
+static void 	execute_command(t_bash *data, t_vect *command, char *path, char **args_array);
 void            handle_redirections(t_bash *data, t_redirection *redirection, int position);
 void            restore_directions(t_redirection *redirection);
 

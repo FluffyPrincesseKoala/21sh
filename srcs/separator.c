@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/28 14:39:41 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/07/10 12:30:51 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,14 +253,14 @@ void		parse_args(t_bash *data, t_vect *current)
 	arg = current->args;
 	while (arg)
 	{
-		if ((separator_idx = contains_sperator(arg->content)) != -1
+		if ((separator_idx = contains_sperator(CONTENT)) != -1
 		&& !arg->quote)
 		{
-			current->separator = arg->content[separator_idx];
-			if ((len = ft_strlen(arg->content)) != separator_idx + 1)
+			current->separator = CONTENT[separator_idx];
+			if ((len = ft_strlen(CONTENT)) != separator_idx + 1)
 				get_post_separator_args(data, arg, separator_idx + 1, len);
 			detach_args(current, arg);
-			arg->content = ft_strsub_free(&arg->content, 0, separator_idx);
+			CONTENT = ft_strsub_free(&CONTENT, 0, separator_idx);
 		}
 		arg = arg->next;
 	}
