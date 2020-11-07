@@ -17,7 +17,6 @@ static int  is_pending_line(t_bash *data)
 	if (data->expend = pending_line(LINE))
 	{
 		push_entry(data, "\n", &data->vector->line, ft_strlen(LINE));
-		key_last(data);
 		ft_putchar('\n');
 	}
 	return (data->expend);
@@ -78,9 +77,13 @@ int			handle_eol(t_bash *data, char *buff)
 	}
 	if (LINE && !is_pending_line(data))
 	{
+		//info(LINE);
+		if (IDX < ft_strlen(LINE) && data->y < count_delim(LINE, '\n'))
+		{
+			key_start(data);
+			key_last(data);
+		}
 		ft_putchar('\n');
-	//	info("normal beavior");
-		key_last(data);
 		format_line(data);
 		search_redirections_in_cmd(data, VECT);
 		if (!data->error)

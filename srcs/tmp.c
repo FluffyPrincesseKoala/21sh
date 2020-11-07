@@ -118,7 +118,7 @@ int			prompt(int short_prompt)
 		len += pstr(" > ");
 		pstr(RESET);
 	}
-	else
+	else // sp = -1
 	{
 		len += pstr(">");
 	}
