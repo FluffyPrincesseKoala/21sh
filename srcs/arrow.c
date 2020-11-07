@@ -141,7 +141,7 @@ void				arrow_left(t_bash *data)
 			data->cursor = find_cursor_node(&data->cursor,	data->iterator,
 												get_win_max_col(), data->prompt_len);
 			move_left(data);
-			custom_info(data->x, data->y, data->cursor);
+		////	////custom_info(data->x, data->y, data->cursor);
 			clear_struct(&data->cursor);
 		}
 	}
@@ -179,7 +179,7 @@ void				arrow_right(t_bash *data)
 		data->cursor = find_cursor_node(&data->cursor, data->iterator,
 												get_win_max_col(), data->prompt_len);
 		move_right(data);
-		custom_info(data->x, data->y, data->cursor);
+	//	////custom_info(data->x, data->y, data->cursor);
 		clear_struct(&data->cursor);
 	}
 }
@@ -270,7 +270,7 @@ void				arrow_up(t_bash *data)
 		data->x = ft_strlen(data->cursor->line);
 		data->y = get_y_cursor(data->cursor);
 		data->iterator = ft_strlen(LINE);
-		custom_info(data->x, data->y, data->cursor);
+		////custom_info(data->x, data->y, data->cursor);
 		ft_strdel(&old);
 	//	if (data->vector->down)
 	//		pull_line(&data->vector);
@@ -307,7 +307,7 @@ void				arrow_down(t_bash *data) // update me plz :'(
 			data->x = ft_strlen(data->cursor->line);
 			data->y = get_y_cursor(data->cursor);
 		}
-		custom_info(data->x, data->y, data->cursor);
+		//custom_info(data->x, data->y, data->cursor);
 		data->iterator = ft_strlen(LINE);
 		ft_strdel(&old);
 //		if (data->vector->down)

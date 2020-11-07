@@ -171,6 +171,7 @@ int			fork_failed(pid_t pid);
 int			is_child(pid_t pid);
 void 		set_up_signals();
 void		clear_term(char *str);
+void		put_error_msg(char *error);
 
 /*
 **	PARSING
@@ -182,7 +183,7 @@ void		read_separator(char **table, t_bash *data);
 void		format_line(t_bash *data);
 void		get_var(t_arg **head, char **env);
 int			len_between_last_delim(char *str, char delim, int start);
-int			get_curent_line(char *str, int pos);
+int			get_curent_line(char *str, int pos, int max, int prompt);
 int			lendelim(char *str, char delim, int start);
 size_t		count_delim(char *str, int delim);
 int   		handle_eol(t_bash *data, char *buff);
@@ -193,11 +194,6 @@ int			pending_line(char *str);
 */
 
 void		free_all_vectors(t_vect *vect);
-t_arg		*lstnew(char *content, int quote);
-void		lstadd(t_arg **head, t_arg *new);
-void		lst_add_after(t_arg *this_one, t_arg *next);
-void		lstfree(t_arg **head);
-char		**lst_to_array(t_arg *head);
 
 /*
 **	DEBUG & UNIT_TEST

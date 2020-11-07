@@ -19,6 +19,13 @@ void		put_error_msg(char *error)
 	ft_putstr_fd(RESET, 2);
 }
 
+void		puterror(int error)
+{
+	ft_putstr_fd(RED, 2);
+	ft_putnbr_fd(error, 2);
+	ft_putstr_fd(RESET, 2);
+}
+
 int init_term()
 {
 	int ret;

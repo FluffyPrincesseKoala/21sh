@@ -16,25 +16,11 @@ static int  is_pending_line(t_bash *data)
 {
 	if (data->expend = pending_line(LINE))
 	{
-		key_last(data);
 		push_entry(data, "\n", &data->vector->line, ft_strlen(LINE));
+		key_last(data);
 		ft_putchar('\n');
 	}
 	return (data->expend);
-}
-
-static int  is_all_whitespaces(char *str)
-{
-	int		i;
-
-	i = 0;
-	while (str && str[i])
-	{
-		if (!ft_iswhitespace(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
 }
 
 static void prompt_new_line(t_bash *data)
@@ -58,8 +44,8 @@ static void update_pending_line(t_bash *data)
 {
 	if (pending_line(LINE) && !data->expend)
 	{
+		info("is updating");
 		push_entry(data, "\n", &data->vector->line, data->iterator++);
-		ft_putchar('\n');
 	}
 	VECT_UP->line = str_join_free(&VECT_UP->line, &LINE);
 	VECT = VECT_UP;
@@ -74,19 +60,26 @@ int			handle_eol(t_bash *data, char *buff)
 	/*
 	** GESTION D'ERREUR !!
 	*/
-
 	if (data->vector->down)
+	{
+		info("pull the line");
 		pull_line(&data->vector);
+	}
 	if (data->expend)
+	{
+		info("expend");
 		update_pending_line(data);
+	}
 	else if (is_all_whitespaces(LINE))
 	{
+		info("is_all_whitespaces");
 		ft_putchar('\n');
 		ft_strdel(&LINE);
 	}
 	if (LINE && !is_pending_line(data))
 	{
-		info("LAPIN");
+		ft_putchar('\n');
+	//	info("normal beavior");
 		key_last(data);
 		format_line(data);
 		search_redirections_in_cmd(data, VECT);

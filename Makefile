@@ -42,7 +42,6 @@ SRC		=	srcs/main.c 					\
 			srcs/replace_substr.c			\
 			srcs/arrow.c					\
 			srcs/key.c						\
-			srcs/lst.c						\
 			srcs/convert.c					\
 			srcs/separator.c				\
 			srcs/get_var.c					\

@@ -39,26 +39,38 @@ static char			*delchar(char *ref, int pos)
 	return (NULL);
 }
 
+// void				key_last(t_bash *data)
+// {
+// 	struct winsize	w;
+// 	int				prompt;
+// 	int				y;
+// 	int				x;
+
+// 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+// 	prompt = data->prompt_len;
+// 	while (data->iterator < ft_strlen(data->vector->line))
+// 	{
+// 		init_xy(data, &x, &y, w.ws_col);
+// 		if (x == w.ws_col - 1 || LINE[data->iterator] == '\n')
+// 			CDOWN;
+// 		else
+// 			RIGHT;
+// 		data->iterator++;
+// 	}
+// }
+
 void				key_last(t_bash *data)
 {
-	struct winsize	w;
-	int				prompt;
-	int				y;
-	int				x;
-
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	prompt = data->prompt_len;
-	while (data->iterator < ft_strlen(data->vector->line))
+	if (LINE)
 	{
-		init_xy(data, &x, &y, w.ws_col);
-		if (x == w.ws_col - 1 || LINE[data->iterator] == '\n')
-			CDOWN;
-		else
-			RIGHT;
-		data->iterator++;
+		fill_term_struct(data, &data->cursor, LINE, get_win_max_col());
+		data->cursor = find_cursor_node(&data->cursor, data->iterator,
+												get_win_max_col(), data->prompt_len);
+		while (data->iterator < ft_strlen(LINE))
+			move_right(data);
+		clear_struct(&data->cursor);
 	}
 }
-
 
 void				key_start(t_bash *data)
 {
