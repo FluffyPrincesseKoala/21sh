@@ -104,7 +104,7 @@ int			prompt(int short_prompt)
 
 	len = 0;
 
-	if (short_prompt == -1)
+	if (short_prompt == 1)
 	 return (0);
 	if (!short_prompt)
 	{
@@ -118,7 +118,7 @@ int			prompt(int short_prompt)
 		len += pstr(" > ");
 		pstr(RESET);
 	}
-	else // sp = -1
+	else if (short_prompt == -1)
 	{
 		len += pstr(">");
 	}
