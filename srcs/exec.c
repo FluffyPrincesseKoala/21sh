@@ -116,7 +116,6 @@ void		handle_fork(t_bash *data, t_vect *command)
 
 	while(command)
 	{
-		ft_putendl("exec command");
 		args_array = arg_to_array(data, command->args);
 		path = build_path(data, command);
 		cpid = fork();
