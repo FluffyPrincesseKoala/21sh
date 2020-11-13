@@ -64,6 +64,7 @@ static void	execute_command(t_bash *data, t_redirection *redirections,
 		execve(path, args_array, data->env);
 	//if (command->redirections)
 	//	restore_directions(command->redirections);
+	exit(0);
 }
 
 void		handle_fork(t_bash *data, t_vect *command)

@@ -90,6 +90,9 @@
 # define UNEXPECT_COMMAND_END_ERROR 3
 # define OPEN_ERROR 4
 
+struct termios	old_term;
+struct termios	new_term;
+
 /*
 **	t_vect manipulation (keep current and old entry)
 */
@@ -121,6 +124,7 @@ void		print_array(char **array);
 int			init_term();
 void		init_xy(t_bash *data, int *x, int *y, int ws_col);
 int			conf_term();
+void		unconf_term();
 int			handle_new_entry(t_bash *data, char *entry, int pos);
 
 void		arrow_key(t_bash *data, char *buff);

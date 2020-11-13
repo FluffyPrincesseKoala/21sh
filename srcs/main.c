@@ -56,7 +56,6 @@ t_bash	*initialize_bash(char **env, int type)
 	data->error_msg = NULL;
 	if (!(data->vector = vect_new(NULL, NULL)))
 		return (free_bash(data));
-	data->prompt_len = prompt(type);
 	if (!(data->redirections_setup = malloc(sizeof(t_redirection_setup) * 4)))
 		return (free_bash(data));
 	if (!(initialize_redirection_set_up_functions(data)))
@@ -70,14 +69,17 @@ int		main(int argc, char **argv, char **env)
 {
 	t_bash	*data;
 
-	if (argc == 1 && !conf_term())
+	if (argc == 1)
 	{
-		CLEAR;
-		hello();
 		if (!(data = initialize_bash(env, 0)))
 			puterror(MALLOC_ERROR);
-		else
+		else if (!conf_term())
+		{
+			CLEAR;
+			hello();
+			data->prompt_len = prompt(0);
 			loop(data);
+		}
 	}
 	else if (argc > 1 && argv)
 	{
@@ -102,7 +104,5 @@ int		main(int argc, char **argv, char **env)
 			}
 		}
 	}
-	if (data && data->error)
-		puterror(data->error);
 	return (0);
 }

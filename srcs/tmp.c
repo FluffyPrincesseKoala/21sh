@@ -50,22 +50,30 @@ int init_term()
 	return 0;
 }
 
-int				conf_term()
+int							conf_term()
 {
-	struct termios		term;
-
 	if (!init_term())
 	{
-		if (tcgetattr(0, &term) == -1)
+		if (tcgetattr(STDIN_FILENO, &old_term) == -1)
 			return (-1);
-		term.c_lflag &= ~(ICANON|ECHO);
-		if (tcsetattr(0, 0, &term) == -1)
+		if (tcgetattr(STDIN_FILENO, &new_term) == -1)
 			return (-1);
-		tputs(tgetstr("os", NULL), 1, pchar);
+		new_term.c_lflag &= ~(ICANON|ECHO);
+		new_term.c_cc[VMIN] = 1;
+		new_term.c_cc[VTIME] = 0;
+		if (tcsetattr(STDIN_FILENO, TCSANOW, &new_term) == -1)
+			return (-1);
+		//tputs(tgetstr("os", NULL), 1, pchar);
 	}
 	else
 		return (-1);
 	return (0);
+}
+
+void					unconf_term()
+{
+	tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
+	ft_putendl_fd("Bye!", STDOUT_FILENO);
 }
 
 void		hello()
@@ -207,6 +215,12 @@ void		loop(t_bash *data)
 	while (42)
 	{
 		read(0, buff, 6);
+		if (ft_strnequ(LINE, "exit", 4))
+		{
+			info("Mélol");
+			unconf_term();
+			exit(0);
+		}
 		if (ft_strnequ(buff, "\n", 1))
 			handle_eol(data, buff);
 		else if (!data->error && (ft_strnequ(buff, "\033", 1)
