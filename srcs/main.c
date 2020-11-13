@@ -36,13 +36,13 @@ void	*free_bash(t_bash *data)
 	data->env = NULL;
 	data->venv = NULL;
 	free_all_vectors(data->vector);
-	free_redirections_setup(data->redirections_setup);
-	data->redirections_setup = NULL;
+	free_redirections_setup(REDIRECTION_SETUP);
+	REDIRECTION_SETUP = NULL;
 	free(data);
 	return (NULL);
 }
 
-t_bash	*initialize_bash(char **env, int type)
+t_bash	*initialize_bash(char **env)
 {
 	t_bash	*data;
 
@@ -51,12 +51,9 @@ t_bash	*initialize_bash(char **env, int type)
 	if (!(data->env = copy_array(env)))
 		return (free_bash(data));
 	data->venv = env;
-	data->iterator = 0;
-	data->count_separator = 0;
-	data->error_msg = NULL;
 	if (!(data->vector = vect_new(NULL, NULL)))
 		return (free_bash(data));
-	if (!(data->redirections_setup = malloc(sizeof(t_redirection_setup) * 4)))
+	if (!(REDIRECTION_SETUP = malloc(sizeof(t_redirection_setup) * 4)))
 		return (free_bash(data));
 	if (!(initialize_redirection_set_up_functions(data)))
 		return (free_bash(data));
@@ -71,7 +68,7 @@ int		main(int argc, char **argv, char **env)
 
 	if (argc == 1)
 	{
-		if (!(data = initialize_bash(env, 0)))
+		if (!(data = initialize_bash(env)))
 			puterror(MALLOC_ERROR);
 		else if (!conf_term())
 		{
@@ -83,7 +80,7 @@ int		main(int argc, char **argv, char **env)
 	}
 	else if (argc > 1 && argv)
 	{
-		if (!(data = initialize_bash(env, -1)))
+		if (!(data = initialize_bash(env)))
 			puterror(MALLOC_ERROR);
 		else
 		{

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/28 15:44:55 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/07/10 13:13:03 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int     search_left_fd(t_arg *arg, int operator_index, int def, int *error)
 
     if (operator_index > 0)
     {
-        if (!(substring = ft_strsub(arg->content, 0, operator_index)))
+        if (!(substring = ft_strsub(CONTENT, 0, operator_index)))
             *error = MALLOC_ERROR;
         else if (ft_str_is_digits(substring))
             return ft_atoi(substring);
@@ -54,14 +54,16 @@ int     search_right_fd(t_arg *arg, char *substring, int *error)
     return (NO_RIGHT_FD);
 }
 
-char    *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, int *error)
+char    *search_file_word(
+    t_vect *cmd, t_arg *arg, int substring_index, int *error)
 {
     char *file;
 
     file = NULL;
-    if (substring_index != ft_strlen(arg->content))
+    if (substring_index != ft_strlen(CONTENT))
     {
-        if (!(file = ft_strsub(arg->content, substring_index, ft_strlen(arg->content))))
+        if (!(file = ft_strsub(CONTENT,
+            substring_index, ft_strlen(CONTENT) - substring_index)))
             *error = MALLOC_ERROR;
     }
     else if (arg->next && arg->next->content)
