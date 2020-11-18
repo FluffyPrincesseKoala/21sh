@@ -39,3 +39,27 @@ char		*ft_strjoin(char const *s1, char const *s2)
 	new[i] = '\0';
 	return (new);
 }
+
+char		*ft_strjoin_free(char **s1, char **s2)
+{
+	char	*ret;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	ret = NULL;
+	if ((ret = malloc(sizeof(char) * (ft_strlen(*s1) + ft_strlen(*s2) + 1))) == NULL)
+		return (NULL);
+	while (*s1 && (*s1)[i])
+	{
+		ret[i] = (char)(*s1)[i];
+		i += 1;
+	}
+	while (*s2 && (*s2)[j])
+		ret[i++] = (*s2)[j++];
+	ret[i] = '\0';
+	ft_strdel(s1);
+	ft_strdel(s2);
+	return (ret);
+}

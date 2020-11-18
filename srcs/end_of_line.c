@@ -85,6 +85,18 @@ int			handle_eol(t_bash *data, char *buff)
 		}
 		ft_putchar('\n');
 		format_line(data);
+		if (ft_strnequ(data->vector->args->content, "setenv", 6))
+		{
+			info("Mélolilol");
+			ft_putstr(RED);
+			print_env(data);
+			set_env(data);
+			ft_putstr(GREEN);
+			print_env(data);
+			ft_putstr(RESET);
+			unconf_term();
+			exit(0);
+		}
 		search_redirections_in_cmd(data, VECT);
 		if (!data->error)
 			handle_fork(data, VECT);

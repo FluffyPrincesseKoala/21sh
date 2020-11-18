@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/12 17:47:43 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/11/18 17:43:47 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void		print_array(char **array)
 {
 	int i;
 
-	i=0;
+	i = 0;
 	ft_putchar('\n');
 	while (array && array[i])
 	{
@@ -85,4 +85,41 @@ void		print_array(char **array)
 		ft_putchar('\n');
 		i++;
 	}
+}
+
+char		**array_add_value(char **src, char *value)
+{
+	char	**new;
+	int		i;
+
+	i = -1;
+	if (!(new = malloc(sizeof(char*) * (array_len(src) + 2))))
+		return (NULL);
+	while (src[++i])
+		new[i] = ft_strdup(src[i]);
+	new[i] = ft_strdup(value);
+	new[++i] = NULL;
+	free_array(src);
+	return (new);
+}
+
+char		**change_array_value(char **src, char *key, char *value)
+{
+	char	**new;
+	int		i;
+
+	i = -1;
+	if (!(new = malloc(sizeof(char*) * (array_len(src) + 1))))
+		return (NULL);
+	while (src[++i])
+	{
+		if (ft_strnequ(src[i], key, ft_strlen(key)))
+			new[i] = ft_strdup(value);
+		else
+			new[i] = ft_strdup(src[i]);
+	}
+	new[i] = ft_strdup(value);
+	new[++i] = NULL;
+	free_array(src);
+	return (new);
 }

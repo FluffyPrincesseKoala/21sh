@@ -116,8 +116,8 @@ char		**copy_array(char **array);
 int			array_len(char **array);
 int			array_total_len(char **array);
 void		print_array(char **array);
-
-
+char		**array_add_value(char **src, char *value);
+char		**change_array_value(char **src, char *key, char *value);
 
 /*
 **	STDIN & TERM RELATED
@@ -148,6 +148,7 @@ void		arrow_up(t_bash *data);
 
 void		move_left(t_bash *data);
 void		move_right(t_bash *data);
+
 /*
 **	STRING FORMATING
 */
@@ -292,5 +293,11 @@ void		    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
 void            handle_redirections(t_bash *data, t_redirection *redirection, int position);
 static void 	execute_command(t_bash *data, t_vect *command, char *path, char **args_array);
 void            restore_directions(t_redirection *redirection);
+
+/*
+**	BUILT-IN
+*/
+void			print_env(t_bash *data);
+void			set_env(t_bash *data);
 
 #endif

@@ -14,6 +14,6 @@
 			"command": "make clean",
 			"group": "build",
 			"problemMatcher": []
-		}
+		},
 	]
 }
