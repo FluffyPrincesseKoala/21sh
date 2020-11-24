@@ -60,8 +60,6 @@ t_bash	*initialize_bash(char **env)
 	return (data);
 }
 
-
-
 int		main(int argc, char **argv, char **env)
 {
 	t_bash	*data;
@@ -74,7 +72,7 @@ int		main(int argc, char **argv, char **env)
 		{
 			CLEAR;
 			hello();
-			data->prompt_len = prompt(0);
+			data->prompt_len = prompt(env, 0);
 			loop(data);
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/28 14:49:41 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/11/24 14:52:01 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ typedef struct					s_redirection_setup
 	int							flags;
 }								t_redirection_setup;
 
-
 typedef struct			s_bash
 {
 	char				**env;
@@ -107,6 +106,7 @@ typedef struct			s_built
 typedef struct			s_key
 {
 	void				(*f)(struct s_bash *);
+	int					len;
 	char				*name;
 }						t_key;
 

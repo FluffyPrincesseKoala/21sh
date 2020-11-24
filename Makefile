@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2020/11/18 17:48:35 by cylemair         ###   ########.fr        #
+#    Updated: 2020/11/24 15:48:20 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,10 @@ SRC		=	srcs/main.c 					\
 			srcs/functions_not_macros.c		\
 			srcs/args.c						\
 			srcs/env.c						\
+			srcs/change_directory.c			\
+			srcs/ctrl_key.c					\
+			srcs/conf_term.c				\
+			srcs/built_in.c					\
 
 OBJS	=	$(SRC:.c=.o)
 

@@ -48,114 +48,84 @@ int					print_rest(char *str, int pos, char *old)
 	return (pos);
 }
 
-static int			is_whitespaces(char c)
+static void		init_arrow_fct_ptr_A(t_key *fct)
 {
-	if (c == ' ' || c == '\n' || c == '\0' || c == '\t')
-		return (1);
-	return (0);
+	fct[0].f = &arrow_up;
+	fct[0].name = ft_strdup("\033[A");
+	fct[0].len = 3;
+	fct[1].f = &arrow_down;
+	fct[1].name = ft_strdup("\033[B");
+	fct[1].len = 3;
+	fct[2].f = &arrow_right;
+	fct[2].name = ft_strdup("\033[C");
+	fct[2].len = 3;
+	fct[3].f = &arrow_left;
+	fct[3].name = ft_strdup("\033[D");
+	fct[3].len = 3;
+	fct[4].f = &key_suppr;
+	fct[4].name = ft_strdup("\033[3~");
+	fct[4].len = 4;
+	fct[5].f = &key_back;
+	fct[5].name = ft_strdup("\177");
+	fct[5].len = 1;
+	fct[6].f = &ctrl_left;
+	fct[6].name = ft_strdup("\033[1;5D");
+	fct[6].len = 6;
+	fct[7].f = &ctrl_right;
+	fct[7].name = ft_strdup("\033[1;5C");
+	fct[7].len = 6;
 }
 
-void				ctrl_right(t_bash *data)
+static void		init_arrow_fct_ptr_B(t_key *fct)
 {
-	t_term			*curr;
-	int				len;
-
-	if (data->iterator < (len = ft_strlen(LINE)))
-	{
-		while (data->iterator < len && is_whitespaces(LINE[data->iterator]))
-			arrow_right(data);
-		while (data->iterator < len && !is_whitespaces(LINE[data->iterator]))
-			arrow_right(data);
-	}
+	fct[8].f = &ctrl_down;
+	fct[8].name = ft_strdup("\033[1;5B");
+	fct[8].len = 6;
+	fct[9].f = &ctrl_up;
+	fct[9].name = ft_strdup("\033[1;5A");
+	fct[9].len = 6;
+	fct[10].f = &key_start;
+	fct[10].name = ft_strdup("\033[H");
+	fct[10].len = 3;
+	fct[11].f = &key_last;
+	fct[11].name = ft_strdup("\033[F");
+	fct[11].len = 3;
+	fct[12].f = &select_back;
+	fct[12].name = ft_strdup("\033[1;2D");
+	fct[12].len = 6;
+	fct[13].f = &select_next;
+	fct[13].name = ft_strdup("\033[1;2C");
+	fct[13].len = 6;
+	fct[14].f = &select_copy;
+	fct[14].name = ft_strdup("\017");
+	fct[14].len = 1;
+	fct[15].f = &select_paste;
+	fct[15].name = ft_strdup("\002");
+	fct[15].len = 1;
 }
 
-void				ctrl_left(t_bash *data)
+static void		init_arrow_fct_ptr(t_key *fct)
 {
-	t_term			*curr;
-	int				len;
-
-	if (data->iterator)
-	{
-		while (data->iterator && is_whitespaces(LINE[data->iterator]))
-			arrow_left(data);
-		while (data->iterator && !is_whitespaces(LINE[data->iterator]))
-			arrow_left(data);
-	}
-}
-
-void				ctrl_down(t_bash *data)
-{
-	struct winsize	w;
-	int				y;
-	int				x;
-	int				expected;
-
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	if (!data->expend)
-	{
-		init_xy(data, &x, &y, w.ws_col);
-		expected = y + 1;
-		while (y != expected && data->iterator < ft_strlen(LINE))
-		{
-			init_xy(data, &x, &y, w.ws_col);
-			arrow_right(data);
-		}
-	}
-}
-
-void				ctrl_up(t_bash *data)
-{
-	struct winsize	w;
-	int				y;
-	int				x;
-	int				expected;
-
-
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-	init_xy(data, &x, &y, w.ws_col);
-	if (y && !data->expend)
-	{
-		expected = y - 1;
-		while (y != expected)
-		{
-			init_xy(data, &x, &y, w.ws_col);
-			arrow_left(data);
-		}
-	}
+	init_arrow_fct_ptr_A(fct);
+	init_arrow_fct_ptr_B(fct);
 }
 
 void		arrow_key(t_bash *data, char *buff)
 {
-	if (ft_strnequ(buff, "\033[A", 3))
-		arrow_up(data);
-	else if (ft_strnequ(buff, "\033[B", 3))
-		arrow_down(data);
-	else if (ft_strnequ(buff, "\033[C", 3))
-		arrow_right(data);
-	else if (ft_strnequ(buff, "\033[D", 3))
-		arrow_left(data);
-	else if (ft_strnequ(buff, "\033[3~", 4))
-		key_suppr(data);
-	else if (buff[0] == 127)
-		key_back(data);
-	else if (ft_strnequ(buff, "\033[1;5D", 6) && data->iterator)
-		ctrl_left(data);
-	else if (ft_strnequ(buff, "\033[1;5C", 6))
-		ctrl_right(data);
-	else if (ft_strnequ(buff, "\033[1;5B", 6))
-		ctrl_down(data);
-	else if (ft_strnequ(buff, "\033[1;5A", 6))
-		ctrl_up(data);
-	else if (ft_strnequ(buff, "\033[H", 3))
-		key_start(data);
-	else if (ft_strnequ(buff, "\033[F", 3))
-		key_last(data);
-	else if (ft_strnequ(buff, "\033[1;2D", 6))
-		select_back(data);
-	else if (ft_strnequ(buff, "\033[1;2C", 6))
-		select_next(data);
-	else if (ft_strnequ(buff, "\017", 1))
-		select_copy(data);
-	else if (ft_strnequ(buff, "\002", 1))
-		select_paste(data);
+	t_key	fct[MAX_KEY];
+	int		i;
+	int		exit;
+
+	i = 0;
+	exit = 0;
+	init_arrow_fct_ptr(fct);
+	while (i != MAX_KEY && !exit)
+	{
+		if (ft_strnequ(buff, fct[i].name, fct[i].len))
+		{
+			fct[i].f(data);
+			exit++;
+		}
+		i++;
+	}
 }

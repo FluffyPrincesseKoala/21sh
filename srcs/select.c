@@ -18,6 +18,8 @@ void	apply_back_select(t_bash *data)
 		i++;
 		j++;
 	}
+	if (i == data->end_select)
+		ft_putstr(RESET);
 	RESET_C;
 }
 
@@ -57,7 +59,7 @@ void	select_back(t_bash *data)
 		if (data->end_select && data->start_select)
 		{
 			data->is_select = 0;
-						data->is_select = 0;
+			data->is_select = 0;
 			if (data->select_direction == -1)
 			{
 				arrow_left(data);

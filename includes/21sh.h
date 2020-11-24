@@ -44,6 +44,9 @@
 # define SYNTAX         	"21sh: syntax error near unexpected symbol "
 # define NOFOD				"No such file or directory\n"
 # define HOOK_MALLOC		"Malloc return NULL value"
+# define E_TERM_SET			"TERM must be set (see 'env')"
+# define E_TERM_CAP			"Could not access to the termcap database"
+# define E_TERM_DEF			"Terminal type is not defined in termcap db"
 # define E_CHDIR	    	-1
 # define CONTENT            arg->content
 # define IDX		   		data->iterator
@@ -67,6 +70,7 @@
 # define TRUE				1
 # define FALSE				0
 # define NOQUOTE			0
+# define MAX_KEY			16
 
 
 # define SIMPLE_OUTPUT_REDIRECTION ">"
@@ -168,7 +172,7 @@ void		push_entry(t_bash *data, char *entry, char **line, int pos);
 */
 
 void		hello();
-int			prompt(int short_prompt);
+int			prompt(char **env, int short_prompt);
 void		loop(t_bash *data);
 char		*build_path(t_bash *data, t_vect *lst);
 void		handle_fork(t_bash *data, t_vect *cmd);
@@ -297,7 +301,12 @@ void            restore_directions(t_redirection *redirection);
 /*
 **	BUILT-IN
 */
+int 		    check_built_in(t_bash *data);
 void			print_env(t_bash *data);
+char			*findenv(char **env, char *name);
 void			set_env(t_bash *data);
+void			unset_env(t_bash *data);
+int				is_env_key_exist(char **env, char *key);
+void			change_directory(t_bash *data);
 
 #endif

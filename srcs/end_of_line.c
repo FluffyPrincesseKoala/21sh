@@ -26,7 +26,7 @@ static void prompt_new_line(t_bash *data)
 {
 	data->iterator = 0;
 	data->x = 0;
-	data->prompt_len = prompt(data->expend);
+	data->prompt_len = prompt(data->env, data->expend);
 }
 
 static void new_line(t_bash *data)
@@ -85,21 +85,12 @@ int			handle_eol(t_bash *data, char *buff)
 		}
 		ft_putchar('\n');
 		format_line(data);
-		if (ft_strnequ(data->vector->args->content, "setenv", 6))
+		if (!check_built_in(data))
 		{
-			info("Mélolilol");
-			ft_putstr(RED);
-			print_env(data);
-			set_env(data);
-			ft_putstr(GREEN);
-			print_env(data);
-			ft_putstr(RESET);
-			unconf_term();
-			exit(0);
+			search_redirections_in_cmd(data, VECT);
+			if (!data->error)
+				handle_fork(data, VECT);
 		}
-		search_redirections_in_cmd(data, VECT);
-		if (!data->error)
-			handle_fork(data, VECT);
 	}
 	new_line(data);
 }

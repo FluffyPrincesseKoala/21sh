@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/09/19 16:30:10 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/11/24 15:46:27 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ static void handle_pipe(t_bash *data, t_vect *command)
 		new->left_fd = 1;
 		new->right_fd = pipe_fd[1];
 	}
-	
 }
 
 static void	execute_command(t_bash *data, t_vect *command,
@@ -98,10 +97,7 @@ static void	execute_command(t_bash *data, t_vect *command,
 	if (!data->error)
 	{
 		if (execve(path, args_array, data->env) == -1)
-		{
-			sleep(1);
-			exit(-1);
-		}
+			exit(0);
 	}
 	//if (command->redirections)
 	//	restore_directions(command->redirections);
