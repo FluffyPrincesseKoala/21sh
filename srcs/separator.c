@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/25 10:32:02 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/11/25 14:55:53 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ static void	handle_word(t_bash *data, char *str)
 
 void		words_as_args(char **table, t_bash *data)
 {
-	t_arg	*args;
 	int		len;
 	int		i;
 
@@ -167,6 +166,7 @@ void		words_as_args(char **table, t_bash *data)
 		{
 			handle_word(data, ft_strdup(table[i]));
 			get_var(&VECT->args, data->env);
+			get_tilt(&VECT->args, data->env);
 			i++;
 		}
 	}
@@ -177,22 +177,6 @@ void		words_as_args(char **table, t_bash *data)
 ** avoir une variable dans t_arg, qui indique si quote ou pas
 ** reparser pour les separateur en ignorant les args qui sont des quote
 */
- 
-static char	*space_separator(char *line)
-{
-	char	*ret;
-	char	*tmp;
-
-	ret = NULL;
-	tmp = NULL;
-	if (line)
-	{
-		tmp = replace_substr(line, ";", " ; ");
-		ret = replace_substr((tmp) ? tmp : line, "|", " | ");
-		ft_strdel(&tmp);
-	}
-	return (ret);
-}
 
 static int	contains_sperator(char *str)
 {

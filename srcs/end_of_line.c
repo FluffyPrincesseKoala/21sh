@@ -62,6 +62,8 @@ int			handle_eol(t_bash *data, char *buff)
 	/*
 	** GESTION D'ERREUR !!
 	*/
+//	key_start(data);
+	key_last(data);
 	if (data->vector->down)
 	{
 		info("pull the line");
@@ -81,11 +83,6 @@ int			handle_eol(t_bash *data, char *buff)
 	if (LINE && !is_pending_line(data))
 	{
 		//info(LINE);
-		if (IDX < ft_strlen(LINE) && data->y < count_delim(LINE, '\n'))
-		{
-			key_start(data);
-			key_last(data);
-		}
 		ft_putchar('\n');
 		format_line(data);
 		if ((exit = check_built_in(data)) == 0)

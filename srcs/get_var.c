@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 18:59:31 by cylemair          #+#    #+#             */
-/*   Updated: 2020/07/10 12:30:51 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/11/25 16:09:02 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,30 @@ void			get_var(t_arg **head, char **env)
 		if (CONTENT && ft_strchr(CONTENT, '$'))
 		{
 			tmp = use_shell_var(env, CONTENT);
+			ft_strdel(&CONTENT);
+			CONTENT = ft_strdup(tmp);
+			ft_strdel(&tmp);
+		}
+		arg = arg->next;
+	}
+}
+
+void		get_tilt(t_arg **head, char **env)
+{
+	t_arg		*arg;
+	char		*tmp;
+	char		*path_to_home;
+
+	int i = 0;
+	arg = NULL;
+	if (head)
+		arg = *head;
+	while (arg)
+	{
+		if (CONTENT && ft_strchr(CONTENT, '~'))
+		{
+			path_to_home = findenv(env, "HOME");
+			tmp = replace_substr(CONTENT, "~", path_to_home);
 			ft_strdel(&CONTENT);
 			CONTENT = ft_strdup(tmp);
 			ft_strdel(&tmp);
