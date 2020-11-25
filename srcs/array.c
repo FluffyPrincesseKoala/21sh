@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/23 15:58:05 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/11/25 10:49:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,23 +108,16 @@ char		**array_add_value(char **src, char *value)
 
 char		**change_array_value(char **src, char *key, char *value)
 {
-	char	**new;
 	int		i;
 
 	i = 0;
-	if (!(new = malloc(sizeof(char*) * (array_len(src) + 1))))
-		return (NULL);
 	while (src[i])
 	{
 		if (ft_strnequ(src[i], key, ft_strlen(key)))
-			new[i] = ft_strdup(value);
-		else
-			new[i] = ft_strdup(src[i]);
+			src[i] = ft_strdup(value);
 		i++;
 	}
-	new[i] = NULL;
-	free_array(src);
-	return (new);
+	return (src);
 }
 
 int			is_env_key_exist(char **env, char *key)

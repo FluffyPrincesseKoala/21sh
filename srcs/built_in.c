@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:23:17 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/24 15:53:42 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/11/25 11:20:15 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ int     check_built_in(t_bash *data)
 {
     if (ft_strnequ(data->vector->args->content, "exit", 4))
 	{
-		unconf_term();
-		exit(0);
+		return (-1);
 	}
 	if (ft_strnequ(data->vector->args->content, "setenv", 6))
 	{

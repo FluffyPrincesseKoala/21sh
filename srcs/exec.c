@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/24 15:46:27 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/11/25 11:34:38 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,8 @@ void		handle_fork(t_bash *data, t_vect *command)
 	while(command)
 	{
 		args_array = arg_to_array(data, command->args);
-		path = build_path(data, command);
+		path = (ft_strnequ(*args_array, "./", 2))
+			? ft_strdup(*args_array) : build_path(data, command);
 		cpid = fork();
 		if (fork_failed(cpid))
 			print_failed_fork_error(cpid);

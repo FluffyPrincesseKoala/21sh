@@ -141,16 +141,18 @@ void		loop(t_bash *data)
 {
 	char	buff[4086];
 	int		is_key;
+	int		exit;
 
 	is_key = 0;
+	exit = 0;
 	data->start_expend = 0;
 	data->expend_up = 0;
 
-	while (42)
+	while (42 && exit != -1)
 	{
 		read(0, buff, 6);
 		if (ft_strnequ(buff, "\n", 1))
-			handle_eol(data, buff);
+			exit = handle_eol(data, buff);
 		else if (!data->error && (ft_strnequ(buff, "\033", 1)
 		|| buff[0] == 127 || buff[0] == '\017' || buff[0] == '\002'))
 			arrow_key(data, buff);

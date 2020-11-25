@@ -32,7 +32,6 @@ void	free_redirections_setup(t_redirection_setup **redirections_setup)
 void	*free_bash(t_bash *data)
 {
 	free_array(data->env);
-	free_array(data->venv);
 	data->env = NULL;
 	data->venv = NULL;
 	free_all_vectors(data->vector);
@@ -74,6 +73,8 @@ int		main(int argc, char **argv, char **env)
 			hello();
 			data->prompt_len = prompt(env, 0);
 			loop(data);
+			unconf_term();
+			free_bash(data);
 		}
 	}
 	else if (argc > 1 && argv)

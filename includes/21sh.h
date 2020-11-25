@@ -183,6 +183,7 @@ int			is_child(pid_t pid);
 void 		set_up_signals();
 void		clear_term(char *str);
 void		put_error_msg(char *error);
+void		*free_bash(t_bash *data);
 
 /*
 **	PARSING
@@ -205,15 +206,6 @@ int			pending_line(char *str);
 */
 
 void		free_all_vectors(t_vect *vect);
-
-/*
-**	DEBUG & UNIT_TEST
-*/
-
-void		debug_loop_try_termcaps(t_bash data);
-char		*findenv(char **env, char *var);
-int			handle_expend(t_bash *data, char *entry, int pos);
-void		exec_onebyone(t_bash data);
 
 /*
 ** ARGS
@@ -255,7 +247,6 @@ char		*str_add_sub(char *str, char *sub, int pos);
 */
 
 void		debug_loop_try_termcaps(t_bash data);
-char		*findenv(char **env, char *var);
 int			handle_expend(t_bash *data, char *entry, int pos);
 void		exec_onebyone(t_bash data);
 void		currsor_info(t_term *curr, int count);

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:22:41 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/24 13:48:29 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/11/25 10:28:47 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,7 @@ static void		move_to_directory(char **env, char *path)
 			if (!(pwd = getcwd(buff, 4096)))
 				put_error_msg("cd : permission denied");
 			else
-			{
 				update_current_directory(env, pwd);
-				ft_strdel(&pwd);
-			}
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 19:25:39 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/12 17:39:02 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/11/25 11:00:35 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void		free_all_vectors(t_vect *vect)
 		free_all_args(vect->args);
 		free_all_vectors(vect->next);
 		free_all_vectors(vect->up);
-		free_all_vectors(vect->down);
 		if (vect->redirections)
 			free_redirection(vect->redirections);
 		vect->args = NULL;

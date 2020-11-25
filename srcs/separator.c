@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2020/07/10 12:30:51 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/11/25 10:32:02 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ void		words_as_args(char **table, t_bash *data)
 		else
 		{
 			handle_word(data, ft_strdup(table[i]));
+			get_var(&VECT->args, data->env);
 			i++;
 		}
 	}

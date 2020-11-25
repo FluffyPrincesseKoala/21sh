@@ -56,6 +56,9 @@ static void update_pending_line(t_bash *data)
 
 int			handle_eol(t_bash *data, char *buff)
 {
+	int		exit;
+
+	exit = 0;
 	/*
 	** GESTION D'ERREUR !!
 	*/
@@ -85,12 +88,15 @@ int			handle_eol(t_bash *data, char *buff)
 		}
 		ft_putchar('\n');
 		format_line(data);
-		if (!check_built_in(data))
+		if ((exit = check_built_in(data)) == 0)
 		{
 			search_redirections_in_cmd(data, VECT);
 			if (!data->error)
 				handle_fork(data, VECT);
 		}
+		if (exit == -1)
+			return (exit);
 	}
 	new_line(data);
+	return (exit);
 }
