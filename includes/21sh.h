@@ -40,7 +40,7 @@
 # define RESET		    	"\033[0m"
 # define NODIR	    		"Not a directory\n"
 # define DENY		    	"Permission denied\n"
-# define UNOW		    	"Command not found\n"
+# define UNOW		    	": Command not found\n"
 # define SYNTAX         	"21sh: syntax error near unexpected symbol "
 # define NOFOD				"No such file or directory\n"
 # define HOOK_MALLOC		"Malloc return NULL value"
@@ -174,7 +174,7 @@ void		push_entry(t_bash *data, char *entry, char **line, int pos);
 void		hello();
 int			prompt(char **env, int short_prompt);
 void		loop(t_bash *data);
-char		*build_path(t_bash *data, t_vect *lst);
+char		*build_path(char **env, t_vect *lst);
 void		handle_fork(t_bash *data, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
 void		puterror(int error);
@@ -194,6 +194,7 @@ int			next_delim(char **array, int start);
 void		read_separator(char **table, t_bash *data);
 void		format_line(t_bash *data);
 void		get_var(t_arg **head, char **env);
+void		get_tilt(t_arg **head, char **env);
 int			len_between_last_delim(char *str, char delim, int start);
 int			get_curent_line(char *str, int pos, int max, int prompt);
 int			lendelim(char *str, char delim, int start);
@@ -286,7 +287,7 @@ void		    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
 */
 
 void            handle_redirections(t_bash *data, t_redirection *redirection, int position);
-static void 	execute_command(t_bash *data, t_vect *command, char *path, char **args_array);
+static void 	execute_command(t_bash *data, t_vect *command, char **args_array);
 void            restore_directions(t_redirection *redirection);
 
 /*

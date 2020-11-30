@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/25 11:34:38 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/11/25 18:23:44 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	free_two_var_to_feet_norm(char **a, char **b)
 	ft_strdel(b);
 }
 
-char		*build_path(t_bash *data, t_vect *lst)
+char		*build_path(char **env, t_vect *lst)
 {
 	int		i;
 	char	*tmp;
@@ -29,7 +29,7 @@ char		*build_path(t_bash *data, t_vect *lst)
 	i = -1;
 	tmp = NULL;
 	tmp2 = NULL;
-	paths = ft_strsplit(getenv("PATH"), ':');
+	paths = ft_strsplit(findenv(env, "PATH"), ':');
 	while (paths && paths[++i] && lst->args && lst->args->content)
 	{
 		tmp2 = ft_strjoin(paths[i], "/");
@@ -55,11 +55,29 @@ static void print_failed_fork_error(pid_t pid)
 	exit(-1);
 }
 
+static char *choose_path(char *name, t_vect *cmd, t_bash *data)
+{
+	char	*path;
+
+	path = NULL;
+	if (ft_strnequ(name, "./", 2) || (ft_strnequ(name, "../", 3)))
+		path = ft_strdup(name);
+	else
+		path = build_path(data->env, cmd);
+	if (!path)
+	{
+		put_error_msg(name);
+		put_error_msg(UNOW);
+	}
+	return (path);
+}
+
 static void handle_pipe(t_bash *data, t_vect *command)
 {
 	char			**args_array;
 	char			*path;
 	int				pipe_fd[2];
+	int				status;
 	pid_t			cpid;
     t_redirection   *new;
 
@@ -72,11 +90,13 @@ static void handle_pipe(t_bash *data, t_vect *command)
 		close(pipe_fd[1]);
 		command = command->next;
 		args_array = arg_to_array(data, command->args);
-		path = build_path(data, command);
 		new = new_redirection(command, 0);
 		new->left_fd = 0;
 		new->right_fd = pipe_fd[0];
-		execute_command(data, command, path, args_array);
+		if ((path = choose_path(*args_array, command, data)))
+			execute_command(data, command, args_array);
+		else
+			exit(-1);
 	}
 	else
 	{
@@ -87,45 +107,49 @@ static void handle_pipe(t_bash *data, t_vect *command)
 	}
 }
 
-static void	execute_command(t_bash *data, t_vect *command,
-	char *path, char **args_array)
+static void	execute_command(t_bash *data, t_vect *command, char **args_array)
 {
+	char	*path;
+
 	if (command->separator == '|')
 		handle_pipe(data, command);
 	if (command->redirections)
 		handle_redirections(data, command->redirections, 0);
-	if (!data->error)
+	if ((path = choose_path(*args_array, command, data)) && !data->error)
 	{
 		if (execve(path, args_array, data->env) == -1)
-			exit(0);
+			exit(-1);
 	}
+	else
+		exit(-1);
 	//if (command->redirections)
 	//	restore_directions(command->redirections);
 }
 
 void		handle_fork(t_bash *data, t_vect *command)
 {
-	char **args_array;
-	char *path;
+	char 	**args_array;
+	char 	*path;
 	int		status;
 	pid_t	cpid;
 
 	while(command)
 	{
 		args_array = arg_to_array(data, command->args);
-		path = (ft_strnequ(*args_array, "./", 2))
-			? ft_strdup(*args_array) : build_path(data, command);
-		cpid = fork();
-		if (fork_failed(cpid))
-			print_failed_fork_error(cpid);
-		else if (is_child(cpid))
-			execute_command(data, command, path, args_array);
-		wait(&status);
+		if ((path = choose_path(*args_array, command, data)))
+		{		
+			cpid = fork();
+			if (fork_failed(cpid))
+				print_failed_fork_error(cpid);
+			else if (is_child(cpid))
+				execute_command(data, command, args_array);
+			wait(&status);
+		}
 		while (command->separator == '|')
 			command = command->next;
 		command = command->next;
 		free_array(args_array);
-		ft_strdel(&path);
+		ft_strdel((path) ? &path : NULL);
 	}
 	// fork();
 	// int p[2];

@@ -14,9 +14,12 @@
 
 void		put_error_msg(char *error)
 {
-	ft_putstr_fd(RED, STDERR);
-	ft_putstr_fd(error, STDERR);
-	ft_putstr_fd(RESET, STDERR);
+	if (error)
+	{
+		ft_putstr_fd(RED, STDERR);
+		ft_putstr_fd(error, STDERR);
+		ft_putstr_fd(RESET, STDERR);
+	}
 }
 
 void		puterror(int error)
@@ -147,7 +150,6 @@ void		loop(t_bash *data)
 	exit = 0;
 	data->start_expend = 0;
 	data->expend_up = 0;
-
 	while (42 && exit != -1)
 	{
 		read(0, buff, 6);
