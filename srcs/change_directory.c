@@ -26,7 +26,7 @@ static void		update_current_directory(char **env, char *pwd)
 	char		*old;
 	char		*tmp;
 
-	old = getenv("PWD");
+	old = findenv(env, "PWD");
 	tmp = ft_strjoin("OLDPWD=", old);
 	env = change_array_value(env, "OLDPWD", tmp);
 	ft_strdel(&tmp);
@@ -69,12 +69,12 @@ void			change_directory(t_bash *data)
 			if ((VECT->args = VECT->args->next))
 			{
 				if (ft_strequ(VECT->args->content, "-"))
-					path = getenv("OLDPWD");
+					path = findenv(data->env, "OLDPWD");
 				else
 					path = VECT->args->content;
 			}
 			else
-				path = getenv("HOME");
+				path = findenv(data->env, "HOME");
 			if (path)
 			{
 				move_to_directory(data->env, path);

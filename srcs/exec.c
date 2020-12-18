@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/25 18:23:44 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/12/17 15:47:29 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,17 +57,21 @@ static void print_failed_fork_error(pid_t pid)
 
 static char *choose_path(char *name, t_vect *cmd, t_bash *data)
 {
+	struct stat sb;
 	char	*path;
 
 	path = NULL;
-	if (ft_strnequ(name, "./", 2) || (ft_strnequ(name, "../", 3)))
+	if (ft_strnequ(name, "./", 2) || (ft_strnequ(name, "../", 3))
+		|| (ft_strnequ(name, "/", 1) && !access(name, X_OK)
+			&& !access(name, F_OK) && !access(name, R_OK)))
 		path = ft_strdup(name);
 	else
 		path = build_path(data->env, cmd);
-	if (!path)
+	if (!path || (lstat(path, &sb) == 0 && S_ISDIR(sb.st_mode)))
 	{
 		put_error_msg(name);
 		put_error_msg(UNOW);
+		return (NULL);
 	}
 	return (path);
 }
@@ -133,17 +137,19 @@ void		handle_fork(t_bash *data, t_vect *command)
 	int		status;
 	pid_t	cpid;
 
-	while(command)
+	while (command)
 	{
 		args_array = arg_to_array(data, command->args);
 		if ((path = choose_path(*args_array, command, data)))
-		{		
+		{
+			unconf_term();
 			cpid = fork();
 			if (fork_failed(cpid))
 				print_failed_fork_error(cpid);
 			else if (is_child(cpid))
 				execute_command(data, command, args_array);
 			wait(&status);
+			tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
 		}
 		while (command->separator == '|')
 			command = command->next;

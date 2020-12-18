@@ -1,46 +1,29 @@
 
 #include "21sh.h"
 
-void	apply_back_select(t_bash *data)
+static void		reset_back(t_bash *data)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	j = data->iterator;
+	data->end_select -= 1;
+	data->is_select = 0;
+	arrow_left(data);
 	SAVE_C;
-	ft_putstr(BACK_BLUE);
-	while (LINE && LINE[j])
-	{
-		if (i == data->end_select)
-			ft_putstr(RESET);
-		ft_putchar(LINE[j]);
-		i++;
-		j++;
-	}
-	if (i == data->end_select)
-		ft_putstr(RESET);
+	ft_putchar(LINE[data->end_select]);
 	RESET_C;
+	data->is_select = SRIGHT;
+	if (data->end_select == data->start_select)
+		unselect(data);
 }
 
-void	apply_select(t_bash *data)
+static void		add_back(t_bash *data)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	j = data->iterator;
+	data->is_select = 0;
+	arrow_left(data);
 	SAVE_C;
 	ft_putstr(BACK_BLUE);
-	while (LINE && LINE[j])
-	{
-		ft_putchar(LINE[j]);
-		i++;
-		j++;
-		if (i == 1)
-			ft_putstr(RESET);
-	}
+	ft_putchar(LINE[data->start_select]);
+	ft_putstr(RESET);
 	RESET_C;
+	data->is_select = SLEFT;
 }
 
 void	select_back(t_bash *data)
@@ -48,67 +31,71 @@ void	select_back(t_bash *data)
 	if (data->iterator)
 	{
 		if (data->is_select)
-			data->end_select += (data->select_direction == -1) ? 1 : -1;
-		else if (!data->is_select)
 		{
-			data->is_select = 1;
-			data->start_select = data->iterator;
-			data->end_select = 1;
-			data->select_direction = -1;
-		}
-		if (data->end_select && data->start_select)
-		{
-			data->is_select = 0;
-			data->is_select = 0;
-			if (data->select_direction == -1)
-			{
-				arrow_left(data);
-				apply_back_select(data);
-			}
+			if (data->is_select == SLEFT)
+				data->start_select -= 1;
 			else
 			{
-				arrow_left(data);
-				SAVE_C;
-				ft_putchar(LINE[data->iterator]);
-				RESET_C;
-			}
-			data->is_select = 1;
+				reset_back(data);
+				return;
+			}			
 		}
+		else
+		{
+			data->end_select = data->iterator;
+			data->start_select = data->iterator - 1;
+		}
+		if (data->start_select < data->end_select)
+			add_back(data);
 	}
+}
+
+static void		add_next(t_bash *data)
+{
+	data->is_select = 0;
+	SAVE_C;
+	ft_putstr(BACK_BLUE);
+	ft_putchar(LINE[data->end_select - 1]);
+	ft_putstr(RESET);
+	RESET_C;
+	arrow_right(data);
+	data->is_select = SRIGHT;
+}
+
+static void		reset_next(t_bash *data)
+{
+	SAVE_C;
+	ft_putchar(LINE[data->start_select]);
+	RESET_C;
+	data->start_select += 1;
+	data->is_select = 0;
+	arrow_right(data);
+	data->is_select = SLEFT;
+	if (data->end_select == data->start_select)
+		unselect(data);;
 }
 
 void	select_next(t_bash *data)
 {
-	if (data->iterator != ft_strlen(LINE))
+	if (data->iterator < ft_strlen(LINE))
 	{
 		if (data->is_select)
-			data->end_select += (data->select_direction == 1) ? 1 : -1;
-		else if (!data->is_select)
 		{
-			data->is_select = 1;
-			data->start_select = data->iterator;
-			data->end_select = 1;
-			data->select_direction = 1;
-		}
-		if (data->end_select && data->is_select)
-		{
-			data->is_select = 0;
-			if (data->select_direction == 1)
-			{
-				apply_select(data);
-				arrow_right(data);
-			}
+			if (data->is_select == SRIGHT)
+				data->end_select += 1;
 			else
 			{
-				int save = data->iterator;
-				SAVE_C;
-				arrow_left(data);
-				ft_putchar(LINE[data->iterator]);
-				RESET_C;
-				data->iterator = save;
+				reset_next(data);
+				return ;
 			}
-			data->is_select = 1;
 		}
+		else
+		{
+			data->end_select = data->iterator + 1;
+			data->start_select = data->iterator;
+		}
+		if (data->start_select < data->end_select)
+			add_next(data);
 	}
 }
 
@@ -118,9 +105,9 @@ static char	*strsub_copy(char *str, int start, int size)
 	int		i;
 
 	i = 0;
-	if (!str || !(ret = malloc(sizeof(char) * (size + 1))))
+	if (!str || !(ret = malloc(sizeof(char) * (size - start + 1))))
 		return (NULL);
-	while (str[start] && i != size)
+	while (str[start] && start != size)
 	{
 		ret[i] = str[start];
 		i++;
@@ -132,29 +119,22 @@ static char	*strsub_copy(char *str, int start, int size)
 
 void	uncolor(t_bash *data)
 {
-	int	save;
+	int	idx;
+	int	count;
+	int	x;
+	int	y;
 
-	save = data->iterator;
-	fill_term_struct(data, &data->cursor, LINE, get_win_max_col());
-	if (data->cursor)
-	{
-		data->cursor = find_cursor_node(&data->cursor,	data->iterator,
-												get_win_max_col(), data->prompt_len);
-		if (data->select_direction == -1)
-		{
-			SAVE_C;
-			print_rest(LINE, save, NULL);
-			RESET_C;
-		}
-		else if (data->select_direction == 1)
-		{
-			SAVE_C;
-			for (int i = 0 ; i != data->end_select ; i++)
-				move_left(data);
-			print_rest(LINE, data->iterator, NULL);
-			RESET_C;
-			data->iterator = save;
-		}
+	idx = data->iterator;
+	x = data->x;
+	y = data->y;
+	while (data->iterator){
+		arrow_left(data);
+	}
+	SAVE_C;
+	print_rest(LINE, data->iterator, LINE),
+	RESET_C;
+	while (data->iterator != idx) {
+		arrow_right(data);
 	}
 }
 
@@ -168,17 +148,12 @@ void	unselect(t_bash *data)
 
 void	select_copy(t_bash *data)
 {
-	int	start;
-
 	if (data->is_select)
 	{
-		start = (data->select_direction == -1) ? data->iterator : data->iterator - data->end_select;
-		data->copied = strsub_copy(LINE, start, data->end_select);
-		info(data->copied);
+		data->copied = strsub_copy(LINE, data->start_select, data->end_select);
 		uncolor(data);
 		unselect(data);
 		clear_struct(&data->cursor);
-		info(data->copied);
 	}
 }
 
@@ -191,7 +166,8 @@ void	select_paste(t_bash *data)
 		if (LINE)
 		{
 			old = ft_strdup(LINE);
-			LINE = str_add_sub(LINE, data->copied, IDX);
+			ft_strdel(&LINE);
+			LINE = str_add_sub(old, data->copied, IDX);
 		}
 		else
 			LINE = data->copied;

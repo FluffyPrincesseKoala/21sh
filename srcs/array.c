@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   array.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/25 10:49:34 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/12/17 20:24:33 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,6 @@ char		**copy_array(char **array)
 	}
 	new[i] = NULL;
 	return (new);
-}
-
-int			array_len(char **array)
-{
-	int		i;
-
-	i = 0;
-	while (array[i])
-		i++;
-	return (i);
 }
 
 int			array_total_len(char **array)
@@ -87,49 +77,93 @@ void		print_array(char **array)
 	}
 }
 
-char		**array_add_value(char **src, char *value)
+static size_t	ft_strclen(const char *s, char c)
 {
-	char	**new;
-	int		i;
+	size_t	i;
 
 	i = 0;
-	if (!(new = malloc(sizeof(char*) * (array_len(src) + 2))))
+	while (s[i] && (s[i] != c || (s[i] == c && i && s[i - 1] == '\\') 
+			|| ((s[i] == c && i > 1 && s[i - 1] == '\\' && s[i - 2] != '\\'))) && i != ft_strlen(s) - 1)
+		i++;
+	return (i);
+}
+
+static size_t	ft_count_words(char const *s, char c)
+{
+	size_t		i;
+	size_t		words;
+
+	i = 0;
+	words = 0;
+	while (s[i])
+	{
+		if (s[i] != c || (s[i] == c && i && s[i - 1] == '\\'))
+		{
+			words++;
+			while (s[i] && (s[i] != c || (s[i] == c && i && s[i - 1] == '\\')
+				|| ((s[i] == c && i > 1 && s[i - 1] == '\\' && s[i - 2] != '\\'))))
+				i++;
+		}
+		else
+			i++;
+	}
+	return (words);
+}
+
+char			**fsplit(char const *s, char c)
+{
+	char		**tabatata;
+	size_t		words;
+	size_t		i;
+	size_t		j;
+	size_t		pute;
+
+	if (!s)
 		return (NULL);
-	while (src[i])
-	{	
-		new[i] = ft_strdup(src[i]);
-		i++;
+	words = ft_count_words(s, c);
+	if (!(tabatata = (char**)malloc(sizeof(char*) * (words + 1))))
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s[i])
+	{
+		if (s[i] != c || (s[i] == c && i && s[i - 1] == '\\')
+			|| ((s[i] == c && i > 1 && s[i - 1] == '\\' && s[i - 2] != '\\'))  && i != ft_strlen(s) - 1)
+		{
+			if (!(tabatata[j++] = ft_strndup(s + i, (pute = ft_strclen(s + i, c)))))
+				return (NULL);
+			i += (pute != 0) ? pute : 1;
+		}
+		else
+			i++;
 	}
-	new[i++] = ft_strdup(value);
-	new[i] = NULL;
-	free_array(src);
-	return (new);
+	tabatata[j] = NULL;
+	return (tabatata);
 }
 
-char		**change_array_value(char **src, char *key, char *value)
+char		*del_all_delim_in(char *str, char delim)
 {
+	char	**tmp;
+	char	*ret;
 	int		i;
+	int		j;
+	int		p;
 
 	i = 0;
-	while (src[i])
+	j = -1;
+	tmp = fsplit(str, delim);
+	if (ret = malloc(sizeof(char) * (array_total_len(tmp) + 1)))
 	{
-		if (ft_strnequ(src[i], key, ft_strlen(key)))
-			src[i] = ft_strdup(value);
-		i++;
+		while (tmp[i])
+		{
+			p = -1;
+			while (tmp[i][++p])
+				ret[++j] = tmp[i][p];
+			i++;
+		}
+		ret[++j] = '\0';
+		free_array(tmp);
 	}
-	return (src);
-}
-
-int			is_env_key_exist(char **env, char *key)
-{
-	int		i;
-
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strnequ(env[i], key, ft_strlen(key)))
-			return (1);
-		i++;
-	}
-	return (0);
+	ft_strdel(&str);
+	return (ret);
 }

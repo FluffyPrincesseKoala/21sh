@@ -3,20 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_key.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 15:21:14 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/24 15:21:26 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/12/10 15:43:49 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-static int			is_whitespaces(char c)
+static void			init_xy(t_bash *data, int *x, int *y, int max)
 {
-	if (c == ' ' || c == '\n' || c == '\0' || c == '\t')
-		return (1);
-	return (0);
+	if (!(*y = get_curent_line(LINE, data->iterator, max, data->prompt_len)))
+	{
+		*y = (data->iterator + data->prompt_len) / max;
+		*x = (data->iterator + data->prompt_len) % max;
+	}
+	else if (x)
+	{
+		*x = len_between_last_delim(LINE, '\n', data->iterator);
+	}
 }
 
 void				ctrl_right(t_bash *data)
@@ -26,9 +32,9 @@ void				ctrl_right(t_bash *data)
 
 	if (data->iterator < (len = ft_strlen(LINE)))
 	{
-		while (data->iterator < len && is_whitespaces(LINE[data->iterator]))
+		while (data->iterator < len && ft_iswhitespace(LINE[data->iterator]))
 			arrow_right(data);
-		while (data->iterator < len && !is_whitespaces(LINE[data->iterator]))
+		while (data->iterator < len && !ft_iswhitespace(LINE[data->iterator]))
 			arrow_right(data);
 	}
 }
@@ -40,9 +46,9 @@ void				ctrl_left(t_bash *data)
 
 	if (data->iterator)
 	{
-		while (data->iterator && is_whitespaces(LINE[data->iterator]))
+		while (data->iterator && ft_iswhitespace(LINE[data->iterator]))
 			arrow_left(data);
-		while (data->iterator && !is_whitespaces(LINE[data->iterator]))
+		while (data->iterator && !ft_iswhitespace(LINE[data->iterator]))
 			arrow_left(data);
 	}
 }

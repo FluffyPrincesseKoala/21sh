@@ -12,7 +12,7 @@
 
 #include "21sh.h"
 
-static void print_args(t_bash *data)
+static void	print_args(t_bash *data)
 {
 	VECT->args = VECT->args->next;
 	while (VECT->args)
@@ -25,31 +25,44 @@ static void print_args(t_bash *data)
 	ft_putchar('\n');
 }
 
-int     check_built_in(t_bash *data)
+static void	init_built_in(t_built **fct)
 {
+	if (!(*fct = ft_memalloc(sizeof(t_built) * 4)))
+		return ;
+	(*fct)[0].f = &set_env;
+	(*fct)[0].name = ft_strdup("setenv");
+	(*fct)[0].len = 6;
+	(*fct)[1].f = &unset_env;
+	(*fct)[1].name = ft_strdup("unsetenv");
+	(*fct)[1].len = 8;
+	(*fct)[2].f = &change_directory;
+	(*fct)[2].name = ft_strdup("cd");
+	(*fct)[2].len = 2;
+	(*fct)[3].f = &print_args;
+	(*fct)[3].name = ft_strdup("echo");
+	(*fct)[3].len = 4;
+}
+
+int 	    check_built_in(t_bash *data)
+{
+	static t_built	*fct;
+	int 	i;
+	int 	exit;
+
+	i = 0;
+	exit = 0;
+	if (!fct)
+		init_built_in(&fct);
     if (ft_strnequ(data->vector->args->content, "exit", 4))
-	{
 		return (-1);
-	}
-	if (ft_strnequ(data->vector->args->content, "setenv", 6))
+	while (i != 4 && !exit)
 	{
-		set_env(data);
-        return (1);
-	}
-	if (ft_strnequ(data->vector->args->content, "unsetenv", 8))
-	{
-		unset_env(data);
-        return (1);
-	}
-	if (ft_strnequ(data->vector->args->content, "cd", 2))
-	{
-		change_directory(data);
-		return (1);
-	}
-	if (ft_strnequ(data->vector->args->content, "echo", 4))
-	{
-		print_args(data);
-		return (1);
+		if (ft_strnequ(data->vector->args->content, fct[i].name, fct[i].len))
+		{
+			fct[i].f(data);
+			return (1);
+		}
+		i++;
 	}
     return (0);
 }

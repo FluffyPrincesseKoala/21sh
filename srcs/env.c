@@ -14,7 +14,6 @@
 
 void		print_env(t_bash *data)
 {
-	//print_array(data->env);
 	for (int i = 0 ; data->env[i] ; i++) {
 		ft_putnbr(i);
 		ft_putchar('|');

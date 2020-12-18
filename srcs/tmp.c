@@ -12,23 +12,6 @@
 
 #include "21sh.h"
 
-void		put_error_msg(char *error)
-{
-	if (error)
-	{
-		ft_putstr_fd(RED, STDERR);
-		ft_putstr_fd(error, STDERR);
-		ft_putstr_fd(RESET, STDERR);
-	}
-}
-
-void		puterror(int error)
-{
-	ft_putstr_fd(RED, STDERR);
-	ft_putnbr_fd(error, STDERR);
-	ft_putstr_fd(RESET, STDERR);
-}
-
 void		hello()
 {
 	struct winsize	w;
@@ -85,16 +68,6 @@ int			prompt(char **env, int short_prompt)
 	return (len);
 }
 
-int		lendelim(char *str, char delim, int start)
-{
-	int	i;
-
-	i = (str[start] == delim) ? 1 : 0;
-	while (str && str[i + start] && str[i + start] != delim)
-		i++;
-	return (i);
-}
-
 char		*findenv(char **env, char *var)
 {
 	int		i;
@@ -126,7 +99,7 @@ int			pending_line(char *str)
 		j = -1;
 		while (str && str[++j])
 		{
-			if (str[j] == separator[i])
+			if (str[j] == separator[i] && ((j && str[j - 1] != '\\') || (j >= 2 && str[j - 1] == '\\' && str[j - 2] == '\\') || (!j)))
 				stack += (stack) ? 1 : -1;
 		}
 		if (stack)
@@ -150,6 +123,7 @@ void		loop(t_bash *data)
 	exit = 0;
 	data->start_expend = 0;
 	data->expend_up = 0;
+	set_up_signals();
 	while (42 && exit != -1)
 	{
 		read(0, buff, 6);

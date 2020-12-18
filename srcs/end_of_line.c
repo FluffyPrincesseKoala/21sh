@@ -42,10 +42,7 @@ static void new_line(t_bash *data)
 static void update_pending_line(t_bash *data)
 {
 	if (pending_line(LINE) && !data->expend)
-	{
-		info("is updating");
 		push_entry(data, "\n", &data->vector->line, data->iterator++);
-	}
 	VECT_UP->line = str_join_free(&VECT_UP->line, &LINE);
 	VECT = VECT_UP;
 	free_vector(&VECT_DOWN);
@@ -65,24 +62,16 @@ int			handle_eol(t_bash *data, char *buff)
 //	key_start(data);
 	key_last(data);
 	if (data->vector->down)
-	{
-		info("pull the line");
 		pull_line(&data->vector);
-	}
 	if (data->expend)
-	{
-		info("expend");
 		update_pending_line(data);
-	}
 	else if (is_all_whitespaces(LINE))
 	{
-		info("is_all_whitespaces");
 		ft_putchar('\n');
 		ft_strdel(&LINE);
 	}
 	if (LINE && !is_pending_line(data))
 	{
-		//info(LINE);
 		ft_putchar('\n');
 		format_line(data);
 		if ((exit = check_built_in(data)) == 0)

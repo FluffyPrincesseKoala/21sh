@@ -22,7 +22,8 @@ static char		**split_var(char **env, char *str)
 	var = ft_strsplit(str, ':');
 	while (var[k])
 	{
-		if (ft_strchr(var[k], '$'))
+		if (ft_strchr(var[k], '$')
+		&& ft_strlen((ft_strchr(var[k], '$') + 1)) >= 1)
 		{
 			tmp = findenv(env, ft_strchr(var[k], '$') + 1);
 			ft_strdel(&var[k]);
