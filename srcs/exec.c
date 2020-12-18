@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/25 18:23:44 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/12/18 11:12:05 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static char *choose_path(char *name, t_vect *cmd, t_bash *data)
 	return (path);
 }
 
-static void handle_pipe(t_bash *data, t_vect *command)
+void		handle_pipe(t_bash *data, t_vect *command)
 {
 	char			**args_array;
 	char			*path;
@@ -94,7 +94,7 @@ static void handle_pipe(t_bash *data, t_vect *command)
 		new->left_fd = 0;
 		new->right_fd = pipe_fd[0];
 		if ((path = choose_path(*args_array, command, data)))
-			execute_command(data, command, args_array);
+			execute_command(data, command, args_array, path);
 		else
 			exit(-1);
 	}
@@ -107,21 +107,15 @@ static void handle_pipe(t_bash *data, t_vect *command)
 	}
 }
 
-static void	execute_command(t_bash *data, t_vect *command, char **args_array)
+static void	execute_command(t_bash *data, t_vect *command, char **args_array, char *path)
 {
-	char	*path;
-
 	if (command->separator == '|')
 		handle_pipe(data, command);
 	if (command->redirections)
 		handle_redirections(data, command->redirections, 0);
-	if ((path = choose_path(*args_array, command, data)) && !data->error)
-	{
-		if (execve(path, args_array, data->env) == -1)
-			exit(-1);
-	}
-	else
-		exit(-1);
+	if (!data->error)
+		execve(path, args_array, data->env);
+	exit(-1);
 	//if (command->redirections)
 	//	restore_directions(command->redirections);
 }
@@ -142,7 +136,7 @@ void		handle_fork(t_bash *data, t_vect *command)
 			if (fork_failed(cpid))
 				print_failed_fork_error(cpid);
 			else if (is_child(cpid))
-				execute_command(data, command, args_array);
+				execute_command(data, command, args_array, path);
 			wait(&status);
 		}
 		while (command->separator == '|')

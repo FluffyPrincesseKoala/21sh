@@ -85,9 +85,9 @@ int			handle_eol(t_bash *data, char *buff)
 		//info(LINE);
 		ft_putchar('\n');
 		format_line(data);
+		search_redirections_in_cmd(data, VECT);
 		if ((exit = check_built_in(data)) == 0)
 		{
-			search_redirections_in_cmd(data, VECT);
 			if (!data->error)
 				handle_fork(data, VECT);
 		}
