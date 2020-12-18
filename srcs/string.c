@@ -42,31 +42,43 @@ char		*addchar(char *str, char c, int pos)
 	return (new);
 }
 
+char		*ncat(char *new, char *sub, int *j)
+{
+	int		k;
+
+	k = 0;
+	while (sub[k])
+	{
+		new[++*j] = sub[k];
+		k++;
+	}
+	return (new);
+}
+
 char		*str_add_sub(char *str, char *sub, int pos)
 {
 	char	*new;
+	int		ok;
 	int		i;
 	int		j;
-	int		k;
 
-	i = -1;
+	i = 0;
 	j = -1;
-	k = 0;
+	ok = 0;
 	if (!(new = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(sub) + 1))))
 		return (NULL);
-	while (str && str[++i])
+	while (str && str[i])
 	{
-		if (i == pos)
-		{
-			while (sub[k])
-			{
-				new[++j] = sub[k];
-				k++;
-			}
-		}
+		if (i != pos || ok)
+			new[++j] = str[i++];
 		else
-			new[++j] = str[i];
+		{
+			new = ncat(new, sub, &j);
+			ok = 1;
+		}
 	}
+	if (i == pos && !ok)
+		new = ncat(new, sub, &j);
 	new[++j] = '\0';
 	return (new);
 }

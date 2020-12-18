@@ -59,6 +59,21 @@ t_bash	*initialize_bash(char **env)
 	return (data);
 }
 
+void	print_history(t_bash *data)
+{
+	int	i;
+
+	i = 0;
+	while (data->vector->up)
+		data->vector = data->vector->up;
+	while (data->vector)
+	{
+		printf("%d\t| %s\n", i, LINE);
+		data->vector = data->vector->down;
+		i++;
+	}
+}
+
 int		main(int argc, char **argv, char **env)
 {
 	t_bash	*data;
@@ -70,34 +85,11 @@ int		main(int argc, char **argv, char **env)
 		else if (!conf_term())
 		{
 			CLEAR;
-			hello();
 			data->prompt_len = prompt(env, 0);
 			loop(data);
+			print_history(data);
 			unconf_term();
 			free_bash(data);
-		}
-	}
-	else if (argc > 1 && argv)
-	{
-		if (!(data = initialize_bash(env)))
-			puterror(MALLOC_ERROR);
-		else
-		{
-			for (int i = 1 ; i < argc ; i++)
-			{
-				data->vector->line = ft_strdup(argv[i]);
-				if (!is_all_whitespaces(LINE))
-				{
-					format_line(data);
-					search_redirections_in_cmd(data, VECT);
-					if (!data->error)
-						handle_fork(data, VECT);
-				}
-				else
-					put_error_msg("Shell is not a nudeshell\n");
-				if (i + 1 != argc)
-					VECT = link_history(&VECT, NULL);
-			}
 		}
 	}
 	return (0);

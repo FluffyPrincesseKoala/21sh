@@ -33,9 +33,9 @@ static void sigtstp_handler(int sig)
 */
 static void sigchld_handler(int sig)
 {
-    ft_putendl(RED);
-    ft_putendl("It's over now");
-    ft_putendl(RESET);
+    // ft_putendl(RED);
+    // ft_putendl("It's over now");
+    // ft_putendl(RESET);
     signal(sig, sigchld_handler);
 }
 

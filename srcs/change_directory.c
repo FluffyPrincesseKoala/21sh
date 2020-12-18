@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:22:41 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/25 15:20:30 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/12/18 11:47:35 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void		update_current_directory(char **env, char *pwd)
 	char		*old;
 	char		*tmp;
 
-	old = getenv("PWD");
+	old = findenv(env, "PWD");
 	tmp = ft_strjoin("OLDPWD=", old);
 	env = change_array_value(env, "OLDPWD", tmp);
 	ft_strdel(&tmp);
@@ -58,29 +58,29 @@ static void		move_to_directory(char **env, char *path)
 	}
 }
 
-void			change_directory(t_bash *data)
+void			change_directory(t_bash *data, t_vect *command)
 {
 	char		*path;
 
-	while (VECT->args)
+	while (command->args)
 	{
-		if (ft_strequ(VECT->args->content, "cd"))
+		if (ft_strequ(command->args->content, "cd"))
 		{
-			if ((VECT->args = VECT->args->next))
+			if ((command->args = command->args->next))
 			{
-				if (ft_strequ(VECT->args->content, "-"))
-					path = getenv("OLDPWD");
+				if (ft_strequ(command->args->content, "-"))
+					path = findenv(data->env, "OLDPWD");
 				else
-					path = VECT->args->content;
+					path = command->args->content;
 			}
 			else
-				path = getenv("HOME");
+				path = findenv(data->env, "HOME");
 			if (path)
 			{
 				move_to_directory(data->env, path);
 				return ;
 			}
 		}
-		VECT->args = VECT->args->next;
+		command->args = command->args->next;
 	}
 }

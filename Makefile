@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
+#    By: koala <koala@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2020/11/24 15:48:20 by cylemair         ###   ########.fr        #
+#    Updated: 2020/12/17 18:40:44 by koala            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,13 +37,16 @@ SRC		=	srcs/main.c 					\
 			srcs/string.c					\
 			srcs/termi.c					\
 			srcs/array.c					\
+			srcs/parse_array.c				\
 			srcs/exec.c						\
 			srcs/tmp.c						\
 			srcs/replace_substr.c			\
-			srcs/arrow.c					\
+			srcs/arrow_up_down.c			\
+			srcs/arrow_left_right.c			\
 			srcs/key.c						\
 			srcs/convert.c					\
-			srcs/separator.c				\
+			srcs/handle_separator.c			\
+			srcs/parse_word.c				\
 			srcs/get_var.c					\
 			srcs/end_of_line.c				\
 			srcs/cursor.c					\
@@ -56,11 +59,13 @@ SRC		=	srcs/main.c 					\
 			srcs/redirections_tools.c		\
 			srcs/functions_not_macros.c		\
 			srcs/args.c						\
+			srcs/create_args.c				\
 			srcs/env.c						\
 			srcs/change_directory.c			\
 			srcs/ctrl_key.c					\
 			srcs/conf_term.c				\
 			srcs/built_in.c					\
+			srcs/print_error.c				\
 
 OBJS	=	$(SRC:.c=.o)
 

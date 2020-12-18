@@ -128,7 +128,6 @@ char		**change_array_value(char **src, char *key, char *value);
 */
 
 int			init_term();
-void		init_xy(t_bash *data, int *x, int *y, int ws_col);
 int			conf_term();
 void		unconf_term();
 int			handle_new_entry(t_bash *data, char *entry, int pos);
@@ -156,7 +155,8 @@ void		move_right(t_bash *data);
 /*
 **	STRING FORMATING
 */
-
+void		detach_arg(t_arg *arg, t_vect *cmd);
+size_t		args_len(t_arg *arg);
 char		*addchar(char *str, char c, int pos);
 char		*replace_delim(char *str, char delim, char new);
 int			pstr(char const *str);
@@ -201,6 +201,8 @@ int			lendelim(char *str, char delim, int start);
 size_t		count_delim(char *str, int delim);
 int   		handle_eol(t_bash *data, char *buff);
 int			pending_line(char *str);
+char		*del_all_delim_in(char *str, char delim);
+void		words_as_args(char **table, t_bash *data);
 
 /*
 **	LIST STUFF
@@ -294,12 +296,12 @@ void            restore_directions(t_redirection *redirection);
 /*
 **	BUILT-IN
 */
-int 		    check_built_in(t_bash *data);
+int 		    check_built_in(t_bash *data, t_vect *command);
 void			print_env(t_bash *data);
 char			*findenv(char **env, char *name);
-void			set_env(t_bash *data);
-void			unset_env(t_bash *data);
+void			set_env(t_bash *data, t_vect *command);
+void			unset_env(t_bash *data, t_vect *command);
 int				is_env_key_exist(char **env, char *key);
-void			change_directory(t_bash *data);
+void			change_directory(t_bash *data, t_vect *command);
 
 #endif
