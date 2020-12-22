@@ -84,6 +84,7 @@ int		main(int argc, char **argv, char **env)
 			puterror(MALLOC_ERROR);
 		else if (!conf_term())
 		{
+			data_g = data;
 			CLEAR;
 			data->prompt_len = prompt(env, 0);
 			loop(data);

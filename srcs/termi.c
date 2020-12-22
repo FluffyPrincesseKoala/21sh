@@ -89,12 +89,27 @@ static void		init_arrow_fct_ptr_B(t_key **fct)
 	(*fct)[15].len = 6;
 }
 
+static void		init_arrow_fct_ptr_C(t_key **fct)
+{
+	/*
+	**	ctrl + L (clean screen)
+	*/
+	(*fct)[16].f = &clean_screen;
+	(*fct)[16].name = ft_strdup("\f");
+	(*fct)[16].len = 1;
+	(*fct)[17].f = &return_exit;
+	(*fct)[17].name = ft_strdup("\004");
+	(*fct)[17].len = 1;
+}
+
+
 static void		init_arrow_fct_ptr(t_key **fct)
 {
 	if (!(*fct = ft_memalloc(sizeof(t_key) * MAX_KEY)))
 		return ;
 	init_arrow_fct_ptr_A(fct);
 	init_arrow_fct_ptr_B(fct);
+	init_arrow_fct_ptr_C(fct);
 }
 
 void		arrow_key(t_bash *data, char *buff)

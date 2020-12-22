@@ -63,7 +63,9 @@ int			handle_eol(t_bash *data, char *buff)
 	key_last(data);
 	if (data->vector->down)
 		pull_line(&data->vector);
-	if (data->expend)
+	if (data->is_here_doc)
+		update_heredoc(data);
+	else if (data->expend)
 		update_pending_line(data);
 	else if (is_all_whitespaces(LINE))
 	{
@@ -74,14 +76,19 @@ int			handle_eol(t_bash *data, char *buff)
 	{
 		ft_putchar('\n');
 		format_line(data);
-		if ((exit = check_built_in(data)) == 0)
+		if (ft_strstr(LINE, "<<"))
+			here_doc(data);
+		if (!data->is_here_doc)
 		{
-			search_redirections_in_cmd(data, VECT);
-			if (!data->error)
-				handle_fork(data, VECT);
+			if ((exit = check_built_in(data)) == 0)
+			{
+				search_redirections_in_cmd(data, VECT);
+				if (!data->error)
+					handle_fork(data, VECT);
+			}
+			if (exit == -1)
+				return (exit);
 		}
-		if (exit == -1)
-			return (exit);
 	}
 	new_line(data);
 	return (exit);

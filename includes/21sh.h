@@ -70,7 +70,7 @@
 # define TRUE				1
 # define FALSE				0
 # define NOQUOTE			0
-# define MAX_KEY			16
+# define MAX_KEY			18
 
 
 # define SIMPLE_OUTPUT_REDIRECTION ">"
@@ -98,6 +98,7 @@
 
 struct termios	old_term;
 struct termios	new_term;
+t_bash	*data_g;
 
 /*
 **	t_vect manipulation (keep current and old entry)
@@ -302,5 +303,10 @@ void			set_env(t_bash *data);
 void			unset_env(t_bash *data);
 int				is_env_key_exist(char **env, char *key);
 void			change_directory(t_bash *data);
+
+void		custom_return(void);
+void		clean_screen(t_bash *data);
+char		*use_shell_var(char **env, char *str);
+void		return_exit(t_bash *data);
 
 #endif

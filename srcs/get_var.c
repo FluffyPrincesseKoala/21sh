@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_var.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 18:59:31 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/25 16:09:02 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/12/22 12:50:46 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static char		**split_var(char **env, char *str)
 	return (var);
 }
 
-static char		*use_shell_var(char **env, char *str)
+char		*use_shell_var(char **env, char *str)
 {
 	char		*tmp;
 	char		*ret;
@@ -74,7 +74,7 @@ void			get_var(t_arg **head, char **env)
 		arg = *head;
 	while (arg)
 	{
-		if (CONTENT && ft_strchr(CONTENT, '$'))
+		if (arg && CONTENT && ft_strchr(CONTENT, '$'))
 		{
 			tmp = use_shell_var(env, CONTENT);
 			ft_strdel(&CONTENT);

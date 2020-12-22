@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/24 14:52:01 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/12/22 11:31:18 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,12 @@ typedef struct					s_bash
 **	REDIRECT
 */
 	struct s_redirection_setup  **redirections_setup;
+/*
+**	HERE DOCS
+*/
+	char						*doc_string;
+	char						*eof;
+	int							is_here_doc;
 }								t_bash;
 
 typedef struct					s_built
