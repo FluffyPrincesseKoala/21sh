@@ -51,6 +51,28 @@ static void update_pending_line(t_bash *data)
 	data->x = 0;
 }
 
+int			handle_command(t_bash *data, t_vect *command)
+{
+	int exit;
+
+	exit = 0;
+	while (command)
+	{
+		search_redirections_in_cmd(data, command);
+		if ((exit = check_built_in(data, command)) == 0)
+		{
+			if (!data->error)
+				handle_fork(data, command);
+		}
+		if (exit == -1)
+			return (exit);
+		while (command->separator == '|')
+			command = command->next;
+		command = command->next;
+	}
+	return (exit);
+}
+
 int			handle_eol(t_bash *data, char *buff)
 {
 	int		exit;
@@ -79,17 +101,9 @@ int			handle_eol(t_bash *data, char *buff)
 		if (ft_strstr(LINE, "<<"))
 			here_doc(data);
 		if (!data->is_here_doc)
-		{
-			if ((exit = check_built_in(data)) == 0)
-			{
-				search_redirections_in_cmd(data, VECT);
-				if (!data->error)
-					handle_fork(data, VECT);
-			}
-			if (exit == -1)
-				return (exit);
-		}
+			exit = handle_command(data, VECT);
 	}
-	new_line(data);
+	if (exit != -1)
+		new_line(data);
 	return (exit);
 }

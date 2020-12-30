@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/22 11:31:18 by koala            ###   ########.fr       */
+/*   Updated: 2020/12/30 14:49:30 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ typedef struct					s_bash
 
 typedef struct					s_built
 {
-	void						(*f)(struct s_bash *);
+	void						(*f)(struct s_bash *, struct s_vect *);
 	int							len;
 	char						*name;
 }								t_built;

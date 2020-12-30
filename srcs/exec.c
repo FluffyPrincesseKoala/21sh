@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/17 15:47:29 by koala            ###   ########.fr       */
+/*   Updated: 2020/12/18 11:39:40 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static char *choose_path(char *name, t_vect *cmd, t_bash *data)
 	return (path);
 }
 
-static void handle_pipe(t_bash *data, t_vect *command)
+void		handle_pipe(t_bash *data, t_vect *command)
 {
 	char			**args_array;
 	char			*path;
@@ -98,7 +98,7 @@ static void handle_pipe(t_bash *data, t_vect *command)
 		new->left_fd = 0;
 		new->right_fd = pipe_fd[0];
 		if ((path = choose_path(*args_array, command, data)))
-			execute_command(data, command, args_array);
+			execute_command(data, command, args_array, path);
 		else
 			exit(-1);
 	}
@@ -111,21 +111,15 @@ static void handle_pipe(t_bash *data, t_vect *command)
 	}
 }
 
-static void	execute_command(t_bash *data, t_vect *command, char **args_array)
+static void	execute_command(t_bash *data, t_vect *command, char **args_array, char *path)
 {
-	char	*path;
-
 	if (command->separator == '|')
 		handle_pipe(data, command);
 	if (command->redirections)
 		handle_redirections(data, command->redirections, 0);
-	if ((path = choose_path(*args_array, command, data)) && !data->error)
-	{
-		if (execve(path, args_array, data->env) == -1)
-			exit(-1);
-	}
-	else
-		exit(-1);
+	if (!data->error)
+		execve(path, args_array, data->env);
+	exit(-1);
 	//if (command->redirections)
 	//	restore_directions(command->redirections);
 }
@@ -137,26 +131,20 @@ void		handle_fork(t_bash *data, t_vect *command)
 	int		status;
 	pid_t	cpid;
 
-	while (command)
+	args_array = arg_to_array(data, command->args);
+	if ((path = choose_path(*args_array, command, data)))
 	{
-		args_array = arg_to_array(data, command->args);
-		if ((path = choose_path(*args_array, command, data)))
-		{
-			unconf_term();
-			cpid = fork();
-			if (fork_failed(cpid))
-				print_failed_fork_error(cpid);
-			else if (is_child(cpid))
-				execute_command(data, command, args_array);
-			wait(&status);
-			tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
-		}
-		while (command->separator == '|')
-			command = command->next;
-		command = command->next;
-		free_array(args_array);
-		ft_strdel((path) ? &path : NULL);
+		unconf_term();
+		cpid = fork();
+		if (fork_failed(cpid))
+			print_failed_fork_error(cpid);
+		else if (is_child(cpid))
+			execute_command(data, command, args_array, path);
+		wait(&status);
+		tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
 	}
+	free_array(args_array);
+	ft_strdel((path) ? &path : NULL);
 	// fork();
 	// int p[2];
 	// pipe(p);

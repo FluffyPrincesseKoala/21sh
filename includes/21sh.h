@@ -290,19 +290,20 @@ void		    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
 */
 
 void            handle_redirections(t_bash *data, t_redirection *redirection, int position);
-static void 	execute_command(t_bash *data, t_vect *command, char **args_array);
+void 			handle_pipe(t_bash *data, t_vect *command);
+static void 	execute_command(t_bash *data, t_vect *command, char **args_array, char *path);
 void            restore_directions(t_redirection *redirection);
 
 /*
 **	BUILT-IN
 */
-int 		    check_built_in(t_bash *data);
+int 		    check_built_in(t_bash *data, t_vect *command);
 void			print_env(t_bash *data);
 char			*findenv(char **env, char *name);
-void			set_env(t_bash *data);
-void			unset_env(t_bash *data);
+void			set_env(t_bash *data, t_vect *command);
+void			unset_env(t_bash *data, t_vect *command);
 int				is_env_key_exist(char **env, char *key);
-void			change_directory(t_bash *data);
+void			change_directory(t_bash *data, t_vect *command);
 
 void		custom_return(void);
 void		clean_screen(t_bash *data);

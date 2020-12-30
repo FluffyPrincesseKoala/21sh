@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:51:15 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/25 15:20:30 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/12/18 11:53:28 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,22 +56,22 @@ static char	*create_new_env_key(t_arg *args, char **key)
 	return (new);
 }
 
-void		set_env(t_bash *data)
+void		set_env(t_bash *data, t_vect *command)
 {
 	char	*key_to_change;
 	char	*new;
 
 	new = NULL;
 	key_to_change = NULL;
-	if (VECT)
+	if (command)
 	{
-		while (VECT->args)
+		while (command->args)
 		{
-			if (ft_strequ(VECT->args->content, "setenv"))
+			if (ft_strequ(command->args->content, "setenv"))
 			{
-				VECT->args = VECT->args->next;
-				if (VECT->args)
-					new = create_new_env_key(VECT->args, &key_to_change);
+				command->args = command->args->next;
+				if (command->args)
+					new = create_new_env_key(command->args, &key_to_change);
 				if (is_env_key_exist(data->env, key_to_change))
 					data->env = change_array_value(data->env, key_to_change, new);
 				else
@@ -80,7 +80,7 @@ void		set_env(t_bash *data)
 				ft_strdel(&key_to_change);
 				return ;
 			}
-			VECT->args = VECT->args->next;
+			command->args = command->args->next;
 		}
 	}
 }
@@ -109,23 +109,23 @@ static char	**del_env_key(char **env, char *key)
 	return (new);
 }
 
-void		unset_env(t_bash *data)
+void		unset_env(t_bash *data, t_vect *command)
 {
 	char	*key;
 
 	key = NULL;
-	while (VECT->args)
+	while (command->args)
 	{
-		if (ft_strequ(VECT->args->content, "unsetenv"))
+		if (ft_strequ(command->args->content, "unsetenv"))
 		{
-			if ((VECT->args = VECT->args->next))
+			if ((command->args = command->args->next))
 			{
-				if ((key = ft_strndup(VECT->args->content,
-						lendelim(VECT->args->content, '=', 0))))
+				if ((key = ft_strndup(command->args->content,
+						lendelim(command->args->content, '=', 0))))
 					data->env = del_env_key(data->env, key);
 				return ;
 			}
 		}
-		VECT->args = VECT->args->next;
+		command->args = command->args->next;
 	}
 }
