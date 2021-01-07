@@ -96,7 +96,7 @@ void				key_suppr(t_bash *data)
 	char			*old;
 	int				expected;
 
-	if (ft_strlen(LINE))
+	if (IDX < ft_strlen(LINE))
 	{
 		if (data->vector->down)
 			pull_line(&data->vector);

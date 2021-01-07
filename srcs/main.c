@@ -37,7 +37,10 @@ void	*free_bash(t_bash *data)
 	free_all_vectors(data->vector);
 	free_redirections_setup(REDIRECTION_SETUP);
 	REDIRECTION_SETUP = NULL;
+	free_builtin(&data->builtin);
 	free(data);
+	data = NULL;
+	arrow_key(NULL, NULL);
 	return (NULL);
 }
 
@@ -57,21 +60,6 @@ t_bash	*initialize_bash(char **env)
 	if (!(initialize_redirection_set_up_functions(data)))
 		return (free_bash(data));
 	return (data);
-}
-
-void	print_history(t_bash *data)
-{
-	int	i;
-
-	i = 0;
-	while (data->vector->up)
-		data->vector = data->vector->up;
-	while (data->vector)
-	{
-		printf("%d\t| %s\n", i, LINE);
-		data->vector = data->vector->down;
-		i++;
-	}
 }
 
 int		main(int argc, char **argv, char **env)

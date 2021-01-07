@@ -6,7 +6,7 @@
 #    By: koala <koala@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2020/12/22 17:12:54 by koala            ###   ########.fr        #
+#    Updated: 2021/01/06 17:33:37 by koala            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,6 +67,8 @@ SRC		=	srcs/main.c 					\
 			srcs/built_in.c					\
 			srcs/print_error.c				\
 			srcs/heredoc.c					\
+			srcs/termcaps.c					\
+			srcs/history.c					\
 
 OBJS	=	$(SRC:.c=.o)
 

@@ -187,7 +187,8 @@ void	fill_term_struct(t_bash *data, t_term **cursor, char *str, int max)
 		}
 	}
 	link_cursor(cursor, new_cursor_struct(new_line, i - j, max, data->prompt_len));
-	ft_bzero(new_line, len);
+	ft_strdel(&new_line);
+	new_line = NULL;
 }
 
 void				init_cursor(t_bash *data)

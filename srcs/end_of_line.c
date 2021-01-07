@@ -76,8 +76,10 @@ int			handle_command(t_bash *data, t_vect *command)
 int			handle_eol(t_bash *data, char *buff)
 {
 	int		exit;
+	int		is_pending;
 
 	exit = 0;
+	is_pending = 0;
 	/*
 	** GESTION D'ERREUR !!
 	*/
@@ -94,12 +96,20 @@ int			handle_eol(t_bash *data, char *buff)
 		ft_putchar('\n');
 		ft_strdel(&LINE);
 	}
-	if (LINE && !is_pending_line(data))
+	if ((LINE || (data->vector->doc_string && data->vector->separator))
+		&& (!(is_pending = is_pending_line(data)))
+		|| (is_pending && data->vector->doc_string))
 	{
 		ft_putchar('\n');
 		format_line(data);
-		if (ft_strstr(LINE, "<<"))
+		if (!data->vector->doc_string && ft_strstr(LINE, "<<"))
 			here_doc(data);
+		if (data->vector->doc_string)
+		{
+			data->vector->args->next = NULL;
+			data->vector->separator = '<';
+			free_all_args(&data->vector->args->next);
+		}
 		if (!data->is_here_doc)
 			exit = handle_command(data, VECT);
 	}

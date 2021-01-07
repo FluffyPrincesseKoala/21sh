@@ -112,6 +112,23 @@ static void		init_arrow_fct_ptr(t_key **fct)
 	init_arrow_fct_ptr_C(fct);
 }
 
+void		free_key(t_key **fct)
+{
+	int		i;
+
+	i = 0;
+	while (i != MAX_KEY)
+	{
+		(*fct)[i].f = NULL;
+		ft_strdel(&(*fct)[i].name);
+		(*fct)[i].name = NULL;
+		i++;
+	}
+	free(*fct);
+	*fct = NULL;
+	fct = NULL;
+}
+
 void		arrow_key(t_bash *data, char *buff)
 {
 	static t_key	*fct;
@@ -120,6 +137,11 @@ void		arrow_key(t_bash *data, char *buff)
 
 	i = 0;
 	exit = 0;
+	if (!buff && !data && fct)
+	{
+		free_key(&fct);
+		return ;
+	}
 	if (!fct)
 		init_arrow_fct_ptr(&fct);
 	while (i != MAX_KEY && !exit)

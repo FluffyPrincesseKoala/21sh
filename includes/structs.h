@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/30 14:49:30 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/06 18:43:17 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct					s_vect
 	char						*line;
 	t_arg						*args;
 	char						separator;
+	char						*doc_string;
 	t_redirection				*redirections;
 
 	struct s_vect				*next;
@@ -68,12 +69,15 @@ typedef struct					s_redirection_setup
 	int							flags;
 }								t_redirection_setup;
 
+struct							s_built;
+
 typedef struct					s_bash
 {
 	char						**env;
 	char						**venv;
 	int							error;
 	char						*error_msg;
+	struct	s_built				*builtin;
 /*
 **	CURSOR POSITION
 */

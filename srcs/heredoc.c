@@ -6,15 +6,19 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2020/12/22 17:12:29 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/06 20:08:23 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
+/*
+**	Heredoc parse line with "<<" substring to get EOF sequence
+*/
 void		here_doc(t_bash *data)
 {
 	t_arg	*lst;
+	t_arg	*to_free;
 	t_vect	*vect;
 
 	data->is_here_doc = 0;
@@ -28,23 +32,27 @@ void		here_doc(t_bash *data)
 				{
 					data->eof = ft_strdup(lst->content);
 					if (vect->separator)
-						data->doc_string = ft_strdup(ft_strchr(vect->line, vect->separator));
-					if (data->doc_string && ft_strstr(data->doc_string, data->eof))
+						data->vector->doc_string = ft_strdup(ft_strchr(vect->line, vect->separator));
+					if (data->vector->doc_string && ft_strstr(data->vector->doc_string, data->eof))
 					{
 						data->expend = 0;
 						data->is_here_doc = 0;
-						//do redirection stuff
-						ft_putendl(BLUE);
-						ft_putstr(data->doc_string);
-						ft_putstr(RESET);
-						ft_strdel(&data->doc_string);
+						data->vector->separator = '<';
 					}
 				}
 				if (ft_strstr(lst->content, "<<"))
+				{
+					to_free = lst;
 					data->is_here_doc = 1;
+				}
 				lst = lst->next;
 			}
 		}
+	}
+	if (to_free)
+	{
+		to_free->previous->next = NULL;
+		free_all_args(&to_free);
 	}
 	data->expend = (data->is_here_doc) ? -1 : data->expend;
 }
@@ -84,33 +92,30 @@ void	is_env_var(t_bash *data)
 int			 update_heredoc(t_bash *data)
 {
 	char	*tmp;
+	char	*new_line;
 
-	if (ft_strequ(LINE, data->eof))
+	if (ft_strequ(LINE, data->eof) )
 	{
 		data->expend = 0;
 		data->is_here_doc = 0;
 		push_entry(data, "\n", &data->vector->line, data->iterator++);
-		data->doc_string = (data->doc_string) ? str_join_free(&data->doc_string, &LINE) : ft_strdup(LINE);
+		data->vector->up->doc_string = (data->vector->up->doc_string) ? str_join_free(&data->vector->up->doc_string, &LINE) : ft_strdup(LINE);
 		ft_strdel(&data->eof);
-		//do redirection stuff
-		ft_putendl(BLUE);
-		ft_putstr(data->doc_string);
-		ft_putstr(RESET);
-		if (VECT_UP)
+		if (VECT_UP && data->vector->up->doc_string)
 		{
-			tmp = ft_strjoin("\n", data->doc_string);
-			VECT_UP->line = str_join_free(&VECT_UP->line, &tmp);
+			VECT = VECT_UP;
+			free_vector(&data->vector->down);
 		}
-		ft_strdel(&data->doc_string);
 	}
 	else
 	{
 		is_env_var(data);
 		push_entry(data, "\n", &data->vector->line, data->iterator++);
-		data->doc_string = (data->doc_string) ? str_join_free(&data->doc_string, &LINE) : ft_strdup(LINE);
+		data->vector->up->doc_string = (data->vector->doc_string) ? str_join_free(&data->vector->up->doc_string, &LINE) : ft_strdup(LINE);
 		ft_putchar('\n');
+		if (VECT_UP && data->vector->up->doc_string)
+			ft_strdel(&LINE);
 	}
-	ft_strdel(&LINE);
 	data->y = 0;
 	data->x = 0;
 }

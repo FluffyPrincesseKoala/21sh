@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:23:17 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/18 12:05:32 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/06 19:45:36 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-static void	print_args(t_bash *data, t_vect *command)
+void	print_args(t_bash *data, t_vect *command)
 {
 	command->args = command->args->next;
 	while (command->args)
@@ -27,7 +27,7 @@ static void	print_args(t_bash *data, t_vect *command)
 
 static void	init_built_in(t_built **fct)
 {
-	if (!(*fct = ft_memalloc(sizeof(t_built) * 4)))
+	if (!(*fct = ft_memalloc(sizeof(t_built) * NB_BUILTIN)))
 		return ;
 	(*fct)[0].f = &set_env;
 	(*fct)[0].name = ft_strdup("setenv");
@@ -41,27 +41,44 @@ static void	init_built_in(t_built **fct)
 	(*fct)[3].f = &print_args;
 	(*fct)[3].name = ft_strdup("echo");
 	(*fct)[3].len = 4;
+	(*fct)[4].f = &history;
+	(*fct)[4].name = ft_strdup("history");
+	(*fct)[4].len = 7;
+}
+//			print_history(data);
+void		free_builtin(t_built **fct)
+{
+	int		i;
+
+	i = 0;
+	while (i != NB_BUILTIN && *fct)
+	{
+		ft_strdel(&(*fct)[i].name);
+		i++;
+	}
+	free(*fct);
+	*fct = NULL;
+	fct = NULL;
 }
 
 int 	    check_built_in(t_bash *data, t_vect *command)
 {
-	static t_built	*fct;
 	int 	i;
 	int 	exit;
 
 	i = 0;
 	exit = 0;
-	if (!fct)
-		init_built_in(&fct);
+	if (!data->builtin)
+		init_built_in(&data->builtin);
     if (ft_strnequ(command->args->content, "exit", 4))
 		return (-1);
-	while (i != 4 && !exit)
+	while (i != NB_BUILTIN && !exit)
 	{
-		if (ft_strnequ(command->args->content, fct[i].name, fct[i].len))
+		if (ft_strnequ(command->args->content, data->builtin[i].name, data->builtin[i].len))
 		{
 			if (command->redirections)
 				handle_redirections(data, command->redirections, 0);
-			fct[i].f(data, command);
+			data->builtin[i].f(data, command);
 			if (command->redirections)
 				restore_directions(command->redirections);
 			return (1);

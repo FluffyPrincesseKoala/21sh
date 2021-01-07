@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 19:25:39 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/25 11:00:35 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/07 14:19:28 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void		free_all_vectors(t_vect *vect)
 	if (vect)
 	{
 		ft_strdel(&vect->line);
-		free_all_args(vect->args);
+		free_all_args(&vect->args);
 		free_all_vectors(vect->next);
 		free_all_vectors(vect->up);
 		if (vect->redirections)
@@ -55,7 +55,9 @@ void		free_all_vectors(t_vect *vect)
 		vect->up = NULL;
 		vect->down = NULL;
 		vect->redirections = NULL;
+		vect->line = NULL;
 		free(vect);
+		vect = NULL;
 	}
 }
 
@@ -75,14 +77,17 @@ void		free_vector(t_vect **head)
 		while (lst)
 		{
 			if (lst->args)
-				free_all_args(lst->args);
+				free_all_args(&lst->args);
 			lst->args = NULL;
 			ft_strdel(&lst->line);
+			ft_strdel(&lst->doc_string);
 			lst->line = NULL;
 			lst_next = lst->next;
 			free(lst);
+			lst = NULL;
 			lst = lst_next;
 		}
+		head = NULL;
 	}
 }
 
