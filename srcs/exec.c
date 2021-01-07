@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/18 11:39:40 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/12/18 13:32:56 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,11 @@ void		handle_pipe(t_bash *data, t_vect *command)
 		new = new_redirection(command, 0);
 		new->left_fd = 0;
 		new->right_fd = pipe_fd[0];
-		if ((path = choose_path(*args_array, command, data)))
-			execute_command(data, command, args_array, path);
-		else
-			exit(-1);
+		if (check_built_in(data, command) == 0)
+			if (!data->error)
+				if ((path = choose_path(*args_array, command, data)))
+					execute_command(data, command, args_array, path);
+		exit(-1);
 	}
 	else
 	{

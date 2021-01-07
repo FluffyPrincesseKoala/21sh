@@ -288,6 +288,7 @@ void		    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
 ** EXECUTION
 */
 
+int				handle_command(t_bash *data, t_vect *command);
 void            handle_redirections(t_bash *data, t_redirection *redirection, int position);
 void 			handle_pipe(t_bash *data, t_vect *command);
 static void 	execute_command(t_bash *data, t_vect *command, char **args_array, char *path);

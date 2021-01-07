@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/10 12:16:22 by cylemair          #+#    #+#             */
-/*   Updated: 2020/07/10 13:56:20 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/12/18 13:43:46 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ void                search_redirections_in_cmd(t_bash *data, t_vect *cmd)
     t_arg               *arg;
 
     arg = cmd->args;
-    if (cmd->separator == '|')
-        set_up_pipe_redirection(new_redirection(cmd, 0));
     while (arg)
     {
         if (setup_redirection = search_redirections_in_arg(

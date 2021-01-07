@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:23:17 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/18 12:05:32 by cylemair         ###   ########.fr       */
+/*   Updated: 2020/12/18 13:31:10 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int 	    check_built_in(t_bash *data, t_vect *command)
 	static t_built	*fct;
 	int 	i;
 	int 	exit;
+	int		status;
 
 	i = 0;
 	exit = 0;
@@ -59,11 +60,14 @@ int 	    check_built_in(t_bash *data, t_vect *command)
 	{
 		if (ft_strnequ(command->args->content, fct[i].name, fct[i].len))
 		{
+			if (command->separator == '|')
+				handle_pipe(data, command);
 			if (command->redirections)
 				handle_redirections(data, command->redirections, 0);
 			fct[i].f(data, command);
 			if (command->redirections)
 				restore_directions(command->redirections);
+			wait(&status);
 			return (1);
 		}
 		i++;
