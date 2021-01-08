@@ -37,7 +37,10 @@ void	*free_bash(t_bash *data)
 	free_all_vectors(data->vector);
 	free_redirections_setup(REDIRECTION_SETUP);
 	REDIRECTION_SETUP = NULL;
+	free_builtin(&data->builtin);
 	free(data);
+	data = NULL;
+	arrow_key(NULL, NULL);
 	return (NULL);
 }
 
@@ -54,24 +57,11 @@ t_bash	*initialize_bash(char **env)
 		return (free_bash(data));
 	if (!(REDIRECTION_SETUP = malloc(sizeof(t_redirection_setup) * 4)))
 		return (free_bash(data));
-	if (!(initialize_redirection_set_up_functions(data)))
+	if (initialize_redirection_set_up_functions(data) == FAIL)
+		return (free_bash(data));
+	if (init_built_in(&data->builtin) == FAIL)
 		return (free_bash(data));
 	return (data);
-}
-
-void	print_history(t_bash *data)
-{
-	int	i;
-
-	i = 0;
-	while (data->vector->up)
-		data->vector = data->vector->up;
-	while (data->vector)
-	{
-		printf("%d\t| %s\n", i, LINE);
-		data->vector = data->vector->down;
-		i++;
-	}
 }
 
 int		main(int argc, char **argv, char **env)
@@ -84,6 +74,7 @@ int		main(int argc, char **argv, char **env)
 			puterror(MALLOC_ERROR);
 		else if (!conf_term())
 		{
+			data_g = data;
 			CLEAR;
 			data->prompt_len = prompt(env, 0);
 			loop(data);

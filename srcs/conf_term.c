@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   conf_term.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 15:27:44 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/17 15:47:36 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/08 15:39:26 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,9 @@ void	    unconf_term()
 {
 	tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
 //	ft_putendl_fd("Bye!", STDOUT_FILENO);
+}
+
+void		reset_conf_term()
+{
+	tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
 }

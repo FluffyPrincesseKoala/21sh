@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2020/07/10 13:57:52 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/08 13:15:01 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,25 +70,26 @@ void            set_up_pipe_redirection(t_redirection *new)
     new->right_fd = 0;
 }
 
-t_bash          *initialize_redirection_set_up_functions(t_bash *data)
+int         initialize_redirection_set_up_functions(t_bash *data)
 {
     int i;
 
     i = -1;
     while (++i < 3)
         if (!(REDIRECTION_SETUP[i] = malloc(sizeof(t_redirection_setup))))
-            return (NULL);
+            return (FAIL);
     REDIRECTION_SETUP[0]->f = &set_up_appending_output_redirection;
     REDIRECTION_SETUP[0]->flags = APPENDING_OUTPUT_FLAGS;
     if (!(REDIRECTION_SETUP[0]->op = ft_strdup(APPENDING_OUTPUT_REDIRECTION)))
-        return (NULL);
+        return (FAIL);
     REDIRECTION_SETUP[1]->f = &set_up_simple_output_redirection;
     REDIRECTION_SETUP[1]->flags = SIMPLE_OUTPUT_FLAGS;
     if (!(REDIRECTION_SETUP[1]->op = ft_strdup(SIMPLE_OUTPUT_REDIRECTION)))
-        return (NULL);
+        return (FAIL);
     REDIRECTION_SETUP[2]->f = &set_up_input_redirection;
     REDIRECTION_SETUP[2]->flags = INPUT_FLAGS;
     if (!(REDIRECTION_SETUP[2]->op = ft_strdup(INPUT_REDIRECTION)))
-        return (NULL);
+        return (FAIL);
     REDIRECTION_SETUP[3] = NULL;
+    return (SUCCESS);
 }

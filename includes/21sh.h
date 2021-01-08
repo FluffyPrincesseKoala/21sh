@@ -59,18 +59,23 @@
 # define CUR_Y		    	(data->iterator + data->prompt_len) / w.ws_col
 # define LEN_Y				(ft_strlen(LINE) + data->prompt_len) / w.ws_col
 # define ONLY_WCHAR			(count_delim(LINE, ' ') != ft_strlen(LINE))
-# define UP					tputs(tgoto(tgetstr("up", NULL), 0 , 0), 1, &pchar)
-# define CDOWN				tputs(tgoto(tgetstr("do", NULL), 0 , 0), 1, &pchar)
-# define LEFT				tputs(tgoto(tgetstr("le", NULL), 0 , 0), 1, &pchar)
-# define RIGHT				tputs(tgoto(tgetstr("nd", NULL), 0 , 0), 1, &pchar)
-# define SAVE_C				tputs(tgoto(tgetstr("sc", NULL), 0 , 0), 1, &pchar)
-# define RESET_C			tputs(tgoto(tgetstr("rc", NULL), 0 , 0), 1, &pchar)
+# define UP					term_put("up")
+# define CDOWN				term_put("do")
+# define LEFT				term_put("le")
+# define RIGHT				term_put("nd")
+# define SAVE_C				term_put("sc")
+# define RESET_C			term_put("rc")
 # define CLEAR				tputs(tgetstr("cl", NULL), 1, &pchar)
 # define GOTO(X,Y)			tputs(tgoto(tgetstr("cm", NULL), X, Y), 1, &pchar)
 # define TRUE				1
 # define FALSE				0
+# define SUCCESS			1
+# define FAIL				0
+# define EXIT				-1
 # define NOQUOTE			0
-# define MAX_KEY			16
+# define MAX_KEY			18
+# define MAX_TERMCAPS		8
+# define NB_BUILTIN			5
 
 
 # define SIMPLE_OUTPUT_REDIRECTION ">"
@@ -98,6 +103,7 @@
 
 struct termios	old_term;
 struct termios	new_term;
+t_bash	*data_g;
 
 /*
 **	t_vect manipulation (keep current and old entry)
@@ -130,7 +136,9 @@ char		**change_array_value(char **src, char *key, char *value);
 int			init_term();
 int			conf_term();
 void		unconf_term();
+void		reset_conf_term();
 int			handle_new_entry(t_bash *data, char *entry, int pos);
+void		term_put(char *esc);
 
 void		arrow_key(t_bash *data, char *buff);
 
@@ -175,11 +183,14 @@ void		hello();
 int			prompt(char **env, int short_prompt);
 void		loop(t_bash *data);
 char		*build_path(char **env, t_vect *lst);
+int     	using_heredoc(t_vect *command);
 void		handle_fork(t_bash *data, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
 void		puterror(int error);
+int		    fork_is_required(t_vect *command);
 int			fork_failed(pid_t pid);
 int			is_child(pid_t pid);
+int     	command_is_piped(t_vect *command);
 void 		set_up_signals();
 void		clear_term(char *str);
 void		put_error_msg(char *error);
@@ -219,7 +230,7 @@ t_arg  		*add_arg(t_arg **head, t_arg *new);
 int    		insert_new_arg(t_arg *previous, char *s);
 char    	**arg_to_array(t_bash *data, t_arg *arg);
 void		del_one_arg(t_arg *arg, t_vect *cmd);
-void    	free_all_args(t_arg *arg);
+void    	free_all_args(t_arg **arg);
 
 /*
 **	CURSOR TERM STRUCT
@@ -270,7 +281,7 @@ void            free_redirection(t_redirection *redirection);
 ** SET UP
 */
 
-t_bash			*initialize_redirection_set_up_functions(t_bash *data);
+int				initialize_redirection_set_up_functions(t_bash *data);
 void            set_up_pipe_redirection(t_redirection *new);
 void            search_redirections_in_cmd(t_bash *data, t_vect *cmd);
 
@@ -288,15 +299,31 @@ void		    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
 ** EXECUTION
 */
 
-int				handle_command(t_bash *data, t_vect *command);
+int         	handle_commands(t_bash *data, t_vect *command);
+int				handle_command(t_bash *data, t_vect *command, int forked);
+int				new_handle_command(t_bash *data, t_vect *command, int forked);
 void            handle_redirections(t_bash *data, t_redirection *redirection, int position);
+void        	set_child_pipe_redirection(t_vect *command, int pipe_fd[2]);
+void        	pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2]);
 void 			handle_pipe(t_bash *data, t_vect *command);
-static void 	execute_command(t_bash *data, t_vect *command, char **args_array, char *path);
+void			handle_heredoc(t_bash *data, t_vect *command);
+char			*choose_path(char *name, t_vect *cmd, t_bash *data);
+void			execute_command(t_bash *data, t_vect *command);
 void            restore_directions(t_redirection *redirection);
+
+/*
+**	ERROR MANAGEMENT
+*/
+
+void		print_failed_fork_error(pid_t pid);
 
 /*
 **	BUILT-IN
 */
+
+int				init_built_in(t_built **fct);
+int				search_built_in(t_bash *data, t_vect *command);
+int				is_exit(t_vect *command);
 int 		    check_built_in(t_bash *data, t_vect *command);
 void			print_env(t_bash *data);
 char			*findenv(char **env, char *name);
@@ -304,5 +331,17 @@ void			set_env(t_bash *data, t_vect *command);
 void			unset_env(t_bash *data, t_vect *command);
 int				is_env_key_exist(char **env, char *key);
 void			change_directory(t_bash *data, t_vect *command);
+void			free_builtin(t_built **fct);
+void			print_history(t_bash *data);
+void			history(t_bash *data, t_vect *cmd);
+void			print_args(t_bash *data, t_vect *command);
+
+
+void			custom_return(void);
+void			clean_screen(t_bash *data);
+char			*use_shell_var(char **env, char *str);
+void			return_exit(t_bash *data);
+int				update_heredoc(t_bash *data);
+void			here_doc(t_bash *data);
 
 #endif

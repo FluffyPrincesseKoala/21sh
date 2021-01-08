@@ -22,7 +22,7 @@ char		*addchar(char *str, char c, int pos)
 	j = 0;
 	if (!(new = malloc(sizeof(char) * (ft_strlen(str) + 2))))
 		return (NULL);
-	while (str[i])
+	while (str && str[i])
 	{
 		if (i == pos)
 		{

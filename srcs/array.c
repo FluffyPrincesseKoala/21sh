@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/17 20:24:33 by koala            ###   ########.fr       */
+/*   Updated: 2020/12/18 11:43:27 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static size_t	ft_strclen(const char *s, char c)
 
 	i = 0;
 	while (s[i] && (s[i] != c || (s[i] == c && i && s[i - 1] == '\\') 
-			|| ((s[i] == c && i > 1 && s[i - 1] == '\\' && s[i - 2] != '\\'))) && i != ft_strlen(s) - 1)
+			|| ((s[i] == c && i > 1 && s[i - 1] == '\\' && s[i - 2] != '\\'))))
 		i++;
 	return (i);
 }
@@ -128,11 +128,11 @@ char			**fsplit(char const *s, char c)
 	while (s[i])
 	{
 		if (s[i] != c || (s[i] == c && i && s[i - 1] == '\\')
-			|| ((s[i] == c && i > 1 && s[i - 1] == '\\' && s[i - 2] != '\\'))  && i != ft_strlen(s) - 1)
+			|| ((s[i] == c && i > 1 && s[i - 1] == '\\' && s[i - 2] != '\\')))
 		{
 			if (!(tabatata[j++] = ft_strndup(s + i, (pute = ft_strclen(s + i, c)))))
 				return (NULL);
-			i += (pute != 0) ? pute : 1;
+			i += pute;
 		}
 		else
 			i++;

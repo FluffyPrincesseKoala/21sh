@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:12:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/18 13:41:46 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/08 18:14:52 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ void        handle_redirections(t_bash *data, t_redirection *redirection, int po
 	else 
 	{
 		dup2(redirection->right_fd, redirection->left_fd);
-		if (redirection->file_word)
-			close(redirection->right_fd);
+		close(redirection->right_fd);
+		//if (redirection->file_word)
+		//	close(redirection->right_fd);
 	}
 	if (redirection->next)
 		handle_redirections(data, redirection->next, position+1);
@@ -59,8 +60,11 @@ void        handle_redirections(t_bash *data, t_redirection *redirection, int po
 
 void	    restore_directions(t_redirection *redirection)
 {
-	if (redirection->next)
-		restore_directions(redirection->next);
-	close(redirection->left_fd);
-	dup2(redirection->backup_fd, redirection->left_fd);
+	if (redirection)
+	{
+		if (redirection->next)
+			restore_directions(redirection->next);
+		close(redirection->left_fd);
+		dup2(redirection->backup_fd, redirection->left_fd);
+	}
 }

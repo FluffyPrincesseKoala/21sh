@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/18 11:55:59 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/08 18:06:57 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,16 @@ typedef struct					s_redirection
 	struct s_redirection		*next;
 }								t_redirection;
 
+struct							s_bash;
+
 typedef struct					s_vect
 {
 	char						*line;
 	t_arg						*args;
 	char						separator;
+	char						*doc_string;
 	t_redirection				*redirections;
+	void						(*builtin)(struct s_bash *, struct s_vect *);
 
 	struct s_vect				*next;
 	struct s_vect				*up;
@@ -68,12 +72,15 @@ typedef struct					s_redirection_setup
 	int							flags;
 }								t_redirection_setup;
 
+struct							s_built;
+
 typedef struct					s_bash
 {
 	char						**env;
 	char						**venv;
 	int							error;
 	char						*error_msg;
+	struct	s_built				*builtin;
 /*
 **	CURSOR POSITION
 */
@@ -104,6 +111,17 @@ typedef struct					s_bash
 **	REDIRECT
 */
 	struct s_redirection_setup  **redirections_setup;
+/*
+**	HERE DOCS
+*/
+	char						*doc_string;
+	char						*eof;
+	int							is_here_doc;
+/*
+** SYSCALLS
+*/
+	char						**args_array;
+	char						*path;
 }								t_bash;
 
 typedef struct					s_built

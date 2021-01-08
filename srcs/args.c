@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   args.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 12:26:04 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/18 17:03:04 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/04 16:57:39 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,18 @@ char    **arg_to_array(t_bash *data, t_arg *arg)
     return (array);
 }
 
-void    free_all_args(t_arg *arg)
+void    free_all_args(t_arg **arg)
 {
-    if (arg)
+    if (arg && *arg)
     {
-        ft_strdel(&CONTENT);
-        free_all_args(arg->next);
-        arg->previous = NULL;
-        arg->next = NULL;
-        free(arg);
+        ft_strdel(&(*arg)->content);
+        free_all_args(&(*arg)->next);
+        (*arg)->previous = NULL;
+        (*arg)->next = NULL;
+        (*arg)->content = NULL;
+        free(*arg);
+		*arg = NULL;
+		arg = NULL;
     }
 }
 

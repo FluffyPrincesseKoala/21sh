@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/18 13:32:56 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/08 18:07:20 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,82 @@ static void	free_two_var_to_feet_norm(char **a, char **b)
 {
 	ft_strdel(a);
 	ft_strdel(b);
+}
+static size_t	ft_strclen(const char *str, char c)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] && str[i] != c)
+		i++;
+	return (i);
+}
+
+static size_t	ft_count_words(char const *s, char c)
+{
+	size_t		i;
+	size_t		words;
+
+	i = 0;
+	words = 0;
+	while (s[i])
+	{
+		if (s[i] != c)
+		{
+			words++;
+			while (s[i] && s[i] != c)
+				i++;
+		}
+		else
+			i++;
+	}
+	return (words);
+}
+
+char		*fndup(const char *str, size_t size)
+{
+	char	*dup;
+	size_t	i;
+
+	i = 0;
+	int lstr = ft_strlen(str);
+	if (!(dup = (char*)malloc(sizeof(char) * (size + 1))))
+		return (NULL);
+	while (i < size)
+	{
+		dup[i] = str[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}
+char			**splity(char const *s, char c)
+{
+	size_t		words;
+	char		**array;
+	size_t		i;
+	size_t		j;
+
+	if (!s)
+		return (NULL);
+	words = ft_count_words(s, c);
+	if (!(array = (char**)malloc(sizeof(char*) * (words + 1))))
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s[i])
+	{
+		if (s[i] != c)
+		{
+			if (!(array[j++] = fndup(s + i, ft_strclen(s + i, c))))
+				return (NULL);
+			i += ft_strclen(s + i, c);
+		}
+		else
+			i++;
+	}
+	array[j] = NULL;
+	return (array);
 }
 
 char		*build_path(char **env, t_vect *lst)
@@ -29,7 +105,7 @@ char		*build_path(char **env, t_vect *lst)
 	i = -1;
 	tmp = NULL;
 	tmp2 = NULL;
-	paths = ft_strsplit(findenv(env, "PATH"), ':');
+	paths = splity(findenv(env, "PATH"), ':');
 	while (paths && paths[++i] && lst->args && lst->args->content)
 	{
 		tmp2 = ft_strjoin(paths[i], "/");
@@ -46,8 +122,14 @@ char		*build_path(char **env, t_vect *lst)
 	free_array(paths);
 	return (NULL);
 }
-
-static void print_failed_fork_error(pid_t pid)
+void		info(char *str)
+{
+	SAVE_C;
+	GOTO(0, 0);
+	printf("%s[%s]%s", RED, str, RESET);
+	RESET_C;
+}
+void		print_failed_fork_error(pid_t pid)
 {
 	ft_putstr_fd("fork failed at ", 2);
 	ft_putnbr_fd((int)pid, 2);
@@ -55,7 +137,7 @@ static void print_failed_fork_error(pid_t pid)
 	exit(-1);
 }
 
-static char *choose_path(char *name, t_vect *cmd, t_bash *data)
+char		*choose_path(char *name, t_vect *cmd, t_bash *data)
 {
 	struct stat sb;
 	char	*path;
@@ -76,82 +158,57 @@ static char *choose_path(char *name, t_vect *cmd, t_bash *data)
 	return (path);
 }
 
-void		handle_pipe(t_bash *data, t_vect *command)
+void lol(t_vect *command, char **args_array, char *path)
 {
-	char			**args_array;
-	char			*path;
-	int				pipe_fd[2];
-	int				status;
-	pid_t			cpid;
-    t_redirection   *new;
-
-	pipe(pipe_fd);
-	cpid = fork();
-	if (fork_failed(cpid))
-		print_failed_fork_error(cpid);
-	else if (is_child(cpid))
+	SAVE_C;
+	CDOWN;
+	for (int i = 0 ; args_array[i] ; i++)
 	{
-		close(pipe_fd[1]);
-		command = command->next;
-		args_array = arg_to_array(data, command->args);
-		new = new_redirection(command, 0);
-		new->left_fd = 0;
-		new->right_fd = pipe_fd[0];
-		if (check_built_in(data, command) == 0)
-			if (!data->error)
-				if ((path = choose_path(*args_array, command, data)))
-					execute_command(data, command, args_array, path);
-		exit(-1);
+		printf("%s[%s][%s]%s%s\n", RED, args_array[i], command->doc_string, path, RESET);
 	}
-	else
-	{
-		close(pipe_fd[0]);
-		new = new_redirection(command, 0);
-		new->left_fd = 1;
-		new->right_fd = pipe_fd[1];
-	}
+	RESET_C;
 }
 
-static void	execute_command(t_bash *data, t_vect *command, char **args_array, char *path)
-{
-	if (command->separator == '|')
-		handle_pipe(data, command);
-	if (command->redirections)
-		handle_redirections(data, command->redirections, 0);
-	if (!data->error)
-		execve(path, args_array, data->env);
-	exit(-1);
-	//if (command->redirections)
-	//	restore_directions(command->redirections);
-}
-
-void		handle_fork(t_bash *data, t_vect *command)
-{
-	char 	**args_array;
-	char 	*path;
-	int		status;
-	pid_t	cpid;
-
-	args_array = arg_to_array(data, command->args);
-	if ((path = choose_path(*args_array, command, data)))
-	{
-		unconf_term();
-		cpid = fork();
-		if (fork_failed(cpid))
-			print_failed_fork_error(cpid);
-		else if (is_child(cpid))
-			execute_command(data, command, args_array, path);
-		wait(&status);
-		tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
-	}
-	free_array(args_array);
-	ft_strdel((path) ? &path : NULL);
-	// fork();
-	// int p[2];
-	// pipe(p);
-	// fork();
-	// enfant: <p[0]
-	// execute
-	// parent: 1>p[1]
-	// execute
-}
+//static void	execute_command(t_bash *data, t_vect *command, char **args_array, char *path)
+//{
+//	if (command->separator == '|')
+//	{
+//		handle_pipe(data, command);
+//	}
+//	if (command->doc_string)
+//	{
+//		handle_heredoc(data, command, args_array, path);
+//	}
+//	else
+//	{
+//		if (command->redirections)
+//			handle_redirections(data, command->redirections, 0);
+//		if (!data->error)
+//			execve(path, args_array, data->env);
+//	}
+//	exit(-1);
+//}
+//
+//void		handle_fork(t_bash *data, t_vect *command)
+//{
+//	char 	**args_array;
+//	char 	*path;
+//	int		status;
+//	pid_t	cpid;
+//
+//	args_array = arg_to_array(data, command->args);
+//	if ((path = choose_path(*args_array, command, data)))
+//	{
+//		unconf_term();
+//		cpid = fork();
+//		if (fork_failed(cpid))
+//			print_failed_fork_error(cpid);
+//		else if (is_child(cpid))
+//			execute_command(data, command, args_array, path);
+//		wait(&status);
+//		reset_conf_term();
+//	}
+//	free_array(args_array);
+//	ft_strdel((path) ? &path : NULL);
+//}
+//

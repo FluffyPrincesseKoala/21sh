@@ -42,6 +42,38 @@ void		hello()
 	ft_putstr(RESET);
 }
 
+void		clean_screen(t_bash *data)
+{
+	CLEAR;
+	prompt(data->env, 0);
+	ft_putstr(LINE);
+}
+
+void		return_exit(t_bash *data)
+{
+	if (data->expend)
+	{
+		if (data->is_here_doc)
+		{
+			// kill heredoc
+			data->is_here_doc = 0;
+		}
+		// kill expend
+		data->expend = 0;
+	}
+	else if (!LINE)
+	{
+		ft_putendl("exit");
+		unconf_term();
+		free_bash(data);
+		exit(0);
+	}
+	else
+	{
+		return ;
+	}
+}
+
 int			prompt(char **env, int short_prompt)
 {
 	int		len;
@@ -99,7 +131,8 @@ int			pending_line(char *str)
 		j = -1;
 		while (str && str[++j])
 		{
-			if (str[j] == separator[i] && ((j && str[j - 1] != '\\') || (j >= 2 && str[j - 1] == '\\' && str[j - 2] == '\\') || (!j)))
+			if (str[j] == separator[i] && ((j && str[j - 1] != '\\')
+			|| (j >= 2 && str[j - 1] == '\\' && str[j - 2] == '\\') || (!j)))
 				stack += (stack) ? 1 : -1;
 		}
 		if (stack)
@@ -130,7 +163,8 @@ void		loop(t_bash *data)
 		if (ft_strnequ(buff, "\n", 1))
 			exit = handle_eol(data, buff);
 		else if (!data->error && (ft_strnequ(buff, "\033", 1)
-		|| buff[0] == 127 || buff[0] == '\017' || buff[0] == '\002'))
+		|| buff[0] == 127 || buff[0] == '\017'
+		|| buff[0] == '\002' || buff[0] == 4 || ft_strnequ(buff, "\f", 1)))
 			arrow_key(data, buff);
 		else if (!data->error && ft_isprint(buff[0])
 			&& !ft_strnequ(buff, "\n", 1))

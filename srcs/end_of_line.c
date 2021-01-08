@@ -51,33 +51,35 @@ static void update_pending_line(t_bash *data)
 	data->x = 0;
 }
 
-int			handle_command(t_bash *data, t_vect *command)
-{
-	int exit;
-
-	exit = 0;
-	while (command)
-	{
-		search_redirections_in_cmd(data, command);
-		if ((exit = check_built_in(data, command)) == 0)
-		{
-			if (!data->error)
-				handle_fork(data, command);
-		}
-		if (exit == -1)
-			return (exit);
-		while (command->separator == '|')
-			command = command->next;
-		command = command->next;
-	}
-	return (exit);
-}
+//int			handle_command(t_bash *data, t_vect *command)
+//{
+//	int exit;
+//
+//	exit = 0;
+//	while (command)
+//	{
+//		search_redirections_in_cmd(data, command);
+//		if ((exit = check_built_in(data, command)) == 0)
+//		{
+//			if (!data->error)
+//				handle_fork(data, command);
+//		}
+//		if (exit == -1)
+//			return (exit);
+//		while (command->separator == '|')
+//			command = command->next;
+//		command = command->next;
+//	}
+//	return (exit);
+//}
 
 int			handle_eol(t_bash *data, char *buff)
 {
 	int		exit;
+	int		is_pending;
 
 	exit = 0;
+	is_pending = 0;
 	/*
 	** GESTION D'ERREUR !!
 	*/
@@ -85,18 +87,32 @@ int			handle_eol(t_bash *data, char *buff)
 	key_last(data);
 	if (data->vector->down)
 		pull_line(&data->vector);
-	if (data->expend)
+	if (data->is_here_doc)
+		update_heredoc(data);
+	else if (data->expend)
 		update_pending_line(data);
 	else if (is_all_whitespaces(LINE))
 	{
 		ft_putchar('\n');
 		ft_strdel(&LINE);
 	}
-	if (LINE && !is_pending_line(data))
+	if ((LINE || (data->vector->doc_string && data->vector->separator))
+		&& (!(is_pending = is_pending_line(data)))
+		|| (is_pending && data->vector->doc_string))
 	{
 		ft_putchar('\n');
 		format_line(data);
-		exit = handle_command(data, VECT);
+		if (!data->vector->doc_string && ft_strstr(LINE, "<<"))
+			here_doc(data);
+		if (data->vector->doc_string)
+		{
+			data->vector->args->next = NULL;
+			data->vector->separator = '<';
+			free_all_args(&data->vector->args->next);
+		}
+		if (!data->is_here_doc)
+			exit = handle_commands(data, VECT);
+			//exit = handle_command(data, VECT);
 	}
 	if (exit != -1)
 		new_line(data);
