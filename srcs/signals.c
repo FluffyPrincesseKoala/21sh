@@ -20,6 +20,8 @@ void		custom_return(void)
 	data_g->x = 0;
 	data_g->x = 0;
 	data_g->iterator = 0;
+	data_g->history_stack = 0;
+	ft_strdel(&data_g->vector->doc_string);
 	if (data_g->vector->down)
 	{
 		while (data_g->vector->down)

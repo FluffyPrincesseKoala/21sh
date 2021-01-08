@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/07 17:33:27 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/08 11:06:41 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,13 +217,13 @@ void		handle_heredoc(t_bash *data, t_vect *command, char **args_array, char *pat
 	else if (is_child(cpid))
 	{
 		close(pipe_fd[1]);
-		dup2(pipe_fd[0], 0);
+		//dup2(pipe_fd[0], 0);
 		new = new_redirection(command, 0);
 		new->left_fd = 0;
-		new->right_fd = pipe_fd[1];
-		close(pipe_fd[0]);
+		new->right_fd = pipe_fd[0];
 		if (command->redirections)
 			handle_redirections(data, command->redirections, 0);
+		close(pipe_fd[0]);
 		if (!data->error)
 			execve(path, args_array, data->env);
 		exit(1);
@@ -231,11 +231,12 @@ void		handle_heredoc(t_bash *data, t_vect *command, char **args_array, char *pat
 	else
 	{
 		close(pipe_fd[0]);
-		dup2(1, save);
-		dup2(pipe_fd[1], 1);
+		//dup2(1, save);
+		//dup2(pipe_fd[1], 1);
+		//close(pipe_fd[1]);
+		write(pipe_fd[1], command->doc_string, ft_strlen(command->doc_string));
 		close(pipe_fd[1]);
-		write(1, command->doc_string, ft_strlen(command->doc_string));
-		dup2(save, 1);
+		//dup2(save, 1);
 		cpid = wait(NULL);
 	}
 }

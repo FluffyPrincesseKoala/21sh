@@ -40,7 +40,7 @@ int main()
 		//child
 		close(pipefd[0]);
 		dup2(pipefd[1], 1);
-		close(pipefd[1]);
+	//	close(pipefd[1]);
 		execve("/bin/cat", cat, NULL);
 		exit(1);
 	}
@@ -48,7 +48,7 @@ int main()
 	{
 		close(pipefd[1]);
 		dup2(pipefd[0], 0);
-		close(pipefd[0]);
+	//	close(pipefd[0]);
 		execve("/usr/bin/wc", wc, NULL);
 		wait(NULL);
 	}
