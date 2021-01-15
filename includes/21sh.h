@@ -67,6 +67,7 @@
 # define RESET_C			term_put("rc")
 # define CLEAR				tputs(tgetstr("cl", NULL), 1, &pchar)
 # define GOTO(X,Y)			tputs(tgoto(tgetstr("cm", NULL), X, Y), 1, &pchar)
+# define SNTX_ERR         	42
 # define TRUE				1
 # define FALSE				0
 # define SUCCESS			1
@@ -76,7 +77,7 @@
 # define MAX_KEY			18
 # define MAX_TERMCAPS		8
 # define NB_BUILTIN			5
-
+# define CHECK_PREV_ARGS	1
 
 # define SIMPLE_OUTPUT_REDIRECTION ">"
 # define APPENDING_OUTPUT_REDIRECTION ">>"
@@ -115,7 +116,7 @@ t_vect		*vect_push(t_vect **head, t_vect *new);
 size_t		count_arg(t_vect *head);
 t_vect		*link_history(t_vect **head, t_vect *new);
 void		pull_line(t_vect **head);
-void		free_vector(t_vect **head);
+void		free_vector(t_vect **head, int flag);
 
 /*
 **	ARRAY FORMATING
@@ -128,6 +129,7 @@ int			array_total_len(char **array);
 void		print_array(char **array);
 char		**array_add_value(char **src, char *value);
 char		**change_array_value(char **src, char *key, char *value);
+char		**create_array(char *first);
 
 /*
 **	STDIN & TERM RELATED
@@ -210,7 +212,7 @@ int			len_between_last_delim(char *str, char delim, int start);
 int			get_curent_line(char *str, int pos, int max, int prompt);
 int			lendelim(char *str, char delim, int start);
 size_t		count_delim(char *str, int delim);
-int   		handle_eol(t_bash *data, char *buff);
+int   		handle_eol(t_bash **data, char *buff);
 int			pending_line(char *str);
 char		*del_all_delim_in(char *str, char delim);
 void		words_as_args(char **table, t_bash *data);
@@ -230,7 +232,7 @@ t_arg  		*add_arg(t_arg **head, t_arg *new);
 int    		insert_new_arg(t_arg *previous, char *s);
 char    	**arg_to_array(t_bash *data, t_arg *arg);
 void		del_one_arg(t_arg *arg, t_vect *cmd);
-void    	free_all_args(t_arg **arg);
+void    	free_all_args(t_arg **arg, int flag);
 
 /*
 **	CURSOR TERM STRUCT
@@ -299,12 +301,13 @@ void		    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
 ** EXECUTION
 */
 
+void			write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2]);
+void        	handle_execution(t_bash *data, t_vect *command);
 int         	handle_commands(t_bash *data, t_vect *command);
-int				handle_command(t_bash *data, t_vect *command, int forked);
-int				new_handle_command(t_bash *data, t_vect *command, int forked);
+int				handle_command(t_bash *data, t_vect *command);
 void            handle_redirections(t_bash *data, t_redirection *redirection, int position);
 void        	set_child_pipe_redirection(t_vect *command, int pipe_fd[2]);
-void        	pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2]);
+void        	pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc);
 void 			handle_pipe(t_bash *data, t_vect *command);
 void			handle_heredoc(t_bash *data, t_vect *command);
 char			*choose_path(char *name, t_vect *cmd, t_bash *data);

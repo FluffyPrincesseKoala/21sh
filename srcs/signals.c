@@ -19,9 +19,11 @@ void		custom_return(void)
 	prompt(data_g->env, 0);
 	data_g->x = 0;
 	data_g->x = 0;
+	data_g->is_here_doc = 0;
 	data_g->iterator = 0;
 	data_g->history_stack = 0;
-	ft_strdel(&data_g->vector->doc_string);
+	data_g->expend = 0;
+	free_array(data_g->vector->doc_string);
 	if (data_g->vector->down)
 	{
 		while (data_g->vector->down)

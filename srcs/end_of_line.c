@@ -45,7 +45,7 @@ static void update_pending_line(t_bash *data)
 		push_entry(data, "\n", &data->vector->line, data->iterator++);
 	VECT_UP->line = str_join_free(&VECT_UP->line, &LINE);
 	VECT = VECT_UP;
-	free_vector(&VECT_DOWN);
+	free_vector(&VECT_DOWN, FALSE);
 	VECT_DOWN = NULL;
 	data->y++;
 	data->x = 0;
@@ -73,10 +73,11 @@ static void update_pending_line(t_bash *data)
 //	return (exit);
 //}
 
-int			handle_eol(t_bash *data, char *buff)
+int			handle_eol(t_bash **data, char *buff)
 {
 	int		exit;
 	int		is_pending;
+	char	*post_exectution;
 
 	exit = 0;
 	is_pending = 0;
@@ -84,37 +85,33 @@ int			handle_eol(t_bash *data, char *buff)
 	** GESTION D'ERREUR !!
 	*/
 //	key_start(data);
-	key_last(data);
-	if (data->vector->down)
-		pull_line(&data->vector);
-	if (data->is_here_doc)
-		update_heredoc(data);
-	else if (data->expend)
-		update_pending_line(data);
-	else if (is_all_whitespaces(LINE))
+	key_last((*data));
+	if ((*data)->vector->down)
+		pull_line(&(*data)->vector);
+	if ((*data)->is_here_doc)
+		update_heredoc((*data));
+	else if ((*data)->expend)
+		update_pending_line((*data));
+	else if (is_all_whitespaces((*data)->vector->line))
 	{
 		ft_putchar('\n');
-		ft_strdel(&LINE);
+		ft_strdel(&(*data)->vector->line);
 	}
-	if ((LINE || (data->vector->doc_string && data->vector->separator))
-		&& (!(is_pending = is_pending_line(data)))
-		|| (is_pending && data->vector->doc_string))
+	if (((*data)->vector->line || ((*data)->vector->doc_string && (*data)->vector->separator))
+		&& (!(is_pending = is_pending_line((*data))))
+		|| (is_pending && (*data)->vector->doc_string))
 	{
 		ft_putchar('\n');
-		format_line(data);
-		if (!data->vector->doc_string && ft_strstr(LINE, "<<"))
-			here_doc(data);
-		if (data->vector->doc_string)
+		if (!(*data)->vector->doc_string)
+			format_line((*data));
+		if (!(*data)->vector->doc_string && ft_strstr((*data)->vector->line, "<<"))
+			here_doc((*data));
+		if (!(*data)->is_here_doc)
 		{
-			data->vector->args->next = NULL;
-			data->vector->separator = '<';
-			free_all_args(&data->vector->args->next);
+			exit = handle_commands((*data), (*data)->vector);
 		}
-		if (!data->is_here_doc)
-			exit = handle_commands(data, VECT);
-			//exit = handle_command(data, VECT);
 	}
 	if (exit != -1)
-		new_line(data);
+		new_line((*data));
 	return (exit);
 }

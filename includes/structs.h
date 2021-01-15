@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/08 18:06:57 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/15 11:04:38 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ typedef struct					s_vect
 	char						*line;
 	t_arg						*args;
 	char						separator;
-	char						*doc_string;
+	char						**doc_string;
+	char						*eof;
 	t_redirection				*redirections;
 	void						(*builtin)(struct s_bash *, struct s_vect *);
 

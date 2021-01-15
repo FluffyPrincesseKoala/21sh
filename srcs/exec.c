@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/08 18:07:20 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/15 18:18:21 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,51 +164,7 @@ void lol(t_vect *command, char **args_array, char *path)
 	CDOWN;
 	for (int i = 0 ; args_array[i] ; i++)
 	{
-		printf("%s[%s][%s]%s%s\n", RED, args_array[i], command->doc_string, path, RESET);
+		printf("%s[%s][%s]%s%s\n", RED, args_array[i], *(command->doc_string), path, RESET);
 	}
 	RESET_C;
 }
-
-//static void	execute_command(t_bash *data, t_vect *command, char **args_array, char *path)
-//{
-//	if (command->separator == '|')
-//	{
-//		handle_pipe(data, command);
-//	}
-//	if (command->doc_string)
-//	{
-//		handle_heredoc(data, command, args_array, path);
-//	}
-//	else
-//	{
-//		if (command->redirections)
-//			handle_redirections(data, command->redirections, 0);
-//		if (!data->error)
-//			execve(path, args_array, data->env);
-//	}
-//	exit(-1);
-//}
-//
-//void		handle_fork(t_bash *data, t_vect *command)
-//{
-//	char 	**args_array;
-//	char 	*path;
-//	int		status;
-//	pid_t	cpid;
-//
-//	args_array = arg_to_array(data, command->args);
-//	if ((path = choose_path(*args_array, command, data)))
-//	{
-//		unconf_term();
-//		cpid = fork();
-//		if (fork_failed(cpid))
-//			print_failed_fork_error(cpid);
-//		else if (is_child(cpid))
-//			execute_command(data, command, args_array, path);
-//		wait(&status);
-//		reset_conf_term();
-//	}
-//	free_array(args_array);
-//	ft_strdel((path) ? &path : NULL);
-//}
-//

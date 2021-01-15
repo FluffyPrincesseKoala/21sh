@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:12:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/08 18:14:52 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/15 18:10:21 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void        handle_redirections(t_bash *data, t_redirection *redirection, int po
 	// take CLOSE_FD (== -1) into account
 	if (!is_file_word_authorized(data, redirection))
 		return ;
-	ft_putstr("copy fd ");ft_putnbr(redirection->right_fd);ft_putstr(" into ");ft_putnbr(redirection->left_fd);ft_putchar('\n');
 	get_backup_fd(redirection, position);
 	dup2(redirection->left_fd, redirection->backup_fd);
 	if (redirection->right_fd == CLOSE_FD)
@@ -51,8 +50,6 @@ void        handle_redirections(t_bash *data, t_redirection *redirection, int po
 	{
 		dup2(redirection->right_fd, redirection->left_fd);
 		close(redirection->right_fd);
-		//if (redirection->file_word)
-		//	close(redirection->right_fd);
 	}
 	if (redirection->next)
 		handle_redirections(data, redirection->next, position+1);

@@ -67,7 +67,7 @@ t_bash	*initialize_bash(char **env)
 int		main(int argc, char **argv, char **env)
 {
 	t_bash	*data;
-
+	
 	if (argc == 1)
 	{
 		if (!(data = initialize_bash(env)))

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/08 18:32:24 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/15 18:55:14 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,11 @@ void        execute_command(t_bash *data, t_vect *command)
 void        handle_execution(t_bash *data, t_vect *command)
 {
     handle_pipe(data, command);
-    if (using_heredoc(command))
-        handle_heredoc(data, command);
-    else
-    {
-        execute_command(data, command);
-    }    
+    handle_heredoc(data, command);
+    execute_command(data, command);
 }
 
-int			new_handle_command(t_bash *data, t_vect *command, int forked)
+int			handle_command(t_bash *data, t_vect *command)
 {
     int     status;
     pid_t   cpid;
@@ -56,7 +52,7 @@ int			new_handle_command(t_bash *data, t_vect *command, int forked)
     unconf_term();
     search_redirections_in_cmd(data, command);
     search_built_in(data, command);
-    if (!forked && fork_is_required(command))
+    if (fork_is_required(command))
     {
         cpid = fork();
         if (fork_failed(cpid))
@@ -66,7 +62,7 @@ int			new_handle_command(t_bash *data, t_vect *command, int forked)
         wait(&status);
     }
     else
-        handle_execution(data, command);
+        handle_execution(data, command);    
     reset_conf_term();
     return (SUCCESS);
 }
@@ -77,7 +73,7 @@ int         handle_commands(t_bash *data, t_vect *command)
     {
         if (is_exit(command))
             return (EXIT);
-        new_handle_command(data, command, FALSE);
+        handle_command(data, command);
 	    while (command_is_piped(command))
 	    	command = command->next;
 	    command = command->next;
