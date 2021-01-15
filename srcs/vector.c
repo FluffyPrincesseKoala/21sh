@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 19:25:39 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/07 14:19:28 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/14 15:45:23 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void		free_all_vectors(t_vect *vect)
 	if (vect)
 	{
 		ft_strdel(&vect->line);
-		free_all_args(&vect->args);
+		free_array(vect->doc_string);
+		free_all_args(&vect->args, FALSE);
 		free_all_vectors(vect->next);
 		free_all_vectors(vect->up);
 		if (vect->redirections)
@@ -61,7 +62,7 @@ void		free_all_vectors(t_vect *vect)
 	}
 }
 
-void		free_vector(t_vect **head)
+void		free_vector(t_vect **head, int flag)
 {
 	t_vect	*lst;
 	t_vect	*lst_next;
@@ -77,10 +78,10 @@ void		free_vector(t_vect **head)
 		while (lst)
 		{
 			if (lst->args)
-				free_all_args(&lst->args);
+				free_all_args(&lst->args, flag);
 			lst->args = NULL;
 			ft_strdel(&lst->line);
-			ft_strdel(&lst->doc_string);
+			free_array(lst->doc_string);
 			lst->line = NULL;
 			lst_next = lst->next;
 			free(lst);

@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   parse_array.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/25 10:49:34 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/13 16:34:28 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
+
+char		**create_array(char *first)
+{
+	char	**ret;
+
+	if (!(ret = malloc(sizeof(char *) * (2))))
+		return (NULL);
+	ret[0] = ft_strdup(first);
+	ret[1] = NULL;
+	return (ret);
+}
 
 char		**array_add_value(char **src, char *value)
 {
@@ -21,7 +32,7 @@ char		**array_add_value(char **src, char *value)
 	if (!(new = malloc(sizeof(char*) * (array_len(src) + 2))))
 		return (NULL);
 	while (src[i])
-	{	
+	{
 		new[i] = ft_strdup(src[i]);
 		i++;
 	}

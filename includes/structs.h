@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/06 18:43:17 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/13 14:55:06 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ typedef struct					s_vect
 	char						*line;
 	t_arg						*args;
 	char						separator;
-	char						*doc_string;
+	char						**doc_string;
+	char						*eof;
 	t_redirection				*redirections;
 
 	struct s_vect				*next;

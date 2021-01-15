@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 12:26:04 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/04 16:57:39 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/14 15:55:32 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,17 @@ char    **arg_to_array(t_bash *data, t_arg *arg)
     return (array);
 }
 
-void    free_all_args(t_arg **arg)
+void    free_all_args(t_arg **arg, int flag)
 {
     if (arg && *arg)
     {
+		if (flag == CHECK_PREV_ARGS)
+		{
+			if ((*arg)->previous)
+				free_all_args(&(*arg)->previous, FALSE);
+		}
         ft_strdel(&(*arg)->content);
-        free_all_args(&(*arg)->next);
+        free_all_args(&(*arg)->next, flag);
         (*arg)->previous = NULL;
         (*arg)->next = NULL;
         (*arg)->content = NULL;

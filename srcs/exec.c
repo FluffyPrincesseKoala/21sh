@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/08 11:06:41 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/13 16:43:37 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,16 +157,7 @@ static char *choose_path(char *name, t_vect *cmd, t_bash *data)
 	}
 	return (path);
 }
-void lol(t_vect *command, char **args_array, char *path)
-{
-	SAVE_C;
-	CDOWN;
-	for (int i = 0 ; args_array[i] ; i++)
-	{
-		printf("%s[%s][%s]%s%s\n", RED, args_array[i], command->doc_string, path, RESET);
-	}
-	RESET_C;
-}
+
 void		handle_pipe(t_bash *data, t_vect *command)
 {
 	char			**args_array;
@@ -204,7 +195,6 @@ void		handle_pipe(t_bash *data, t_vect *command)
 void		handle_heredoc(t_bash *data, t_vect *command, char **args_array, char *path)
 {
 	int				pipe_fd[2];
-	int save;
 	int				status;
 	pid_t			cpid;
 	t_redirection	*new;
@@ -217,7 +207,6 @@ void		handle_heredoc(t_bash *data, t_vect *command, char **args_array, char *pat
 	else if (is_child(cpid))
 	{
 		close(pipe_fd[1]);
-		//dup2(pipe_fd[0], 0);
 		new = new_redirection(command, 0);
 		new->left_fd = 0;
 		new->right_fd = pipe_fd[0];
@@ -231,12 +220,11 @@ void		handle_heredoc(t_bash *data, t_vect *command, char **args_array, char *pat
 	else
 	{
 		close(pipe_fd[0]);
-		//dup2(1, save);
-		//dup2(pipe_fd[1], 1);
-		//close(pipe_fd[1]);
-		write(pipe_fd[1], command->doc_string, ft_strlen(command->doc_string));
+		for (int i = 0 ; command->doc_string[i] ; i++){
+			write(pipe_fd[1], command->doc_string[i], ft_strlen(command->doc_string[i]));
+			write(pipe_fd[1], "\n", 1);
+		}
 		close(pipe_fd[1]);
-		//dup2(save, 1);
 		cpid = wait(NULL);
 	}
 }
@@ -247,7 +235,7 @@ static void	execute_command(t_bash *data, t_vect *command, char **args_array, ch
 	{
 		handle_pipe(data, command);
 	}
-	if (command->doc_string)
+	if (array_len(command->doc_string))
 	{
 		handle_heredoc(data, command, args_array, path);
 	}
