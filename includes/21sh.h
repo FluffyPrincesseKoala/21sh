@@ -322,7 +322,7 @@ void		print_failed_fork_error(pid_t pid);
 */
 
 int				init_built_in(t_built **fct);
-int				search_built_in(t_bash *data, t_vect *command);
+void			search_built_in(t_bash *data, t_vect *command);
 int				is_exit(t_vect *command);
 int 		    check_built_in(t_bash *data, t_vect *command);
 void			print_env(t_bash *data);

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:23:17 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/08 16:34:24 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/15 10:49:52 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int			is_exit(t_vect *command)
 	return (FALSE);
 }
 
-int			search_built_in(t_bash *data, t_vect *command)
+void		search_built_in(t_bash *data, t_vect *command)
 {
 	int	i;
 
@@ -108,11 +108,7 @@ int			search_built_in(t_bash *data, t_vect *command)
 	while (i != NB_BUILTIN)
 	{
 		if (ft_strequ(command->args->content, data->builtin[i].name))
-		{
 			command->builtin = data->builtin[i].f;
-			return (TRUE);
-		}
 		i++;
 	}
-	return (FALSE);
 }
