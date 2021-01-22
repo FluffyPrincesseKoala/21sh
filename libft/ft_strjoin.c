@@ -40,7 +40,7 @@ char		*ft_strjoin(char const *s1, char const *s2)
 	return (new);
 }
 
-char		*ft_strjoin_free(char **s1, char **s2)
+char		*ft_strjoin_free(char **s1, char **s2, int s_to_free)
 {
 	char	*ret;
 	int		i;
@@ -59,7 +59,9 @@ char		*ft_strjoin_free(char **s1, char **s2)
 	while (*s2 && (*s2)[j])
 		ret[i++] = (*s2)[j++];
 	ret[i] = '\0';
-	ft_strdel(s1);
-	ft_strdel(s2);
+	if (s_to_free == 1 || s_to_free == 3)
+		ft_strdel(s1);
+	if (s_to_free == 2 || s_to_free == 3)
+		ft_strdel(s2);
 	return (ret);
 }

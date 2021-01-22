@@ -6,19 +6,28 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2020/07/10 13:13:03 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/22 17:38:42 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-int     search_left_fd(t_arg *arg, int operator_index, int def, int *error)
+/*
+** Take a look at the left of the redirection operator.
+** If there is nothing, just send the given default file director.
+** If there are digits only, set them as file director.
+** If there is a '&', it means the redirection concerns both STDOUT and STDERR.
+** Else it considers any present word as a detached argument and add it to the 
+**  command argument list.
+*/
+
+int     search_left_fd(t_arg *arg, int operator_idx, int default_fd, int *error)
 {
     char *substring;
 
-    if (operator_index > 0)
+    if (operator_idx > 0)
     {
-        if (!(substring = ft_strsub(CONTENT, 0, operator_index)))
+        if (!(substring = ft_strsub(CONTENT, 0, operator_idx)))
             *error = MALLOC_ERROR;
         else if (ft_str_is_digits(substring))
             return ft_atoi(substring);
@@ -29,8 +38,19 @@ int     search_left_fd(t_arg *arg, int operator_index, int def, int *error)
                 *error = MALLOC_ERROR;
         ft_strdel(&substring);
     }
-    return def;
+    return default_fd;
 }
+
+/*
+** Take a look at the right of the redirection operator.
+** If there is no '&' this means there is no file director here.
+** If there are digits only after the '&', set them as file director.
+** If there is a '-' after the '&', this means the left file director needs to
+**  be closed, if there still a word the '-', considers it as a detached
+**  argument and add it to the command argument list.
+** If there any other kind of word right after '&', this means there might be an
+**  ambiguous syntax in the submitted command.
+*/
 
 int     search_right_fd(t_arg *arg, char *substring, int *error)
 {
@@ -53,6 +73,13 @@ int     search_right_fd(t_arg *arg, char *substring, int *error)
     }
     return (NO_RIGHT_FD);
 }
+
+/*
+** Take a look at the right of the redirection operator.
+** If any word is present, return a copy of it.
+** Else, look for it in the next argument.
+** If the redirection operator is the end of the command, that's an error.
+*/
 
 char    *search_file_word(
     t_vect *cmd, t_arg *arg, int substring_index, int *error)

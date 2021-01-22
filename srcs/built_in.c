@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:23:17 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/15 10:49:52 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/22 12:06:57 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void		free_builtin(t_built **fct)
 //			if (command->separator == '|')
 //				handle_pipe(data, command);
 //			if (command->redirections)
-//				handle_redirections(data, command->redirections, 0);
+//				execute_redirections(data, command->redirections, 0);
 //			data->builtin[i].f(data, command);
 //			if (command->redirections)
 //				restore_directions(command->redirections);

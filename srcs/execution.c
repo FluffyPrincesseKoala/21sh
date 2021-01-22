@@ -1,37 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_v2.c                                          :+:      :+:    :+:   */
+/*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/22 12:26:32 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/22 15:52:29 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
 /*
-** Find the path to the command binary file.
-** Convert the args chained list to an array.
-** Call execve with those params.
+** This file contains execution pre-processing functions generic to all kind of
+** commands.
 */
-
-void        execute_syscall(t_bash *data, t_vect *command)
-{
-    ft_strdel(&(data->path));
-    if (data->path = choose_path(command->args->content, command, data))
-    {
-        free_array(data->args_array);
-        data->args_array = arg_to_array(data, command->args);
-        execve(data->path, data->args_array, data->env);
-    }
-}
 
 /*
 ** Execute the redirections, set up earlier, right before executing the command.
-** If it's a builtin, use the appropriate function, otherwise use execve.
+** If it's a builtin, use the appropriate function, otherway use execve.
 */
 
 void        execute_command(t_bash *data, t_vect *command)
@@ -56,16 +44,16 @@ void        handle_execution(t_bash *data, t_vect *command)
 
 /*
 ** After setting fields in the command structure, handle its execution inside
-** or outside a fork.
+**  or outside a fork.
 */
 
-int			handle_command(t_bash *data, t_vect *command)
+static int  handle_command(t_bash *data, t_vect *command)
 {
     int     status;
     pid_t   cpid;
 
     unconf_term();
-    search_redirections_in_cmd(data, command);
+    set_up_command_redirections(data, command);
     search_built_in(data, command);
     if (fork_is_required(command))
     {

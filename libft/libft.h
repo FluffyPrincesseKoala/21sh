@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 14:45:40 by cylemair          #+#    #+#             */
-/*   Updated: 2020/11/18 17:24:50 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/22 15:08:58 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int					ft_strequ(char const *s1, char const *s2);
 int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
-char				*ft_strjoin_free(char **s1, char **s2);
+char				*ft_strjoin_free(char **s1, char **s2, int s_to_free);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
 char				*ft_itoa(int n);
@@ -89,5 +89,6 @@ int					ft_stristr(const char *str, const char *to_find);
 char				*ft_strsub_free(char **s, unsigned int start, unsigned int len);
 int					is_all_whitespaces(char *str);
 int					ft_str_is_digits(const char *s);
+size_t				ft_strclen(const char *str, char c);
 
 #endif

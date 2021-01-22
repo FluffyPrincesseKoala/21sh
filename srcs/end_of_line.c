@@ -58,7 +58,7 @@ static void update_pending_line(t_bash *data)
 //	exit = 0;
 //	while (command)
 //	{
-//		search_redirections_in_cmd(data, command);
+//		set_up_command_redirections(data, command);
 //		if ((exit = check_built_in(data, command)) == 0)
 //		{
 //			if (!data->error)
