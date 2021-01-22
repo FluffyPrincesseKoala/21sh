@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/13 16:34:28 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/15 17:48:37 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ char		**array_add_value(char **src, char *value)
 	}
 	new[i++] = ft_strdup(value);
 	new[i] = NULL;
-	free_array(src);
+	if (*src)
+		free_array(src);
 	return (new);
 }
 

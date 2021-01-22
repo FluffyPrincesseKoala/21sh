@@ -73,18 +73,30 @@ int			handle_command(t_bash *data, t_vect *command)
 	return (exit);
 }
 
+int			handle_parsing_execution(t_bash *data)
+{
+	int		is_pending;
+
+	is_pending = 0;
+	if ((data->vector->line
+		|| (data->vector->doc_string && data->vector->separator))
+		&& (!(is_pending = is_pending_line(data)))
+		|| (is_pending && data->vector->doc_string))
+	{
+		ft_putchar('\n');
+		if (!data->vector->doc_string)
+			format_line(data);
+		if (!data->is_here_doc)
+			return (handle_command(data, data->vector));
+	}
+	return (0);
+}
+
 int			handle_eol(t_bash **data, char *buff)
 {
 	int		exit;
-	int		is_pending;
-	char	*post_exectution;
 
 	exit = 0;
-	is_pending = 0;
-	/*
-	** GESTION D'ERREUR !!
-	*/
-//	key_start(data);
 	key_last((*data));
 	if ((*data)->vector->down)
 		pull_line(&(*data)->vector);
@@ -97,21 +109,7 @@ int			handle_eol(t_bash **data, char *buff)
 		ft_putchar('\n');
 		ft_strdel(&(*data)->vector->line);
 	}
-	if (((*data)->vector->line || ((*data)->vector->doc_string && (*data)->vector->separator))
-		&& (!(is_pending = is_pending_line((*data))))
-		|| (is_pending && (*data)->vector->doc_string))
-	{
-		ft_putchar('\n');
-		if (!(*data)->vector->doc_string)
-			format_line((*data));
-		if (!(*data)->vector->doc_string && ft_strstr((*data)->vector->line, "<<"))
-			here_doc((*data));
-		if (!(*data)->is_here_doc)
-		{
-			exit = handle_command((*data), (*data)->vector);
-		}
-	}
-	if (exit != -1)
+	if ((exit = handle_parsing_execution(*data)) != -1)
 		new_line((*data));
 	return (exit);
 }

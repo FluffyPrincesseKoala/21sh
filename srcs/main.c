@@ -31,13 +31,15 @@ void	free_redirections_setup(t_redirection_setup **redirections_setup)
 
 void	*free_bash(t_bash *data)
 {
-	free_array(data->env);
+	if (data->env)
+		free_array(data->env);
 	data->env = NULL;
 	data->venv = NULL;
 	free_all_vectors(data->vector);
 	free_redirections_setup(REDIRECTION_SETUP);
 	REDIRECTION_SETUP = NULL;
 	free_builtin(&data->builtin);
+	ft_strdel(&data->eof);
 	free(data);
 	data = NULL;
 	arrow_key(NULL, NULL);

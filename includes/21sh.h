@@ -172,6 +172,7 @@ char		*replace_delim(char *str, char delim, char new);
 char		*replace_substr(char *str, char *old, char *new);
 char		*merge_string_from_array(char **src, int size, int start);
 void		push_entry(t_bash *data, char *entry, char **line, int pos);
+char		**split_all_whitespace(char const *s);
 
 /*
 **	OTHER STUFF

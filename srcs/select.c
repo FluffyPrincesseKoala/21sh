@@ -161,6 +161,7 @@ void	select_paste(t_bash *data)
 {
 	char	*old;
 
+	old = NULL;
 	if (data->copied)
 	{
 		if (LINE)

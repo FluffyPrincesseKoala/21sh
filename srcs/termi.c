@@ -137,9 +137,10 @@ void		arrow_key(t_bash *data, char *buff)
 
 	i = 0;
 	exit = 0;
-	if (!buff && !data && fct)
+	if (!buff && !data)
 	{
-		free_key(&fct);
+		if (fct)
+			free_key(&fct);
 		return ;
 	}
 	if (!fct)

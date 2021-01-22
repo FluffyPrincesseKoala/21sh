@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:50:02 by koala             #+#    #+#             */
-/*   Updated: 2021/01/06 18:15:06 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/22 18:27:01 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void		detach_args(t_vect *current, t_arg *last_arg_before_doomsday)
 	if (last_arg_before_doomsday->next)
 	{
 		current->next = vect_new(last_arg_before_doomsday->next, NULL);
+		last_arg_before_doomsday->next->previous = NULL;
 		last_arg_before_doomsday->next = NULL;
 	}
 }
@@ -95,11 +96,12 @@ void		format_line(t_bash *data)
 {
 	t_vect	*loop;
 	char	**table;
+	char	*tmp;
 
-	if (array_len(table = ft_strsplit(LINE, ' ')))
+	if ((tmp = replace_substr(LINE, "\n", " \n")))
 	{
-		words_as_args(table, data);
-		free_array(table);
+		if (array_len(table = ft_strsplit(tmp, ' ')))
+			words_as_args(table, data);
 	}
 	if (VECT->args && !data->error)
 	{
@@ -112,4 +114,8 @@ void		format_line(t_bash *data)
 	}
 	else
 		puterror(data->error);
+	if (!data->vector->doc_string && ft_strstr(data->vector->line, "<<"))
+		here_doc(data);
+	free_array(table);
+	ft_strdel(&tmp);
 }

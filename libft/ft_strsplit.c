@@ -12,7 +12,6 @@
 
 #include "libft.h"
 #include <stdlib.h>
-#include <string.h>
 
 static size_t	ft_strclen(const char *str, char c)
 {

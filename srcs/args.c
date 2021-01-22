@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 12:26:04 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/14 15:55:32 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/15 17:55:49 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void    free_all_args(t_arg **arg, int flag)
 			if ((*arg)->previous)
 				free_all_args(&(*arg)->previous, FALSE);
 		}
-        ft_strdel(&(*arg)->content);
         free_all_args(&(*arg)->next, flag);
+        ft_strdel(&(*arg)->content);
         (*arg)->previous = NULL;
         (*arg)->next = NULL;
         (*arg)->content = NULL;

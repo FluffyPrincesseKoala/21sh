@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/13 14:55:06 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/22 13:54:24 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,9 @@ typedef struct					s_bash
 	char						*doc_string;
 	char						*eof;
 	int							is_here_doc;
+	int							nb_heredoc;
+	int							finish_heredoc;
+	int							here_doc_delimiter;
 }								t_bash;
 
 typedef struct					s_built

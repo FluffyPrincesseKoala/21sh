@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:23:17 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/06 19:45:36 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/15 12:23:45 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void		free_builtin(t_built **fct)
 	while (i != NB_BUILTIN && *fct)
 	{
 		ft_strdel(&(*fct)[i].name);
+		(*fct)[i].name = NULL;
+		(*fct)[i].f = NULL;
 		i++;
 	}
 	free(*fct);

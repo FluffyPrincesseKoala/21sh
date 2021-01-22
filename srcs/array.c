@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/18 11:43:27 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/22 17:54:53 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void		free_array(char **array)
 	while (array && array[i])
 	{
 		ft_strdel(&array[i]);
+		array[i] = NULL;
 		i++;
 	}
 	if (array)
