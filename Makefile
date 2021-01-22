@@ -6,7 +6,7 @@
 #    By: koala <koala@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/01/19 15:05:09 by koala            ###   ########.fr        #
+#    Updated: 2021/01/22 19:34:35 by koala            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,6 @@ SRC		=	srcs/main.c 					\
 			srcs/termi.c					\
 			srcs/array.c					\
 			srcs/parse_array.c				\
-			srcs/exec.c						\
 			srcs/tmp.c						\
 			srcs/replace_substr.c			\
 			srcs/arrow_up_down.c			\
@@ -70,6 +69,9 @@ SRC		=	srcs/main.c 					\
 			srcs/termcaps.c					\
 			srcs/history.c					\
 			srcs/split_all_whitespace.c		\
+			srcs/pipe.c						\
+			srcs/execution.c				\
+			srcs/syscall_execution.c
 
 OBJS	=	$(SRC:.c=.o)
 

@@ -54,7 +54,7 @@
 # define VECT		   		data->vector
 # define VECT_UP	   		data->vector->up
 # define VECT_DOWN	   		data->vector->down
-# define REDIRECTION_SETUP  data->redirections_setup
+# define REDIRECTIONS_SETUP data->redirections_setup
 # define CUR_X				(data->iterator + data->prompt_len) % w.ws_col
 # define CUR_Y		    	(data->iterator + data->prompt_len) / w.ws_col
 # define LEN_Y				(ft_strlen(LINE) + data->prompt_len) / w.ws_col
@@ -70,6 +70,9 @@
 # define SNTX_ERR         	42
 # define TRUE				1
 # define FALSE				0
+# define SUCCESS			1
+# define FAIL				0
+# define EXIT				-1
 # define NOQUOTE			0
 # define MAX_KEY			18
 # define MAX_TERMCAPS		8
@@ -98,6 +101,7 @@
 # define AMBIGUOUS_REDIRECTION_ERROR 2
 # define UNEXPECT_COMMAND_END_ERROR 3
 # define OPEN_ERROR 4
+# define NO_APPENDING_IN_FILE_DIRECTOR_ERROR 5
 
 struct termios	old_term;
 struct termios	new_term;
@@ -135,6 +139,7 @@ char		**create_array(char *first);
 int			init_term();
 int			conf_term();
 void		unconf_term();
+void		reset_conf_term();
 int			handle_new_entry(t_bash *data, char *entry, int pos);
 void		term_put(char *esc);
 
@@ -181,10 +186,11 @@ char		**split_all_whitespace(char const *s);
 void		hello();
 int			prompt(char **env, int short_prompt);
 void		loop(t_bash *data);
-char		*build_path(char **env, t_vect *lst);
+int     	using_heredoc(t_vect *command);
 void		handle_fork(t_bash *data, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
 void		puterror(int error);
+int		    fork_is_required(t_vect *command);
 int			fork_failed(pid_t pid);
 int			is_child(pid_t pid);
 void 		set_up_signals();
@@ -266,20 +272,12 @@ void		info(char *str);
 ** REDIRECTIONS
 */
 
-/*
-**	STRUCT
-*/
-
-t_redirection   *new_redirection(t_vect *cmd, int flags);
-void            free_redirection(t_redirection *redirection);
 
 /*
 ** SET UP
 */
 
-t_bash			*initialize_redirection_set_up_functions(t_bash *data);
 void            set_up_pipe_redirection(t_redirection *new);
-void            search_redirections_in_cmd(t_bash *data, t_vect *cmd);
 
 /*
 **  TOOLS
@@ -291,18 +289,28 @@ char            *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, 
 int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
 void		    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
 				int substring_index, int *error);
+
+void			write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2]);
+void            execute_redirections(t_bash *data, t_redirection *redirection, int position);
+void        	set_child_pipe_redirection(t_vect *command, int pipe_fd[2]);
+void        	pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc);
+void 			handle_pipe(t_bash *data, t_vect *command);
+void			handle_heredoc(t_bash *data, t_vect *command);
+void            restore_directions(t_redirection *redirection);
+
 /*
-** EXECUTION
+**	ERROR MANAGEMENT
 */
 
-void            handle_redirections(t_bash *data, t_redirection *redirection, int position);
-void 			handle_pipe(t_bash *data, t_vect *command);
-static void 	execute_command(t_bash *data, t_vect *command, char **args_array, char *path);
-void            restore_directions(t_redirection *redirection);
+void		print_failed_fork_error(pid_t pid);
 
 /*
 **	BUILT-IN
 */
+
+int				init_built_in(t_built **fct);
+void			search_built_in(t_bash *data, t_vect *command);
+int				is_exit(t_vect *command);
 int 		    check_built_in(t_bash *data, t_vect *command);
 void			print_env(t_bash *data);
 char			*findenv(char **env, char *name);
@@ -322,6 +330,33 @@ char			*use_shell_var(char **env, char *str);
 void			return_exit(t_bash *data);
 int				update_heredoc(t_bash *data);
 void			here_doc(t_bash *data);
-void			handle_heredoc_exec(t_bash *data, t_vect *command);
+
+/*
+** ===========
+**  EXECUTION
+** ===========
+*/
+
+int         	handle_commands(t_bash *data, t_vect *command);
+void        	handle_execution(t_bash *data, t_vect *command);
+void			execute_command(t_bash *data, t_vect *command);
+
+void 			execute_syscall(t_bash *data, t_vect *command);
+
+/*
+** Redirections
+*/
+
+int				initialize_redirection_set_up_functions(t_bash *data);
+void            set_up_command_redirections(t_bash *data, t_vect *cmd);
+t_redirection	*new_redirection(t_vect *cmd, int flags);
+
+void			free_redirection(t_redirection *redirection);
+
+/*
+** Pipe
+*/
+
+int     		command_is_piped(t_vect *command);
 
 #endif

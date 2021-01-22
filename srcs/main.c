@@ -36,8 +36,8 @@ void	*free_bash(t_bash *data)
 	data->env = NULL;
 	data->venv = NULL;
 	free_all_vectors(data->vector);
-	free_redirections_setup(REDIRECTION_SETUP);
-	REDIRECTION_SETUP = NULL;
+	free_redirections_setup(REDIRECTIONS_SETUP);
+	REDIRECTIONS_SETUP = NULL;
 	free_builtin(&data->builtin);
 	ft_strdel(&data->eof);
 	free(data);
@@ -57,9 +57,11 @@ t_bash	*initialize_bash(char **env)
 	data->venv = env;
 	if (!(data->vector = vect_new(NULL, NULL)))
 		return (free_bash(data));
-	if (!(REDIRECTION_SETUP = malloc(sizeof(t_redirection_setup) * 4)))
+	if (!(REDIRECTIONS_SETUP = malloc(sizeof(t_redirection_setup) * 4)))
 		return (free_bash(data));
-	if (!(initialize_redirection_set_up_functions(data)))
+	if (initialize_redirection_set_up_functions(data) == FAIL)
+		return (free_bash(data));
+	if (init_built_in(&data->builtin) == FAIL)
 		return (free_bash(data));
 	return (data);
 }
@@ -67,7 +69,7 @@ t_bash	*initialize_bash(char **env)
 int		main(int argc, char **argv, char **env)
 {
 	t_bash	*data;
-
+	
 	if (argc == 1)
 	{
 		if (!(data = initialize_bash(env)))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:27:52 by koala             #+#    #+#             */
-/*   Updated: 2020/12/14 15:28:10 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/22 12:48:59 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,12 @@ void		puterror(int error)
 	ft_putstr_fd(RED, STDERR);
 	ft_putnbr_fd(error, STDERR);
 	ft_putstr_fd(RESET, STDERR);
+}
+
+void		print_failed_fork_error(pid_t pid)
+{
+	ft_putstr_fd("fork failed at ", 2);
+	ft_putnbr_fd((int)pid, 2);
+	ft_putchar('\n');
+	exit(-1);
 }

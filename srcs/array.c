@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/22 17:54:53 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/22 19:23:16 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void		print_array(char **array)
 	}
 }
 
-static size_t	ft_strclen(const char *s, char c)
+static size_t	ft_strclen_noescape(const char *s, char c)
 {
 	size_t	i;
 
@@ -131,7 +131,7 @@ char			**fsplit(char const *s, char c)
 		if (s[i] != c || (s[i] == c && i && s[i - 1] == '\\')
 			|| ((s[i] == c && i > 1 && s[i - 1] == '\\' && s[i - 2] != '\\')))
 		{
-			if (!(tabatata[j++] = ft_strndup(s + i, (pute = ft_strclen(s + i, c)))))
+			if (!(tabatata[j++] = ft_strndup(s + i, (pute = ft_strclen_noescape(s + i, c)))))
 				return (NULL);
 			i += pute;
 		}

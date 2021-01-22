@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/22 13:54:24 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/22 19:22:19 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ typedef struct					s_redirection
 	struct s_redirection		*next;
 }								t_redirection;
 
+struct							s_bash;
+
 typedef struct					s_vect
 {
 	char						*line;
@@ -54,6 +56,7 @@ typedef struct					s_vect
 	char						**doc_string;
 	char						*eof;
 	t_redirection				*redirections;
+	void						(*builtin)(struct s_bash *, struct s_vect *);
 
 	struct s_vect				*next;
 	struct s_vect				*up;
@@ -118,6 +121,11 @@ typedef struct					s_bash
 	int							nb_heredoc;
 	int							finish_heredoc;
 	int							here_doc_delimiter;
+/*
+** SYSCALLS
+*/
+	char						**args_array;
+	char						*path;
 }								t_bash;
 
 typedef struct					s_built

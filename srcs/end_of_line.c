@@ -51,27 +51,27 @@ static void update_pending_line(t_bash *data)
 	data->x = 0;
 }
 
-int			handle_command(t_bash *data, t_vect *command)
-{
-	int exit;
-
-	exit = 0;
-	while (command)
-	{
-		search_redirections_in_cmd(data, command);
-		if ((exit = check_built_in(data, command)) == 0)
-		{
-			if (!data->error)
-				handle_fork(data, command);
-		}
-		if (exit == -1)
-			return (exit);
-		while (command->separator == '|')
-			command = command->next;
-		command = command->next;
-	}
-	return (exit);
-}
+//int			handle_command(t_bash *data, t_vect *command)
+//{
+//	int exit;
+//
+//	exit = 0;
+//	while (command)
+//	{
+//		set_up_command_redirections(data, command);
+//		if ((exit = check_built_in(data, command)) == 0)
+//		{
+//			if (!data->error)
+//				handle_fork(data, command);
+//		}
+//		if (exit == -1)
+//			return (exit);
+//		while (command->separator == '|')
+//			command = command->next;
+//		command = command->next;
+//	}
+//	return (exit);
+//}
 
 int			handle_parsing_execution(t_bash *data)
 {
@@ -87,7 +87,7 @@ int			handle_parsing_execution(t_bash *data)
 		if (!data->vector->doc_string)
 			format_line(data);
 		if (!data->is_here_doc)
-			return (handle_command(data, data->vector));
+			return (handle_commands(data, data->vector));
 	}
 	return (0);
 }

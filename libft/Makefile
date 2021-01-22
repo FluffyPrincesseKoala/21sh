@@ -67,7 +67,8 @@ SRCS	=		ft_strlen.c			\
 				ft_strndup.c		\
 				ft_stristr.c		\
 				ft_str_is_digits.c	\
-				whitespaces.c
+				whitespaces.c		\
+				ft_strclen.c
 
 HEAD	=		libft.h
 

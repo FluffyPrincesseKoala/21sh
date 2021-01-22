@@ -1,15 +1,5 @@
-# add_signals_handling commit
-
-## Makefile
-* add signals.c
-* add unit test rules with their own main
-
-## 21sh.h
-* add
-> void set_up_signals();
 
 ## Main
-* call set_up_signals() in main function or during setup process
 * build sub main for unit test :
 	- use double quotes to exec cmd
 	````./21sh "ls -lra" "echo $PATH"````
@@ -22,9 +12,10 @@
 ## Ideas
 * add a libft function that takes two string as arguments : string to write and macro-string for color
 * add scrolling
+* function typed "in" to return true/false -> tinier int
 
-# handle_execution_redirections commit
-
+## Cleaning
+* rename findenv -> get_var_from_env
 
 ## Not forget to
 * readapt the use of data->error
@@ -37,5 +28,5 @@
 * handle close errors
 * learn more about usable fd to make our backups
 * handle wait status
-* handle malloc failures
+* handle malloc failures -> think about libft calls !
 * check files header!

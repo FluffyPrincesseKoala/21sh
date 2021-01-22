@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/01/22 19:14:18 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/22 19:39:58 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,3 +290,39 @@ int			update_heredoc(t_bash *data)
 	data->y = 0;
 	data->x = 0;
 }
+
+void		write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2])
+{
+	int i;
+
+	i=0;
+	while ((command->doc_string)[i])
+	{
+		write(pipe_fd[1], (command->doc_string)[i], ft_strlen((command->doc_string)[i]));
+		write(pipe_fd[1], "\n", 1);
+		i++;
+	}
+
+}
+
+void		handle_heredoc(t_bash *data, t_vect *command)
+{
+	int		i;
+	int		pipe_fd[2];
+	int		status;
+	pid_t	cpid;
+
+
+    if (using_heredoc(command))
+	{
+		if (pipe(pipe_fd) == EXIT)
+			exit(EXIT);
+		set_child_pipe_redirection(command, pipe_fd);
+		pipe_fork(data, command, pipe_fd, TRUE);
+	}
+}
+
+/*
+**	cat << a ; echo 2 ; cat << b
+**	expected = 1 2 3
+*/

@@ -13,16 +13,6 @@
 #include "libft.h"
 #include <stdlib.h>
 
-static size_t	ft_strclen(const char *str, char c)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i] && str[i] != c)
-		i++;
-	return (i);
-}
-
 static size_t	ft_count_words(char const *s, char c)
 {
 	size_t		i;
