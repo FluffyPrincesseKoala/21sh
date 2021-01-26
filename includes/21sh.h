@@ -76,7 +76,7 @@
 # define NOQUOTE			0
 # define MAX_KEY			18
 # define MAX_TERMCAPS		8
-# define NB_BUILTIN			5
+# define NB_BUILTIN			6
 # define CHECK_PREV_ARGS	1
 
 # define SIMPLE_OUTPUT_REDIRECTION ">"

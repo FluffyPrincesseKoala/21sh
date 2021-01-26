@@ -18,7 +18,7 @@ void		custom_return(void)
 	ft_putstr(tgetstr("cr", NULL));
 	prompt(data_g->env, 0);
 	data_g->x = 0;
-	data_g->x = 0;
+	data_g->y = 0;
 	data_g->is_here_doc = 0;
 	data_g->iterator = 0;
 	data_g->history_stack = 0;

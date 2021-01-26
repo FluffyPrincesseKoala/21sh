@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/01/22 19:39:58 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/25 17:01:59 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,15 @@ void	fill_heredoc_array(t_bash *data, t_vect *cmd, char *line)
 		cmd->doc_string = create_array(line);
 }
 
-static void	unlink_free_vector(t_vect **head)
+static void	unlink_free_vector(t_vect **head, t_vect *new_next)
 {
 	t_vect	*lst;
 	t_vect	*nxt_lst;
 	t_arg	*nxt_arg;
 
-	if (head && (lst = *head))
+	if (head && (lst = (*head)->next))
 	{
-		while (lst)
+		while (lst && lst != new_next)
 		{
 			nxt_lst = lst->next;
 			ft_strdel(&lst->line);
@@ -73,8 +73,9 @@ static void	unlink_free_vector(t_vect **head)
 			free(lst);
 			lst = nxt_lst;
 		}
-		*head = NULL;
-		head = NULL;
+		(*head)->next = new_next;
+		if (!new_next)
+			(*head)->separator = 0;
 	}
 }
 
@@ -82,7 +83,7 @@ static void	unlink_free_vector(t_vect **head)
 **	Heredoc parse line with "<<" substring to get EOF sequence
 */
 
-void		is_eof(t_bash *data, t_vect *cmd) // add t_vect
+int		is_eof(t_bash *data, t_vect *cmd) // add t_vect
 {
 	int		current;
 	
@@ -94,27 +95,38 @@ void		is_eof(t_bash *data, t_vect *cmd) // add t_vect
 		{
 			data->here_doc_delimiter = 0;
 			data->is_here_doc = data->nb_heredoc - ++data->finish_heredoc;
+			return (1);
 		}
 		current++;
 	}
+	return (0);
 }
 
 void		parse_newline_as_heredoc(t_vect **head, t_bash *data)
 {
 	t_vect	*vect;
+	t_vect	*next_doc;
 	t_vect	*vect_to_free;
 
+	next_doc = NULL;
 	if (head && *head)
 		vect = *head;
 	while (vect)
 	{
-		if (vect->separator == '\n' && (vect_to_free = vect)) // check if there is no more '\n'
+		if (vect->separator == '\n' && (vect_to_free = vect)) // check if there is no more '\n'   a->b->*to_free*->c->...etc
 		{
-			vect->separator = 0;
+			next_doc = *head;
 			while ((vect = vect->next))
-				fill_heredoc_array(data, *head, vect->args->content);
-			is_eof(data, *head);
-			unlink_free_vector(&vect_to_free->next);
+			{
+				fill_heredoc_array(data, next_doc, vect->args->content);
+				if (is_eof(data, next_doc))
+				{
+					next_doc = vect->next;
+					unlink_free_vector(&vect_to_free, (next_doc) ? next_doc : NULL); // add new next
+					return ;
+				}
+			}
+			unlink_free_vector(&vect_to_free, (next_doc) ? next_doc : NULL); // add new next
 		}
 		vect = (vect) ? vect->next : NULL;
 	}

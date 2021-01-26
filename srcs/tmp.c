@@ -51,8 +51,10 @@ void		clean_screen(t_bash *data)
 
 void		return_exit(t_bash *data)
 {
-	if (data->expend)
+	if (!LINE && data->expend)
 	{
+		data_g->x = 0;
+		data_g->y = 0;
 		if (data->is_here_doc)
 		{
 			// kill heredoc
@@ -60,6 +62,9 @@ void		return_exit(t_bash *data)
 		}
 		// kill expend
 		data->expend = 0;
+		CDOWN;
+		ft_putstr(tgetstr("cr", NULL));
+		prompt(data_g->env, 0);
 	}
 	else if (!LINE)
 	{
@@ -159,7 +164,7 @@ void		loop(t_bash *data)
 	set_up_signals();
 	while (42 && exit != -1)
 	{
-		read(0, buff, 6);
+		read(0, buff, 4086);
 		if (ft_strnequ(buff, "\n", 1))
 			exit = handle_eol(&data, buff);
 		else if (!data->error && (ft_strnequ(buff, "\033", 1)
