@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_tools.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/22 17:38:42 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/27 18:12:56 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 int     search_left_fd(t_arg *arg, int operator_idx, int default_fd, int *error)
 {
     char *substring;
+	int	spell_check;
 
     if (operator_idx > 0)
     {
@@ -34,8 +35,10 @@ int     search_left_fd(t_arg *arg, int operator_idx, int default_fd, int *error)
         else if (ft_strlen(substring) == 1 && substring[0] == '&')
             return (STDOUT_AND_STDERR);
         else
+		{
             if (!insert_new_arg(arg->previous, substring))
                 *error = MALLOC_ERROR;
+		}
         ft_strdel(&substring);
     }
     return default_fd;

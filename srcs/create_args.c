@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 12:26:04 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/10 15:46:52 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/27 17:24:39 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,16 @@ int    insert_new_arg(t_arg *previous, char *s)
 
     if (!(new = new_arg(s, NOQUOTE)))
         return (0);
-    new->next = previous->next;
-    new->previous = previous;
-    previous->next = new;
-    if (new->next)
-        new->next->previous = new;
-    return (1);
+	if (previous)
+	{
+		new->next = previous->next;
+    	new->previous = previous;
+    	previous->next = new;
+    	if (new->next)
+    	    new->next->previous = new;
+	    return (1);
+	}
+	return (-1);
 }
 
 void    detach_arg(t_arg *arg, t_vect *cmd)

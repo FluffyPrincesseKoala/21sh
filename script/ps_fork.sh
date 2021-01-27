@@ -15,4 +15,5 @@ do
 	fi
 	old="$(printf "$new" | wc -l)"
 	new=""
+	
 done

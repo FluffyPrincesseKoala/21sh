@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:51:15 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/08 13:43:56 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/27 15:28:40 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-void		print_env(t_bash *data)
+void		print_env(t_bash *data, t_vect *cmd)
 {
+	
 	for (int i = 0 ; data->env[i] ; i++) {
 		ft_putnbr(i);
 		ft_putchar('|');

@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/01/25 17:01:59 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/27 16:43:21 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int		is_eof(t_bash *data, t_vect *cmd) // add t_vect
 	return (0);
 }
 
-void		parse_newline_as_heredoc(t_vect **head, t_bash *data)
+int		parse_newline_as_heredoc(t_vect **head, t_bash *data)
 {
 	t_vect	*vect;
 	t_vect	*next_doc;
@@ -123,13 +123,14 @@ void		parse_newline_as_heredoc(t_vect **head, t_bash *data)
 				{
 					next_doc = vect->next;
 					unlink_free_vector(&vect_to_free, (next_doc) ? next_doc : NULL); // add new next
-					return ;
+					return (-1);
 				}
 			}
 			unlink_free_vector(&vect_to_free, (next_doc) ? next_doc : NULL); // add new next
 		}
 		vect = (vect) ? vect->next : NULL;
 	}
+	return (0);
 }
 
 t_arg		*set_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
@@ -139,7 +140,7 @@ t_arg		*set_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
 
 	to_free	= NULL;
 	is_doc = 0;
-	while (lst && lst->content)
+	while (lst && lst->content && is_doc != -1)
 	{
 		if (is_doc == 1)
 		{
@@ -151,7 +152,7 @@ t_arg		*set_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
 			if (lst->quote)
 				data->here_doc_delimiter = 1;
 			if (data->is_here_doc)
-				parse_newline_as_heredoc(vect, data);
+				is_doc = parse_newline_as_heredoc(vect, data);
 		}
 		if (lst->content && ft_strstr(lst->content, "<<"))
 		{
@@ -163,6 +164,35 @@ t_arg		*set_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
 		lst = lst->next;
 	}
 	return (to_free);
+}
+
+void		free_args_by_content(t_arg **head, char	*content)
+{
+	t_arg	*lst;
+
+	if (head && *head)
+	{
+		lst = *head;
+		while (lst && lst->content && !ft_strequ(lst->content, content))
+			lst = lst->next;
+		if (lst->next)
+		{
+			if ((*head)->previous)
+			{
+				(*head)->previous->next = lst->next;
+				lst->next->previous = (*head)->previous->next;
+				(*head)->previous = NULL;
+				lst->next = NULL;
+				while (((*head) = (*head)->next))
+				{
+					ft_strdel(&(*head)->content);
+					free(*head);
+				}
+				*head = NULL;
+				head = NULL;
+			}
+		}
+	}
 }
 
 void		here_doc(t_bash *data)
@@ -185,7 +215,7 @@ void		here_doc(t_bash *data)
 			{
 				count++;
 				to_free->previous->next = NULL;
-				free_all_args(&to_free, FALSE);
+				free_args_by_content(&to_free, vect->eof);
 			}
 			vect = vect->next;
 		}

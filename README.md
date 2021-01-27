@@ -30,3 +30,15 @@
 * handle wait status
 * handle malloc failures -> think about libft calls !
 * check files header!
+* `cd -` dosen't work (again ?)
+
+## Segfault of dead
+
+see *[redirections_tools](srcs/redirections_tools.c)* search_*_fd function
+
+INPUT | EXPECT OUTPUT | OUTPUT
+---	| --- | ---
+``cat<`` | syntax error near unexpected token `newline' | <p style="color:red">Segfault</p>
+``cat< README.md`` | *print README.md* | <p style="color:red">Segfault</p>
+``cat>`` | syntax error near unexpected token `newline' | <p style="color:red">Segfault</p>
+``cat> test.txt`` | *write in test.txt* | <p style="color:red">Segfault</p>

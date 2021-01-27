@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:23:17 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/26 15:46:45 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/27 15:23:34 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,9 @@ int		init_built_in(t_built **fct)
 	(*fct)[4].f = &history;
 	(*fct)[4].name = ft_strdup("history");
 	(*fct)[4].len = 7;
-	(*fct)[4].name = ft_strdup("env");
-	(*fct)[4].len = 3;
+	(*fct)[5].f = &print_env;
+	(*fct)[5].name = ft_strdup("env");
+	(*fct)[5].len = 3;
 	return (SUCCESS);
 }
 //			print_history(data);

@@ -312,7 +312,7 @@ int				init_built_in(t_built **fct);
 void			search_built_in(t_bash *data, t_vect *command);
 int				is_exit(t_vect *command);
 int 		    check_built_in(t_bash *data, t_vect *command);
-void			print_env(t_bash *data);
+void			print_env(t_bash *data, t_vect *cmd);
 char			*findenv(char **env, char *name);
 void			set_env(t_bash *data, t_vect *command);
 void			unset_env(t_bash *data, t_vect *command);
