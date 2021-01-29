@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:27:52 by koala             #+#    #+#             */
-/*   Updated: 2021/01/22 12:48:59 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/29 12:54:49 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,19 @@ void		print_failed_fork_error(pid_t pid)
 	ft_putnbr_fd((int)pid, 2);
 	ft_putchar('\n');
 	exit(-1);
+}
+
+void		error_code_to_message(int *error)
+{
+	if (*error == MALLOC_ERROR)
+		put_error_msg("Malloc failed.\n");
+	if (*error == AMBIGUOUS_REDIRECTION_ERROR)
+		put_error_msg("Redirection syntax ambiguous.\n");
+	if (*error == UNEXPECT_COMMAND_END_ERROR)
+		put_error_msg("Unexpected end of command.\n");
+	if (*error == OPEN_ERROR)
+		put_error_msg("Open failed.\n");
+	if (*error == NO_APPENDING_IN_FILE_DIRECTOR_ERROR)
+		put_error_msg("Unexpected '&' symbole for appending output redirection.\n");
+	*error = 0;
 }

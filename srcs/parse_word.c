@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_word.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:50:02 by koala             #+#    #+#             */
-/*   Updated: 2021/01/22 18:27:01 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/29 11:40:08 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,19 @@ void		detach_args(t_vect *current, t_arg *last_arg_before_doomsday)
 	}
 }
 
-void		get_post_separator_args(t_bash *data, t_arg *lst, int index, int len)
+void		get_post_separator_args(
+	t_bash *data, t_vect *cmd, t_arg *arg, int index)
 {
-	char	*substring;
-	t_arg	*new;
+	char			*substring;
+	t_arg			*new;
+	unsigned int	len;
 
 	substring = NULL;
 	new = NULL;
-	if (substring = ft_strsub(lst->content, index, len - index))
+	len = ft_strlen(CONTENT);
+	if (substring = ft_strsub(arg->content, index, len - index))
 	{
-		if (insert_new_arg(lst, substring))
+		if (insert_new_arg(cmd, arg, substring))
 			return ;
 		ft_strdel(&substring);
 	}
@@ -84,7 +87,7 @@ void		parse_args(t_bash *data, t_vect *current)
 		{
 			current->separator = CONTENT[separator_idx];
 			if ((len = ft_strlen(CONTENT)) != separator_idx + 1)
-				get_post_separator_args(data, arg, separator_idx + 1, len);
+				get_post_separator_args(data, current, arg, separator_idx + 1);
 			detach_args(current, arg);
 			CONTENT = ft_strsub_free(&CONTENT, 0, separator_idx);
 		}

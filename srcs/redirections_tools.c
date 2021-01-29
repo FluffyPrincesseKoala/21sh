@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_tools.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/27 18:12:56 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/29 11:46:22 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@
 **  command argument list.
 */
 
-int     search_left_fd(t_arg *arg, int operator_idx, int default_fd, int *error)
+int     search_left_fd(t_vect *cmd, t_arg *arg, int operator_idx, int *error)
 {
-    char *substring;
-	int	spell_check;
+    char    *substring;
 
     if (operator_idx > 0)
     {
@@ -36,12 +35,13 @@ int     search_left_fd(t_arg *arg, int operator_idx, int default_fd, int *error)
             return (STDOUT_AND_STDERR);
         else
 		{
-            if (!insert_new_arg(arg->previous, substring))
+            if (insert_new_arg(
+                cmd, arg->previous, ft_strdup(substring)) == FAIL)
                 *error = MALLOC_ERROR;
 		}
         ft_strdel(&substring);
     }
-    return default_fd;
+    return NO_LEFT_FD;
 }
 
 /*
@@ -55,7 +55,7 @@ int     search_left_fd(t_arg *arg, int operator_idx, int default_fd, int *error)
 **  ambiguous syntax in the submitted command.
 */
 
-int     search_right_fd(t_arg *arg, char *substring, int *error)
+int     search_right_fd(t_vect *cmd, t_arg *arg, char *substring, int *error)
 {
     if (substring[0] == '&')
     {
@@ -65,8 +65,8 @@ int     search_right_fd(t_arg *arg, char *substring, int *error)
         {
             if (ft_strlen(substring) != 2)
             {
-                if (!insert_new_arg(
-                    arg, ft_strsub(substring, 2, ft_strlen(substring) - 2)));
+                if (!insert_new_arg(cmd, arg,
+                ft_strsub(substring, 2, ft_strlen(substring) - 2)));
                     *error = MALLOC_ERROR;
             }
             return (CLOSE_FD);

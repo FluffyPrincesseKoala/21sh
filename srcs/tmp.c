@@ -174,7 +174,5 @@ void		loop(t_bash *data)
 		else if (!data->error && ft_isprint(buff[0])
 			&& !ft_strnequ(buff, "\n", 1))
 			data->iterator = handle_new_entry(data, buff, data->iterator);
-		if (data->error)
-			break;
 	}
 }

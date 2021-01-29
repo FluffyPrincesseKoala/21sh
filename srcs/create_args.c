@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_args.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 12:26:04 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/27 17:24:39 by koala            ###   ########.fr       */
+/*   Updated: 2021/01/29 11:33:56 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ t_arg   *add_arg(t_arg **head, t_arg *new)
     }
 }
 
-int    insert_new_arg(t_arg *previous, char *s)
+int    insert_new_arg(t_vect *command, t_arg *previous, char *s)
 {
     t_arg *new;
 
     if (!(new = new_arg(s, NOQUOTE)))
-        return (0);
+        return (FAIL);
 	if (previous)
 	{
 		new->next = previous->next;
@@ -64,8 +64,14 @@ int    insert_new_arg(t_arg *previous, char *s)
     	previous->next = new;
     	if (new->next)
     	    new->next->previous = new;
-	    return (1);
+	    return (SUCCESS);
 	}
+    else
+    {
+        new->next = command->args;
+        command->args->previous = new;
+        command->args = new;
+    }    
 	return (-1);
 }
 

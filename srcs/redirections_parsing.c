@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/10 12:16:22 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/22 16:25:07 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/29 12:23:20 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static t_redirection_setup  *parse_redirections_in_arg(
 ** Loop the function on the next command.
 */
 
-void                        set_up_command_redirections(
+int                        set_up_command_redirections(
     t_bash *data, t_vect *command)
 {
     t_redirection_setup *redirection_setup;
@@ -69,8 +69,9 @@ void                        set_up_command_redirections(
         else
             arg = arg->next;
         if (data->error)
-            arg = NULL;
+            return (FAIL);
     }
-    if (command->next)
-        set_up_command_redirections(data, command->next);
+    return (SUCCESS);
+    //if (command->next)
+    //    set_up_command_redirections(data, command->next);
 }
