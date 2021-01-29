@@ -93,7 +93,7 @@ int			handle_parsing_execution(t_bash *data)
 	return (0);
 }
 
-int			handle_eol(t_bash **data, char *buff)
+int			handle_eol(t_bash **data)
 {
 	int		exit;
 
@@ -112,5 +112,6 @@ int			handle_eol(t_bash **data, char *buff)
 	}
 	if ((exit = handle_parsing_execution(*data)) != -1)
 		new_line((*data));
+    reset_conf_term();
 	return (exit);
 }

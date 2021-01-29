@@ -153,7 +153,7 @@ int			pending_line(char *str)
 
 void		loop(t_bash *data)
 {
-	char	buff[4086];
+	char	buff[7];
 	int		is_key;
 	int		exit;
 
@@ -164,9 +164,9 @@ void		loop(t_bash *data)
 	set_up_signals();
 	while (42 && exit != -1)
 	{
-		read(0, buff, 4086);
+		read(0, buff, 4);
 		if (ft_strnequ(buff, "\n", 1))
-			exit = handle_eol(&data, buff);
+			exit = handle_eol(&data);
 		else if (!data->error && (ft_strnequ(buff, "\033", 1)
 		|| buff[0] == 127 || buff[0] == '\017'
 		|| buff[0] == '\002' || buff[0] == 4 || ft_strnequ(buff, "\f", 1)))
