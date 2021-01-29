@@ -214,7 +214,7 @@ int			len_between_last_delim(char *str, char delim, int start);
 int			get_curent_line(char *str, int pos, int max, int prompt);
 int			lendelim(char *str, char delim, int start);
 size_t		count_delim(char *str, int delim);
-int   		handle_eol(t_bash **data, char *buff);
+int   		handle_eol(t_bash **data);
 int			pending_line(char *str);
 char		*del_all_delim_in(char *str, char delim);
 void		words_as_args(char **table, t_bash *data);

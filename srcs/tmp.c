@@ -166,7 +166,7 @@ void		loop(t_bash *data)
 	{
 		read(0, buff, MAX_INPUT_SIZE);
 		if (ft_strnequ(buff, "\n", 1))
-			exit = handle_eol(&data, buff);
+			exit = handle_eol(&data);
 		else if (!data->error && (ft_strnequ(buff, "\033", 1)
 		|| buff[0] == 127 || buff[0] == '\017'
 		|| buff[0] == '\002' || buff[0] == 4 || ft_strnequ(buff, "\f", 1)))
