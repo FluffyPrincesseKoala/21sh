@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/29 11:36:28 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/29 17:56:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,32 @@
 */
 
 /*
+** Redirections in the form &>word or >&word or &>>word indicated that both 
+**  STDIN and STDERR are redirected to the given word.
+** This function set up the two distincts redirections structures if the 
+**  syntax redirects STDIN and STDERR at the same time.
+*/
+
+static void set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
+    int substring_index, int *error)
+{
+    t_redirection   *stdout_redirection;
+
+    stdout_redirection = cmd->redirections;
+    while (stdout_redirection->next)
+        stdout_redirection = stdout_redirection->next;
+    if (stdout_redirection->right_fd == AMBIGUOUS)
+        substring_index += 1;
+    stdout_redirection->left_fd = STDOUT;
+    stdout_redirection->right_fd = NO_RIGHT_FD;
+    stdout_redirection->file_word = search_file_word(
+        cmd, arg, substring_index, error);
+    stdout_redirection->next = new_redirection(cmd, SIMPLE_OUTPUT_FLAGS);
+    stdout_redirection->next->left_fd = STDERR;
+    stdout_redirection->next->right_fd = STDOUT;
+}
+
+/*
 ** Set left file director if any given, default is STDOUT.
 ** If there is a '&' instead of the file director, this mean both STDOUT and
 **  STDERR will be redirected to the file word.
@@ -25,7 +51,7 @@
 ** File word should be given in the command, if not, that's an error.
 */
 
-static void         set_up_appending_output_redirection(
+static void set_up_appending_output_redirection(
     t_vect *cmd, t_arg *arg, t_redirection *new, int *error)
 {
     int             operator_idx;
@@ -48,14 +74,14 @@ static void         set_up_appending_output_redirection(
 ** Set left file director if any given, default is STDOUT.
 ** If there is a '&' instead of the file director, this mean both STDOUT and
 **  STDERR will be redirected to the file word.
-** Set right file director if any given. If there is no right file_director, and
-**  no indication to close the left one, search for a file word. If there is no
-**  file word, that's an error.
+** Set right file director if any given. If there is no right file_director,
+**  and no indication to close the left one, search for a file word. If there
+**  is no file word, that's an error.
 ** If there is a misused '&' right after the redirection operator, there might
 **  be an ambiguous syntax in the submitter command.
 */
 
-static void         set_up_simple_output_redirection(
+static void set_up_simple_output_redirection(
     t_vect *cmd, t_arg *arg, t_redirection *new, int *error)
 {
     int             operator_idx;
@@ -75,7 +101,15 @@ static void         set_up_simple_output_redirection(
         *error = AMBIGUOUS_REDIRECTION_ERROR;
 }
 
-static void         set_up_input_redirection(
+/*
+** Set left file director if any given, default is STDIN.
+** Set right file director if any given. If there is no right file director, 
+**  search for a file word. If there is no file word, that's an error.
+** Is there is a misused '&' right after the redirection operator, there might
+**  be an ambiguous syntax in the submitter command.
+*/
+
+static void set_up_input_redirection(
     t_vect *cmd, t_arg *arg, t_redirection *new, int *error)
 {
     int operator_idx;
@@ -93,11 +127,11 @@ static void         set_up_input_redirection(
         *error = AMBIGUOUS_REDIRECTION_ERROR;
 }
 
-void            set_up_pipe_redirection(t_redirection *new)
-{
-    new->left_fd = 1;
-    new->right_fd = 0;
-}
+/*
+** Initialize an array of 3 t_redirection_setup structures, that link together
+**  redirection set_up function with the corresponding operator characters and
+**  their file opening flags.
+*/
 
 int         initialize_redirection_set_up_functions(t_bash *data)
 {
