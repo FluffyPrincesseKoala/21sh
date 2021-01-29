@@ -6,3 +6,4 @@ libft/libft.a
 vgcore.*
 a.out
 .vscode
+.vscode/tasks.json
