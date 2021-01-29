@@ -77,6 +77,7 @@
 # define MAX_KEY			18
 # define MAX_TERMCAPS		8
 # define NB_BUILTIN			6
+# define MAX_INPUT_SIZE		7
 # define CHECK_PREV_ARGS	1
 
 # define SIMPLE_OUTPUT_REDIRECTION ">"
