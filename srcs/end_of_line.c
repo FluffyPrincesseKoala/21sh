@@ -31,6 +31,7 @@ static void prompt_new_line(t_bash *data)
 
 static void new_line(t_bash *data)
 {
+	error_code_to_message(&(data->error));
 	if (LINE)
 	{
 		VECT = link_history(&VECT, NULL);

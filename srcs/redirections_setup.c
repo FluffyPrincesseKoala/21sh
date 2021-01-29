@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/22 17:58:35 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/29 11:36:28 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ static void         set_up_appending_output_redirection(
 
     operator_idx = ft_stristr(CONTENT, APPENDING_OUTPUT_REDIRECTION);
     substring_idx = operator_idx + 2;
-    new->left_fd = search_left_fd(arg, operator_idx, STDOUT, error);
+    new->left_fd = search_left_fd(cmd, arg, operator_idx, error);
+    if (new->left_fd == NO_LEFT_FD)
+        new->left_fd = STDOUT;
     if (CONTENT[substring_idx] == '&')
         *error = NO_APPENDING_IN_FILE_DIRECTOR_ERROR;
     else if (is_stdout_and_stderr_redirection(new->left_fd, new->right_fd))
@@ -61,8 +63,10 @@ static void         set_up_simple_output_redirection(
 
     operator_idx = ft_stristr(CONTENT, SIMPLE_OUTPUT_REDIRECTION);
     substring_idx = operator_idx + 1;
-    new->left_fd = search_left_fd(arg, operator_idx, STDOUT, error);
-    new->right_fd = search_right_fd(arg, &(CONTENT[substring_idx]), error);
+    new->left_fd = search_left_fd(cmd, arg, operator_idx, error);
+    if (new->left_fd == NO_LEFT_FD)
+        new->left_fd = STDOUT;
+    new->right_fd = search_right_fd(cmd, arg, &(CONTENT[substring_idx]), error);
     if (is_stdout_and_stderr_redirection(new->left_fd, new->right_fd))
         set_up_stdout_and_stderr_redirection(cmd, arg, substring_idx, error);
     else if (new->right_fd == NO_RIGHT_FD)
@@ -79,8 +83,10 @@ static void         set_up_input_redirection(
 
     operator_idx = ft_stristr(CONTENT, INPUT_REDIRECTION);
     substring_idx = operator_idx + 1;
-    new->left_fd = search_left_fd(arg, operator_idx, STDIN, error);
-    new->right_fd = search_right_fd( arg, &(CONTENT[substring_idx]), error);
+    new->left_fd = search_left_fd(cmd, arg, operator_idx, error);
+    if (new->left_fd == NO_LEFT_FD)
+        new->left_fd = STDIN;
+    new->right_fd = search_right_fd(cmd, arg, &(CONTENT[substring_idx]), error);
     if (new->right_fd == NO_RIGHT_FD)
         new->file_word = search_file_word(cmd, arg, substring_idx, error);
     else if (new->right_fd == AMBIGUOUS)
