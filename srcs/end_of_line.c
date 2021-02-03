@@ -87,7 +87,7 @@ int			handle_parsing_execution(t_bash *data)
 		ft_putchar('\n');
 		if (!data->vector->doc_string)
 			format_line(data);
-		if (!data->is_here_doc)
+		if (!data->is_here_doc && !data->error)
 			return (handle_commands(data, data->vector));
 	}
 	return (0);
