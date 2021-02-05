@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 19:25:39 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/14 15:45:23 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/05 13:17:54 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void		free_all_vectors(t_vect *vect)
 	if (vect)
 	{
 		ft_strdel(&vect->line);
+		ft_strdel(&vect->eof);
 		free_array(vect->doc_string);
 		free_all_args(&vect->args, FALSE);
 		free_all_vectors(vect->next);

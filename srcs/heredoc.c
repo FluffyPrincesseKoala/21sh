@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/02/03 18:15:51 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/05 13:09:55 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,22 +186,16 @@ t_arg		*free_args_by_content(t_arg **head, char *content)
 	if (head && *head)
 	{
 		new = *head;
+		ft_strdel(&new->content);
+		new->content = NULL;
 		if (new->next && new->previous)
 			new->next->previous = new->previous;
 		if (!ft_strequ(new->content, content))
-		{
-			ft_strdel(&new->content);
 			new->previous->next = free_args_by_content(&new->next, content);
-			free(*head);
-			*head = NULL;
-		}
 		else
-		{
-			ft_strdel(&new->content);
-			new->previous->next = free_args_by_content(&new->next, NULL);
-			free(*head);
-			*head = NULL;
-		}
+			return (new->next);
+		free(*head);
+		*head = NULL;
 	}
 	return (NULL);
 }

@@ -66,7 +66,7 @@ void		return_exit(t_bash *data)
 		ft_putstr(tgetstr("cr", NULL));
 		prompt(data_g->env, 0);
 	}
-	else if (!LINE)
+	else if (!LINE || !ft_strlen(LINE))
 	{
 		ft_putendl("exit");
 		unconf_term();

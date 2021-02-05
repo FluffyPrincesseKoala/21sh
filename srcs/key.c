@@ -80,13 +80,16 @@ void				key_back(t_bash *data)
 		tmp = delchar(LINE, IDX - 1);
 		expected = IDX - 1;
 		arrow_left(data);
-		old = LINE;
-		LINE = tmp;
+		old = ft_strdup(LINE);
+		ft_strdel(&LINE);
+		LINE = ft_strdup(tmp);
 		SAVE_C;
 		print_rest(NULL, IDX, old);
 		RESET_C;
 		print_rest(LINE, IDX, NULL);
 		RESET_C;
+		ft_strdel(&old);
+		ft_strdel(&tmp);
 	}
 }
 
