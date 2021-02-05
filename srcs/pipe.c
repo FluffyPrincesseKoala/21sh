@@ -6,13 +6,13 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/15 18:54:38 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/05 15:00:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-void        set_child_pipe_redirection(t_vect *command, int pipe_fd[2])
+void        set_stdin_pipe_redirection(t_vect *command, int pipe_fd[2])
 {
 	t_redirection *new;
     
@@ -21,14 +21,13 @@ void        set_child_pipe_redirection(t_vect *command, int pipe_fd[2])
 	new->right_fd = pipe_fd[0];
 }
 
-void		set_pipe_redirection(t_vect *command, int pipe_fd[2])
+void		set_stdout_pipe_redirection(t_vect *command, int pipe_fd[2])
 {
 	t_redirection *new;
 
 	new = new_redirection(command, 0);
 	new->left_fd = 1;
 	new->right_fd = pipe_fd[1];
-    set_child_pipe_redirection(command->next, pipe_fd);
 }
 
 void        pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc)
@@ -63,7 +62,8 @@ void		handle_pipe(t_bash *data, t_vect *command)
 	{
 		if (pipe(pipe_fd) == EXIT)
             exit(EXIT);
-		set_pipe_redirection(command, pipe_fd);
+		set_stdout_pipe_redirection(command, pipe_fd);
+		set_stdin_pipe_redirection(command->next, pipe_fd);
 		pipe_fork(data, command, pipe_fd, FALSE);
 		handle_execution(data, command->next);
 	}

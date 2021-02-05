@@ -3,27 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   built_in.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:23:17 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/27 15:23:34 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/05 12:46:27 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-void	print_args(t_bash *data, t_vect *command)
-{
-	command->args = command->args->next;
-	while (command->args)
-	{
-		ft_putstr(command->args->content);
-		if (command->args->next)
-			ft_putchar(' ');
-		command->args = command->args->next;
-	}
-	ft_putchar('\n');
-}
+/*
+** This file contains function concerning builtin commands parsing and related
+**  builtin functions.
+*/
 
 int		init_built_in(t_built **fct)
 {
@@ -49,7 +41,7 @@ int		init_built_in(t_built **fct)
 	(*fct)[5].len = 3;
 	return (SUCCESS);
 }
-//			print_history(data);
+
 void		free_builtin(t_built **fct)
 {
 	int		i;
@@ -67,43 +59,16 @@ void		free_builtin(t_built **fct)
 	fct = NULL;
 }
 
-//int 	    check_built_in(t_bash *data, t_vect *command)
-//{
-//	int 	i;
-//	int 	exit;
-//	int		status;
-//
-//	i = 0;
-//	exit = 0;
-//	if (!data->builtin)
-//		init_built_in(&data->builtin);
-//    if (ft_strnequ(command->args->content, "exit", 4))
-//		return (-1);
-//	while (i != NB_BUILTIN && !exit)
-//	{
-//		if (ft_strnequ(command->args->content, data->builtin[i].name, data->builtin[i].len))
-//		{
-//			if (command->separator == '|')
-//				handle_pipe(data, command);
-//			if (command->redirections)
-//				execute_redirections(data, command->redirections, 0);
-//			data->builtin[i].f(data, command);
-//			if (command->redirections)
-//				restore_directions(command->redirections);
-//			wait(&status);
-//			return (1);
-//		}
-//		i++;
-//	}
-//    return (0);
-//}
-
 int			is_exit(t_vect *command)
 {
 	if (ft_strequ(command->args->content, "exit"))
 		return (TRUE);
 	return (FALSE);
 }
+
+/*
+** If the arg match a builtin command, add it to the current command structure
+*/
 
 void		search_built_in(t_bash *data, t_vect *command)
 {
