@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:27:52 by koala             #+#    #+#             */
-/*   Updated: 2021/01/29 12:54:49 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/29 18:59:38 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,7 @@ void		error_code_to_message(int *error)
 		put_error_msg("Open failed.\n");
 	if (*error == NO_APPENDING_IN_FILE_DIRECTOR_ERROR)
 		put_error_msg("Unexpected '&' symbole for appending output redirection.\n");
+	if (*error == SNTX_ERR)
+		put_error_msg("Unexpected end of command.\n");
 	*error = 0;
 }

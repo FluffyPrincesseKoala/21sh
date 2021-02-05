@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/01/27 16:43:21 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/03 18:15:51 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int		parse_newline_as_heredoc(t_vect **head, t_bash *data)
 	{
 		if (vect->separator == '\n' && (vect_to_free = vect)) // check if there is no more '\n'   a->b->*to_free*->c->...etc
 		{
-			next_doc = *head;
+			next_doc = (*head);
 			while ((vect = vect->next))
 			{
 				fill_heredoc_array(data, next_doc, vect->args->content);
@@ -126,12 +126,20 @@ int		parse_newline_as_heredoc(t_vect **head, t_bash *data)
 					return (-1);
 				}
 			}
-			unlink_free_vector(&vect_to_free, (next_doc) ? next_doc : NULL); // add new next
+			unlink_free_vector(&vect_to_free, NULL); // add new next
 		}
 		vect = (vect) ? vect->next : NULL;
 	}
 	return (0);
 }
+
+/*
+**	parse lst to:
+**	get vect->eof
+**	count the number of unfinish heredoc and finish one
+**	fill vect->doc_string array if there is some "\n" separator
+**	return the first arg to free
+*/
 
 t_arg		*set_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
 {
@@ -166,34 +174,75 @@ t_arg		*set_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
 	return (to_free);
 }
 
-void		free_args_by_content(t_arg **head, char	*content)
+/*
+**	free arg starting from "*head" until's find a t_arg* with "content" inside
+**	beware there's sexy redirection inside
+*/
+
+t_arg		*free_args_by_content(t_arg **head, char *content)
 {
-	t_arg	*lst;
+	t_arg	*new;
 
 	if (head && *head)
 	{
-		lst = *head;
-		while (lst && lst->content && !ft_strequ(lst->content, content))
-			lst = lst->next;
-		if (lst->next)
+		new = *head;
+		if (new->next && new->previous)
+			new->next->previous = new->previous;
+		if (!ft_strequ(new->content, content))
 		{
-			if ((*head)->previous)
-			{
-				(*head)->previous->next = lst->next;
-				lst->next->previous = (*head)->previous->next;
-				(*head)->previous = NULL;
-				lst->next = NULL;
-				while (((*head) = (*head)->next))
-				{
-					ft_strdel(&(*head)->content);
-					free(*head);
-				}
-				*head = NULL;
-				head = NULL;
-			}
+			ft_strdel(&new->content);
+			new->previous->next = free_args_by_content(&new->next, content);
+			free(*head);
+			*head = NULL;
+		}
+		else
+		{
+			ft_strdel(&new->content);
+			new->previous->next = free_args_by_content(&new->next, NULL);
+			free(*head);
+			*head = NULL;
 		}
 	}
+	return (NULL);
 }
+
+/*
+**	create args how are badlly formated (ex: "cat<<lol")
+**	by spliting on << character
+*/
+
+int			format_heredoc(t_vect **vect, t_arg **to_check)
+{
+	t_arg	*new;
+	char	**splited;
+	int		len;
+	int		i;
+
+	i = 0;
+	new = NULL;
+	if ((splited = ft_strsplit((*to_check)->content, '<')))
+	{
+		if ((len = array_len(splited)) >= 2)
+		{
+			while (splited[i])
+			{
+				if (i == 1)
+					add_arg(&new, new_arg(ft_strdup("<<"), NOQUOTE));
+				add_arg(&new, new_arg(splited[i], NOQUOTE));
+				i++;
+			}
+			free_all_args(to_check, 0);
+			(*vect)->args = new;
+			return (1);
+		}
+	}
+	return (0);
+}
+
+/*
+**	shearch heredoc parametere and free there args (for parameter)
+**	and vector (for heredoc string)
+*/
 
 void		here_doc(t_bash *data)
 {
@@ -214,8 +263,21 @@ void		here_doc(t_bash *data)
 			if ((to_free = set_heredoc(data, &vect, lst)))
 			{
 				count++;
-				to_free->previous->next = NULL;
-				free_args_by_content(&to_free, vect->eof);
+				if (!to_free->previous)
+					if (!format_heredoc(&vect, &to_free))
+					{
+						data->is_here_doc = 0;
+						data->nb_heredoc = 0;
+						data->finish_heredoc = 0;
+						data->error = SNTX_ERR;
+						return ;
+					}
+					else
+						to_free = set_heredoc(data, &vect,vect->args);
+				if (!data->error && to_free)
+				{
+					free_args_by_content(&to_free, vect->eof);
+				}
 			}
 			vect = vect->next;
 		}
@@ -224,23 +286,9 @@ void		here_doc(t_bash *data)
 	data->expend = (data->is_here_doc) ? -1 : 0;
 }
 
-int			check_heredoc(t_vect *vector)
-{
-	t_vect	*vect;
-	int		count;
-
-	count = 0;
-	if (vector)
-	{
-		while (vector)
-		{
-			if (vector->eof)
-				count++;
-			vector = vector->next;
-		}
-	}
-	return (count);
-}
+/*
+**	on sub-prompt all line are added to the previous with a "\n" between
+*/
 
 static void	add_at_end_of_last_line(char **dest, char **src)
 {
@@ -252,6 +300,10 @@ static void	add_at_end_of_last_line(char **dest, char **src)
 	ft_strdel(src);
 	ft_strdel(&tmp);
 }
+
+/*
+**	update the current vector->doc_string
+*/
 
 void		eof_update_heredoc(t_bash *data)
 {
@@ -282,6 +334,10 @@ void		eof_update_heredoc(t_bash *data)
 	//error
 }
 
+/*
+**	add line to current doc_array and to last line (vector->up)
+*/
+
 void		update_docstring(t_bash *data)
 {
 	t_vect	*vect;
@@ -304,6 +360,10 @@ void		update_docstring(t_bash *data)
 	}
 }
 
+/*
+**	check if all the heredoc are completed
+*/
+
 int			is_heredoc_end(t_bash *data, char *line, t_vect *vector)
 {
 	int		count;
@@ -320,6 +380,10 @@ int			is_heredoc_end(t_bash *data, char *line, t_vect *vector)
 	return (0);
 }
 
+/*
+**	update heredoc_array
+*/
+
 int			update_heredoc(t_bash *data)
 {
 	char	**tmp;
@@ -333,19 +397,30 @@ int			update_heredoc(t_bash *data)
 	data->x = 0;
 }
 
+/*
+**	print heredoc_array in pipe
+*/
+
 void		write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2])
 {
 	int i;
 
-	i=0;
+	i = 0;
 	while ((command->doc_string)[i])
 	{
-		write(pipe_fd[1], (command->doc_string)[i], ft_strlen((command->doc_string)[i]));
-		write(pipe_fd[1], "\n", 1);
+		if ((command->doc_string)[i] != (command->eof))
+		{
+			write(pipe_fd[1], (command->doc_string)[i], ft_strlen((command->doc_string)[i]));
+			write(pipe_fd[1], "\n", 1);
+		}
 		i++;
 	}
 
 }
+
+/*
+**	exec heredoc by using pipe
+*/
 
 void		handle_heredoc(t_bash *data, t_vect *command)
 {
