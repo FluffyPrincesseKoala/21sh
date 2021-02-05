@@ -6,11 +6,20 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 15:00:34 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/05 15:10:57 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
+
+/*
+** This file contains functions related to commands execution with a pipe.
+*/
+
+/*
+** Create a new redirection structure, that redirects the pipe reading file
+**  descriptor to the command STDOUT.
+*/
 
 void        set_stdin_pipe_redirection(t_vect *command, int pipe_fd[2])
 {
@@ -21,6 +30,11 @@ void        set_stdin_pipe_redirection(t_vect *command, int pipe_fd[2])
 	new->right_fd = pipe_fd[0];
 }
 
+/*
+** Create a new redirection structure, that redirects the pipe writting file
+**  descriptor to the command STDIN.
+*/
+
 void		set_stdout_pipe_redirection(t_vect *command, int pipe_fd[2])
 {
 	t_redirection *new;
@@ -29,6 +43,14 @@ void		set_stdout_pipe_redirection(t_vect *command, int pipe_fd[2])
 	new->left_fd = 1;
 	new->right_fd = pipe_fd[1];
 }
+
+/*
+** Fork the current process.
+** In the child close the reading pipe file director and write the docstring if
+**  it's a heredoc situation or execute the current command.
+** The parent wait for the child process, then close the writting pipe file
+**  director.
+*/
 
 void        pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc)
 {
@@ -53,6 +75,13 @@ void        pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc
 	wait(&status);
 	close(pipe_fd[1]);
 }
+
+/*
+** Create the redirections structure for the pipe between the current command
+**  and the next one.
+** Fork the current process, and execute the current command in the child.
+** Then, handle the execution of the next command.
+*/
 
 void		handle_pipe(t_bash *data, t_vect *command)
 {

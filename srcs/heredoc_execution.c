@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 15:00:47 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/05 15:05:43 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void		write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2])
 }
 
 /*
-** Create a pipe, redirect pipe file descriptor 0 to the command STDIN.
+** Create a pipe, redirect pipe reading file descriptor to the command STDIN.
 ** Fork the current process, write the heredoc in the child and execute the 
 **  command in the parent.
 */
