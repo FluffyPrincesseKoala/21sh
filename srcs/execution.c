@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/29 18:27:20 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/05 12:07:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 void        execute_command(t_bash *data, t_vect *command)
 {
         if (command->redirections)
-            execute_redirections(data, command->redirections, 0);
+            execute_redirections(data, command->redirections);
         if (command->builtin)
         {
             if (!data->error)

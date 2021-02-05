@@ -276,7 +276,7 @@ void		info(char *str);
 */
 
 void			write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2]);
-int           	execute_redirections(t_bash *data, t_redirection *redirection, int position);
+int           	execute_redirections(t_bash *data, t_redirection *redirection);
 void        	set_child_pipe_redirection(t_vect *command, int pipe_fd[2]);
 void        	pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc);
 void 			handle_pipe(t_bash *data, t_vect *command);

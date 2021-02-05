@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/10 12:16:22 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/29 12:23:20 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/05 12:27:40 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,4 @@ int                        set_up_command_redirections(
             return (FAIL);
     }
     return (SUCCESS);
-    //if (command->next)
-    //    set_up_command_redirections(data, command->next);
 }
