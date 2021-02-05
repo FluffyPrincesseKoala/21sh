@@ -3,24 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   args.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 12:26:04 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 12:35:20 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/05 18:26:37 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-void	print_args(t_bash *data, t_vect *command)
+void		print_args(t_bash *data, t_vect *command)
 {
-	command->args = command->args->next;
-	while (command->args)
+	t_arg	*arg;
+
+	if (command->args)
+		arg = command->args->next;
+	while (arg)
 	{
-		ft_putstr(command->args->content);
-		if (command->args->next)
+		ft_putstr(arg->content);
+		if (arg->next)
 			ft_putchar(' ');
-		command->args = command->args->next;
+		arg = arg->next;
 	}
 	ft_putchar('\n');
 }

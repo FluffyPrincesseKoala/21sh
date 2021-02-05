@@ -340,7 +340,7 @@ int			    is_child(pid_t pid);
 int				is_exit(t_vect *command);
 int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
 int     	    using_heredoc(t_vect *command);
-
+int				format_line_required(t_bash *data);
 /*
 ** ==========
 **  CLEAN UP

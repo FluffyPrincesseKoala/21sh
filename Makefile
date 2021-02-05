@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
+#    By: koala <koala@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/02/05 15:28:58 by cylemair         ###   ########.fr        #
+#    Updated: 2021/02/05 17:40:57 by koala            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,8 @@ SRC		=	srcs/main.c 					\
 			srcs/redirections_setup.c		\
 			srcs/redirections_struct.c		\
 			srcs/redirections_tools.c		\
-			srcs/boolean_tools.c		\
+			srcs/boolean_tools.c			\
+			srcs/boolean_tools2.c			\
 			srcs/args.c						\
 			srcs/create_args.c				\
 			srcs/env.c						\
@@ -66,6 +67,7 @@ SRC		=	srcs/main.c 					\
 			srcs/built_in.c					\
 			srcs/print_error.c				\
 			srcs/heredoc.c					\
+			srcs/heredoc_execution.c		\
 			srcs/termcaps.c					\
 			srcs/history.c					\
 			srcs/split_all_whitespace.c		\

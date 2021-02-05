@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_execution.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:12:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 12:26:07 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/05 17:10:06 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int        execute_redirections(t_bash *data, t_redirection *redirection)
 		close(redirection->left_fd);
 	else 
 	{
+		//ft_putstr_fd("copy ", 2);ft_putnbr_fd(redirection->right_fd, 2);ft_putstr_fd(" into ", 2);ft_putnbr_fd(redirection->left_fd, 2);ft_putchar_fd('\n', 2);
 		dup2(redirection->right_fd, redirection->left_fd);
 		if (redirection->file_word)
 			close(redirection->right_fd);

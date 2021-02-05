@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_execution.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 15:05:43 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/05 17:52:12 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh"
+#include "21sh.h"
 
 /*
 ** This file contains functions related to heredoc pipes at execution time.
@@ -27,7 +27,7 @@ void		write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2])
 	i = 0;
 	while ((command->doc_string)[i])
 	{
-		if ((command->doc_string)[i] != (command->eof))
+		if (ft_strcmp(command->doc_string[i], command->eof))
 		{
 			write(pipe_fd[1], (command->doc_string)[i], ft_strlen((command->doc_string)[i]));
 			write(pipe_fd[1], "\n", 1);

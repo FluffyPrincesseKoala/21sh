@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/02/05 15:55:30 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/05 18:45:51 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int		parse_newline_as_heredoc(t_vect **head, t_bash *data)
 		vect = *head;
 	while (vect)
 	{
-		if (vect->separator == '\n' && (vect_to_free = vect)) // check if there is no more '\n'   a->b->*to_free*->c->...etc
+		if (vect->separator == '\n' && (vect_to_free = vect))
 		{
 			next_doc = (*head);
 			while ((vect = vect->next))
@@ -122,11 +122,11 @@ int		parse_newline_as_heredoc(t_vect **head, t_bash *data)
 				if (is_eof(data, next_doc))
 				{
 					next_doc = vect->next;
-					unlink_free_vector(&vect_to_free, (next_doc) ? next_doc : NULL); // add new next
+					unlink_free_vector(&vect_to_free, (next_doc) ? next_doc : NULL);
 					return (-1);
 				}
 			}
-			unlink_free_vector(&vect_to_free, NULL); // add new next
+			unlink_free_vector(&vect_to_free, NULL);
 		}
 		vect = (vect) ? vect->next : NULL;
 	}
@@ -233,6 +233,14 @@ int			format_heredoc(t_vect **vect, t_arg **to_check)
 	return (0);
 }
 
+
+t_arg	*reset_data_heredoc(t_bash *data)
+{
+	data->is_here_doc = 0;
+	data->nb_heredoc = 0;
+	data->finish_heredoc = 0;
+	return (NULL);
+}
 /*
 **	shearch heredoc parametere and free there args (for parameter)
 **	and vector (for heredoc string)
@@ -245,10 +253,7 @@ void		here_doc(t_bash *data)
 	t_vect	*vect;
 	int		count;
 
-	data->is_here_doc = 0;
-	data->nb_heredoc = 0;
-	data->finish_heredoc = 0;
-	to_free = NULL;
+	to_free = reset_data_heredoc(data);
 	count = 0;
 	if ((vect = data->vector))
 	{
@@ -260,10 +265,8 @@ void		here_doc(t_bash *data)
 				if (!to_free->previous)
 					if (!format_heredoc(&vect, &to_free))
 					{
-						data->is_here_doc = 0;
-						data->nb_heredoc = 0;
-						data->finish_heredoc = 0;
 						data->error = SNTX_ERR;
+						to_free = reset_data_heredoc(data);
 						return ;
 					}
 					else
@@ -314,7 +317,7 @@ void		eof_update_heredoc(t_bash *data)
 		{
 			add_at_end_of_last_line(&data->vector->up->line, &LINE);
 			ft_putchar('\n');
-			if (VECT_UP && vect->doc_string && data->nb_heredoc == data->finish_heredoc)
+			if (VECT_UP && data->nb_heredoc == data->finish_heredoc)
 			{
 				VECT = VECT_UP;
 				free_vector(&data->vector->down, FALSE);
@@ -334,23 +337,25 @@ void		eof_update_heredoc(t_bash *data)
 
 void		update_docstring(t_bash *data)
 {
-	t_vect	*vect;
+	t_vect	*cmd;
 	int		i;
 
 	i = data->finish_heredoc;
-	vect = data->vector->up;
-	while (vect)
+	cmd = data->vector->up;
+	while (cmd)
 	{
+		while (!cmd->eof)
+			cmd = cmd->next;
 		if (!i)
 		{
-			fill_heredoc_array(data, vect, LINE);
+			fill_heredoc_array(data, cmd, LINE);
 			ft_putchar('\n');
-			if (VECT_UP && vect->doc_string)
+			if (VECT_UP && cmd->doc_string)
 				add_at_end_of_last_line(&VECT_UP->line, &LINE);
 		}
-		if (vect->eof)
+		if (cmd->eof)
 			i--;
-		vect = vect->next;
+		cmd = cmd->next;
 	}
 }
 
