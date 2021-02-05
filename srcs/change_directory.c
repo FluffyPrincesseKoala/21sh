@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:22:41 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/08 13:44:11 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/05 15:23:08 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void		update_current_directory(char **env, char *pwd)
 	char		*old;
 	char		*tmp;
 
-	old = findenv(env, "PWD");
+	old = get_var_from_env(env, "PWD");
 	tmp = ft_strjoin("OLDPWD=", old);
 	env = change_array_value(env, "OLDPWD", tmp);
 	ft_strdel(&tmp);
@@ -69,12 +69,12 @@ void			change_directory(t_bash *data, t_vect *command)
 			if ((command->args = command->args->next))
 			{
 				if (ft_strequ(command->args->content, "-"))
-					path = findenv(data->env, "OLDPWD");
+					path = get_var_from_env(data->env, "OLDPWD");
 				else
 					path = command->args->content;
 			}
 			else
-				path = findenv(data->env, "HOME");
+				path = get_var_from_env(data->env, "HOME");
 			if (path)
 			{
 				move_to_directory(data->env, path);

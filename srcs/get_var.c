@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_var.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 18:59:31 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/22 12:50:46 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/05 15:23:08 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char		**split_var(char **env, char *str)
 		if (ft_strchr(var[k], '$')
 		&& ft_strlen((ft_strchr(var[k], '$') + 1)) >= 1)
 		{
-			tmp = findenv(env, ft_strchr(var[k], '$') + 1);
+			tmp = get_var_from_env(env, ft_strchr(var[k], '$') + 1);
 			ft_strdel(&var[k]);
 			var[k] = ft_strdup((tmp) ? tmp : "");
 		}
@@ -99,7 +99,7 @@ void		get_tilt(t_arg **head, char **env)
 	{
 		if (CONTENT && ft_strchr(CONTENT, '~'))
 		{
-			path_to_home = findenv(env, "HOME");
+			path_to_home = get_var_from_env(env, "HOME");
 			tmp = replace_substr(CONTENT, "~", path_to_home);
 			ft_strdel(&CONTENT);
 			CONTENT = ft_strdup(tmp);

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: koala <koala@student.42.fr>                +#+  +:+       +#+         #
+#    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/01/22 19:34:35 by koala            ###   ########.fr        #
+#    Updated: 2021/02/05 15:28:58 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,7 @@ SRC		=	srcs/main.c 					\
 			srcs/redirections_setup.c		\
 			srcs/redirections_struct.c		\
 			srcs/redirections_tools.c		\
-			srcs/functions_not_macros.c		\
+			srcs/boolean_tools.c		\
 			srcs/args.c						\
 			srcs/create_args.c				\
 			srcs/env.c						\

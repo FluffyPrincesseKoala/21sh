@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/29 18:27:16 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/05 15:23:08 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static char	*get_command_path_from_env(char **env, char *command_name)
 	char	**env_paths;
 
 	i = 0;
-	env_paths = ft_strsplit(findenv(env, "PATH"), ':');
+	env_paths = ft_strsplit(get_var_from_env(env, "PATH"), ':');
 	while (env_paths && env_paths[i] && command_name)
 	{
 		command_path = build_command_path(env_paths[i], command_name);

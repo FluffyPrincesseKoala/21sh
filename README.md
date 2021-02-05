@@ -8,14 +8,10 @@
 * add posibility to save or not the env like
 `` ./21sh --save-env "setenv PATH=$PATH:foo/bar"	``
 
-
 ## Ideas
 * add a libft function that takes two string as arguments : string to write and macro-string for color
 * add scrolling
-* function typed "in" to return true/false -> tinier int
-
-## Cleaning
-* rename findenv -> get_var_from_env
+* function typed "int" to return true/false -> tinier int
 
 ## Not forget to
 * readapt the use of data->error
