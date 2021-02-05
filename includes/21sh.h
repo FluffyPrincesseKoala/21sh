@@ -188,13 +188,9 @@ char		**split_all_whitespace(char const *s);
 void		hello();
 int			prompt(char **env, int short_prompt);
 void		loop(t_bash *data);
-int     	using_heredoc(t_vect *command);
 void		handle_fork(t_bash *data, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
 void		puterror(int error);
-int		    fork_is_required(t_vect *command);
-int			fork_failed(pid_t pid);
-int			is_child(pid_t pid);
 void 		set_up_signals();
 void		clear_term(char *str);
 void		put_error_msg(char *error);
@@ -270,19 +266,6 @@ void		exec_onebyone(t_bash data);
 void		currsor_info(t_term *curr, int count);
 void		info(char *str);
 
-
-/*
-**  TOOLS
-*/
-
-void			write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2]);
-int           	execute_redirections(t_bash *data, t_redirection *redirection);
-void        	set_stdin_pipe_redirection(t_vect *command, int pipe_fd[2]);
-void        	pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc);
-void 			handle_pipe(t_bash *data, t_vect *command);
-void			handle_heredoc(t_bash *data, t_vect *command);
-void            restore_directions(t_redirection *redirection);
-
 /*
 **	ERROR MANAGEMENT
 */
@@ -295,11 +278,8 @@ void		error_code_to_message(int *error);
 */
 
 int				init_built_in(t_built **fct);
-void			search_built_in(t_bash *data, t_vect *command);
-int				is_exit(t_vect *command);
-int 		    check_built_in(t_bash *data, t_vect *command);
 void			print_env(t_bash *data, t_vect *cmd);
-char			*findenv(char **env, char *name);
+char			*get_var_from_env(char **env, char *name);
 void			set_env(t_bash *data, t_vect *command);
 void			unset_env(t_bash *data, t_vect *command);
 int				is_env_key_exist(char **env, char *key);
@@ -323,30 +303,43 @@ void			here_doc(t_bash *data);
 ** ===========
 */
 
+void			execute_command(t_bash *data, t_vect *command);
+void 			execute_syscall(t_bash *data, t_vect *command);
 int         	handle_commands(t_bash *data, t_vect *command);
 void        	handle_execution(t_bash *data, t_vect *command);
-void			execute_command(t_bash *data, t_vect *command);
-
-void 			execute_syscall(t_bash *data, t_vect *command);
+void			search_built_in(t_bash *data, t_vect *command);
 
 /*
 ** Redirections
 */
-
+int           	execute_redirections(t_bash *data, t_redirection *redirection);
 int				initialize_redirection_set_up_functions(t_bash *data);
-int				set_up_command_redirections(t_bash *data, t_vect *cmd);
 t_redirection	*new_redirection(t_vect *cmd, int flags);
-
-int             search_right_fd(t_vect *cmd, t_arg *arg, char *substring, int *error);
-int				search_left_fd(t_vect *cmd, t_arg *arg, int def, int *error);
 char            *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, int *error);
-int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
+int				search_left_fd(t_vect *cmd, t_arg *arg, int def, int *error);
+int             search_right_fd(t_vect *cmd, t_arg *arg, char *substring, int *error);
+int				set_up_command_redirections(t_bash *data, t_vect *cmd);
+void            restore_directions(t_redirection *redirection);
 
 /*
 ** Pipe
 */
+void			handle_heredoc(t_bash *data, t_vect *command);
+void 			handle_pipe(t_bash *data, t_vect *command);
+void        	pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc);
+void        	set_stdin_pipe_redirection(t_vect *command, int pipe_fd[2]);
+void			write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2]);
 
+/*
+** Boolean tools
+*/
 int     		command_is_piped(t_vect *command);
+int		        fork_is_required(t_vect *command);
+int			    fork_failed(pid_t pid);
+int			    is_child(pid_t pid);
+int				is_exit(t_vect *command);
+int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
+int     	    using_heredoc(t_vect *command);
 
 /*
 ** ==========

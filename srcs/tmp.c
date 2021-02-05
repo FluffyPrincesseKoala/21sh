@@ -93,7 +93,7 @@ int			prompt(char **env, int short_prompt)
 		pstr(RESET);
 		len += pchar('@');
 		pstr(GREEN);
-		len += pstr(findenv(env , "PWD"));
+		len += pstr(get_var_from_env(env , "PWD"));
 		pstr(CYAN);
 		len += pstr(" > ");
 		pstr(RESET);
@@ -105,7 +105,7 @@ int			prompt(char **env, int short_prompt)
 	return (len);
 }
 
-char		*findenv(char **env, char *var)
+char		*get_var_from_env(char **env, char *var)
 {
 	int		i;
 	int		len;

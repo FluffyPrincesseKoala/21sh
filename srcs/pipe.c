@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 15:10:57 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/05 15:32:13 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,20 @@
 /*
 ** This file contains functions related to commands execution with a pipe.
 */
+
+/*
+** Create a new redirection structure, that redirects the pipe writting file
+**  descriptor to the command STDIN.
+*/
+
+static void	set_stdout_pipe_redirection(t_vect *command, int pipe_fd[2])
+{
+	t_redirection *new;
+
+	new = new_redirection(command, 0);
+	new->left_fd = 1;
+	new->right_fd = pipe_fd[1];
+}
 
 /*
 ** Create a new redirection structure, that redirects the pipe reading file
@@ -28,20 +42,6 @@ void        set_stdin_pipe_redirection(t_vect *command, int pipe_fd[2])
 	new = new_redirection(command, 0);
 	new->left_fd = 0;
 	new->right_fd = pipe_fd[0];
-}
-
-/*
-** Create a new redirection structure, that redirects the pipe writting file
-**  descriptor to the command STDIN.
-*/
-
-void		set_stdout_pipe_redirection(t_vect *command, int pipe_fd[2])
-{
-	t_redirection *new;
-
-	new = new_redirection(command, 0);
-	new->left_fd = 1;
-	new->right_fd = pipe_fd[1];
 }
 
 /*
