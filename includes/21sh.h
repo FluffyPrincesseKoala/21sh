@@ -270,31 +270,14 @@ void		exec_onebyone(t_bash data);
 void		currsor_info(t_term *curr, int count);
 void		info(char *str);
 
-/*
-** REDIRECTIONS
-*/
-
-
-/*
-** SET UP
-*/
-
-void            set_up_pipe_redirection(t_redirection *new);
 
 /*
 **  TOOLS
 */
 
-int             search_right_fd(t_vect *cmd, t_arg *arg, char *substring, int *error);
-int				search_left_fd(t_vect *cmd, t_arg *arg, int def, int *error);
-char            *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, int *error);
-int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
-void		    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
-				int substring_index, int *error);
-
 void			write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2]);
-void            execute_redirections(t_bash *data, t_redirection *redirection, int position);
-void        	set_child_pipe_redirection(t_vect *command, int pipe_fd[2]);
+int           	execute_redirections(t_bash *data, t_redirection *redirection);
+void        	set_stdin_pipe_redirection(t_vect *command, int pipe_fd[2]);
 void        	pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc);
 void 			handle_pipe(t_bash *data, t_vect *command);
 void			handle_heredoc(t_bash *data, t_vect *command);
@@ -354,12 +337,23 @@ int				initialize_redirection_set_up_functions(t_bash *data);
 int				set_up_command_redirections(t_bash *data, t_vect *cmd);
 t_redirection	*new_redirection(t_vect *cmd, int flags);
 
-void			free_redirection(t_redirection *redirection);
+int             search_right_fd(t_vect *cmd, t_arg *arg, char *substring, int *error);
+int				search_left_fd(t_vect *cmd, t_arg *arg, int def, int *error);
+char            *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, int *error);
+int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
 
 /*
 ** Pipe
 */
 
 int     		command_is_piped(t_vect *command);
+
+/*
+** ==========
+**  CLEAN UP
+** ==========
+*/
+
+void			free_redirection(t_redirection *redirection);
 
 #endif

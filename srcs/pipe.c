@@ -6,13 +6,22 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/15 18:54:38 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/05 15:10:57 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-void        set_child_pipe_redirection(t_vect *command, int pipe_fd[2])
+/*
+** This file contains functions related to commands execution with a pipe.
+*/
+
+/*
+** Create a new redirection structure, that redirects the pipe reading file
+**  descriptor to the command STDOUT.
+*/
+
+void        set_stdin_pipe_redirection(t_vect *command, int pipe_fd[2])
 {
 	t_redirection *new;
     
@@ -21,15 +30,27 @@ void        set_child_pipe_redirection(t_vect *command, int pipe_fd[2])
 	new->right_fd = pipe_fd[0];
 }
 
-void		set_pipe_redirection(t_vect *command, int pipe_fd[2])
+/*
+** Create a new redirection structure, that redirects the pipe writting file
+**  descriptor to the command STDIN.
+*/
+
+void		set_stdout_pipe_redirection(t_vect *command, int pipe_fd[2])
 {
 	t_redirection *new;
 
 	new = new_redirection(command, 0);
 	new->left_fd = 1;
 	new->right_fd = pipe_fd[1];
-    set_child_pipe_redirection(command->next, pipe_fd);
 }
+
+/*
+** Fork the current process.
+** In the child close the reading pipe file director and write the docstring if
+**  it's a heredoc situation or execute the current command.
+** The parent wait for the child process, then close the writting pipe file
+**  director.
+*/
 
 void        pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc)
 {
@@ -55,6 +76,13 @@ void        pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc
 	close(pipe_fd[1]);
 }
 
+/*
+** Create the redirections structure for the pipe between the current command
+**  and the next one.
+** Fork the current process, and execute the current command in the child.
+** Then, handle the execution of the next command.
+*/
+
 void		handle_pipe(t_bash *data, t_vect *command)
 {
 	int				pipe_fd[2];
@@ -63,7 +91,8 @@ void		handle_pipe(t_bash *data, t_vect *command)
 	{
 		if (pipe(pipe_fd) == EXIT)
             exit(EXIT);
-		set_pipe_redirection(command, pipe_fd);
+		set_stdout_pipe_redirection(command, pipe_fd);
+		set_stdin_pipe_redirection(command->next, pipe_fd);
 		pipe_fork(data, command, pipe_fd, FALSE);
 		handle_execution(data, command->next);
 	}

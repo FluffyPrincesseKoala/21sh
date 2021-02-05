@@ -22,7 +22,9 @@ void	free_redirections_setup(t_redirection_setup **redirections_setup)
 		while (redirections_setup[i])
 		{
 			ft_strdel(&redirections_setup[i]->op);
+			free(redirections_setup[i]->f);
 			free(redirections_setup[i]);
+			ft_memset(redirections_setup[i], 0, sizeof(t_redirection_setup));
 			i++;
 		}
 		free(redirections_setup);

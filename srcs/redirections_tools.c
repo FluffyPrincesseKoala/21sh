@@ -6,11 +6,16 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/29 11:46:22 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/01/29 17:57:38 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
+
+/*
+** This file contains functions used to parse little pieces of the given 
+**  command, and understand what are the origin and destination of redirections.
+*/
 
 /*
 ** Take a look at the left of the redirection operator.
@@ -59,7 +64,7 @@ int     search_right_fd(t_vect *cmd, t_arg *arg, char *substring, int *error)
 {
     if (substring[0] == '&')
     {
-        if (ft_str_is_digits(&(substring[1])))
+        if (substring[1] && ft_str_is_digits(&(substring[1])))
             return ft_atoi(&(substring[1]));
         else if (substring[1] == CLOSE_DIRECTION)
         {
@@ -107,6 +112,12 @@ char    *search_file_word(
     return file;
 }
 
+/*
+** Redirections in the form &>word or >&word or &>>word indicated that both 
+**  STDIN and STDERR are redirected to the given word.
+** This function return true if the redirection concerns both STDIN and STDERR.
+*/
+
 int     is_stdout_and_stderr_redirection(int left_fd,int right_fd)
 {
     if (left_fd == STDOUT_AND_STDERR && right_fd == NO_RIGHT_FD)
@@ -115,22 +126,4 @@ int     is_stdout_and_stderr_redirection(int left_fd,int right_fd)
         return TRUE;
     else 
         return FALSE;
-}
-
-void    set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
-    int substring_index, int *error)
-{
-    t_redirection   *stdout_redirection;
-
-    stdout_redirection = cmd->redirections;
-    while (stdout_redirection->next)
-        stdout_redirection = stdout_redirection->next;
-    if (stdout_redirection->right_fd == AMBIGUOUS)
-        substring_index += 1;
-    stdout_redirection->left_fd = STDOUT;
-    stdout_redirection->right_fd = NO_RIGHT_FD;
-    stdout_redirection->file_word = search_file_word(cmd, arg, substring_index, error);
-    stdout_redirection->next = new_redirection(cmd, SIMPLE_OUTPUT_FLAGS);
-    stdout_redirection->next->left_fd = STDERR;
-    stdout_redirection->next->right_fd = STDOUT;
 }

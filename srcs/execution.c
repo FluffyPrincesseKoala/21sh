@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/29 14:44:18 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/05 12:07:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,17 @@
 
 /*
 ** Execute the redirections, set up earlier, right before executing the command.
-** If it's a builtin, use the appropriate function, otherway use execve.
+** If it's a builtin, use the appropriate custom function, otherway use execve.
 */
 
 void        execute_command(t_bash *data, t_vect *command)
 {
         if (command->redirections)
-            execute_redirections(data, command->redirections, 0);
+            execute_redirections(data, command->redirections);
         if (command->builtin)
         {
-            command->builtin(data, command);
+            if (!data->error)
+                command->builtin(data, command);
             restore_directions(command->redirections);
         }
         else

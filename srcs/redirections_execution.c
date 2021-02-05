@@ -6,11 +6,20 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:12:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/22 18:16:44 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/05 12:26:07 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
+
+/*
+** This file contains functions related to the execution of the redirections.
+*/
+
+/*
+** Try to open the file used in the redirection, set up resulting file 
+**  descriptor in the redirection structure.
+*/
 
 static int	is_file_word_authorized(t_bash *data, t_redirection *redirection)
 {
@@ -22,6 +31,7 @@ static int	is_file_word_authorized(t_bash *data, t_redirection *redirection)
 			redirection->file_word, redirection->flags, NEW_FILE_MODE);
 		if (new_fd == -1)
 		{
+			put_error_msg("Permission non accordée.\n");
 			data->error = OPEN_ERROR;
 			free_redirection(redirection);
 			return (FALSE);
@@ -32,18 +42,18 @@ static int	is_file_word_authorized(t_bash *data, t_redirection *redirection)
 	return (TRUE);
 }
 
-static void	get_backup_fd(t_redirection *redirection, int n)
-{
-	redirection->backup_fd = 600 + n;
-}
+/*
+** Open file if file given.
+** Make a backup of the file descriptor that is going to be overwritten.
+** Apply the required redirection.
+** Recursively call the function on the next redirection.
+*/
 
-void        execute_redirections(t_bash *data, t_redirection *redirection, int position)
+int        execute_redirections(t_bash *data, t_redirection *redirection)
 {
-	// take CLOSE_FD (== -1) into account
 	if (!is_file_word_authorized(data, redirection))
-		return ;
-	get_backup_fd(redirection, position);
-	dup2(redirection->left_fd, redirection->backup_fd);
+		return (FAIL);
+	redirection->backup_fd = dup(redirection->left_fd);
 	if (redirection->right_fd == CLOSE_FD)
 		close(redirection->left_fd);
 	else 
@@ -53,8 +63,14 @@ void        execute_redirections(t_bash *data, t_redirection *redirection, int p
 			close(redirection->right_fd);
 	}
 	if (redirection->next)
-		execute_redirections(data, redirection->next, position+1);
+		return (execute_redirections(data, redirection->next));
+	return (SUCCESS);
 }
+
+/*
+** Use a backup file director to reverse the initial dup.
+** Recursively call the function on the next redirection
+*/
 
 void	    restore_directions(t_redirection *redirection)
 {
