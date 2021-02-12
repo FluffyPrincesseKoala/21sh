@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 16:50:27 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/12 13:04:17 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,13 @@ void        execute_command(t_bash *data, t_vect *command)
             execute_syscall(data, command);
 }
 
-void        handle_execution(t_bash *data, t_vect *command)
+int        handle_execution(t_bash *data, t_vect *command)
 {
-    handle_pipe(data, command);
+    if (handle_pipe(data, command) == FAIL)
+        return (FAIL);
     handle_heredoc(data, command);
     execute_command(data, command);
+    return (SUCCESS);
 }
 
 /*
@@ -63,11 +65,16 @@ static int  handle_command(t_bash *data, t_vect *command)
         if (fork_failed(cpid))
             print_failed_fork_error(cpid);
         else if (is_child(cpid))
-            handle_execution(data, command);
+            if (handle_execution(data, command) == FAIL)
+            {
+                error_code_to_message(&data->error);
+                exit(EXIT);
+            }
         wait(&status);
     }
     else
-        handle_execution(data, command);    
+        if (handle_execution(data, command) == FAIL)
+            return (FAIL);
     return (SUCCESS);
 }
 

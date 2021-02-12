@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 15:32:13 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 12:56:55 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,11 @@ void        pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc
 ** Create the redirections structure for the pipe between the current command
 **  and the next one.
 ** Fork the current process, and execute the current command in the child.
-** Then, handle the execution of the next command.
+** Then, handle the execution of the next command, after parsing it for
+**  potential redirections.
 */
 
-void		handle_pipe(t_bash *data, t_vect *command)
+int			handle_pipe(t_bash *data, t_vect *command)
 {
 	int				pipe_fd[2];
 
@@ -94,7 +95,10 @@ void		handle_pipe(t_bash *data, t_vect *command)
 		set_stdout_pipe_redirection(command, pipe_fd);
 		set_stdin_pipe_redirection(command->next, pipe_fd);
 		pipe_fork(data, command, pipe_fd, FALSE);
-		handle_execution(data, command->next);
+		if (set_up_command_redirections(data, command->next) == FAIL)
+			return (FAIL);
+		if (handle_execution(data, command->next) == FAIL)
+			return (FAIL);
 	}
-	
+	return (SUCCESS);
 }

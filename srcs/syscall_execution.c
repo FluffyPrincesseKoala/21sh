@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syscall_execution.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 16:41:19 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/12 12:55:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void        execute_syscall(t_bash *data, t_vect *command)
     {
         free_array(data->args_array);
         data->args_array = arg_to_array(data, command->args);
+		//ft_putstr_fd("Execute ", 2);ft_putendl_fd(command->args->content, 2);
         if (!data->error)
         	execve(data->path, data->args_array, data->env);
     }

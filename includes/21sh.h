@@ -306,7 +306,7 @@ void			here_doc(t_bash *data);
 void			execute_command(t_bash *data, t_vect *command);
 void 			execute_syscall(t_bash *data, t_vect *command);
 int         	handle_commands(t_bash *data, t_vect *command);
-void        	handle_execution(t_bash *data, t_vect *command);
+int         	handle_execution(t_bash *data, t_vect *command);
 void			search_built_in(t_bash *data, t_vect *command);
 
 /*
@@ -325,7 +325,7 @@ void            restore_directions(t_redirection *redirection);
 ** Pipe
 */
 void			handle_heredoc(t_bash *data, t_vect *command);
-void 			handle_pipe(t_bash *data, t_vect *command);
+int 			handle_pipe(t_bash *data, t_vect *command);
 void        	pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc);
 void        	set_stdin_pipe_redirection(t_vect *command, int pipe_fd[2]);
 void			write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2]);
