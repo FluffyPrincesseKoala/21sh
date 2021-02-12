@@ -111,7 +111,7 @@ char		*get_var_from_env(char **env, char *var)
 	int		len;
 
 	i = 0;
-	len = lendelim(var, '=', 0);
+	len = ft_strlendelim(var, '=', 0);
 	while (env && env[i])
 	{
 		if (!ft_strncmp(env[i], var, len) && ft_strlen(env[i]) > len + 1)

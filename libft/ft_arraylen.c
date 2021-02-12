@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   boolean_tools2.c                                   :+:      :+:    :+:   */
+/*   ft_arraylen.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/05 17:34:48 by koala             #+#    #+#             */
-/*   Updated: 2021/02/12 17:21:51 by cylemair         ###   ########.fr       */
+/*   Created: 2020/04/29 18:37:15 by cylemair          #+#    #+#             */
+/*   Updated: 2021/02/12 17:57:05 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
-
-int	format_line_required(t_bash *data)
+int			ft_arraylen(char **array)
 {
-	if ((!data->vector->doc_string && !data->finish_heredoc)
-		|| !data->vector->args)
-		return (TRUE);
-	return (FALSE);
-}
+	int		i;
 
-int			is_exit(t_vect *command)
-{
-	if (ft_strequ(command->args->content, "exit"))
-		return (TRUE);
-	return (FALSE);
+	i = 0;
+	while (array && array[i])
+		i++;
+	return (i);
 }

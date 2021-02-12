@@ -3,14 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   handle_separator.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/17 19:59:17 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/12 19:02:49 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
+
+char		*merge_string_from_array(char **src, int size, int start)
+{
+	char	*new;
+	int		count;
+	int		i;
+	int		j;
+	int		p;
+
+	i = -1;
+	j = -1;
+	count = -1;
+	while (++i != size)
+		count += ft_strlen(src[start + i]);
+	if (!(new = malloc(sizeof(char) * (count + i + 1))))
+		return (NULL);
+	i = 0;
+	while (i != size)
+	{
+		p = -1;
+		while (src[start + i][++p])
+			new[++j] = src[start + i][p];
+		i++;
+		if (i != size)
+			new[++j] = ' ';
+	}
+	new[++j] = '\0';
+	return (new);
+}
 
 int			len_next_quote(char **array, int start, int quote)
 {
@@ -48,7 +77,7 @@ char		**replace_subarray_by_string(char **array, char *str, int size, int start)
 
 	i = 0;
 	j = 0;
-	if (!(new = malloc(sizeof(char*) * (array_len(array) - size + 2))))
+	if (!(new = malloc(sizeof(char*) * (ft_arraylen(array) - size + 2))))
 		return (NULL);
 	while (array[i])
 	{
@@ -72,13 +101,13 @@ static t_arg	*handle_quote(t_bash *data, char **table,
 						int i, int len, char quote)
 {
 	char		*string_with_quote;
-	char		*quoted_string;
+	char		*unquoted_string;
 	t_arg		*ret;
 
 	if ((string_with_quote = merge_string_from_array(table, len, i)))
 	{
-		if (quoted_string = del_all_delim_in(string_with_quote, quote))
-			if (add_arg(&VECT->args, (ret = new_arg(quoted_string, quote))))
+		if (unquoted_string = unquote(string_with_quote, quote))
+			if (add_arg(&VECT->args, (ret = new_arg(unquoted_string, quote))))
 				return (ret);
 	}
 	data->error = MALLOC_ERROR;

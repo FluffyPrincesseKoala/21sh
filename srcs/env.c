@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:51:15 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/11 19:47:24 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/12 19:10:52 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	*create_new_env_key(t_arg *args, char **key)
 	new = NULL;
 	if ((var = ft_strdup(ft_strchr(args->content, '='))))
 	{
-		*key = ft_strndup(args->content, lendelim(args->content, '=', 0));
+		*key = ft_strndup(args->content, ft_strlendelim(args->content, '=', 0));
 		tmp = ft_strjoin(*key, "=");
 		new = ft_strjoin(tmp, (var + 1));
 		ft_strdel(&tmp);
@@ -94,7 +94,7 @@ static char	**del_env_key(char **env, char *key)
 
 	i = 0;
 	j = 0;
-	if ((new = malloc(sizeof(char*) * (array_len(env)))))
+	if ((new = malloc(sizeof(char*) * (ft_arraylen(env)))))
 	{
 		if (env)
 		{
@@ -128,7 +128,7 @@ void		unset_env(t_bash *data, t_vect *command)
 	{
 			if ((argument = argument->next))
 			{
-				len = lendelim(argument->content, '=', 0);
+				len = ft_strlendelim(argument->content, '=', 0);
 				key = ft_strndup(argument->content, len);
 				if (is_env_key_exist(data->env, key))
 					data->env = del_env_key(data->env, key);

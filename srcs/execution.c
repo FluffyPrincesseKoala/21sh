@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 13:26:50 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/12 19:50:56 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,29 @@
 */
 
 /*
+** Find the path to the command binary file.
+** Convert the args chained list to an array.
+** Call execve with those parameters.
+*/
+
+void        execute_syscall(t_bash *data, t_vect *command)
+{
+    ft_strdel(&(data->path));
+    if (command->args
+		&& (data->path = choose_command_path(data, command->args->content)))
+    {
+        free_array(data->args_array);
+        data->args_array = arg_to_array(data, command->args);
+		//ft_putstr_fd("Execute ", 2);ft_putendl_fd(command->args->content, 2);
+        if (!data->error)
+        	execve(data->path, data->args_array, data->env);
+    }
+    error_code_to_message(&(data->error));
+	free_bash(data);
+    exit(0);
+}
+
+/*
 ** Execute the redirections, set up earlier, right before executing the command.
 ** If it's a builtin, use the appropriate custom function, otherway use execve.
 */
@@ -25,7 +48,7 @@
 void        execute_command(t_bash *data, t_vect *command)
 {
         if (command->redirections)
-            execute_redirections(data, command->redirections);
+            execute_redirections(data, command, command->redirections);
         if (command->builtin)
         {
             if (!data->error)
@@ -91,7 +114,7 @@ int         handle_commands(t_bash *data, t_vect *command)
             return (EXIT);
         if (handle_command(data, command) == FAIL)
             return (FAIL);
-	    while (command_is_piped(command))
+	    while (command->next && command_is_piped(command))
 	    	command = command->next;
 	    command = command->next;
     }

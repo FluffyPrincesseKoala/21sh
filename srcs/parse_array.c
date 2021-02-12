@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_array.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/11 19:45:08 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/12 17:55:31 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char		**array_add_value(char **src, char *value)
 	int		i;
 
 	i = 0;
-	if (!(new = malloc(sizeof(char*) * (array_len(src) + 2))))
+	if (!(new = malloc(sizeof(char*) * (ft_arraylen(src) + 2))))
 		return (NULL);
 	while (src[i])
 	{

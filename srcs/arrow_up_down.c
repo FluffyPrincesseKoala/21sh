@@ -12,40 +12,7 @@
 
 #include "21sh.h"
 
-int			len_between_last_delim(char *str, char delim, int start)
-{
-	int				i;
-
-	i = (str[start] == delim) ? 1 : 0;
-	while (start - i > 0 && str[start - i] != delim)
-		i++;
-	return (i);
-}
-
-int					get_curent_line(char *str, int pos, int max, int prompt)
-{
-	int				i;
-	int				y;
-	int				len_max;
-
-	i = 0;
-	y = 0;
-	while (i != pos)
-	{
-		if (str[i] == '\n')
-		{
-			if (y)
-			{
-				y += (lendelim(str, '\n', i) - i) / max;
-			}
-			y++;
-		}
-		i++;
-	}
-	return (y);
-}
-
-void			clear_term(char *str)
+static void	clear_term(char *str)
 {
 	int				i;
 
@@ -62,7 +29,20 @@ void			clear_term(char *str)
 	}
 }
 
-void				arrow_up(t_bash *data)
+static int	get_y_cursor(t_term *src)
+{
+	int				count;
+
+	count = 0;
+	while (src->prev)
+	{
+		src = src->prev;
+		count += 1;
+	}
+	return (count);
+}
+
+void		arrow_up(t_bash *data)
 {
 	int		count;
 	char	*old;
@@ -94,7 +74,7 @@ void				arrow_up(t_bash *data)
 	}
 }
 
-void				arrow_down(t_bash *data)
+void		arrow_down(t_bash *data)
 {
 	int				len;
 	int				count;

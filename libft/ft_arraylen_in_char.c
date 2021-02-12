@@ -1,28 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   boolean_tools2.c                                   :+:      :+:    :+:   */
+/*   ft_arraylen_in_char.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/05 17:34:48 by koala             #+#    #+#             */
-/*   Updated: 2021/02/12 17:21:51 by cylemair         ###   ########.fr       */
+/*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
+/*   Updated: 2021/02/12 15:00:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "libft.h"
 
-int	format_line_required(t_bash *data)
+int		ft_arraylen_in_char(char **array)
 {
-	if ((!data->vector->doc_string && !data->finish_heredoc)
-		|| !data->vector->args)
-		return (TRUE);
-	return (FALSE);
-}
+	int		i;
+	int		len;
 
-int			is_exit(t_vect *command)
-{
-	if (ft_strequ(command->args->content, "exit"))
-		return (TRUE);
-	return (FALSE);
+	i = 0;
+	len = 0;
+	while (array[i])
+	{
+		len += ft_strlen(array[i]);
+		i++;
+	}
+	return (len);
 }

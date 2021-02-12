@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   change_directory.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:22:41 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/10 20:41:49 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/12 17:23:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-static int		is_file(const char *path)
+static int	is_file(const char *path)
 {
 	struct stat	sb;
 
@@ -21,7 +21,7 @@ static int		is_file(const char *path)
 	return (S_ISREG(sb.st_mode));
 }
 
-static void		update_current_directory(char **env, char *pwd)
+static void	update_current_directory(char **env, char *pwd)
 {
 	char		*old;
 	char		*tmp;
@@ -38,7 +38,7 @@ static void		update_current_directory(char **env, char *pwd)
 	ft_strdel(&tmp);
 }
 
-static void		move_to_directory(char **env, char *path)
+static void	move_to_directory(char **env, char *path)
 {
 	char		*pwd;
 	char		buff[4096 + 1];
@@ -61,7 +61,7 @@ static void		move_to_directory(char **env, char *path)
 	}
 }
 
-void			change_directory(t_bash *data, t_vect *command)
+void		change_directory(t_bash *data, t_vect *command)
 {
 	t_arg		*argument;
 	char		*path;

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 18:59:31 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 15:23:08 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 17:55:31 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char		*use_shell_var(char **env, char *str)
 
 	var = split_var(env, str);
 	ret = NULL;
-	k = array_len(var);
+	k = ft_arraylen(var);
 	while (k--)
 	{
 		tmp = ft_strjoin(var[k], ret);

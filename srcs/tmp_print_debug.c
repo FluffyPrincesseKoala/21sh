@@ -19,3 +19,17 @@ void lol(t_vect *command, char **args_array, char *path)
 	}
 	RESET_C;
 }
+
+void		print_array(char **array)
+{
+	int i;
+
+	i = 0;
+	ft_putchar('\n');
+	while (array && array[i])
+	{
+		ft_putstr(array[i]);
+		ft_putchar('\n');
+		i++;
+	}
+}

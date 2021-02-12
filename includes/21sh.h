@@ -126,10 +126,7 @@ void		free_vector(t_vect **head, int flag);
 **	ARRAY FORMATING
 */
 
-void		free_array(char **array);
-char		**copy_array(char **array);
-int			array_len(char **array);
-int			array_total_len(char **array);
+int			ft_arraylen(char **array);
 void		print_array(char **array);
 char		**array_add_value(char **src, char *value);
 char		**change_array_value(char **src, char *key, char *value);
@@ -139,10 +136,6 @@ char		**create_array(char *first);
 **	STDIN & TERM RELATED
 */
 
-int			init_term();
-int			conf_term();
-void		unconf_term();
-void		reset_conf_term();
 int			handle_new_entry(t_bash *data, char *entry, int pos);
 void		term_put(char *esc);
 
@@ -157,14 +150,6 @@ void		ctrl_right(t_bash *data);
 void		ctrl_left(t_bash *data);
 void		ctrl_down(t_bash *data);
 void		ctrl_up(t_bash *data);
-
-void		arrow_left(t_bash *data);
-void		arrow_right(t_bash *data);
-void		arrow_down(t_bash *data);
-void		arrow_up(t_bash *data);
-
-void		move_left(t_bash *data);
-void		move_right(t_bash *data);
 
 /*
 **	STRING FORMATING
@@ -193,7 +178,6 @@ void		handle_fork(t_bash *data, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
 void		puterror(int error);
 void 		set_up_signals();
-void		clear_term(char *str);
 void		put_error_msg(char *error);
 void		*free_bash(t_bash *data);
 
@@ -207,13 +191,9 @@ void		read_separator(char **table, t_bash *data);
 void		format_line(t_bash *data);
 void		get_var(t_arg **head, char **env);
 void		get_tilt(t_arg **head, char **env);
-int			len_between_last_delim(char *str, char delim, int start);
-int			get_curent_line(char *str, int pos, int max, int prompt);
-int			lendelim(char *str, char delim, int start);
 size_t		count_delim(char *str, int delim);
 int   		handle_eol(t_bash **data);
 int			pending_line(char *str);
-char		*del_all_delim_in(char *str, char delim);
 void		words_as_args(char **table, t_bash *data);
 
 /*
@@ -229,9 +209,6 @@ void		free_all_vectors(t_vect *vect);
 t_arg   	*new_arg(char *content, char quote);
 t_arg  		*add_arg(t_arg **head, t_arg *new);
 int    		insert_new_arg(t_vect *command, t_arg *previous, char *s);
-char    	**arg_to_array(t_bash *data, t_arg *arg);
-void		del_one_arg(t_arg *arg, t_vect *cmd);
-void    	free_all_args(t_arg **arg, int flag);
 
 /*
 **	CURSOR TERM STRUCT
@@ -239,11 +216,9 @@ void    	free_all_args(t_arg **arg, int flag);
 
 void		charadd_to_term(t_bash *data, char c, int pos);
 int			get_win_max_col();
-void		init_cursor(t_bash *data);
 void		fill_term_struct(t_bash *data, t_term **cursor, char *str, int max);
 t_term		*find_cursor_node(t_term **head, int idx, int idx_max, int plen);
 void		clear_struct(t_term **cursor);
-int			get_y_cursor(t_term *src);
 
 /*
 **	SELECT COPY CUT & PASTE
@@ -275,20 +250,71 @@ void		print_failed_fork_error(pid_t pid);
 void		error_code_to_message(int *error);
 
 /*
-**	BUILT-IN
+** ========
+**  SET UP
+** ========
 */
 
-int				init_built_in(t_built **fct);
+/*
+** Initialize t_bash
+*/
+char		**copy_env(char **array);
+int			init_built_in(t_built **fct);
+int			init_redirection_set_up_functions(t_bash *data);
+
+/*
+** ===========
+**  TERM CAPS
+** ===========
+*/
+
+void		arrow_down(t_bash *data);
+void		arrow_left(t_bash *data);
+void		arrow_right(t_bash *data);
+void		arrow_up(t_bash *data);
+
+void		move_left(t_bash *data);
+void		move_right(t_bash *data);
+
+/*
+** Ctrl Key
+*/
+void        init_xy(t_bash *data, int *x, int *y, int max);
+
+/*
+** Conf
+*/
+int			conf_term();
+void		unconf_term();
+void		reset_conf_term();
+
+/*
+** =========
+**  PARSING
+** =========
+*/
+
+int			ft_strlendelim(char *str, char delim, int start);
+char		*unquote(char *str, char delim);
+
+/*
+** End of line
+*/
+int				format_line_required(t_bash *data);
+
+/*
+** ===========
+**	BUILT-INS
+** ===========
+*/
+
 void			print_env(t_bash *data, t_vect *cmd);
 char			*get_var_from_env(char **env, char *name);
 void			set_env(t_bash *data, t_vect *command);
 void			unset_env(t_bash *data, t_vect *command);
 int				is_env_key_exist(char **env, char *key);
-void			change_directory(t_bash *data, t_vect *command);
-void			free_builtin(t_built **fct);
 void			print_history(t_bash *data);
 void			history(t_bash *data, t_vect *cmd);
-void			print_args(t_bash *data, t_vect *command);
 
 
 void			custom_return(void);
@@ -300,21 +326,38 @@ void			here_doc(t_bash *data);
 
 /*
 ** ===========
+**	BUILT-INS
+** ===========
+*/
+
+/*
+** Commands
+*/
+void			change_directory(t_bash *data, t_vect *command);
+void			print_args(t_bash *data, t_vect *command);
+
+/*
+** ===========
 **  EXECUTION
 ** ===========
 */
 
 void			execute_command(t_bash *data, t_vect *command);
-void 			execute_syscall(t_bash *data, t_vect *command);
 int         	handle_commands(t_bash *data, t_vect *command);
 int         	handle_execution(t_bash *data, t_vect *command);
 void			search_built_in(t_bash *data, t_vect *command);
 
 /*
+** Syscalls
+*/
+char    	    **arg_to_array(t_bash *data, t_arg *arg);
+char		    *choose_command_path(t_bash *data, char *command_name);
+void 			execute_syscall(t_bash *data, t_vect *command);
+
+/*
 ** Redirections
 */
-int           	execute_redirections(t_bash *data, t_redirection *redirection);
-int				initialize_redirection_set_up_functions(t_bash *data);
+int           	execute_redirections(t_bash *data, t_vect *command, t_redirection *redirection);
 t_redirection	*new_redirection(t_vect *cmd, int flags);
 char            *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, int *error);
 int				search_left_fd(t_vect *cmd, t_arg *arg, int def, int *error);
@@ -341,13 +384,17 @@ int			    is_child(pid_t pid);
 int				is_exit(t_vect *command);
 int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
 int     	    using_heredoc(t_vect *command);
-int				format_line_required(t_bash *data);
+
 /*
 ** ==========
 **  CLEAN UP
 ** ==========
 */
 
-void			free_redirection(t_redirection *redirection);
+void		    del_one_arg(t_arg *arg, t_vect *cmd);
+void    	    free_all_args(t_arg **arg, int flag);
+void		    free_array(char **array); 
+void			free_builtin(t_built **fct);
+void			free_redirections(t_vect *command);
 
 #endif

@@ -12,7 +12,7 @@
 
 #include "21sh.h"
 
-void	free_redirections_setup(t_redirection_setup **redirections_setup)
+void	free_redirectionss_setup(t_redirection_setup **redirections_setup)
 {
 	int		i;
 
@@ -36,7 +36,7 @@ void	*free_bash(t_bash *data)
 	data->env = NULL;
 	data->venv = NULL;
 	free_all_vectors(data->vector);
-	free_redirections_setup(REDIRECTIONS_SETUP);
+	free_redirectionss_setup(REDIRECTIONS_SETUP);
 	REDIRECTIONS_SETUP = NULL;
 	free_builtin(&data->builtin);
 	ft_strdel(&data->eof);
@@ -52,14 +52,14 @@ t_bash	*initialize_bash(char **env)
 
 	if (!(data = ft_memalloc(sizeof(t_bash))))
 		return (NULL);
-	if (!(data->env = copy_array(env)))
+	if (!(data->env = copy_env(env)))
 		return (free_bash(data));
 	data->venv = env;
 	if (!(data->vector = vect_new(NULL, NULL)))
 		return (free_bash(data));
 	if (!(REDIRECTIONS_SETUP = malloc(sizeof(t_redirection_setup) * 4)))
 		return (free_bash(data));
-	if (initialize_redirection_set_up_functions(data) == FAIL)
+	if (init_redirection_set_up_functions(data) == FAIL)
 		return (free_bash(data));
 	if (init_built_in(&data->builtin) == FAIL)
 		return (free_bash(data));

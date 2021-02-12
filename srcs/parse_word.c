@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:50:02 by koala             #+#    #+#             */
-/*   Updated: 2021/01/29 11:40:08 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 17:55:31 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void		format_line(t_bash *data)
 
 	if ((tmp = replace_substr(LINE, "\n", " \n")))
 	{
-		if (array_len(table = ft_strsplit(tmp, ' ')))
+		if (ft_arraylen(table = ft_strsplit(tmp, ' ')))
 			words_as_args(table, data);
 	}
 	if (VECT->args && !data->error)
