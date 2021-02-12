@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:27:52 by koala             #+#    #+#             */
-/*   Updated: 2021/01/29 18:59:38 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/10 20:43:18 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void		print_failed_fork_error(pid_t pid)
 
 void		error_code_to_message(int *error)
 {
+	if (*error)
+		put_error_msg("21sh:\t");
 	if (*error == MALLOC_ERROR)
 		put_error_msg("Malloc failed.\n");
 	if (*error == AMBIGUOUS_REDIRECTION_ERROR)
@@ -51,5 +53,7 @@ void		error_code_to_message(int *error)
 		put_error_msg("Unexpected '&' symbole for appending output redirection.\n");
 	if (*error == SNTX_ERR)
 		put_error_msg("Unexpected end of command.\n");
+	if (*error == ENV_FAIL)
+		put_error_msg("find required value in env\n");
 	*error = 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_args.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 12:26:04 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/29 11:33:56 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/09 18:55:06 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_arg   *new_arg(char *content, char quote)
         }
 		else
 		{
-			new->content = ft_strdup("");
+			new->content = NULL;
             new->quote = quote;
             return (new);
 		}

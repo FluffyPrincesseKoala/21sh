@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 16:41:19 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/10 15:09:38 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,6 @@ void        execute_syscall(t_bash *data, t_vect *command)
         	execve(data->path, data->args_array, data->env);
     }
     error_code_to_message(&(data->error));
+	free_bash(data);
     exit(0);
-	exit(-1);
 }

@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/15 17:48:37 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/11 19:45:08 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,18 @@ char		**array_add_value(char **src, char *value)
 
 char		**change_array_value(char **src, char *key, char *value)
 {
+	char	*tmp;
 	int		i;
 
 	i = 0;
 	while (src[i])
 	{
 		if (ft_strnequ(src[i], key, ft_strlen(key)))
+		{
+			ft_strdel(&src[i]);
 			src[i] = ft_strdup(value);
+			return (src);
+		}
 		i++;
 	}
 	return (src);

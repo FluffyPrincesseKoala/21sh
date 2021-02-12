@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/24 18:42:41 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 14:59:21 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/10 14:52:21 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ void		push_entry(t_bash *data, char *entry, char **line, int pos)
 		tmp = addchar(*line, entry[0], pos);
 	else
 		tmp = ft_strndup(entry, 1);
-	if (ft_strlen(*line))
-		ft_strdel(line);
+	ft_strdel(line);
 	*line = ft_strdup(tmp);
 	ft_strdel(&tmp);
 }

@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/02/05 18:45:51 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/10 20:26:45 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,14 @@ int		parse_newline_as_heredoc(t_vect **head, t_bash *data)
 	t_vect	*vect;
 	t_vect	*next_doc;
 	t_vect	*vect_to_free;
+	t_arg	*arg;
+	char	*tmp;
+	char	*tmp_nxt;
+	char	*new;
 
+	new = NULL;
+	tmp = NULL;
+	tmp_nxt = NULL;
 	next_doc = NULL;
 	if (head && *head)
 		vect = *head;
@@ -118,7 +125,27 @@ int		parse_newline_as_heredoc(t_vect **head, t_bash *data)
 			next_doc = (*head);
 			while ((vect = vect->next))
 			{
-				fill_heredoc_array(data, next_doc, vect->args->content);
+				arg = vect->args;
+				while (arg && arg->next)
+				{
+					tmp_nxt = ft_strjoin(arg->content, (arg->next && arg->next->content) ? " " : NULL);
+					tmp = ft_strjoin(tmp_nxt, (arg->next) ? arg->next->content : NULL);
+					ft_strdel(&tmp_nxt);
+					arg = arg->next;
+					if (new)
+					{
+						tmp_nxt = str_join_free(&new, &tmp);
+						new = ft_strdup(tmp_nxt);
+						ft_strdel(&tmp_nxt);
+					}
+					else
+					{
+						new = ft_strdup(tmp);
+						ft_strdel(&tmp);
+					}
+				}
+				fill_heredoc_array(data, next_doc, (new) ? new : arg->content);
+				ft_strdel(&new);
 				if (is_eof(data, next_doc))
 				{
 					next_doc = vect->next;
@@ -342,9 +369,11 @@ void		update_docstring(t_bash *data)
 
 	i = data->finish_heredoc;
 	cmd = data->vector->up;
+	while (cmd && !cmd->eof)
+		cmd = cmd->next;
 	while (cmd)
 	{
-		while (!cmd->eof)
+		while (cmd && !cmd->eof)
 			cmd = cmd->next;
 		if (!i)
 		{
@@ -353,9 +382,9 @@ void		update_docstring(t_bash *data)
 			if (VECT_UP && cmd->doc_string)
 				add_at_end_of_last_line(&VECT_UP->line, &LINE);
 		}
-		if (cmd->eof)
+		if (cmd && cmd->eof)
 			i--;
-		cmd = cmd->next;
+		cmd = (cmd) ? cmd->next : NULL;
 	}
 }
 

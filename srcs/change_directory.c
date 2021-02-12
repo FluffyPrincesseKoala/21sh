@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   change_directory.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:22:41 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 15:23:08 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/10 20:41:49 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ static void		update_current_directory(char **env, char *pwd)
 
 	old = get_var_from_env(env, "PWD");
 	tmp = ft_strjoin("OLDPWD=", old);
-	env = change_array_value(env, "OLDPWD", tmp);
+	if (is_env_key_exist(env, "OLDPWD="))
+		env = change_array_value(env, "OLDPWD", tmp);
+	else
+		env = array_add_value(env, tmp);
 	ft_strdel(&tmp);
 	tmp = ft_strjoin("PWD=", pwd);
 	env = change_array_value(env, "PWD", tmp);
@@ -60,27 +63,27 @@ static void		move_to_directory(char **env, char *path)
 
 void			change_directory(t_bash *data, t_vect *command)
 {
+	t_arg		*argument;
 	char		*path;
 
-	while (command->args)
+	argument = command->args;
+	if (ft_strequ(argument->content, "cd"))
 	{
-		if (ft_strequ(command->args->content, "cd"))
+		if ((argument = argument->next))
 		{
-			if ((command->args = command->args->next))
-			{
-				if (ft_strequ(command->args->content, "-"))
-					path = get_var_from_env(data->env, "OLDPWD");
-				else
-					path = command->args->content;
-			}
+			if (ft_strequ(argument->content, "-"))
+				path = get_var_from_env(data->env, "OLDPWD");
 			else
-				path = get_var_from_env(data->env, "HOME");
-			if (path)
-			{
-				move_to_directory(data->env, path);
-				return ;
-			}
+				path = argument->content;
 		}
-		command->args = command->args->next;
+		else
+			path = get_var_from_env(data->env, "HOME");
+		if (path)
+		{
+			move_to_directory(data->env, path);
+			return ;
+		}
+		else
+			data->error = ENV_FAIL;
 	}
 }

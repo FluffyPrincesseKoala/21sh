@@ -3,6 +3,13 @@
 	"tasks": [
 		{
 			"type": "shell",
+			"label": "MAKE & CLEAN",
+			"command": "make ; make clean",
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"type": "shell",
 			"label": "Make",
 			"command": "make",
 			"group": "build",
@@ -10,7 +17,7 @@
 		},
 		{
 			"type": "shell",
-			"label": "clean",
+			"label": "Clean",
 			"command": "make clean",
 			"group": "build",
 			"problemMatcher": []
