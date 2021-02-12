@@ -136,7 +136,6 @@ char		**create_array(char *first);
 **	STDIN & TERM RELATED
 */
 
-int			init_term();
 int			conf_term();
 void		unconf_term();
 void		reset_conf_term();
@@ -154,14 +153,6 @@ void		ctrl_right(t_bash *data);
 void		ctrl_left(t_bash *data);
 void		ctrl_down(t_bash *data);
 void		ctrl_up(t_bash *data);
-
-void		arrow_left(t_bash *data);
-void		arrow_right(t_bash *data);
-void		arrow_down(t_bash *data);
-void		arrow_up(t_bash *data);
-
-void		move_left(t_bash *data);
-void		move_right(t_bash *data);
 
 /*
 **	STRING FORMATING
@@ -190,7 +181,6 @@ void		handle_fork(t_bash *data, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
 void		puterror(int error);
 void 		set_up_signals();
-void		clear_term(char *str);
 void		put_error_msg(char *error);
 void		*free_bash(t_bash *data);
 
@@ -204,8 +194,6 @@ void		read_separator(char **table, t_bash *data);
 void		format_line(t_bash *data);
 void		get_var(t_arg **head, char **env);
 void		get_tilt(t_arg **head, char **env);
-int			len_between_last_delim(char *str, char delim, int start);
-int			get_curent_line(char *str, int pos, int max, int prompt);
 int			lendelim(char *str, char delim, int start);
 size_t		count_delim(char *str, int delim);
 int   		handle_eol(t_bash **data);
@@ -277,7 +265,27 @@ void		error_code_to_message(int *error);
 ** Initialize t_bash
 */
 char		**copy_env(char **array);
-int			initialize_redirection_set_up_functions(t_bash *data);
+int			init_built_in(t_built **fct);
+int			init_redirection_set_up_functions(t_bash *data);
+
+/*
+** ===========
+**  TERM CAPS
+** ===========
+*/
+
+void		arrow_down(t_bash *data);
+void		arrow_left(t_bash *data);
+void		arrow_right(t_bash *data);
+void		arrow_up(t_bash *data);
+
+void		move_left(t_bash *data);
+void		move_right(t_bash *data);
+
+/*
+** Ctrl Key
+*/
+void        init_xy(t_bash *data, int *x, int *y, int max);
 
 /*
 ** =========
@@ -288,19 +296,21 @@ int			initialize_redirection_set_up_functions(t_bash *data);
 char		*unquote(char *str, char delim);
 
 /*
+** End of line
+*/
+int				format_line_required(t_bash *data);
+
+/*
 ** ===========
 **	BUILT-INS
 ** ===========
 */
 
-int				init_built_in(t_built **fct);
 void			print_env(t_bash *data, t_vect *cmd);
 char			*get_var_from_env(char **env, char *name);
 void			set_env(t_bash *data, t_vect *command);
 void			unset_env(t_bash *data, t_vect *command);
 int				is_env_key_exist(char **env, char *key);
-void			change_directory(t_bash *data, t_vect *command);
-void			free_builtin(t_built **fct);
 void			print_history(t_bash *data);
 void			history(t_bash *data, t_vect *cmd);
 
@@ -321,6 +331,7 @@ void			here_doc(t_bash *data);
 /*
 ** Commands
 */
+void			change_directory(t_bash *data, t_vect *command);
 void			print_args(t_bash *data, t_vect *command);
 
 /*
@@ -371,7 +382,6 @@ int			    is_child(pid_t pid);
 int				is_exit(t_vect *command);
 int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
 int     	    using_heredoc(t_vect *command);
-int				format_line_required(t_bash *data);
 
 /*
 ** ==========
@@ -382,6 +392,7 @@ int				format_line_required(t_bash *data);
 void		    del_one_arg(t_arg *arg, t_vect *cmd);
 void    	    free_all_args(t_arg **arg, int flag);
 void		    free_array(char **array); 
+void			free_builtin(t_built **fct);
 void			free_redirections(t_vect *command);
 
 #endif

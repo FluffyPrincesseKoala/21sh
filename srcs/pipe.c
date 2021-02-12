@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 12:56:55 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 17:35:31 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,11 @@ int			handle_pipe(t_bash *data, t_vect *command)
 
 	if (command_is_piped(command))
 	{
+		if (!command->next || !command->next->args)
+		{
+			data->error = UNEXPECT_COMMAND_END_ERROR;
+			return (FAIL);
+		}
 		if (pipe(pipe_fd) == EXIT)
             exit(EXIT);
 		set_stdout_pipe_redirection(command, pipe_fd);

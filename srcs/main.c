@@ -59,7 +59,7 @@ t_bash	*initialize_bash(char **env)
 		return (free_bash(data));
 	if (!(REDIRECTIONS_SETUP = malloc(sizeof(t_redirection_setup) * 4)))
 		return (free_bash(data));
-	if (initialize_redirection_set_up_functions(data) == FAIL)
+	if (init_redirection_set_up_functions(data) == FAIL)
 		return (free_bash(data));
 	if (init_built_in(&data->builtin) == FAIL)
 		return (free_bash(data));

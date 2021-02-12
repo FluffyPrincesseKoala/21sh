@@ -12,40 +12,7 @@
 
 #include "21sh.h"
 
-int			len_between_last_delim(char *str, char delim, int start)
-{
-	int				i;
-
-	i = (str[start] == delim) ? 1 : 0;
-	while (start - i > 0 && str[start - i] != delim)
-		i++;
-	return (i);
-}
-
-int					get_curent_line(char *str, int pos, int max, int prompt)
-{
-	int				i;
-	int				y;
-	int				len_max;
-
-	i = 0;
-	y = 0;
-	while (i != pos)
-	{
-		if (str[i] == '\n')
-		{
-			if (y)
-			{
-				y += (lendelim(str, '\n', i) - i) / max;
-			}
-			y++;
-		}
-		i++;
-	}
-	return (y);
-}
-
-void			clear_term(char *str)
+static void			clear_term(char *str)
 {
 	int				i;
 

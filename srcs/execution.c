@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 15:17:48 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 17:39:25 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int         handle_commands(t_bash *data, t_vect *command)
             return (EXIT);
         if (handle_command(data, command) == FAIL)
             return (FAIL);
-	    while (command_is_piped(command))
+	    while (command->next && command_is_piped(command))
 	    	command = command->next;
 	    command = command->next;
     }

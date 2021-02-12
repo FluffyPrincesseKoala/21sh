@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/29 17:56:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 17:18:23 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ static void set_up_input_redirection(
 **  their file opening flags.
 */
 
-int         initialize_redirection_set_up_functions(t_bash *data)
+int         init_redirection_set_up_functions(t_bash *data)
 {
     int i;
 

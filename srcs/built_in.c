@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/23 13:23:17 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 12:46:27 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 17:22:02 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,6 @@ void		free_builtin(t_built **fct)
 	free(*fct);
 	*fct = NULL;
 	fct = NULL;
-}
-
-int			is_exit(t_vect *command)
-{
-	if (ft_strequ(command->args->content, "exit"))
-		return (TRUE);
-	return (FALSE);
 }
 
 /*

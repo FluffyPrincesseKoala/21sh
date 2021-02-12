@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ctrl_key.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 15:21:14 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/10 15:43:49 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/12 17:04:23 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
-
-static void			init_xy(t_bash *data, int *x, int *y, int max)
-{
-	if (!(*y = get_curent_line(LINE, data->iterator, max, data->prompt_len)))
-	{
-		*y = (data->iterator + data->prompt_len) / max;
-		*x = (data->iterator + data->prompt_len) % max;
-	}
-	else if (x)
-	{
-		*x = len_between_last_delim(LINE, '\n', data->iterator);
-	}
-}
 
 void				ctrl_right(t_bash *data)
 {

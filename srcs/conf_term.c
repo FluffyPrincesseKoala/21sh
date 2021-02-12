@@ -6,13 +6,13 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 15:27:44 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/08 15:39:26 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 17:25:36 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-int         init_term()
+static int	init_term()
 {
 	int     ret;
 	char    *term_type = getenv("TERM");
