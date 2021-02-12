@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/20 19:25:39 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/09 19:16:35 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/12 15:24:45 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		free_all_vectors(t_vect *vect)
 		free_all_vectors(vect->next);
 		free_all_vectors(vect->up);
 		if (vect->redirections)
-			free_redirection(vect->redirections);
+			free_redirections(vect);
 		vect->args = NULL;
 		vect->next = NULL;
 		vect->up = NULL;

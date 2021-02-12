@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:12:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 12:55:29 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 15:21:48 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 **  descriptor in the redirection structure.
 */
 
-static int	is_file_word_authorized(t_bash *data, t_redirection *redirection)
+static int	is_file_word_authorized(t_bash *data, t_vect *command, t_redirection *redirection)
 {
 	int new_fd;
 
@@ -33,7 +33,7 @@ static int	is_file_word_authorized(t_bash *data, t_redirection *redirection)
 		{
 			put_error_msg("Permission non accordée.\n");
 			data->error = OPEN_ERROR;
-			free_redirection(redirection);
+			free_redirections(command);
 			return (FALSE);
 		}
 		else
@@ -49,9 +49,9 @@ static int	is_file_word_authorized(t_bash *data, t_redirection *redirection)
 ** Recursively call the function on the next redirection.
 */
 
-int        execute_redirections(t_bash *data, t_redirection *redirection)
+int        execute_redirections(t_bash *data, t_vect *command, t_redirection *redirection)
 {
-	if (!is_file_word_authorized(data, redirection))
+	if (!is_file_word_authorized(data, command, redirection))
 		return (FAIL);
 	redirection->backup_fd = dup(redirection->left_fd);
 	if (redirection->right_fd == CLOSE_FD)
@@ -64,7 +64,7 @@ int        execute_redirections(t_bash *data, t_redirection *redirection)
 			close(redirection->right_fd);
 	}
 	if (redirection->next)
-		return (execute_redirections(data, redirection->next));
+		return (execute_redirections(data, command, redirection->next));
 	return (SUCCESS);
 }
 

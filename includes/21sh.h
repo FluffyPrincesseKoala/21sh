@@ -126,10 +126,7 @@ void		free_vector(t_vect **head, int flag);
 **	ARRAY FORMATING
 */
 
-void		free_array(char **array);
-char		**copy_array(char **array);
 int			array_len(char **array);
-int			array_total_len(char **array);
 void		print_array(char **array);
 char		**array_add_value(char **src, char *value);
 char		**change_array_value(char **src, char *key, char *value);
@@ -213,7 +210,6 @@ int			lendelim(char *str, char delim, int start);
 size_t		count_delim(char *str, int delim);
 int   		handle_eol(t_bash **data);
 int			pending_line(char *str);
-char		*del_all_delim_in(char *str, char delim);
 void		words_as_args(char **table, t_bash *data);
 
 /*
@@ -229,9 +225,6 @@ void		free_all_vectors(t_vect *vect);
 t_arg   	*new_arg(char *content, char quote);
 t_arg  		*add_arg(t_arg **head, t_arg *new);
 int    		insert_new_arg(t_vect *command, t_arg *previous, char *s);
-char    	**arg_to_array(t_bash *data, t_arg *arg);
-void		del_one_arg(t_arg *arg, t_vect *cmd);
-void    	free_all_args(t_arg **arg, int flag);
 
 /*
 **	CURSOR TERM STRUCT
@@ -275,7 +268,29 @@ void		print_failed_fork_error(pid_t pid);
 void		error_code_to_message(int *error);
 
 /*
-**	BUILT-IN
+** ========
+**  SET UP
+** ========
+*/
+
+/*
+** Initialize t_bash
+*/
+char		**copy_env(char **array);
+int			initialize_redirection_set_up_functions(t_bash *data);
+
+/*
+** =========
+**  PARSING
+** =========
+*/
+
+char		*unquote(char *str, char delim);
+
+/*
+** ===========
+**	BUILT-INS
+** ===========
 */
 
 int				init_built_in(t_built **fct);
@@ -288,7 +303,6 @@ void			change_directory(t_bash *data, t_vect *command);
 void			free_builtin(t_built **fct);
 void			print_history(t_bash *data);
 void			history(t_bash *data, t_vect *cmd);
-void			print_args(t_bash *data, t_vect *command);
 
 
 void			custom_return(void);
@@ -300,21 +314,37 @@ void			here_doc(t_bash *data);
 
 /*
 ** ===========
+**	BUILT-INS
+** ===========
+*/
+
+/*
+** Commands
+*/
+void			print_args(t_bash *data, t_vect *command);
+
+/*
+** ===========
 **  EXECUTION
 ** ===========
 */
 
 void			execute_command(t_bash *data, t_vect *command);
-void 			execute_syscall(t_bash *data, t_vect *command);
 int         	handle_commands(t_bash *data, t_vect *command);
 int         	handle_execution(t_bash *data, t_vect *command);
 void			search_built_in(t_bash *data, t_vect *command);
 
 /*
+** Syscalls
+*/
+char    	    **arg_to_array(t_bash *data, t_arg *arg);
+char		    *choose_command_path(t_bash *data, char *command_name);
+void 			execute_syscall(t_bash *data, t_vect *command);
+
+/*
 ** Redirections
 */
-int           	execute_redirections(t_bash *data, t_redirection *redirection);
-int				initialize_redirection_set_up_functions(t_bash *data);
+int           	execute_redirections(t_bash *data, t_vect *command, t_redirection *redirection);
 t_redirection	*new_redirection(t_vect *cmd, int flags);
 char            *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, int *error);
 int				search_left_fd(t_vect *cmd, t_arg *arg, int def, int *error);
@@ -342,12 +372,16 @@ int				is_exit(t_vect *command);
 int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
 int     	    using_heredoc(t_vect *command);
 int				format_line_required(t_bash *data);
+
 /*
 ** ==========
 **  CLEAN UP
 ** ==========
 */
 
-void			free_redirection(t_redirection *redirection);
+void		    del_one_arg(t_arg *arg, t_vect *cmd);
+void    	    free_all_args(t_arg **arg, int flag);
+void		    free_array(char **array); 
+void			free_redirections(t_vect *command);
 
 #endif

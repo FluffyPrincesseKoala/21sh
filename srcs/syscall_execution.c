@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 13:14:53 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 13:38:12 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int	path_is_given(char *name)
 ** Make sure we have a valid path.
 */
 
-static char	*choose_command_path(t_bash *data, char *command_name)
+char		*choose_command_path(t_bash *data, char *command_name)
 {
 	struct stat sb;
 	char	*path;
@@ -100,23 +100,29 @@ static char	*choose_command_path(t_bash *data, char *command_name)
 }
 
 /*
-** Find the path to the command binary file.
-** Convert the args chained list to an array.
-** Call execve with those parameters.
+** Convert the contents of a chained list of t_arg to an array of string.
 */
 
-void        execute_syscall(t_bash *data, t_vect *command)
+char    	**arg_to_array(t_bash *data, t_arg *arg)
 {
-    ft_strdel(&(data->path));
-    if ((data->path = choose_command_path(data, command->args->content)))
+    char    **array;
+    int     i;
+
+    if (!(array = malloc(sizeof(char*) * (args_len(arg) + 1))))
+        data->error = MALLOC_ERROR;
+    else
     {
-        free_array(data->args_array);
-        data->args_array = arg_to_array(data, command->args);
-		//ft_putstr_fd("Execute ", 2);ft_putendl_fd(command->args->content, 2);
-        if (!data->error)
-        	execve(data->path, data->args_array, data->env);
+        i = 0;
+        while (arg)
+        {
+            if (CONTENT)
+            {
+                array[i] = ft_strdup(CONTENT);
+                i++;
+            }
+            arg = arg->next;
+        }
+        array[i] = NULL;
     }
-    error_code_to_message(&(data->error));
-	free_bash(data);
-    exit(0);
+    return (array);
 }

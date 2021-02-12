@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/22 16:24:11 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 15:24:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ t_redirection   *new_redirection(t_vect *command, int flags)
 }
 
 /*
-** Free the whole redirections chained list, set pointers to null.
+** Free the whole redirections chained list.
 */
 
-void        free_redirection(t_redirection *redirection)
+static void free_redirection(t_redirection *redirection)
 {
     if (redirection->next)
         free_redirection(redirection->next);
@@ -65,4 +65,15 @@ void        free_redirection(t_redirection *redirection)
     ft_strdel(&redirection->file_word);
     ft_strdel(&redirection->op);
     free(redirection);
+}
+
+/*
+** Free the whole redirections chained list, set pointers to null.
+*/
+
+void        free_redirections(t_vect *command)
+{
+    if (command->redirections)
+        free_redirection(command->redirections);
+    command->redirections = NULL;
 }

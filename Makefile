@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: koala <koala@student.42.fr>                +#+  +:+       +#+         #
+#    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/02/05 17:40:57 by koala            ###   ########.fr        #
+#    Updated: 2021/02/12 15:09:00 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,49 +31,50 @@ NAME	=	21sh
 
 RM		=	rm -rf
 
-SRC		=	srcs/main.c 					\
-			srcs/vector.c					\
-			srcs/getter.c					\
-			srcs/string.c					\
-			srcs/termi.c					\
+SRC		=	srcs/args.c						\
 			srcs/array.c					\
-			srcs/parse_array.c				\
-			srcs/tmp.c						\
-			srcs/replace_substr.c			\
-			srcs/arrow_up_down.c			\
 			srcs/arrow_left_right.c			\
-			srcs/key.c						\
+			srcs/arrow_up_down.c			\
+			srcs/boolean_tools.c			\
+			srcs/boolean_tools2.c			\
+			srcs/built_in.c					\
+			srcs/change_directory.c			\
+			srcs/conf_term.c				\
 			srcs/convert.c					\
-			srcs/handle_separator.c			\
-			srcs/parse_word.c				\
-			srcs/get_var.c					\
-			srcs/end_of_line.c				\
+			srcs/create_args.c				\
+			srcs/ctrl_key.c					\
 			srcs/cursor.c					\
-			srcs/select.c					\
-			srcs/signals.c					\
+			srcs/end_of_line.c				\
+			srcs/env.c						\
+			srcs/execution.c				\
+			srcs/key.c						\
+			srcs/get_var.c					\
+			srcs/getter.c					\
+			srcs/handle_quotes.c			\
+			srcs/handle_separator.c			\
+			srcs/heredoc.c					\
+			srcs/heredoc_execution.c		\
+			srcs/history.c					\
+			srcs/main.c 					\
+			srcs/parse_array.c				\
+			srcs/parse_word.c				\
+			srcs/pipe.c						\
+			srcs/print_error.c				\
+			srcs/replace_substr.c			\
 			srcs/redirections_execution.c	\
 			srcs/redirections_parsing.c		\
 			srcs/redirections_setup.c		\
 			srcs/redirections_struct.c		\
 			srcs/redirections_tools.c		\
-			srcs/boolean_tools.c			\
-			srcs/boolean_tools2.c			\
-			srcs/args.c						\
-			srcs/create_args.c				\
-			srcs/env.c						\
-			srcs/change_directory.c			\
-			srcs/ctrl_key.c					\
-			srcs/conf_term.c				\
-			srcs/built_in.c					\
-			srcs/print_error.c				\
-			srcs/heredoc.c					\
-			srcs/heredoc_execution.c		\
-			srcs/termcaps.c					\
-			srcs/history.c					\
+			srcs/select.c					\
+			srcs/signals.c					\
 			srcs/split_all_whitespace.c		\
-			srcs/pipe.c						\
-			srcs/execution.c				\
-			srcs/syscall_execution.c
+			srcs/string.c					\
+			srcs/syscall_execution.c		\
+			srcs/termcaps.c					\
+			srcs/termi.c					\
+			srcs/tmp.c						\
+			srcs/vector.c
 
 OBJS	=	$(SRC:.c=.o)
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_separator.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2020/12/17 19:59:17 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/12 13:50:32 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static t_arg	*handle_quote(t_bash *data, char **table,
 
 	if ((string_with_quote = merge_string_from_array(table, len, i)))
 	{
-		if (quoted_string = del_all_delim_in(string_with_quote, quote))
+		if (quoted_string = unquote(string_with_quote, quote))
 			if (add_arg(&VECT->args, (ret = new_arg(quoted_string, quote))))
 				return (ret);
 	}
