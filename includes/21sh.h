@@ -104,6 +104,7 @@
 # define UNEXPECT_COMMAND_END_ERROR 3
 # define OPEN_ERROR 4
 # define NO_APPENDING_IN_FILE_DIRECTOR_ERROR 5
+# define ENV_FAIL 6
 
 struct termios	old_term;
 struct termios	new_term;

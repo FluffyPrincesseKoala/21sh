@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 12:55:24 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 13:14:53 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,6 @@ void        execute_syscall(t_bash *data, t_vect *command)
         	execve(data->path, data->args_array, data->env);
     }
     error_code_to_message(&(data->error));
+	free_bash(data);
     exit(0);
-	exit(-1);
 }

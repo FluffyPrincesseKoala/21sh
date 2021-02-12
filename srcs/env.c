@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:51:15 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/27 15:28:40 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/11 19:47:24 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,39 +94,45 @@ static char	**del_env_key(char **env, char *key)
 
 	i = 0;
 	j = 0;
-	if (!(new = malloc(sizeof(char*) * (array_len(env)))))
-		return (NULL);
-	while (env[i])
+	if ((new = malloc(sizeof(char*) * (array_len(env)))))
 	{
-		if (!ft_strnequ(env[i], key, ft_strlen(key)))
+		if (env)
 		{
-			new[j] = ft_strdup(env[i]);
-			j++;
+			while (env[i])
+			{
+				if (!ft_strnequ(env[i], key, ft_strlen(key)))
+				{
+					new[j] = ft_strdup(env[i]);
+					j++;
+				}
+				i++;
+			}
+			new[j] = NULL;
+			free_array(env);
+			return (new);
 		}
-		i++;
 	}
-	new[j] = NULL;
-	free_array(env);
-	return (new);
+	return (NULL);
 }
 
 void		unset_env(t_bash *data, t_vect *command)
 {
+	t_arg	*argument;
 	char	*key;
+	char	**tmp;
+	int		len;
 
 	key = NULL;
-	while (command->args)
+	argument = command->args;
+	if (ft_strequ(argument->content, "unsetenv"))
 	{
-		if (ft_strequ(command->args->content, "unsetenv"))
-		{
-			if ((command->args = command->args->next))
+			if ((argument = argument->next))
 			{
-				if ((key = ft_strndup(command->args->content,
-						lendelim(command->args->content, '=', 0))))
+				len = lendelim(argument->content, '=', 0);
+				key = ft_strndup(argument->content, len);
+				if (is_env_key_exist(data->env, key))
 					data->env = del_env_key(data->env, key);
-				return ;
+				ft_strdel(&key);
 			}
-		}
-		command->args = command->args->next;
 	}
 }
