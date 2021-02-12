@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_tools.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/29 17:57:38 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 17:33:18 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,17 @@
 int     search_left_fd(t_vect *cmd, t_arg *arg, int operator_idx, int *error)
 {
     char    *substring;
+	int		return_value;
 
+	return_value = NO_LEFT_FD;
     if (operator_idx > 0)
     {
         if (!(substring = ft_strsub(CONTENT, 0, operator_idx)))
             *error = MALLOC_ERROR;
         else if (ft_str_is_digits(substring))
-            return ft_atoi(substring);
+            return_value = ft_atoi(substring);
         else if (ft_strlen(substring) == 1 && substring[0] == '&')
-            return (STDOUT_AND_STDERR);
+            return_value = (STDOUT_AND_STDERR);
         else
 		{
             if (insert_new_arg(
@@ -46,7 +48,7 @@ int     search_left_fd(t_vect *cmd, t_arg *arg, int operator_idx, int *error)
 		}
         ft_strdel(&substring);
     }
-    return NO_LEFT_FD;
+    return return_value;
 }
 
 /*

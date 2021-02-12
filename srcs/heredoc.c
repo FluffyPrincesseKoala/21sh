@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/02/10 20:26:45 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/12 19:06:06 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,14 @@ static void	unlink_free_vector(t_vect **head, t_vect *new_next)
 		if (!new_next)
 			(*head)->separator = 0;
 	}
+}
+
+t_arg	*reset_data_heredoc(t_bash *data)
+{
+	data->is_here_doc = 0;
+	data->nb_heredoc = 0;
+	data->finish_heredoc = 0;
+	return (NULL);
 }
 
 /*
@@ -180,10 +188,7 @@ t_arg		*set_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
 		if (is_doc == 1)
 		{
 			if (!((*vect)->eof = ft_strdup(lst->content)))
-			{
-				put_error_msg(SYNTAX);
-				put_error_msg("new line\n");
-			}
+				data->error = UNEXPECT_COMMAND_END_ERROR;
 			if (lst->quote)
 				data->here_doc_delimiter = 1;
 			if (data->is_here_doc)
@@ -198,6 +203,8 @@ t_arg		*set_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
 		}
 		lst = lst->next;
 	}
+	if (!(*vect)->eof && is_doc)
+		data->error = UNEXPECT_COMMAND_END_ERROR;
 	return (to_free);
 }
 
@@ -206,25 +213,12 @@ t_arg		*set_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
 **	beware there's sexy redirection inside
 */
 
-t_arg		*free_args_by_content(t_arg **head, char *content)
-{
-	t_arg	*new;
 
-	if (head && *head)
-	{
-		new = *head;
-		ft_strdel(&new->content);
-		new->content = NULL;
-		if (new->next && new->previous)
-			new->next->previous = new->previous;
-		if (!ft_strequ(new->content, content))
-			new->previous->next = free_args_by_content(&new->next, content);
-		else
-			return (new->next);
-		free(*head);
-		*head = NULL;
-	}
-	return (NULL);
+void	free_args_until_eof(t_vect *cmd, t_arg **current)
+{
+	if (!ft_strequ((*current)->content, cmd->eof))
+		free_args_until_eof(cmd, &(*current)->next);
+	del_one_arg(*current, cmd);
 }
 
 /*
@@ -261,13 +255,7 @@ int			format_heredoc(t_vect **vect, t_arg **to_check)
 }
 
 
-t_arg	*reset_data_heredoc(t_bash *data)
-{
-	data->is_here_doc = 0;
-	data->nb_heredoc = 0;
-	data->finish_heredoc = 0;
-	return (NULL);
-}
+
 /*
 **	shearch heredoc parametere and free there args (for parameter)
 **	and vector (for heredoc string)
@@ -284,7 +272,7 @@ void		here_doc(t_bash *data)
 	count = 0;
 	if ((vect = data->vector))
 	{
-		while (vect && (lst = vect->args))
+		while (vect && (lst = vect->args) && !data->error)
 		{
 			if ((to_free = set_heredoc(data, &vect, lst)))
 			{
@@ -300,14 +288,18 @@ void		here_doc(t_bash *data)
 						to_free = set_heredoc(data, &vect,vect->args);
 				if (!data->error && to_free)
 				{
-					free_args_by_content(&to_free, vect->eof);
+					//free_args_by_content(&to_free, vect->eof);
+					free_args_until_eof(vect, &to_free);
 				}
 			}
 			vect = vect->next;
 		}
 	}
-	data->nb_heredoc = count;
-	data->expend = (data->is_here_doc) ? -1 : 0;
+	if (!data->error)
+	{
+		data->nb_heredoc = count;
+		data->expend = (data->is_here_doc) ? -1 : 0;
+	}
 }
 
 /*

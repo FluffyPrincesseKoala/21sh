@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syscall_execution.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 13:14:53 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 14:49:04 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,8 @@ static char	*choose_command_path(t_bash *data, char *command_name)
 void        execute_syscall(t_bash *data, t_vect *command)
 {
     ft_strdel(&(data->path));
-    if ((data->path = choose_command_path(data, command->args->content)))
+    if (command->args
+		&& (data->path = choose_command_path(data, command->args->content)))
     {
         free_array(data->args_array);
         data->args_array = arg_to_array(data, command->args);
