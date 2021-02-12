@@ -12,36 +12,7 @@
 
 #include "21sh.h"
 
-int					count_delim_befor(char *str, int pos, char delim)
-{
-	int				i;
-	int				count;
-
-	i = (str[pos] == delim) ? 1 : 0;
-	count = 0;
-	while (str && pos && str[pos - i])
-	{
-		if (str[i - pos] == delim)
-			count++;
-		i++;
-	}
-	return (count);
-}
-
-int					get_y_cursor(t_term *src)
-{
-	int				count;
-
-	count = 0;
-	while (src->prev)
-	{
-		src = src->prev;
-		count += 1;
-	}
-	return (count);
-}
-
-void				clear_struct(t_term **cursor)
+void			clear_struct(t_term **cursor)
 {
 	t_term			*cur;
 	t_term			*nxt;
@@ -61,40 +32,6 @@ void				clear_struct(t_term **cursor)
 		cur = NULL;
 		*cursor = NULL;
 		cursor = NULL;
-	}
-}
-
-t_term				*new_cursor_struct(char *line, int start,
-										int max, int prompt)
-{
-	t_term			*cursor;
-
-	if (!(cursor = ft_memalloc(sizeof(t_term))))
-		return (NULL);
-	cursor->line = (line) ? ft_strdup(line) : NULL;
-	cursor->x_max = (start == 0) ? max - prompt : max;
-	cursor->line_start = start;
-	cursor->line_len = ft_strlen(line);
-	cursor->next = NULL;
-	cursor->prev = NULL;
-}
-
-void	link_cursor(t_term **head, t_term *new)
-{
-	t_term	*lst;
-
-	if (!*head && new)
-	{
-		*head = new;
-	}
-	else
-	{
-		lst = *head;
-		while (lst->next)
-			lst = lst->next;
-		lst->next = new;
-		new->prev = lst;
-
 	}
 }
 
@@ -141,6 +78,10 @@ int		get_win_max_col(void)
 	return (0);
 }
 
+
+
+
+
 static int	fill_struct(char *str, char **new_line, int (*i), int *j, int xmax)
 {
 	if ((*j) != xmax && str[(*i)] != '\n')
@@ -161,6 +102,40 @@ static int	fill_struct(char *str, char **new_line, int (*i), int *j, int xmax)
 		(*new_line)[(*j)] = '\0';
 		return (1);
 	}
+}
+
+static void		link_cursor(t_term **head, t_term *new)
+{
+	t_term	*lst;
+
+	if (!*head && new)
+	{
+		*head = new;
+	}
+	else
+	{
+		lst = *head;
+		while (lst->next)
+			lst = lst->next;
+		lst->next = new;
+		new->prev = lst;
+
+	}
+}
+
+static t_term	*new_cursor_struct(char *line, int start,
+										int max, int prompt)
+{
+	t_term			*cursor;
+
+	if (!(cursor = ft_memalloc(sizeof(t_term))))
+		return (NULL);
+	cursor->line = (line) ? ft_strdup(line) : NULL;
+	cursor->x_max = (start == 0) ? max - prompt : max;
+	cursor->line_start = start;
+	cursor->line_len = ft_strlen(line);
+	cursor->next = NULL;
+	cursor->prev = NULL;
 }
 
 void	fill_term_struct(t_bash *data, t_term **cursor, char *str, int max)
@@ -189,9 +164,4 @@ void	fill_term_struct(t_bash *data, t_term **cursor, char *str, int max)
 	link_cursor(cursor, new_cursor_struct(new_line, i - j, max, data->prompt_len));
 	ft_strdel(&new_line);
 	new_line = NULL;
-}
-
-void				init_cursor(t_bash *data)
-{
-	data->cursor = ft_memalloc(sizeof(t_term));
 }

@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/02/12 17:29:47 by cylemair         ###   ########.fr        #
+#    Updated: 2021/02/12 19:26:52 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,6 @@ SRC		=	srcs/args.c						\
 			srcs/built_in.c					\
 			srcs/change_directory.c			\
 			srcs/conf_term.c				\
-			srcs/convert.c					\
 			srcs/create_args.c				\
 			srcs/ctrl_key.c					\
 			srcs/ctrl_key_vertical.c		\

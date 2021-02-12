@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 16:20:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 17:10:39 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 19:10:52 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int  get_curent_line(char *str, int pos, int max, int prompt)
 		{
 			if (y)
 			{
-				y += (lendelim(str, '\n', i) - i) / max;
+				y += (ft_strlendelim(str, '\n', i) - i) / max;
 			}
 			y++;
 		}

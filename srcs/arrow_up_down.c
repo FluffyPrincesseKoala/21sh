@@ -12,7 +12,7 @@
 
 #include "21sh.h"
 
-static void			clear_term(char *str)
+static void	clear_term(char *str)
 {
 	int				i;
 
@@ -29,7 +29,20 @@ static void			clear_term(char *str)
 	}
 }
 
-void				arrow_up(t_bash *data)
+static int	get_y_cursor(t_term *src)
+{
+	int				count;
+
+	count = 0;
+	while (src->prev)
+	{
+		src = src->prev;
+		count += 1;
+	}
+	return (count);
+}
+
+void		arrow_up(t_bash *data)
 {
 	int		count;
 	char	*old;
@@ -61,7 +74,7 @@ void				arrow_up(t_bash *data)
 	}
 }
 
-void				arrow_down(t_bash *data)
+void		arrow_down(t_bash *data)
 {
 	int				len;
 	int				count;

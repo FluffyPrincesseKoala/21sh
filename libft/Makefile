@@ -4,8 +4,10 @@ CFLAGS	=		-Wall -Wextra -Werror -I .
 
 NAME	=		libft.a
 
-SRCS	=		ft_arraylen_in_char.c	\
+SRCS	=		ft_arraylen.c			\
+				ft_arraylen_in_char.c	\
 				ft_strlen.c				\
+				ft_strlendelim.c		\
 				ft_strdup.c				\
 				ft_strcpy.c				\
 				ft_strncpy.c			\

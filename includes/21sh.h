@@ -126,7 +126,7 @@ void		free_vector(t_vect **head, int flag);
 **	ARRAY FORMATING
 */
 
-int			array_len(char **array);
+int			ft_arraylen(char **array);
 void		print_array(char **array);
 char		**array_add_value(char **src, char *value);
 char		**change_array_value(char **src, char *key, char *value);
@@ -136,9 +136,6 @@ char		**create_array(char *first);
 **	STDIN & TERM RELATED
 */
 
-int			conf_term();
-void		unconf_term();
-void		reset_conf_term();
 int			handle_new_entry(t_bash *data, char *entry, int pos);
 void		term_put(char *esc);
 
@@ -194,7 +191,6 @@ void		read_separator(char **table, t_bash *data);
 void		format_line(t_bash *data);
 void		get_var(t_arg **head, char **env);
 void		get_tilt(t_arg **head, char **env);
-int			lendelim(char *str, char delim, int start);
 size_t		count_delim(char *str, int delim);
 int   		handle_eol(t_bash **data);
 int			pending_line(char *str);
@@ -220,11 +216,9 @@ int    		insert_new_arg(t_vect *command, t_arg *previous, char *s);
 
 void		charadd_to_term(t_bash *data, char c, int pos);
 int			get_win_max_col();
-void		init_cursor(t_bash *data);
 void		fill_term_struct(t_bash *data, t_term **cursor, char *str, int max);
 t_term		*find_cursor_node(t_term **head, int idx, int idx_max, int plen);
 void		clear_struct(t_term **cursor);
-int			get_y_cursor(t_term *src);
 
 /*
 **	SELECT COPY CUT & PASTE
@@ -288,11 +282,19 @@ void		move_right(t_bash *data);
 void        init_xy(t_bash *data, int *x, int *y, int max);
 
 /*
+** Conf
+*/
+int			conf_term();
+void		unconf_term();
+void		reset_conf_term();
+
+/*
 ** =========
 **  PARSING
 ** =========
 */
 
+int			ft_strlendelim(char *str, char delim, int start);
 char		*unquote(char *str, char delim);
 
 /*

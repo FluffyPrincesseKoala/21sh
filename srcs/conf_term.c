@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 15:27:44 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 17:25:36 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/12 17:45:42 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int         conf_term()
 		new_term.c_cc[VTIME] = 0;
 		if (tcsetattr(STDIN_FILENO, TCSANOW, &new_term) == -1)
 			return (-1);
-		//tputs(tgetstr("os", NULL), 1, pchar);
     	return (0);
 	}
 	return (-1);
@@ -58,7 +57,6 @@ int         conf_term()
 void	    unconf_term()
 {
 	tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
-//	ft_putendl_fd("Bye!", STDOUT_FILENO);
 }
 
 void		reset_conf_term()

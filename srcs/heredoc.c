@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/02/10 20:26:45 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/12 19:10:52 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void		is_env_var(char **env, char *line)
 
 	if ((potential_shell_var = ft_strchr(line, '$')))
 	{
-		len_var = lendelim(potential_shell_var, '$', 0);
-		len_space = lendelim(potential_shell_var, ' ', 0);
+		len_var = ft_strlendelim(potential_shell_var, '$', 0);
+		len_space = ft_strlendelim(potential_shell_var, ' ', 0);
 		shell_var = ft_strndup(potential_shell_var,
 			(len_space < len_var) ? len_space : len_var);
 		if (!ft_strequ(tmp = use_shell_var(env, shell_var), ""))
@@ -243,7 +243,7 @@ int			format_heredoc(t_vect **vect, t_arg **to_check)
 	new = NULL;
 	if ((splited = ft_strsplit((*to_check)->content, '<')))
 	{
-		if ((len = array_len(splited)) >= 2)
+		if ((len = ft_arraylen(splited)) >= 2)
 		{
 			while (splited[i])
 			{
