@@ -105,11 +105,12 @@ void				key_suppr(t_bash *data)
 			pull_line(&data->vector);
 		tmp = delchar(LINE, IDX);
 		expected = IDX;
-		old = LINE;
-		LINE = tmp;
 		SAVE_C;
-		print_rest(NULL, IDX, old);
+		print_rest(NULL, IDX, LINE);
 		RESET_C;
+		ft_strdel(&LINE);
+		LINE = ft_strdup(tmp);
+		ft_strdel(&tmp);
 		print_rest(LINE, IDX, NULL);
 		RESET_C;
 	}
