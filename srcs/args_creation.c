@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   create_args.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 12:26:04 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/09 18:55:06 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/19 14:45:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-t_arg   *new_arg(char *content, char quote)
+t_arg   *create_arg(char *content, char quote)
 {
     t_arg *new;
     
@@ -55,7 +55,7 @@ int    insert_new_arg(t_vect *command, t_arg *previous, char *s)
 {
     t_arg *new;
 
-    if (!(new = new_arg(s, NOQUOTE)))
+    if (!(new = create_arg(s, NOQUOTE)))
         return (FAIL);
 	if (previous)
 	{
@@ -73,28 +73,4 @@ int    insert_new_arg(t_vect *command, t_arg *previous, char *s)
         command->args = new;
     }    
 	return (-1);
-}
-
-void    detach_arg(t_arg *arg, t_vect *cmd)
-{
-    if (cmd->args == arg)
-        cmd->args = arg->next;
-    if (arg->previous)
-        arg->previous->next = arg->next;
-    if (arg->next)
-        arg->next->previous = arg->previous;
-}
-
-size_t  args_len(t_arg *arg)
-{
-    size_t len;
-
-    len = 0;
-    while (arg)
-    {
-        if (CONTENT)
-            len++;
-        arg = arg->next;
-    }
-    return len;
 }

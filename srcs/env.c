@@ -6,13 +6,13 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:51:15 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 19:10:52 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/19 15:15:19 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-void		print_env(t_bash *data, t_vect *cmd)
+void			print_env(t_bash *data, t_vect *cmd)
 {
 	
 	for (int i = 0 ; data->env[i] ; i++) {
@@ -21,14 +21,6 @@ void		print_env(t_bash *data, t_vect *cmd)
 		ft_putendl(data->env[i]);
 	}
 }
-
-// SETENV TEST EXEMPLE
-//setenv lol=caramel
-//setenv lol caramel
-//setenv PATH $PATH:caramel
-//setenv PATH=$PATH:caramel
-//setenv ekflbjhriohbjbtio
-//setenv NULL
 
 static char	*create_new_env_key(t_arg *args, char **key)
 {

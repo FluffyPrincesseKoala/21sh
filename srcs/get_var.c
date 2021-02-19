@@ -6,62 +6,29 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 18:59:31 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 17:55:31 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/19 19:24:14 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-static char		**split_var(char **env, char *str)
+char			*use_shell_var(char **env, char *str)
 {
-	char		*tmp;
-	char		**var;
-	int			k;
+	char	*var_name;
+	char	*var_value;
+	char	*result;
 
-	k = 0;
-	var = ft_strsplit(str, ':');
-	while (var[k])
+	result = ft_strdup(str);
+	while (var_name = ft_strchr(result, '$'))
 	{
-		if (ft_strchr(var[k], '$')
-		&& ft_strlen((ft_strchr(var[k], '$') + 1)) >= 1)
-		{
-			tmp = get_var_from_env(env, ft_strchr(var[k], '$') + 1);
-			ft_strdel(&var[k]);
-			var[k] = ft_strdup((tmp) ? tmp : "");
-		}
-		k++;
+		var_name = ft_strsub(var_name, 0, ft_smallest_strichr(var_name, ':', ' '));
+		var_value = get_env_var_value(env, var_name + 1);
+		if (!var_value)
+			var_value = "";
+		result = ft_free_replaced_substr(result, var_name, var_value);
+		ft_strdel(&var_name);
 	}
-	var[k] = NULL;
-	return (var);
-}
-
-char		*use_shell_var(char **env, char *str)
-{
-	char		*tmp;
-	char		*ret;
-	char		**var;
-	int			k;
-
-	var = split_var(env, str);
-	ret = NULL;
-	k = ft_arraylen(var);
-	while (k--)
-	{
-		tmp = ft_strjoin(var[k], ret);
-		if (ret)
-			ft_strdel(&ret);
-		ret = ft_strdup(tmp);
-		ft_strdel(&tmp);
-		if (k)
-		{
-			tmp = ft_strjoin(":", ret);
-			ft_strdel(&ret);
-			ret = ft_strdup(tmp);
-			ft_strdel(&tmp);
-		}
-	}
-	free_array(var);
-	return (ret);
+	return (result);
 }
 
 void			get_var(t_arg **head, char **env)
@@ -77,30 +44,6 @@ void			get_var(t_arg **head, char **env)
 		if (arg && CONTENT && ft_strchr(CONTENT, '$'))
 		{
 			tmp = use_shell_var(env, CONTENT);
-			ft_strdel(&CONTENT);
-			CONTENT = ft_strdup(tmp);
-			ft_strdel(&tmp);
-		}
-		arg = arg->next;
-	}
-}
-
-void		get_tilt(t_arg **head, char **env)
-{
-	t_arg		*arg;
-	char		*tmp;
-	char		*path_to_home;
-
-	int i = 0;
-	arg = NULL;
-	if (head)
-		arg = *head;
-	while (arg)
-	{
-		if (CONTENT && ft_strchr(CONTENT, '~'))
-		{
-			path_to_home = get_var_from_env(env, "HOME");
-			tmp = replace_substr(CONTENT, "~", path_to_home);
 			ft_strdel(&CONTENT);
 			CONTENT = ft_strdup(tmp);
 			ft_strdel(&tmp);

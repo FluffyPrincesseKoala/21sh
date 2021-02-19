@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   arrow_left_right.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/10 15:39:32 by koala             #+#    #+#             */
-/*   Updated: 2020/12/10 15:39:35 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/19 15:06:40 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void				arrow_left(t_bash *data)
 			unselect(data);
 			uncolor(data);
 		}
-		fill_term_struct(data, &data->cursor, LINE, get_win_max_col());
+		set_cursors(data, &data->cursor, LINE, get_win_max_col());
 		if (data->cursor)
 		{
 			data->cursor = find_cursor_node(&data->cursor,	data->iterator,
@@ -92,7 +92,7 @@ void				arrow_right(t_bash *data)
 			unselect(data);
 			uncolor(data);
 		}
-		fill_term_struct(data, &data->cursor, LINE, get_win_max_col());
+		set_cursors(data, &data->cursor, LINE, get_win_max_col());
 		data->cursor = find_cursor_node(&data->cursor, data->iterator,
 												get_win_max_col(), data->prompt_len);
 		move_right(data);

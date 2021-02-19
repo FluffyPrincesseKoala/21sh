@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 19:02:49 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/19 17:59:38 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ static t_arg	*handle_quote(t_bash *data, char **table,
 	if ((string_with_quote = merge_string_from_array(table, len, i)))
 	{
 		if (unquoted_string = unquote(string_with_quote, quote))
-			if (add_arg(&VECT->args, (ret = new_arg(unquoted_string, quote))))
+			if (add_arg(&VECT->args, (ret = create_arg(unquoted_string, quote))))
 				return (ret);
 	}
 	data->error = MALLOC_ERROR;
@@ -121,7 +121,31 @@ static void	handle_word(t_bash *data, char *str)
 		data->error = MALLOC_ERROR;
 		return ;
 	}
-	add_arg(&VECT->args, new_arg(str, NOQUOTE));
+	add_arg(&VECT->args, create_arg(str, NOQUOTE));
+}
+
+static void	get_tilt(t_arg **head, char **env)
+{
+	t_arg		*arg;
+	char		*tmp;
+	char		*path_to_home;
+
+	int i = 0;
+	arg = NULL;
+	if (head)
+		arg = *head;
+	while (arg)
+	{
+		if (CONTENT && ft_strchr(CONTENT, '~'))
+		{
+			path_to_home = get_env_var_value(env, "HOME");
+			tmp = ft_replace_substr(CONTENT, "~", path_to_home);
+			ft_strdel(&CONTENT);
+			CONTENT = ft_strdup(tmp);
+			ft_strdel(&tmp);
+		}
+		arg = arg->next;
+	}
 }
 
 void		words_as_args(char **table, t_bash *data)
@@ -143,13 +167,13 @@ void		words_as_args(char **table, t_bash *data)
 			to_check = handle_quote(data, table, i, len, '\"');
 			if (ft_strstr(to_check->content, "\\\""))
 			{
-				tmp = replace_substr(to_check->content, "\\\"", "\"");
+				tmp = ft_replace_substr(to_check->content, "\\\"", "\"");
 				ft_strdel(&to_check->content);
 				to_check->content = tmp;
 			}
 			if (ft_strstr(to_check->content, "\\\\"))
 			{
-				tmp = replace_substr(to_check->content, "\\\\", "\\");
+				tmp = ft_replace_substr(to_check->content, "\\\\", "\\");
 				ft_strdel(&to_check->content);
 				to_check->content = tmp;
 			}

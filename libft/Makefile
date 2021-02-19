@@ -71,7 +71,8 @@ SRCS	=		ft_arraylen.c			\
 				ft_stristr.c			\
 				ft_str_is_digits.c		\
 				whitespaces.c			\
-				ft_strclen.c	
+				ft_strclen.c			\
+				ft_replace_substr.c
 
 HEAD	=		libft.h
 
