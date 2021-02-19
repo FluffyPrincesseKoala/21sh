@@ -43,7 +43,7 @@ void				key_last(t_bash *data)
 {
 	if (LINE)
 	{
-		fill_term_struct(data, &data->cursor, LINE, get_win_max_col());
+		set_cursors(data, &data->cursor, LINE, get_win_max_col());
 		data->cursor = find_cursor_node(&data->cursor, data->iterator,
 												get_win_max_col(), data->prompt_len);
 		while (data->iterator < ft_strlen(LINE))
@@ -58,7 +58,7 @@ void				key_start(t_bash *data)
 
 	if (data->iterator)
 	{
-		fill_term_struct(data, &data->cursor, LINE, get_win_max_col());
+		set_cursors(data, &data->cursor, LINE, get_win_max_col());
 		data->cursor = find_cursor_node(&data->cursor, data->iterator,
 												get_win_max_col(), data->prompt_len);
 		while (IDX && (data->x || data->y))

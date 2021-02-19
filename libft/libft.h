@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 14:45:40 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/16 20:41:48 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/19 19:37:19 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ char				*ft_strcpy(char *dest, const char *src);
 char				*ft_strncpy(char *dest, const char *src, size_t n);
 char				*ft_strcat(char *dest, const char *src);
 char				*ft_strchr(const char *s, int c);
+size_t				ft_strichr(const char *s, int c);
+size_t				ft_smallest_strichr(const char *s, int c1, int c2);
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strstr(const char *str, const char *to_find);
 char				*ft_strnstr(const char *str, const char *to_find, size_t n);
@@ -94,5 +96,7 @@ char				*ft_strsub_free(char **s, unsigned int start, unsigned int len);
 int					is_all_whitespaces(char *str);
 int					ft_str_is_digits(const char *s);
 size_t				ft_strclen(const char *str, char c);
+char				*ft_replace_substr(char *str, char *old, char *new);
+char				*ft_free_replaced_substr(char *str, char *old, char *new);
 
 #endif

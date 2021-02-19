@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:50:02 by koala             #+#    #+#             */
-/*   Updated: 2021/02/12 17:55:31 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/19 17:59:38 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void		format_line(t_bash *data)
 	char	**table;
 	char	*tmp;
 
-	if ((tmp = replace_substr(LINE, "\n", " \n")))
+	if ((tmp = ft_replace_substr(LINE, "\n", " \n")))
 	{
 		if (ft_arraylen(table = ft_strsplit(tmp, ' ')))
 			words_as_args(table, data);

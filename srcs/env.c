@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:51:15 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 19:10:52 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/19 19:59:35 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-void		print_env(t_bash *data, t_vect *cmd)
+void			print_env(t_bash *data, t_vect *cmd)
 {
 	
 	for (int i = 0 ; data->env[i] ; i++) {
@@ -21,14 +21,6 @@ void		print_env(t_bash *data, t_vect *cmd)
 		ft_putendl(data->env[i]);
 	}
 }
-
-// SETENV TEST EXEMPLE
-//setenv lol=caramel
-//setenv lol caramel
-//setenv PATH $PATH:caramel
-//setenv PATH=$PATH:caramel
-//setenv ekflbjhriohbjbtio
-//setenv NULL
 
 static char	*create_new_env_key(t_arg *args, char **key)
 {
@@ -61,18 +53,20 @@ void		set_env(t_bash *data, t_vect *command)
 {
 	char	*key_to_change;
 	char	*new;
+	t_arg	*arg;
 
 	new = NULL;
 	key_to_change = NULL;
 	if (command)
 	{
-		while (command->args)
+		arg = command->args;
+		while (arg)
 		{
-			if (ft_strequ(command->args->content, "setenv"))
+			if (ft_strequ(arg->content, "setenv"))
 			{
-				command->args = command->args->next;
-				if (command->args)
-					new = create_new_env_key(command->args, &key_to_change);
+				arg = arg->next;
+				if (arg)
+					new = create_new_env_key(arg, &key_to_change);
 				if (is_env_key_exist(data->env, key_to_change))
 					data->env = change_array_value(data->env, key_to_change, new);
 				else
@@ -81,7 +75,7 @@ void		set_env(t_bash *data, t_vect *command)
 				ft_strdel(&key_to_change);
 				return ;
 			}
-			command->args = command->args->next;
+			arg = arg->next;
 		}
 	}
 }
@@ -126,13 +120,13 @@ void		unset_env(t_bash *data, t_vect *command)
 	argument = command->args;
 	if (ft_strequ(argument->content, "unsetenv"))
 	{
-			if ((argument = argument->next))
-			{
-				len = ft_strlendelim(argument->content, '=', 0);
-				key = ft_strndup(argument->content, len);
-				if (is_env_key_exist(data->env, key))
-					data->env = del_env_key(data->env, key);
-				ft_strdel(&key);
-			}
+		if ((argument = argument->next))
+		{
+			len = ft_strlendelim(argument->content, '=', 0);
+			key = ft_strndup(argument->content, len);
+			if (is_env_key_exist(data->env, key))
+				data->env = del_env_key(data->env, key);
+			ft_strdel(&key);
+		}
 	}
 }

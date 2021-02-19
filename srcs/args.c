@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 12:26:04 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 13:39:31 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/19 14:45:11 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,16 @@ void    free_all_args(t_arg **arg, int flag)
 		*arg = NULL;
 		arg = NULL;
     }
+}
+
+void    detach_arg(t_arg *arg, t_vect *cmd)
+{
+    if (cmd->args == arg)
+        cmd->args = arg->next;
+    if (arg->previous)
+        arg->previous->next = arg->next;
+    if (arg->next)
+        arg->next->previous = arg->previous;
 }
 
 void del_one_arg(t_arg *arg, t_vect *cmd)

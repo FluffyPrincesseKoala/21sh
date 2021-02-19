@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syscall_execution.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 19:51:18 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/19 17:23:06 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static char	*get_command_path_from_env(char **env, char *command_name)
 	char	**env_paths;
 
 	i = 0;
-	env_paths = ft_strsplit(get_var_from_env(env, "PATH"), ':');
+	env_paths = ft_strsplit(get_env_var_value(env, "PATH"), ':');
 	while (env_paths && env_paths[i] && command_name)
 	{
 		command_path = build_command_path(env_paths[i], command_name);
@@ -97,6 +97,20 @@ char		*choose_command_path(t_bash *data, char *command_name)
 		return (NULL);
 	}
 	return (path);
+}
+
+static		size_t  args_len(t_arg *arg)
+{
+    size_t len;
+
+    len = 0;
+    while (arg)
+    {
+        if (CONTENT)
+            len++;
+        arg = arg->next;
+    }
+    return len;
 }
 
 /*

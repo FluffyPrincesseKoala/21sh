@@ -6,13 +6,13 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/02/19 18:53:56 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/19 21:14:14 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-void		is_env_var(char **env, char *line)
+void		is_env_var(char **env, char **line)
 {
 	char	*ret;
 	char	*tmp;
@@ -21,7 +21,7 @@ void		is_env_var(char **env, char *line)
 	size_t	len_var;
 	size_t	len_space;
 
-	if ((potential_shell_var = ft_strchr(line, '$')))
+	if ((potential_shell_var = ft_strchr(*line, '$')))
 	{
 		len_var = ft_strlendelim(potential_shell_var, '$', 0);
 		len_space = ft_strlendelim(potential_shell_var, ' ', 0);
@@ -29,9 +29,9 @@ void		is_env_var(char **env, char *line)
 			(len_space < len_var) ? len_space : len_var);
 		if (!ft_strequ(tmp = use_shell_var(env, shell_var), ""))
 		{
-			ret = replace_substr(line, shell_var, tmp);
-			ft_strdel(&line);
-			line = ft_strdup(ret);
+			ret = ft_replace_substr(*line, shell_var, tmp);
+			ft_strdel(line);
+			*line = ft_strdup(ret);
 			ft_strdel(&ret);
 		}
 		ft_strdel(&shell_var);
@@ -39,14 +39,17 @@ void		is_env_var(char **env, char *line)
 	}
 }
 
-void	fill_heredoc_array(t_bash *data, t_vect *cmd, char *line)
+void	fill_heredoc_array(t_bash *data, t_vect *cmd, char **line)
 {
-	if (!data->here_doc_delimiter)
-		is_env_var(data->env, line);
-	if (cmd->doc_string)
-		cmd->doc_string = array_add_value(cmd->doc_string, line);
-	else
-		cmd->doc_string = create_array(line);
+	if (line && *line)
+	{
+		if (!data->here_doc_delimiter)
+			is_env_var(data->env, line);
+		if (cmd->doc_string)
+			cmd->doc_string = array_add_value(cmd->doc_string, *line);
+		else
+			cmd->doc_string = create_array(*line);
+	}
 }
 
 static void	unlink_free_vector(t_vect **head, t_vect *new_next)
@@ -110,6 +113,31 @@ int		is_eof(t_bash *data, t_vect *cmd) // add t_vect
 	return (0);
 }
 
+char		*concat_args_in_heredoc(t_arg *arg)
+{
+	char	*new;
+	char	*tmp;
+	char	*tmp_nxt;
+
+	new = NULL;
+	tmp = NULL;
+	tmp_nxt = NULL;
+	while (arg && arg->next && arg->content)
+	{
+		if (!new)
+			new = ft_strdup(arg->content);
+		else
+		{
+			tmp = ft_strjoin(new, " ");
+			tmp_nxt = str_join_free(&tmp, &new);
+			new = ft_strdup(tmp_nxt);
+			ft_strdel(&tmp_nxt);
+		}
+		arg = arg->next;
+	}
+	return (new);
+}
+
 int		parse_newline_as_heredoc(t_vect **head, t_bash *data)
 {
 	t_vect	*vect;
@@ -133,26 +161,8 @@ int		parse_newline_as_heredoc(t_vect **head, t_bash *data)
 			next_doc = (*head);
 			while ((vect = vect->next))
 			{
-				arg = vect->args;
-				while (arg && arg->next)
-				{
-					tmp_nxt = ft_strjoin(arg->content, (arg->next && arg->next->content) ? " " : NULL);
-					tmp = ft_strjoin(tmp_nxt, (arg->next) ? arg->next->content : NULL);
-					ft_strdel(&tmp_nxt);
-					arg = arg->next;
-					if (new)
-					{
-						tmp_nxt = str_join_free(&new, &tmp);
-						new = ft_strdup(tmp_nxt);
-						ft_strdel(&tmp_nxt);
-					}
-					else
-					{
-						new = ft_strdup(tmp);
-						ft_strdel(&tmp);
-					}
-				}
-				fill_heredoc_array(data, next_doc, (new) ? new : arg->content);
+				new = concat_args_in_heredoc(vect->args);
+				fill_heredoc_array(data, next_doc, (new) ? &new : &arg->content);
 				ft_strdel(&new);
 				if (is_eof(data, next_doc))
 				{
@@ -242,8 +252,8 @@ int			format_heredoc(t_vect **vect, t_arg **to_check)
 			while (splited[i])
 			{
 				if (i == 1)
-					add_arg(&new, new_arg(ft_strdup("<<"), NOQUOTE));
-				add_arg(&new, new_arg(splited[i], NOQUOTE));
+					add_arg(&new, create_arg(ft_strdup("<<"), NOQUOTE));
+				add_arg(&new, create_arg(splited[i], NOQUOTE));
 				i++;
 			}
 			free_all_args(to_check, 0);
@@ -366,7 +376,7 @@ void		update_docstring(t_bash *data)
 			cmd = cmd->next;
 		if (!i)
 		{
-			fill_heredoc_array(data, cmd, LINE);
+			fill_heredoc_array(data, cmd, &LINE);
 			ft_putchar('\n');
 			if (VECT_UP && cmd->doc_string)
 				add_at_end_of_last_line(&VECT_UP->line, &LINE);

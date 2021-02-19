@@ -93,7 +93,7 @@ int			prompt(char **env, int short_prompt)
 		pstr(RESET);
 		len += pchar('@');
 		pstr(GREEN);
-		len += pstr(get_var_from_env(env , "PWD"));
+		len += pstr(get_env_var_value(env , "PWD"));
 		pstr(CYAN);
 		len += pstr(" > ");
 		pstr(RESET);
@@ -105,15 +105,15 @@ int			prompt(char **env, int short_prompt)
 	return (len);
 }
 
-char		*get_var_from_env(char **env, char *var)
+char		*get_env_var_value(char **env, char *var)
 {
 	int		i;
 	int		len;
 
 	i = 0;
-	len = ft_strlendelim(var, '=', 0);
 	while (env && env[i])
 	{
+		len = ft_strlendelim(env[i], '=', 0);
 		if (!ft_strncmp(env[i], var, len) && ft_strlen(env[i]) > len + 1)
 			return (*(env + i) + len + 1);
 		i += 1;
@@ -166,7 +166,7 @@ void		loop(t_bash *data)
 	{
 		read(0, buff, MAX_INPUT_SIZE);
 		if (ft_strnequ(buff, "\n", 1))
-			exit = handle_eol(&data);
+			exit = end_of_line(&data);
 		else if (!data->error && (ft_strnequ(buff, "\033", 1)
 		|| buff[0] == 127 || buff[0] == '\017'
 		|| buff[0] == '\002' || buff[0] == 4 || ft_strnequ(buff, "\f", 1)))

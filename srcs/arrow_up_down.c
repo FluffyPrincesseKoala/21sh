@@ -65,7 +65,7 @@ void		arrow_up(t_bash *data)
 		else
 			VECT = VECT_UP;
 		count = print_rest(LINE, data->iterator, NULL);
-		fill_term_struct(data, &data->cursor, LINE, get_win_max_col());
+		set_cursors(data, &data->cursor, LINE, get_win_max_col());
 		data->cursor = find_cursor_node(&data->cursor, ft_strlen(LINE), get_win_max_col(), data->prompt_len);
 		data->x = ft_strlen(data->cursor->line);
 		data->y = get_y_cursor(data->cursor);
@@ -97,7 +97,7 @@ void		arrow_down(t_bash *data)
 		else
 			VECT = VECT_DOWN;
 		count = print_rest(LINE, data->iterator, NULL);
-		fill_term_struct(data, &data->cursor, LINE, get_win_max_col());
+		set_cursors(data, &data->cursor, LINE, get_win_max_col());
 		data->cursor = find_cursor_node(&data->cursor, ft_strlen(LINE), get_win_max_col(), data->prompt_len);
 		if (data->cursor)
 		{

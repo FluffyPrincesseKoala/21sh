@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/02/12 19:26:52 by cylemair         ###   ########.fr        #
+#    Updated: 2021/02/19 18:01:52 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ NAME	=	21sh
 RM		=	rm -rf
 
 SRC		=	srcs/args.c						\
+			srcs/args_creation.c			\
 			srcs/array.c					\
 			srcs/arrow_left_right.c			\
 			srcs/arrow_up_down.c			\
@@ -40,10 +41,10 @@ SRC		=	srcs/args.c						\
 			srcs/built_in.c					\
 			srcs/change_directory.c			\
 			srcs/conf_term.c				\
-			srcs/create_args.c				\
 			srcs/ctrl_key.c					\
 			srcs/ctrl_key_vertical.c		\
-			srcs/cursor.c					\
+			srcs/cursors.c					\
+			srcs/cursors_set.c				\
 			srcs/end_of_line.c				\
 			srcs/env.c						\
 			srcs/execution.c				\
@@ -60,7 +61,6 @@ SRC		=	srcs/args.c						\
 			srcs/parse_word.c				\
 			srcs/pipe.c						\
 			srcs/print_error.c				\
-			srcs/replace_substr.c			\
 			srcs/redirections_execution.c	\
 			srcs/redirections_parsing.c		\
 			srcs/redirections_setup.c		\
