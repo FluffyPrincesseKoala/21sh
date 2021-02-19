@@ -150,10 +150,12 @@ void	select_copy(t_bash *data)
 {
 	if (data->is_select)
 	{
+		if (data->copied)
+			ft_strdel(&data->copied);
 		data->copied = strsub_copy(LINE, data->start_select, data->end_select);
 		uncolor(data);
 		unselect(data);
-		clear_struct(&data->cursor);
+		//clear_struct(&data->cursor);
 	}
 }
 
@@ -164,16 +166,20 @@ void	select_paste(t_bash *data)
 	old = NULL;
 	if (data->copied)
 	{
-		if (LINE)
+		if (LINE && ft_strlen(LINE))
 		{
 			old = ft_strdup(LINE);
 			ft_strdel(&LINE);
 			LINE = str_add_sub(old, data->copied, IDX);
 		}
 		else
-			LINE = data->copied;
+		{
+			ft_strdel(&LINE);
+			LINE = ft_strdup(data->copied);
+		}
 		SAVE_C;
 		print_rest(LINE, IDX, old);
 		RESET_C;
+		ft_strdel(&old);
 	}
 }

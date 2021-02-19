@@ -27,6 +27,7 @@ SRCS	=		ft_arraylen.c			\
 				ft_iswhitespace.c		\
 				ft_isascii.c			\
 				ft_isprint.c			\
+				ft_iseven.c				\
 				ft_toupper.c			\
 				ft_tolower.c			\
 				ft_memset.c				\

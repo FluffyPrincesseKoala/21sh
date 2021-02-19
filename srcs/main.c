@@ -40,6 +40,7 @@ void	*free_bash(t_bash *data)
 	REDIRECTIONS_SETUP = NULL;
 	free_builtin(&data->builtin);
 	ft_strdel(&data->eof);
+	ft_strdel(&data->copied);
 	free(data);
 	data = NULL;
 	arrow_key(NULL, NULL);

@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/02/12 19:37:48 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/19 18:53:56 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,11 +287,8 @@ void		here_doc(t_bash *data)
 					else
 						to_free = set_heredoc(data, &vect,vect->args);
 				if (!data->error && to_free)
-				{
-					//free_args_by_content(&to_free, vect->eof);
 					free_args_until_eof(vect, &to_free);
 				}
-			}
 			vect = vect->next;
 		}
 	}

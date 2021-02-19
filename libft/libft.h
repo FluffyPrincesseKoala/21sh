@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 14:45:40 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 19:10:59 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/16 20:41:48 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int					ft_isalnum(int c);
 int					ft_isprint(int c);
 int					ft_isascii(int c);
 int					ft_iswhitespace(int c);
+int					ft_iseven(int nb);
 int					ft_toupper(int c);
 int					ft_tolower(int c);
 void				*ft_memset(void *s, int c, size_t n);

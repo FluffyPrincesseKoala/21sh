@@ -55,6 +55,8 @@
 # define VECT_UP	   		data->vector->up
 # define VECT_DOWN	   		data->vector->down
 # define REDIRECTIONS_SETUP data->redirections_setup
+# define EOF_IDX			vector->eof_idx
+# define CUR_EOF			vector->eof[vector->eof_idx]
 # define CUR_X				(data->iterator + data->prompt_len) % w.ws_col
 # define CUR_Y		    	(data->iterator + data->prompt_len) / w.ws_col
 # define LEN_Y				(ft_strlen(LINE) + data->prompt_len) / w.ws_col

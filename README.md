@@ -27,4 +27,4 @@
 * handle wait status
 * handle malloc failures -> think about libft calls !
 * check files header!
-
+* "cat << cat << cat << lol" error lead to segfault in some case

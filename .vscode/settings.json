@@ -6,6 +6,7 @@
 		"term.h": "c",
 		"curses.h": "c",
 		"21sh.h": "c",
-		"cstdlib": "c"
+		"cstdlib": "c",
+		"structs.h": "c"
 	}
 }
