@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/02/19 21:14:14 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/24 20:14:01 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,14 +122,14 @@ char		*concat_args_in_heredoc(t_arg *arg)
 	new = NULL;
 	tmp = NULL;
 	tmp_nxt = NULL;
-	while (arg && arg->next && arg->content)
+	while (arg)
 	{
-		if (!new)
+		if (!new && arg->content)
 			new = ft_strdup(arg->content);
 		else
 		{
 			tmp = ft_strjoin(new, " ");
-			tmp_nxt = str_join_free(&tmp, &new);
+			tmp_nxt = str_join_free(&tmp, &arg->content);
 			new = ft_strdup(tmp_nxt);
 			ft_strdel(&tmp_nxt);
 		}
@@ -143,7 +143,6 @@ int		parse_newline_as_heredoc(t_vect **head, t_bash *data)
 	t_vect	*vect;
 	t_vect	*next_doc;
 	t_vect	*vect_to_free;
-	t_arg	*arg;
 	char	*tmp;
 	char	*tmp_nxt;
 	char	*new;
@@ -161,9 +160,11 @@ int		parse_newline_as_heredoc(t_vect **head, t_bash *data)
 			next_doc = (*head);
 			while ((vect = vect->next))
 			{
-				new = concat_args_in_heredoc(vect->args);
-				fill_heredoc_array(data, next_doc, (new) ? &new : &arg->content);
-				ft_strdel(&new);
+				if ((new = concat_args_in_heredoc(vect->args)))
+				{
+					fill_heredoc_array(data, next_doc, &new);
+					ft_strdel(&new);
+				}
 				if (is_eof(data, next_doc))
 				{
 					next_doc = vect->next;
