@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 17:52:12 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/25 16:26:35 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void		write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2])
 		}
 		i++;
 	}
-
+	
 }
 
 /*

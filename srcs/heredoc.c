@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/02/24 20:14:01 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/25 16:26:13 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,6 +342,8 @@ void		eof_update_heredoc(t_bash *data)
 			i--;
 		if (!i)
 		{
+			if (data->vector->up)
+				fill_heredoc_array(data, data->vector->up, &LINE);
 			add_at_end_of_last_line(&data->vector->up->line, &LINE);
 			ft_putchar('\n');
 			if (VECT_UP && data->nb_heredoc == data->finish_heredoc)
