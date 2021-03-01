@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_struct.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 19:45:12 by koala             #+#    #+#             */
-/*   Updated: 2021/02/19 18:05:19 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/01 18:20:56 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ t_arg		*setup_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
 		{
 			if (!((*vect)->here->eof = create_heredoc(NULL, lst->content)))
 				data->error = UNEXPECT_COMMAND_END_ERROR;
-			if (lst->quote)
+			if (lst->separator)
 				(*vect)->here->is_delim = 1;
 			if (data->is_here_doc)
 				is_doc = parse_newline_as_heredoc(vect, data);

@@ -114,7 +114,7 @@ char		*get_env_var_value(char **env, char *var)
 	while (env && env[i])
 	{
 		len = ft_strlendelim(env[i], '=', 0);
-		if (!ft_strncmp(env[i], var, len) && ft_strlen(env[i]) > len + 1)
+		if (ft_strlen(var) == len && !ft_strncmp(env[i], var, len))
 			return (*(env + i) + len + 1);
 		i += 1;
 	}

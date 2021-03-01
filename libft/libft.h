@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 14:45:40 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/19 19:37:19 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/01 16:27:14 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+
+# define FREE_S1	1
+# define FREE_S2	2
+# define FREE_BOTH	3
 
 typedef struct		s_list
 {
@@ -25,6 +29,7 @@ typedef struct		s_list
 
 int					ft_arraylen(char **array);
 int					ft_arraylen_in_char(char **array);
+size_t  			ft_count_c_in_str(char *str, int c);
 int					ft_strlendelim(char *str, char delim, int start);
 void				ft_lstadd(t_list **alst, t_list *new);
 t_list				*ft_lstnew(void const *content, size_t content_size);
@@ -36,12 +41,13 @@ void				*ft_memcat(void *s1, const void *s2, size_t l1, size_t l2);
 void				ft_strdel(char **as);
 size_t				ft_strlen(const char *str);
 char				*ft_strdup(const char *src);
+char				*ft_strdup_free(char **src);
 char				*ft_strcpy(char *dest, const char *src);
 char				*ft_strncpy(char *dest, const char *src, size_t n);
 char				*ft_strcat(char *dest, const char *src);
 char				*ft_strchr(const char *s, int c);
-size_t				ft_strichr(const char *s, int c);
-size_t				ft_smallest_strichr(const char *s, int c1, int c2);
+size_t				ft_strichr(const char *s, char c);
+size_t				ft_smallest_strichr(const char *s, char *delims);
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strstr(const char *str, const char *to_find);
 char				*ft_strnstr(const char *str, const char *to_find, size_t n);

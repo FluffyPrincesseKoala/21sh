@@ -16,7 +16,7 @@
 14 | '`echo hi`' | `echo hi`   | `` and $() are not evaluated inside ''
 15 | '${arr[0]}' | ${arr[0]}   | array access not possible inside ''
 16 | "${arr[0]}" | apple       | array access works inside ""
-17 | $'$a\''     | $a'         | single quotes can be escaped inside ANSI-C quoting
+17 | $'$a\''     | **invalid** | single quotes can be escaped inside ANSI-C quoting
 18 | "$'\t'"     | $'\t'       | ANSI-C quoting is not interpreted inside ""
 19 | '!cmd'      | !cmd        | history expansion character '!' is ignored inside ''
 20 | "!cmd"      | cmd args    | expands to the most recent command matching "cmd"

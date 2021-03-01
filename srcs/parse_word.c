@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:50:02 by koala             #+#    #+#             */
-/*   Updated: 2021/02/19 17:59:38 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/01 18:40:54 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** reparser pour les separateur en ignorant les args qui sont des quote
 */
 
-static int	contains_sperator(char *str)
+int		contains_sperator(char *str)
 {
 	int		i;
 	int		j;
@@ -82,8 +82,7 @@ void		parse_args(t_bash *data, t_vect *current)
 	arg = current->args;
 	while (arg)
 	{
-		if ((separator_idx = contains_sperator(CONTENT)) != -1
-		&& !arg->quote)
+		if ((separator_idx = arg->separator) != -1)
 		{
 			current->separator = CONTENT[separator_idx];
 			if ((len = ft_strlen(CONTENT)) != separator_idx + 1)
@@ -104,7 +103,7 @@ void		format_line(t_bash *data)
 	if ((tmp = ft_replace_substr(LINE, "\n", " \n")))
 	{
 		if (ft_arraylen(table = ft_strsplit(tmp, ' ')))
-			words_as_args(table, data);
+			line_content_to_args(data, LINE);
 	}
 	if (VECT->args && !data->error)
 	{

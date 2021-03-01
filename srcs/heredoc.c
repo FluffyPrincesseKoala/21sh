@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/02/25 16:26:13 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/01 18:39:48 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,8 +200,6 @@ t_arg		*set_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
 		{
 			if (!((*vect)->eof = ft_strdup(lst->content)))
 				data->error = UNEXPECT_COMMAND_END_ERROR;
-			if (lst->quote)
-				data->here_doc_delimiter = 1;
 			if (data->is_here_doc)
 				is_doc = parse_newline_as_heredoc(vect, data);
 		}
@@ -253,8 +251,8 @@ int			format_heredoc(t_vect **vect, t_arg **to_check)
 			while (splited[i])
 			{
 				if (i == 1)
-					add_arg(&new, create_arg(ft_strdup("<<"), NOQUOTE));
-				add_arg(&new, create_arg(splited[i], NOQUOTE));
+					add_arg(&new, create_arg(ft_strdup("<<")));
+				add_arg(&new, create_arg(splited[i]));
 				i++;
 			}
 			free_all_args(to_check, 0);

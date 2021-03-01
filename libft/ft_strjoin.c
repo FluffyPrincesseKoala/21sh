@@ -59,9 +59,9 @@ char		*ft_strjoin_free(char **s1, char **s2, int s_to_free)
 	while (*s2 && (*s2)[j])
 		ret[i++] = (*s2)[j++];
 	ret[i] = '\0';
-	if (s_to_free == 1 || s_to_free == 3)
+	if (s_to_free == FREE_S1 || s_to_free == FREE_BOTH)
 		ft_strdel(s1);
-	if (s_to_free == 2 || s_to_free == 3)
+	if (s_to_free == FREE_S2 || s_to_free == FREE_BOTH)
 		ft_strdel(s2);
 	return (ret);
 }

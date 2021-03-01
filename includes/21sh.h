@@ -156,7 +156,6 @@ int			pchar(int c);
 size_t		count_delim(char *str, int delim);
 char		*replace_delim(char *str, char delim, char new);
 char		*ft_replace_substr(char *str, char *old, char *new);
-char		*merge_string_from_array(char **src, int size, int start);
 char		**split_all_whitespace(char const *s);
 
 /*
@@ -177,12 +176,12 @@ void		*free_bash(t_bash *data);
 **	PARSING
 */
 
+int		    contains_sperator(char *str);
 int			next_delim(char **array, int start);
 void		read_separator(char **table, t_bash *data);
 void		format_line(t_bash *data);
 size_t		count_delim(char *str, int delim);
 int			pending_line(char *str);
-void		words_as_args(char **table, t_bash *data);
 
 /*
 **	LIST STUFF
@@ -281,26 +280,30 @@ int			get_win_max_col();
 */
 
 int			    ft_strlendelim(char *str, char delim, int start);
-void		    get_var(t_arg **head, char **env);
 int			    handle_new_entry(t_bash *data, char *entry, int pos);
 void		    pull_line(t_vect **head);
 void		    push_entry(t_bash *data, char *entry, char **line, int pos);
-char		    *unquote(char *str, char delim);
-char			*use_shell_var(char **env, char *str);
 
 /*
 ** Args
 */
 t_arg  		    *add_arg(t_arg **head, t_arg *new);
-t_arg   	    *create_arg(char *content, char quote);
+t_arg   	    *create_arg(char *content);
 int    		    insert_new_arg(t_vect *command, t_arg *previous, char *s);
 
 
 /*
 ** End of line
 */
-int				format_line_required(t_bash *data);
+size_t	        create_non_quoted_arg(t_bash *data, char *line_extract);
+size_t	        create_quoted_arg(t_bash *data, char *line_substr, char quote);
 int   		    end_of_line(t_bash **data);
+int				format_line_required(t_bash *data);
+void		    get_var(t_arg **head, char **env);
+int             is_quote(char c);
+void		    line_content_to_args(t_bash *data, char *line);
+char			*use_shell_var(char **env, char *str);
+char		    *unquote(char *str, char delim);
 
 /*
 ** ===========

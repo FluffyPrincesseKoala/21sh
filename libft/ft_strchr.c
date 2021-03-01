@@ -24,7 +24,7 @@ char		*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-size_t		ft_strichr(const char *s, int c)
+size_t		ft_strichr(const char *s, char c)
 {
 	size_t		i;
 
@@ -34,15 +34,20 @@ size_t		ft_strichr(const char *s, int c)
 	return (i);
 }
 
-size_t		ft_smallest_strichr(const char *s, int c1, int c2)
+size_t		ft_smallest_strichr(const char *s, char *delims)
 {
-	size_t len_c1;
-	size_t len_c2;
+	size_t smallest_len;
+	size_t current_len;
+	size_t i;
 
-	len_c1 = ft_strichr(s, c1);
-	len_c2 = ft_strichr(s, c2);
-	if (len_c1 <= len_c2)
-		return (len_c1);
-	else
-		return (len_c2);
+	i = 0;
+	smallest_len = ft_strlen(s);
+	while (delims && delims[i])
+	{
+		current_len = ft_strichr(s, delims[i]);
+		if (current_len < smallest_len)
+			smallest_len = current_len;
+		i++;
+	}
+	return smallest_len;
 }

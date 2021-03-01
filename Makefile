@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/02/19 18:01:52 by cylemair         ###   ########.fr        #
+#    Updated: 2021/03/01 19:47:59 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,8 @@ SRC		=	srcs/args.c						\
 			srcs/boolean_tools2.c			\
 			srcs/built_in.c					\
 			srcs/change_directory.c			\
+			srcs/create_non_quoted_arg.c	\
+			srcs/create_quoted_arg.c		\
 			srcs/conf_term.c				\
 			srcs/ctrl_key.c					\
 			srcs/ctrl_key_vertical.c		\
@@ -50,12 +52,11 @@ SRC		=	srcs/args.c						\
 			srcs/execution.c				\
 			srcs/key.c						\
 			srcs/get_var.c					\
-			srcs/getter.c					\
-			srcs/handle_quotes.c			\
-			srcs/handle_separator.c			\
+			srcs/handle_new_entry.c			\
 			srcs/heredoc.c					\
 			srcs/heredoc_execution.c		\
 			srcs/history.c					\
+			srcs/line_content_to_args.c		\
 			srcs/main.c 					\
 			srcs/parse_array.c				\
 			srcs/parse_word.c				\
@@ -74,7 +75,9 @@ SRC		=	srcs/args.c						\
 			srcs/termcaps.c					\
 			srcs/termi.c					\
 			srcs/tmp.c						\
-			srcs/vector.c
+			srcs/unquote.c					\
+			srcs/vector.c					\
+			srcs/tmp_print_debug.c
 
 OBJS	=	$(SRC:.c=.o)
 

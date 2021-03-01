@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_args.c                                      :+:      :+:    :+:   */
+/*   args_creation.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 12:26:04 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/19 14:45:24 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/01 18:35:44 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-t_arg   *create_arg(char *content, char quote)
+t_arg   *create_arg(char *content)
 {
     t_arg *new;
     
     if (new = ft_memalloc(sizeof(t_arg)))
     {
-        if (new->content = ft_strsub_free(&content, 0, ft_strlen(content)))
+        if (new->content = ft_strdup_free(&content))
         {
-            new->quote = quote;
+            new->separator = contains_sperator(content);
             return (new);
         }
 		else
 		{
 			new->content = NULL;
-            new->quote = quote;
+            new->separator = contains_sperator(content);
             return (new);
 		}
     }
@@ -55,7 +55,7 @@ int    insert_new_arg(t_vect *command, t_arg *previous, char *s)
 {
     t_arg *new;
 
-    if (!(new = create_arg(s, NOQUOTE)))
+    if (!(new = create_arg(s)))
         return (FAIL);
 	if (previous)
 	{

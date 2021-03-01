@@ -6,6 +6,7 @@ NAME	=		libft.a
 
 SRCS	=		ft_arraylen.c			\
 				ft_arraylen_in_char.c	\
+				ft_count_c_in_str.c		\
 				ft_strlen.c				\
 				ft_strlendelim.c		\
 				ft_strdup.c				\
