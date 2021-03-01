@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:34:02 by koala             #+#    #+#             */
-/*   Updated: 2021/03/01 19:11:42 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/01 19:43:34 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ static char	*concat_args_in_heredoc(t_arg *arg)
 	return (new);
 }
 
-static int	create_heredoc_from_next_vector(t_bash *data, t_vect *vect, t_vect *next_doc)
+static int	create_heredoc_from_next_vector(t_bash *data, t_vect *vect,
+											t_vect *next_doc)
 {
 	char	*new;
 	t_vect	*to_free;

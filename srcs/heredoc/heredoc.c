@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/03/01 18:40:50 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/01 19:53:17 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,24 @@ static int	format_heredoc(t_vect **vect, t_arg **to_check)
 		}
 	}
 	return (0);
+}
+
+static int	check_heredoc_format(t_bash *data, t_vect *cmd, t_arg *to_free)
+{
+	if (!to_free->previous)
+		if (!format_heredoc(&cmd, &to_free))
+		{
+			data->error = SNTX_ERR;
+			to_free = reset_data_heredoc(data);
+			return ;
+		}
+		else
+			to_free = set_heredoc(data, &cmd, cmd->args);
+	if (!data->error && to_free)
+		free_args_until_eof(cmd, &to_free);
+	else
+		return (0);
+	return (1);
 }
 
 static t_arg	*reset_data_heredoc(t_bash *data)
@@ -108,7 +126,6 @@ static t_arg	*set_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
 	return (to_free);
 }
 
-
 /*
 **	shearch heredoc parametere and free there args (for parameter)
 **	and vector (for heredoc string)
@@ -128,20 +145,7 @@ void		here_doc(t_bash *data)
 		while (vect && (lst = vect->args) && !data->error)
 		{
 			if ((to_free = set_heredoc(data, &vect, lst)))
-			{
-				count++;
-				if (!to_free->previous)
-					if (!format_heredoc(&vect, &to_free))
-					{
-						data->error = SNTX_ERR;
-						to_free = reset_data_heredoc(data);
-						return ;
-					}
-					else
-						to_free = set_heredoc(data, &vect,vect->args);
-				if (!data->error && to_free)
-					free_args_until_eof(vect, &to_free);
-				}
+				count += check_heredoc_format(data, vect, to_free);
 			vect = vect->next;
 		}
 	}
