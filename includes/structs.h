@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/25 16:03:17 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/01 15:17:30 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct					s_term
 typedef struct					s_arg
 {
 	char						*content;
-	int							quote;
+	char						quote;
 	struct s_arg				*previous;
 	struct s_arg				*next;
 }								t_arg;

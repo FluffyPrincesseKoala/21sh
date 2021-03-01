@@ -30,3 +30,21 @@
 * test 'cat << lol << lol'
 
 * put one non-static function in each file, organise files in folders
+
+
+# Pour le 42SH
+- Les inhibiteurs ``”`` (double quote), ``’`` (simple quote) et ``\`` (backslash)
+- La substitution de commande ``$()``
+- La gestion complète de l’historique 
+```
+!!
+!word
+!number
+!
+number
+◦La sauvegarde dans un fichier pour être utilisé sur plusieurs sessions
+◦Le built-in fc (toutes les options POSIX)
+◦Recherche incrémentale dans l’historique avecCTRL-R
+```
+- Auto Complétion dynamique contextuelle des commandes
+- La gestion des alias via les built-ins ``alias`` et ``unalias``

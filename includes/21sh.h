@@ -308,32 +308,30 @@ int   		    end_of_line(t_bash **data);
 ** ===========
 */
 
+void			change_directory(t_bash *data, t_vect *command);
+void			print_args(t_bash *data, t_vect *command);
+void			print_env(t_bash *data, t_vect *cmd);
+void			set_env(t_bash *data, t_vect *command);
+void			unset_env(t_bash *data, t_vect *command);
 char			*get_env_var_value(char **env, char *name);
 int				is_env_key_exist(char **env, char *key);
 void			print_history(t_bash *data);
 void			history(t_bash *data, t_vect *cmd);
 
+/*
+** ===========
+**	HEREDOC
+** ===========
+*/
 
 void			custom_return(void);
 void			clean_screen(t_bash *data);
 void			return_exit(t_bash *data);
 int				update_heredoc(t_bash *data);
 void			here_doc(t_bash *data);
+void			fill_heredoc_array(t_bash *data, t_vect *cmd, char **line);
+int				parse_newline_as_heredoc(t_vect **head, t_bash *data);
 
-/*
-** ===========
-**	BUILT-INS
-** ===========
-*/
-
-/*
-** Commands
-*/
-void			change_directory(t_bash *data, t_vect *command);
-void			print_args(t_bash *data, t_vect *command);
-void			print_env(t_bash *data, t_vect *cmd);
-void			set_env(t_bash *data, t_vect *command);
-void			unset_env(t_bash *data, t_vect *command);
 
 /*
 ** ===========
