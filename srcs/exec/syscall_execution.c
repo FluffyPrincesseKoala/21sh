@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/19 17:23:06 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/01 14:33:27 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*build_command_path(char *env_path, char *command_name)
 
 	if (!(command_path = ft_strjoin(env_path, "/")))
 		return (NULL);
-	if (!(command_path = ft_strjoin_free(&command_path, &command_name, 1)))
+	if (!(command_path = ft_strjoin_free(&command_path, &command_name, FREE_S1)))
 		return (NULL);
 	return (command_path);
 }

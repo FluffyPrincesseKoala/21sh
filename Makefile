@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: koala <koala@student.42.fr>                +#+  +:+       +#+         #
+#    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/03/01 19:22:14 by koala            ###   ########.fr        #
+#    Updated: 2021/03/01 19:58:30 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,15 +48,17 @@ EXEC	=	srcs/exec/execution.c					\
 PARSE	=	srcs/parsing/args_creation.c			\
 			srcs/parsing/args.c						\
 			srcs/parsing/array.c					\
+			srcs/parsing/create_non_quoted_arg.c	\
+			srcs/parsing/create_quoted_arg.c		\
 			srcs/parsing/end_of_line.c				\
 			srcs/parsing/get_var.c					\
-			srcs/parsing/getter.c					\
-			srcs/parsing/handle_quotes.c			\
-			srcs/parsing/handle_separator.c			\
+			srcs/parsing/handle_new_entry.c			\
+			srcs/parsing/line_content_to_args.c		\
 			srcs/parsing/parse_array.c				\
 			srcs/parsing/parse_word.c				\
 			srcs/parsing/split_all_whitespace.c		\
 			srcs/parsing/string.c					\
+			srcs/parsing/unquote.c					\
 			srcs/parsing/vector.c					\
 
 HEREDOC	=	srcs/heredoc/heredoc.c					\

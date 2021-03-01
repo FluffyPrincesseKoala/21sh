@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   boolean_tools2.c                                   :+:      :+:    :+:   */
+/*   unquote.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/05 17:34:48 by koala             #+#    #+#             */
-/*   Updated: 2021/03/01 19:43:58 by cylemair         ###   ########.fr       */
+/*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/01 18:19:49 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-int	format_line_required(t_bash *data)
-{
-	if ((!data->vector->doc_string && !data->finish_heredoc)
-		|| !data->vector->args)
-		return (TRUE);
-	return (FALSE);
+static int  is_non_escaped_quote(const char *s, char quote, int i)
+{    
+    if (s[i] == quote && (i == 0 || (s[i - 1] != '\\' || (i > 1 && s[i - 2] == '\\'))))
+        return (TRUE);
+    else
+        return (FALSE);
 }
 
-int	is_exit(t_vect *command)
+char		*unquote(char *line_substr, char quote)
 {
-	if (ft_strequ(command->args->content, "exit"))
-		return (TRUE);
-	return (FALSE);
-}
+	size_t	len;
 
-int	is_quote(char c)
-{
-	if (c == '\'' || c == '\"')
-		return (c);
-	else
-		return (0);
+	len = 1;
+	while (line_substr[len] && !is_non_escaped_quote(line_substr, quote, len))
+		len++;
+	return ft_strsub(line_substr, 1, len - 1);
 }

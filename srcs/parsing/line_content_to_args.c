@@ -1,0 +1,77 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   line_content_to_args.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/01 20:42:16 by koala            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "21sh.h"
+
+static void	merge_last_args(t_bash *data)
+{
+	t_arg	*new_arg;
+	char	*new_content;
+	t_arg	*current;
+
+	current = data->vector->args;
+	while(current && current->next && current->next->next)
+		current = current->next;
+	if (current->next)
+	{
+		new_content = ft_strjoin(current->content, current->next->content);
+		if (!(new_arg = create_arg(new_content)))
+			data->error = MALLOC_ERROR;
+		del_one_arg(current->next, data->vector);
+		del_one_arg(current, data->vector);
+		add_arg(&data->vector->args, new_arg);
+	}
+}
+
+static char	is_separator(char c)
+{
+	if (c == '\n' || c == ';' || c == '|')
+		return (c);
+	return (0);
+}
+
+void		line_content_to_args(t_bash *data, char *line)
+{
+	size_t	i;
+	char	quote;
+	size_t	full_word;
+	t_vect	*current;
+
+	i = 0;
+	full_word = TRUE;
+	current = data->vector;
+	while (line && line[i] && !data->error)
+	{
+		if ((current->separator = is_separator(line[i])))
+		{
+			current = vect_new(NULL, NULL);
+			vect_add(&data->vector, current);
+			full_word = TRUE;
+			i++;
+		}
+		else if (ft_iswhitespace(line[i]))
+		{
+			full_word = TRUE;
+			i++;
+		}
+		else
+		{
+			if (quote = is_quote(line[i]))
+				i += create_quoted_arg(data, current, &line[i], quote);
+			else
+				i += create_non_quoted_arg(data, current, &line[i]);
+			if (full_word == FALSE)
+				merge_last_args(data);
+			full_word = FALSE;
+		}
+	}
+}

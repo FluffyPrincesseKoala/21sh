@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/03/01 19:53:17 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/01 20:23:50 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ static int	format_heredoc(t_vect **vect, t_arg **to_check)
 			while (splited[i])
 			{
 				if (i == 1)
-					add_arg(&new, create_arg(ft_strdup("<<"), NOQUOTE));
-				add_arg(&new, create_arg(splited[i], NOQUOTE));
+					add_arg(&new, create_arg(ft_strdup("<<")));
+				add_arg(&new, create_arg(splited[i]));
 				i++;
 			}
 			free_all_args(to_check, 0);
@@ -55,24 +55,6 @@ static int	format_heredoc(t_vect **vect, t_arg **to_check)
 		}
 	}
 	return (0);
-}
-
-static int	check_heredoc_format(t_bash *data, t_vect *cmd, t_arg *to_free)
-{
-	if (!to_free->previous)
-		if (!format_heredoc(&cmd, &to_free))
-		{
-			data->error = SNTX_ERR;
-			to_free = reset_data_heredoc(data);
-			return ;
-		}
-		else
-			to_free = set_heredoc(data, &cmd, cmd->args);
-	if (!data->error && to_free)
-		free_args_until_eof(cmd, &to_free);
-	else
-		return (0);
-	return (1);
 }
 
 static t_arg	*reset_data_heredoc(t_bash *data)
@@ -124,6 +106,25 @@ static t_arg	*set_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
 	if (!(*vect)->eof && is_doc)
 		data->error = UNEXPECT_COMMAND_END_ERROR;
 	return (to_free);
+}
+
+
+static int	check_heredoc_format(t_bash *data, t_vect *cmd, t_arg *to_free)
+{
+	if (!to_free->previous)
+		if (!format_heredoc(&cmd, &to_free))
+		{
+			data->error = SNTX_ERR;
+			to_free = reset_data_heredoc(data);
+			return (1);
+		}
+		else
+			to_free = set_heredoc(data, &cmd, cmd->args);
+	if (!data->error && to_free)
+		free_args_until_eof(cmd, &to_free);
+	else
+		return (0);
+	return (1);
 }
 
 /*

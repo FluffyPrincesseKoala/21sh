@@ -28,6 +28,7 @@
 * handle malloc failures -> think about libft calls !
 * check files header!
 * test 'cat << lol << lol'
+* not expand when " ' "
 
 * put one non-static function in each file, organise files in folders
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   getter.c                                           :+:      :+:    :+:   */
+/*   handle_new_entry.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/24 18:42:41 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/10 14:52:21 by koala            ###   ########.fr       */
+/*   Updated: 2021/02/26 12:24:18 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,6 @@ void		push_entry(t_bash *data, char *entry, char **line, int pos)
 	ft_strdel(&tmp);
 }
 
-/*
-**	if !LINE		: create it
-**	if VECT_DOWN	: pull_line
-**	push_entry
-**
-**	fill t_term
-**	print
-**	go to cursor
-*/
 
 int		handle_new_entry(t_bash *data, char *entry, int pos)
 {

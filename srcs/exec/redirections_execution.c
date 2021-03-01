@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:12:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 15:21:48 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/02/26 12:12:19 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ static int	is_file_word_authorized(t_bash *data, t_vect *command, t_redirection 
 			redirection->file_word, redirection->flags, NEW_FILE_MODE);
 		if (new_fd == -1)
 		{
-			put_error_msg("Permission non accordée.\n");
+			put_error_msg("Permission non accordée: ");
+			put_error_msg(redirection->file_word);
+			put_error_msg("\n");
 			data->error = OPEN_ERROR;
 			free_redirections(command);
 			return (FALSE);

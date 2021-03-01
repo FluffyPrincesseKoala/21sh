@@ -28,3 +28,12 @@ char		*ft_strdup(const char *src)
 	str[i] = '\0';
 	return (str);
 }
+
+char		*ft_strdup_free(char **src)
+{
+	char *dup;
+
+	dup = ft_strdup(*src);
+	ft_strdel(src);
+	return (dup);
+}
