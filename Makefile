@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/03/01 19:58:30 by cylemair         ###   ########.fr        #
+#    Updated: 2021/03/02 12:51:28 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,9 +31,14 @@ NAME	=	21sh
 
 RM		=	rm -rf
 
-ENV		=	srcs/env/built_in.c						\
-			srcs/env/change_directory.c				\
-			srcs/env/env.c							\
+ENV		=	srcs/env/change_directory.c				\
+			srcs/env/free_builtin.c					\
+			srcs/other/history.c					\
+			srcs/env/init_builtin.c					\
+			srcs/env/print_env.c					\
+			srcs/env/select_builtin.c 				\
+			srcs/env/set_env.c						\
+			srcs/env/unset_env.c					\
 
 EXEC	=	srcs/exec/execution.c					\
 			srcs/exec/heredoc_execution.c			\
@@ -80,7 +85,7 @@ TERM	=	srcs/terminal/arrow_left_right.c		\
 
 OTHER	=	srcs/other/boolean_tools.c				\
 			srcs/other/boolean_tools2.c				\
-			srcs/other/history.c					\
+			srcs/other/get_env_var_values.c			\
 			srcs/other/main.c 						\
 			srcs/other/print_error.c				\
 			srcs/other/signals.c					\

@@ -229,7 +229,6 @@ void		error_code_to_message(int *error);
 ** Initialize t_bash
 */
 char		**copy_env(char **array);
-int			init_built_in(t_built **fct);
 int			init_redirection_set_up_functions(t_bash *data);
 
 /*
@@ -274,6 +273,13 @@ void		reset_conf_term();
 int			get_win_max_col();
 
 /*
+** =======
+**  TOOLS
+** =======
+*/
+
+char			*get_env_var_value(char **env, char *name);
+/*
 ** =========
 **  STDIN
 ** =========
@@ -311,15 +317,21 @@ char		    *unquote(char *str, char delim);
 ** ===========
 */
 
+int				env_key_exists(char **env, char *key);
+void			free_builtin(t_built **fct);
+int			    init_builtin(t_built **fct);
+void			select_builtin(t_bash *data, t_vect *command);
+
+/*
+** Commands
+*/
 void			change_directory(t_bash *data, t_vect *command);
+void			history(t_bash *data, t_vect *cmd);
 void			print_args(t_bash *data, t_vect *command);
 void			print_env(t_bash *data, t_vect *cmd);
+void			print_history(t_bash *data);
 void			set_env(t_bash *data, t_vect *command);
 void			unset_env(t_bash *data, t_vect *command);
-char			*get_env_var_value(char **env, char *name);
-int				is_env_key_exist(char **env, char *key);
-void			print_history(t_bash *data);
-void			history(t_bash *data, t_vect *cmd);
 
 /*
 ** ===========
@@ -345,7 +357,6 @@ int				parse_newline_as_heredoc(t_vect **head, t_bash *data);
 void			execute_command(t_bash *data, t_vect *command);
 int         	handle_commands(t_bash *data, t_vect *command);
 int         	handle_execution(t_bash *data, t_vect *command);
-void			search_built_in(t_bash *data, t_vect *command);
 
 /*
 ** Syscalls
@@ -395,8 +406,7 @@ void		    clear_struct(t_term **cursor);
 void		    del_one_arg(t_arg *arg, t_vect *cmd);
 void		    detach_arg(t_arg *arg, t_vect *cmd);
 void    	    free_all_args(t_arg **arg, int flag);
-void		    free_array(char **array); 
-void			free_builtin(t_built **fct);
+void		    free_array(char **array);
 void			free_redirections(t_vect *command);
 
 /*

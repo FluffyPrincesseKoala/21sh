@@ -105,22 +105,6 @@ int			prompt(char **env, int short_prompt)
 	return (len);
 }
 
-char		*get_env_var_value(char **env, char *var)
-{
-	int		i;
-	int		len;
-
-	i = 0;
-	while (env && env[i])
-	{
-		len = ft_strlendelim(env[i], '=', 0);
-		if (ft_strlen(var) == len && !ft_strncmp(env[i], var, len))
-			return (*(env + i) + len + 1);
-		i += 1;
-	}
-	return (NULL);
-}
-
 int			pending_line(char *str)
 {
 	char	*separator;

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/26 12:14:18 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/02 12:19:56 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int  handle_command(t_bash *data, t_vect *command)
     unconf_term();
     if (set_up_command_redirections(data, command) == FAIL)
         return (FAIL);
-    search_built_in(data, command);
+    select_builtin(data, command);
     if (fork_is_required(command))
     {
         cpid = fork();

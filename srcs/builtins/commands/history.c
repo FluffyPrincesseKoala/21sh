@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/01/06 16:11:39 by koala             #+#    #+#             */
-/*   Updated: 2021/01/06 16:13:07 by koala            ###   ########.fr       */
+/*   Created: 2021/01/06 16:11:39 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/02 13:01:42 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	print_nb_history(t_vect *lst, int nb)
 	}
 }
 
-void	print_history(t_bash *data)
+void		print_history(t_bash *data)
 {
 	t_vect	*vect;
 	int		i;
@@ -58,7 +58,7 @@ void		history(t_bash *data, t_vect *cmd)
 {
 	int		i;
 	t_vect	*lst;
-	
+
 	if (cmd->args && cmd->args->next
 		&& ft_str_is_digits(cmd->args->next->content))
 	{

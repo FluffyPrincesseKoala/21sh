@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:22:41 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/19 17:23:06 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/02 13:31:39 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	update_current_directory(char **env, char *pwd)
 
 	old = get_env_var_value(env, "PWD");
 	tmp = ft_strjoin("OLDPWD=", old);
-	if (is_env_key_exist(env, "OLDPWD="))
+	if (env_key_exists(env, "OLDPWD="))
 		env = change_array_value(env, "OLDPWD", tmp);
 	else
 		env = array_add_value(env, tmp);
@@ -49,8 +49,7 @@ static void	move_to_directory(char **env, char *path)
 			put_error_msg(is_file(path) ?
 				"cd : no such file or directory"
 				:
-				"cd : permission denied"
-			);
+				"cd : permission denied");
 		else
 		{
 			if (!(pwd = getcwd(buff, 4096)))
