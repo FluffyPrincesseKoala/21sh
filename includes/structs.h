@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/01 19:50:06 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/02 16:40:04 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,17 @@ typedef struct					s_arg
 	struct s_arg				*next;
 }								t_arg;
 
+struct							s_redirection_setup;
+
+
 typedef struct					s_redirection
 {
-	int							flags;
 	int							left_fd;
 	int							right_fd;
 	int							backup_fd;
 	char						*file_word;
-	char						*op;
+	t_arg						*arg;
+	struct s_redirection_setup	*setup;
 	struct s_redirection		*next;
 }								t_redirection;
 

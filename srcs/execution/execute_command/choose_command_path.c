@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syscall_execution.c                                :+:      :+:    :+:   */
+/*   choose_command_path.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/01 14:33:27 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/02 18:34:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@
 ** Join given path with the command name, but separate them by a '\'.
 */
 
-static char	*build_command_path(char *env_path, char *command_name)
+static char	*build_command_path(char *env_path, char *cmd_name)
 {
-	char *command_path;
+	char *cmd_path;
 
-	if (!(command_path = ft_strjoin(env_path, "/")))
+	if (!(cmd_path = ft_strjoin(env_path, "/")))
 		return (NULL);
-	if (!(command_path = ft_strjoin_free(&command_path, &command_name, FREE_S1)))
+	if (!(cmd_path = ft_strjoin_free(&cmd_path, &cmd_name, FREE_S1)))
 		return (NULL);
-	return (command_path);
+	return (cmd_path);
 }
 
 /*
@@ -82,8 +82,8 @@ static int	path_is_given(char *name)
 
 char		*choose_command_path(t_bash *data, char *command_name)
 {
-	struct stat sb;
-	char	*path;
+	struct stat	sb;
+	char		*path;
 
 	path = NULL;
 	if (path_is_given(command_name))
@@ -97,46 +97,4 @@ char		*choose_command_path(t_bash *data, char *command_name)
 		return (NULL);
 	}
 	return (path);
-}
-
-static		size_t  args_len(t_arg *arg)
-{
-    size_t len;
-
-    len = 0;
-    while (arg)
-    {
-        if (CONTENT)
-            len++;
-        arg = arg->next;
-    }
-    return len;
-}
-
-/*
-** Convert the contents of a chained list of t_arg to an array of string.
-*/
-
-char    	**arg_to_array(t_bash *data, t_arg *arg)
-{
-    char    **array;
-    int     i;
-
-    if (!(array = malloc(sizeof(char*) * (args_len(arg) + 1))))
-        data->error = MALLOC_ERROR;
-    else
-    {
-        i = 0;
-        while (arg)
-        {
-            if (CONTENT)
-            {
-                array[i] = ft_strdup(CONTENT);
-                i++;
-            }
-            arg = arg->next;
-        }
-        array[i] = NULL;
-    }
-    return (array);
 }

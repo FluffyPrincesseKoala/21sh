@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/10 12:16:22 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/05 12:27:40 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/02 16:55:04 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,23 @@
 **  with its set up function and file-opening flag.
 */
 
-static t_redirection_setup  *parse_redirections_in_arg(
-    t_redirection_setup **redirections_set_up, char *arg)
+void    parse_redirection_in_arg(t_bash *data, t_vect *cmd, t_arg *arg)
 {
-    int     i;
-
-    if (arg)
+    int             i;
+    t_redirection   *new;
+    
+    i = 0;
+    while (data->redirections_setup[i])
     {
-        i = 0;
-        while (redirections_set_up[i])
+        if (ft_strstr(arg->content, data->redirections_setup[i]->op))
         {
-            if (ft_strstr(arg, redirections_set_up[i]->op))
-                return (redirections_set_up[i]);
-            i++;
+            new = new_redirection(cmd);
+            new->setup = data->redirections_setup[i];
+            new->arg = arg;
+            break;
         }
+        i++;
     }
-    return (NULL);
 }
 
 /*
@@ -51,25 +52,22 @@ static t_redirection_setup  *parse_redirections_in_arg(
 int                        set_up_command_redirections(
     t_bash *data, t_vect *command)
 {
-    t_redirection_setup *redirection_setup;
-    t_redirection       *new;
-    t_arg               *arg;
+    t_redirection       *redirection;
 
-    arg = command->args;
-    while (arg)
+    redirection = command->redirections;
+    while (redirection)
     {
-        if (redirection_setup = parse_redirections_in_arg(
-            REDIRECTIONS_SETUP, CONTENT))
+        if (redirection->arg)
         {
-            new = new_redirection(command, redirection_setup->flags);
-            redirection_setup->f(command, arg, new, &(data->error));
-            del_one_arg(arg, command);
-            arg = command->args;
+            redirection->setup->f(command, redirection->arg, redirection, &(data->error));
+            del_one_arg(redirection->arg, command);
         }
         else
-            arg = arg->next;
+            redirection = redirection->next;
         if (data->error)
             return (FAIL);
+        redirection = redirection->next;
     }
     return (SUCCESS);
 }
+

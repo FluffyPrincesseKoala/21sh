@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 15:24:24 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/02 16:35:10 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,13 @@ static void     insert_new_redirection(t_vect *command, t_redirection *new)
 **  command structure.
 */
 
-t_redirection   *new_redirection(t_vect *command, int flags)
+t_redirection   *new_redirection(t_vect *command)
 {
     t_redirection   *new;
     t_redirection   *cursor;
 
     if (!(new = ft_memalloc(sizeof(t_redirection))))
         return (NULL);
-    new->flags = flags;
     insert_new_redirection(command, new);
     return (new);
 }
@@ -63,7 +62,7 @@ static void free_redirection(t_redirection *redirection)
         free_redirection(redirection->next);
     redirection->next = NULL;
     ft_strdel(&redirection->file_word);
-    ft_strdel(&redirection->op);
+    // more free maybe
     free(redirection);
 }
 

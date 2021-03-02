@@ -76,7 +76,14 @@ char    *ft_free_replaced_substr(char *str, char *old, char *new)
 {
 	char *result;
 
-	result = ft_replace_substr(str, old, new);
+	if (!new)
+	{
+		new = ft_strdup("");
+		result = ft_replace_substr(str, old, new);
+		ft_strdel(&new);
+	}
+	else
+		result = ft_replace_substr(str, old, new);
 	ft_strdel(&str);
 	return (result);
 }

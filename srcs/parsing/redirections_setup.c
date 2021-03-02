@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 17:18:23 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/02 16:54:51 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void set_up_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
     stdout_redirection->right_fd = NO_RIGHT_FD;
     stdout_redirection->file_word = search_file_word(
         cmd, arg, substring_index, error);
-    stdout_redirection->next = new_redirection(cmd, SIMPLE_OUTPUT_FLAGS);
+    stdout_redirection->next = new_redirection(cmd);
     stdout_redirection->next->left_fd = STDERR;
     stdout_redirection->next->right_fd = STDOUT;
 }

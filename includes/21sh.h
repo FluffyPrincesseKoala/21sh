@@ -271,14 +271,29 @@ void		reset_conf_term();
 ** Tools
 */
 int			get_win_max_col();
+char			*get_env_var_value(char **env, char *name);
 
 /*
-** =======
-**  TOOLS
-** =======
+** Redirections
 */
+t_redirection	*new_redirection(t_vect *cmd);
+char            *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, int *error);
+int				search_left_fd(t_vect *cmd, t_arg *arg, int def, int *error);
+int             search_right_fd(t_vect *cmd, t_arg *arg, char *substring, int *error);
+int				set_up_command_redirections(t_bash *data, t_vect *cmd);
 
-char			*get_env_var_value(char **env, char *name);
+
+/*
+** Boolean tools
+*/
+int     		command_is_piped(t_vect *command);
+int		        fork_is_required(t_vect *command);
+int			    fork_failed(pid_t pid);
+int			    is_child(pid_t pid);
+int				is_exit(t_vect *command);
+int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
+int     	    using_heredoc(t_vect *command);
+
 /*
 ** =========
 **  STDIN
@@ -287,6 +302,7 @@ char			*get_env_var_value(char **env, char *name);
 
 int			    ft_strlendelim(char *str, char delim, int start);
 int			    handle_new_entry(t_bash *data, char *entry, int pos);
+void            parse_redirection_in_arg(t_bash *data, t_vect *cmd, t_arg *arg);
 void		    pull_line(t_vect **head);
 void		    push_entry(t_bash *data, char *entry, char **line, int pos);
 
@@ -305,7 +321,7 @@ size_t	        create_non_quoted_arg(t_bash *data, t_vect *cmd, char *line_extra
 size_t	        create_quoted_arg(t_bash *data, t_vect *cmd, char *line_substr, char quote);
 int   		    end_of_line(t_bash **data);
 int				format_line_required(t_bash *data);
-void		    get_var(t_arg **head, char **env);
+void		    get_var(t_arg *head, char **env);
 int             is_quote(char c);
 void		    line_content_to_args(t_bash *data, char *line);
 char			*use_shell_var(char **env, char *str);
@@ -354,27 +370,14 @@ int				parse_newline_as_heredoc(t_vect **head, t_bash *data);
 ** ===========
 */
 
-void			execute_command(t_bash *data, t_vect *command);
 int         	handle_commands(t_bash *data, t_vect *command);
 int         	handle_execution(t_bash *data, t_vect *command);
 
 /*
-** Syscalls
+** Execute Command
 */
-char    	    **arg_to_array(t_bash *data, t_arg *arg);
 char		    *choose_command_path(t_bash *data, char *command_name);
-void 			execute_syscall(t_bash *data, t_vect *command);
-
-/*
-** Redirections
-*/
-int           	execute_redirections(t_bash *data, t_vect *command, t_redirection *redirection);
-t_redirection	*new_redirection(t_vect *cmd, int flags);
-char            *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, int *error);
-int				search_left_fd(t_vect *cmd, t_arg *arg, int def, int *error);
-int             search_right_fd(t_vect *cmd, t_arg *arg, char *substring, int *error);
-int				set_up_command_redirections(t_bash *data, t_vect *cmd);
-void            restore_directions(t_redirection *redirection);
+void			execute_command(t_bash *data, t_vect *command);
 
 /*
 ** Pipe
@@ -382,19 +385,14 @@ void            restore_directions(t_redirection *redirection);
 void			handle_heredoc(t_bash *data, t_vect *command);
 int 			handle_pipe(t_bash *data, t_vect *command);
 void        	pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc);
-void        	set_stdin_pipe_redirection(t_vect *command, int pipe_fd[2]);
+void        	set_stdin_pipe_redirection(t_bash *data, t_vect *command, int pipe_fd[2]);
 void			write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2]);
 
 /*
-** Boolean tools
+** Redirections
 */
-int     		command_is_piped(t_vect *command);
-int		        fork_is_required(t_vect *command);
-int			    fork_failed(pid_t pid);
-int			    is_child(pid_t pid);
-int				is_exit(t_vect *command);
-int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
-int     	    using_heredoc(t_vect *command);
+int           	execute_redirections(t_bash *data, t_vect *command, t_redirection *redirection);
+void            restore_directions(t_redirection *redirection);
 
 /*
 ** ==========

@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_builin.c                                      :+:      :+:    :+:   */
+/*   restore_redirections.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/02 12:16:42 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 13:32:17 by cylemair         ###   ########.fr       */
+/*   Created: 2021/03/02 18:11:14 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/02 18:44:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-void		free_builtin(t_built **fct)
-{
-	int		i;
+/*
+** Use a backup file director to reverse the initial dup.
+** Recursively call the function on the next redirection
+*/
 
-	i = 0;
-	while (i != NB_BUILTIN && *fct)
+void	restore_directions(t_redirection *redirection)
+{
+	if (redirection)
 	{
-		ft_strdel(&(*fct)[i].name);
-		(*fct)[i].name = NULL;
-		(*fct)[i].f = NULL;
-		i++;
+		if (redirection->next)
+			restore_directions(redirection->next);
+		close(redirection->left_fd);
+		dup2(redirection->backup_fd, redirection->left_fd);
 	}
-	free(*fct);
-	*fct = NULL;
-	fct = NULL;
 }
