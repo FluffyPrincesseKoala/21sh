@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/01 16:22:31 by koala             #+#    #+#             */
-/*   Updated: 2021/03/01 16:37:12 by koala            ###   ########.fr       */
+/*   Created: 2021/03/01 16:22:31 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/02 18:59:17 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ static void	eof_update_heredoc(t_bash *data)
 			{
 				VECT = VECT_UP;
 				free_vector(&data->vector->down, FALSE);
-				data->is_here_doc = data->nb_heredoc - data->finish_heredoc;
-				data->expend = (data->is_here_doc) ? -1 : 0;
+				data->is_heredoc = data->nb_heredoc - data->finish_heredoc;
+				data->expend = (data->is_heredoc) ? -1 : 0;
 				return ;
 			}
 		}

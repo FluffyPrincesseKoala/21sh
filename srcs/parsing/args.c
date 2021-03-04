@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 12:26:04 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 12:56:24 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/04 16:48:56 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void    detach_arg(t_arg *arg, t_vect *cmd)
 void del_one_arg(t_arg *arg, t_vect *cmd)
 {
     detach_arg(arg, cmd);
-    ft_strdel(&CONTENT);
+    ft_strdel(&arg->content);
     free(arg);
     arg = NULL;
 }

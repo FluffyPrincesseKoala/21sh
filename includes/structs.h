@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 16:40:04 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/02 19:47:39 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,6 @@ typedef struct					s_redirection
 }								t_redirection;
 
 struct							s_bash;
-
-typedef struct					s_heredoc
-{
-	char						**doc_strings;
-	char						*eof;
-
-	int							finish_heredoc;
-	int							is_delim;
-}								t_heredoc;
 
 typedef struct					s_vect
 {
@@ -133,10 +124,10 @@ typedef struct					s_bash
 */
 	char						*doc_string;
 	char						*eof;
-	int							is_here_doc;
+	int							is_heredoc;
 	int							nb_heredoc;
 	int							finish_heredoc;
-	int							here_doc_delimiter;
+	int							heredoc_delimiter;
 /*
 ** SYSCALLS
 */

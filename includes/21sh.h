@@ -355,13 +355,13 @@ void			unset_env(t_bash *data, t_vect *command);
 ** ===========
 */
 
+t_arg	*set_heredoc(t_bash *data, t_vect **cmd);
 void			custom_return(void);
 void			clean_screen(t_bash *data);
 void			return_exit(t_bash *data);
 int				update_heredoc(t_bash *data);
-void			here_doc(t_bash *data);
+void			heredoc(t_bash *data);
 void			fill_heredoc_array(t_bash *data, t_vect *cmd, char **line);
-int				parse_newline_as_heredoc(t_vect **head, t_bash *data);
 
 
 /*

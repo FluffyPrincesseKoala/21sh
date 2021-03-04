@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/03/02 18:47:32 by cylemair         ###   ########.fr        #
+#    Updated: 2021/03/02 19:19:33 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,9 +73,9 @@ PARSE	=	srcs/parsing/args_creation.c			\
 			srcs/parsing/unquote.c					\
 			srcs/parsing/vector.c					\
 
-HEREDOC	=	srcs/heredoc/heredoc.c					\
-			srcs/heredoc/format_heredoc.c			\
-			srcs/heredoc/heredoc_array.c			\
+HEREDOC	=	srcs/heredoc/fill_heredoc_array.c		\
+			srcs/heredoc/heredoc.c					\
+			srcs/heredoc/parse_newline_as_heredoc.c	\
 			srcs/heredoc/update_heredoc.c			\
 
 TERM	=	srcs/terminal/arrow_left_right.c		\

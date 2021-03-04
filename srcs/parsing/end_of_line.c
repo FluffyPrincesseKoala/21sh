@@ -35,7 +35,7 @@ static int	handle_parsing_execution(t_bash *data)
 		ft_putchar('\n');
 		if (format_line_required(data))
 			format_line(data);
-		if (!data->is_here_doc && !data->error && data->vector->args->content)
+		if (!data->is_heredoc && !data->error && data->vector->args->content)
 			return (handle_commands(data, data->vector));
 	}
 	return (0);
@@ -74,7 +74,7 @@ int			end_of_line(t_bash **data)
 	key_last((*data));
 	if ((*data)->vector->down)
 		pull_line(&(*data)->vector);
-	if ((*data)->is_here_doc)
+	if ((*data)->is_heredoc)
 		update_heredoc((*data));
 	else if ((*data)->expend)
 		update_pending_line((*data));

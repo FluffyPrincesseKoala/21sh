@@ -55,10 +55,10 @@ void		return_exit(t_bash *data)
 	{
 		data_g->x = 0;
 		data_g->y = 0;
-		if (data->is_here_doc)
+		if (data->is_heredoc)
 		{
 			// kill heredoc
-			data->is_here_doc = 0;
+			data->is_heredoc = 0;
 		}
 		// kill expend
 		data->expend = 0;
