@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 18:59:31 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/26 13:35:49 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/02 17:33:11 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,14 @@ char			*use_shell_var(char **env, char *str)
 	return (result);
 }
 
-void			get_var(t_arg **head, char **env)
+void			get_var(t_arg *arg, char **env)
 {
-	t_arg		*arg;
-	char		*tmp;
+	char	*tmp;
 
-	arg = NULL;
-	if (head)
-		arg = *head;
-	while (arg)
+	if (arg->content && ft_strchr(arg->content, '$'))
 	{
-		if (arg && CONTENT && ft_strchr(CONTENT, '$'))
-		{
-			tmp = use_shell_var(env, CONTENT);
-			ft_strdel(&CONTENT);
-			CONTENT = ft_strdup(tmp);
-			ft_strdel(&tmp);
-		}
-		arg = arg->next;
+		tmp = use_shell_var(env, arg->content);
+		ft_strdel(&arg->content);
+		arg->content = tmp;
 	}
 }

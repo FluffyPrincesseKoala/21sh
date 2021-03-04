@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:50:02 by koala             #+#    #+#             */
-/*   Updated: 2021/03/02 13:09:44 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/04 17:44:29 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void		format_line(t_bash *data)
 	else
 		puterror(data->error);
 	if (is_heredoc(data))
-		here_doc(data);
+		heredoc(data);
 	free_array(table);
 	ft_strdel(&tmp);
 }

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 12:26:04 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/01 18:35:44 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/02 17:32:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_arg   *create_arg(char *content)
     
     if (new = ft_memalloc(sizeof(t_arg)))
     {
-        if (new->content = ft_strdup_free(&content))
+        if (new->content = content)
         {
             new->separator = contains_sperator(content);
             return (new);
@@ -31,7 +31,6 @@ t_arg   *create_arg(char *content)
 		}
     }
     ft_strdel(&content);
-    free(new);
     return (NULL);
 }
 

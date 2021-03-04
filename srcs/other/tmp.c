@@ -55,10 +55,10 @@ void		return_exit(t_bash *data)
 	{
 		data_g->x = 0;
 		data_g->y = 0;
-		if (data->is_here_doc)
+		if (data->is_heredoc)
 		{
 			// kill heredoc
-			data->is_here_doc = 0;
+			data->is_heredoc = 0;
 		}
 		// kill expend
 		data->expend = 0;
@@ -103,22 +103,6 @@ int			prompt(char **env, int short_prompt)
 		len += pstr(">");
 	}
 	return (len);
-}
-
-char		*get_env_var_value(char **env, char *var)
-{
-	int		i;
-	int		len;
-
-	i = 0;
-	while (env && env[i])
-	{
-		len = ft_strlendelim(env[i], '=', 0);
-		if (ft_strlen(var) == len && !ft_strncmp(env[i], var, len))
-			return (*(env + i) + len + 1);
-		i += 1;
-	}
-	return (NULL);
 }
 
 int			pending_line(char *str)

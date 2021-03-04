@@ -14,7 +14,7 @@
 * function typed "int" to return true/false -> tinier int
 
 ## Not forget to
-* fix here_doc format before using set_heredoc
+* fix heredoc_format before using set_heredoc
 * readapt the use of data->error
 * Set all concerned functions as static
 * change error formating

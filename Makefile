@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/03/01 19:58:30 by cylemair         ###   ########.fr        #
+#    Updated: 2021/03/02 19:19:33 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,19 +31,28 @@ NAME	=	21sh
 
 RM		=	rm -rf
 
-ENV		=	srcs/env/built_in.c						\
-			srcs/env/change_directory.c				\
-			srcs/env/env.c							\
+BUILTINS=	srcs/builtins/commands/change_directory.c	\
+			srcs/builtins/commands/history.c			\
+			srcs/builtins/commands/print_args.c			\
+			srcs/builtins/commands/print_env.c			\
+			srcs/builtins/commands/set_env.c			\
+			srcs/builtins/commands/unset_env.c			\
+			srcs/builtins/env_key_exists.c				\
+			srcs/builtins/free_builtin.c				\
+			srcs/builtins/init_builtin.c				\
+			srcs/builtins/select_builtin.c 				\
 
-EXEC	=	srcs/exec/execution.c					\
-			srcs/exec/heredoc_execution.c			\
-			srcs/exec/pipe.c						\
-			srcs/exec/redirections_execution.c		\
-			srcs/exec/redirections_parsing.c		\
-			srcs/exec/redirections_setup.c			\
-			srcs/exec/redirections_struct.c			\
-			srcs/exec/redirections_tools.c			\
-			srcs/exec/syscall_execution.c			\
+EXEC	=	srcs/execution/handle_commands.c					\
+			srcs/execution/handle_execution.c					\
+			srcs/execution/execute_command/choose_command_path.c\
+			srcs/execution/execute_command/execute_command.c	\
+			srcs/execution/pipe/handle_heredoc.c				\
+			srcs/execution/pipe/handle_pipe.c					\
+			srcs/execution/pipe/pipe_fork.c						\
+			srcs/execution/pipe/set_stdin_pipe_redirection.c	\
+			srcs/execution/pipe/write_heredoc.c					\
+			srcs/execution/redirections/execute_redirections.c	\
+			srcs/execution/redirections/restore_redirections.c	\
 
 PARSE	=	srcs/parsing/args_creation.c			\
 			srcs/parsing/args.c						\
@@ -56,14 +65,17 @@ PARSE	=	srcs/parsing/args_creation.c			\
 			srcs/parsing/line_content_to_args.c		\
 			srcs/parsing/parse_array.c				\
 			srcs/parsing/parse_word.c				\
+			srcs/parsing/redirections_parsing.c		\
+			srcs/parsing/redirections_setup.c		\
+			srcs/parsing/redirections_tools.c		\
 			srcs/parsing/split_all_whitespace.c		\
 			srcs/parsing/string.c					\
 			srcs/parsing/unquote.c					\
 			srcs/parsing/vector.c					\
 
-HEREDOC	=	srcs/heredoc/heredoc.c					\
-			srcs/heredoc/format_heredoc.c			\
-			srcs/heredoc/heredoc_array.c			\
+HEREDOC	=	srcs/heredoc/fill_heredoc_array.c		\
+			srcs/heredoc/heredoc.c					\
+			srcs/heredoc/parse_newline_as_heredoc.c	\
 			srcs/heredoc/update_heredoc.c			\
 
 TERM	=	srcs/terminal/arrow_left_right.c		\
@@ -80,13 +92,14 @@ TERM	=	srcs/terminal/arrow_left_right.c		\
 
 OTHER	=	srcs/other/boolean_tools.c				\
 			srcs/other/boolean_tools2.c				\
-			srcs/other/history.c					\
+			srcs/other/get_env_var_value.c			\
 			srcs/other/main.c 						\
 			srcs/other/print_error.c				\
+			srcs/other/redirections_struct.c		\
 			srcs/other/signals.c					\
 			srcs/other/tmp.c						\
 
-SRCS	=	$(ENV)		\
+SRCS	=	$(BUILTINS)	\
 			$(EXEC)		\
 			$(PARSE)	\
 			$(HEREDOC)	\

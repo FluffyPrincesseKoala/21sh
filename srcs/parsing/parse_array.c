@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 17:55:31 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/02 12:54:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +60,4 @@ char		**change_array_value(char **src, char *key, char *value)
 		i++;
 	}
 	return (src);
-}
-
-int			is_env_key_exist(char **env, char *key)
-{
-	int		i;
-
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strnequ(env[i], key, ft_strlen(key)))
-			return (1);
-		i++;
-	}
-	return (0);
 }

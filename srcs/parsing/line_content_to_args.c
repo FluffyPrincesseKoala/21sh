@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   line_content_to_args.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/01 20:42:16 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/02 16:47:13 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void		line_content_to_args(t_bash *data, char *line)
 	{
 		if ((current->separator = is_separator(line[i])))
 		{
+			set_up_command_redirections(data, current);
 			current = vect_new(NULL, NULL);
 			vect_add(&data->vector, current);
 			full_word = TRUE;
@@ -74,4 +75,5 @@ void		line_content_to_args(t_bash *data, char *line)
 			full_word = FALSE;
 		}
 	}
+	set_up_command_redirections(data, current);
 }

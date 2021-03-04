@@ -33,6 +33,8 @@ void	*free_bash(t_bash *data)
 {
 	if (data->env)
 		free_array(data->env);
+	if (data->args_array)
+		free_array(data->args_array);
 	data->env = NULL;
 	data->venv = NULL;
 	free_all_vectors(data->vector);
@@ -41,6 +43,7 @@ void	*free_bash(t_bash *data)
 	free_builtin(&data->builtin);
 	ft_strdel(&data->eof);
 	ft_strdel(&data->copied);
+	ft_strdel(&data->path);
 	free(data);
 	data = NULL;
 	arrow_key(NULL, NULL);
@@ -62,7 +65,7 @@ t_bash	*initialize_bash(char **env)
 		return (free_bash(data));
 	if (init_redirection_set_up_functions(data) == FAIL)
 		return (free_bash(data));
-	if (init_built_in(&data->builtin) == FAIL)
+	if (init_builtin(&data->builtin) == FAIL)
 		return (free_bash(data));
 	return (data);
 }

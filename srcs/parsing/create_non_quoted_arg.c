@@ -3,32 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   create_non_quoted_arg.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 19:42:42 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/01 20:35:47 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/02 17:26:18 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-static void	get_tilt(t_arg **head, char **env)
+static void	get_tilt(t_arg *arg, char **env)
 {
-	t_arg		*arg;
 	char		*path_to_home;
 
-	int i = 0;
-	arg = NULL;
-	if (head)
-		arg = *head;
-	while (arg)
+	if (CONTENT && ft_strchr(CONTENT, '~'))
 	{
-		if (CONTENT && ft_strchr(CONTENT, '~'))
-		{
-			path_to_home = get_env_var_value(env, "HOME");
-			CONTENT = ft_free_replaced_substr(CONTENT, "~", path_to_home);
-		}
-		arg = arg->next;
+		path_to_home = get_env_var_value(env, "HOME");
+		CONTENT = ft_free_replaced_substr(CONTENT, "~", path_to_home);
 	}
 }
 
@@ -45,8 +36,9 @@ size_t	    create_non_quoted_arg(t_bash *data, t_vect *cmd, char *line_extract)
 	else
 	{
 		add_arg(&cmd->args, new_arg);
-		get_var(&cmd->args, data->env);
-		get_tilt(&cmd->args, data->env);
+		get_var(new_arg, data->env);
+		get_tilt(new_arg, data->env);
+		parse_redirection_in_arg(data, cmd, new_arg);
 	}
 	return (len);
 }

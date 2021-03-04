@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_quoted_arg.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 19:41:08 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/01 20:34:56 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/02 17:38:03 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	handle_double_quote(t_bash *data, t_vect *cmd, t_arg *arg)
 		arg->content = ft_free_replaced_substr(arg->content, "\\\"", "\"");
 	if (ft_strstr(arg->content, "\\\\"))
 		arg->content = ft_free_replaced_substr(arg->content, "\\\\", "\\");
-	get_var(&cmd->args, data->env);
+	get_var(cmd->args, data->env);
 }
 
 size_t	    create_quoted_arg(t_bash *data, t_vect *cmd, char *line_substr, char quote)
