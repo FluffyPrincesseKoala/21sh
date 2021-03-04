@@ -334,6 +334,7 @@ int				update_heredoc(t_bash *data);
 void			here_doc(t_bash *data);
 void			fill_heredoc_array(t_bash *data, t_vect *cmd, char **line);
 int				parse_newline_as_heredoc(t_vect **head, t_bash *data);
+int			 	is_heredoc(t_bash *data);
 
 
 /*

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_word.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:50:02 by koala             #+#    #+#             */
-/*   Updated: 2021/03/01 18:40:54 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/02 13:09:44 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void		format_line(t_bash *data)
 	}
 	else
 		puterror(data->error);
-	if (!data->vector->doc_string && ft_strstr(data->vector->line, "<<"))
+	if (is_heredoc(data))
 		here_doc(data);
 	free_array(table);
 	ft_strdel(&tmp);

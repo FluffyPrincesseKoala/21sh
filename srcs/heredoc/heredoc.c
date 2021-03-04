@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/03/01 20:23:50 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/02 12:42:52 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ static t_arg	*set_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
 			if (data->is_here_doc)
 				is_doc = parse_newline_as_heredoc(vect, data);
 		}
-		if (lst->content && ft_strstr(lst->content, "<<"))
+		if (lst->content && ft_strequ(lst->content, "<<"))
 		{
 			if (!to_free)
 			{
@@ -104,7 +104,10 @@ static t_arg	*set_heredoc(t_bash *data, t_vect **vect, t_arg *lst)
 		lst = lst->next;
 	}
 	if (!(*vect)->eof && is_doc)
+	{
 		data->error = UNEXPECT_COMMAND_END_ERROR;
+		return (reset_data_heredoc(data));
+	}
 	return (to_free);
 }
 
@@ -116,7 +119,7 @@ static int	check_heredoc_format(t_bash *data, t_vect *cmd, t_arg *to_free)
 		{
 			data->error = SNTX_ERR;
 			to_free = reset_data_heredoc(data);
-			return (1);
+			return (-1);
 		}
 		else
 			to_free = set_heredoc(data, &cmd, cmd->args);
