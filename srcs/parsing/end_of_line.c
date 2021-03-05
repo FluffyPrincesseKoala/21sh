@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 11:17:30 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 11:22:38 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/05 15:08:12 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ static void		new_line(t_bash *data)
 	data->x = 0;
 	data->prompt_len = prompt(data->env, data->expend);
 	data->history_stack = 0;
+}
+
+static void		reset_conf_term()
+{
+	tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
 }
 
 int				end_of_line(t_bash **data)

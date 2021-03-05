@@ -6,17 +6,23 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/24 15:27:44 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 17:45:42 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/05 17:05:54 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-static int	init_term()
+void		unconf_term(void)
 {
-	int     ret;
-	char    *term_type = getenv("TERM");
+	tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
+}
 
+static int	init_term(void)
+{
+	int		ret;
+	char	*term_type;
+
+	term_type = getenv("TERM");
 	if (term_type == NULL)
 	{
 		put_error_msg(E_TERM_SET);
@@ -33,10 +39,10 @@ static int	init_term()
 		put_error_msg(E_TERM_DEF);
 		return (-1);
 	}
-	return 0;
+	return (0);
 }
 
-int         conf_term()
+int			conf_term(void)
 {
 	if (!init_term())
 	{
@@ -44,22 +50,12 @@ int         conf_term()
 			return (-1);
 		if (tcgetattr(STDIN_FILENO, &new_term) == -1)
 			return (-1);
-		new_term.c_lflag &= ~(ICANON|ECHO);
+		new_term.c_lflag &= ~(ICANON | ECHO);
 		new_term.c_cc[VMIN] = 1;
 		new_term.c_cc[VTIME] = 0;
 		if (tcsetattr(STDIN_FILENO, TCSANOW, &new_term) == -1)
 			return (-1);
-    	return (0);
+		return (0);
 	}
 	return (-1);
-}
-
-void	    unconf_term()
-{
-	tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
-}
-
-void		reset_conf_term()
-{
-	tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
 }

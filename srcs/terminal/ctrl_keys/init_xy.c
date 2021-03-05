@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ctrl_key_vertical.c                                :+:      :+:    :+:   */
+/*   init_xy.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 16:20:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 19:10:52 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/05 16:50:38 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	len_between_last_delim(char *str, char delim, int start)
 	return (i);
 }
 
-static int  get_curent_line(char *str, int pos, int max, int prompt)
+static int	get_curent_line(char *str, int pos, int max, int prompt)
 {
 	int				i;
 	int				y;
@@ -45,7 +45,7 @@ static int  get_curent_line(char *str, int pos, int max, int prompt)
 	return (y);
 }
 
-void        init_xy(t_bash *data, int *x, int *y, int max)
+void		init_xy(t_bash *data, int *x, int *y, int max)
 {
 	if (!(*y = get_curent_line(LINE, data->iterator, max, data->prompt_len)))
 	{

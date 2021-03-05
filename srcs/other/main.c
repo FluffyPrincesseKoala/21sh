@@ -90,7 +90,7 @@ void		*free_bash(t_bash *data)
 	ft_strdel(&data->path);
 	free(data);
 	data = NULL;
-	arrow_key(NULL, NULL);
+	termi(NULL, NULL);
 	return (NULL);
 }
 

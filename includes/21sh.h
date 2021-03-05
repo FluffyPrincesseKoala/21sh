@@ -134,7 +134,7 @@ char		**add_value_to_array(char **src, char *value);
 
 void		term_put(char *esc);
 
-void		arrow_key(t_bash *data, char *buff);
+void		termi(t_bash *data, char *buff);
 
 void		key_last(t_bash *data);
 void		key_start(t_bash *data);
@@ -235,7 +235,6 @@ t_term		*find_cursor_node(t_term **head, int idx, int idx_max, int plen);
 */
 int			conf_term();
 void		unconf_term();
-void		reset_conf_term();
 
 /*
 ** Tools
@@ -284,7 +283,7 @@ int             is_quote(char c);
 ** ==========
 */
 
-void		    clear_struct(t_term **cursor);
+void		    clear_cursor_struct(t_term **cursor);
 void			free_redirections(t_vect *command);
 
 
@@ -359,6 +358,7 @@ void			format_line(t_bash *data);
 void		    free_array(char **array);
 int				handle_parsing_execution(t_bash *data);
 void		    line_content_to_args(t_bash *data, char *line);
+void			push_entry(t_bash *data, char *entry, char **line, int pos);
 char			*use_shell_var(char **env, char *str);
 
 /*
@@ -393,6 +393,25 @@ char            *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, 
 int				search_left_fd(t_vect *cmd, t_arg *arg, int def, int *error);
 int             search_right_fd(t_vect *cmd, t_arg *arg, char *substring, int *error);
 int				setup_command_redirections(t_bash *data, t_vect *cmd);
+
+/*
+** ==========
+**  TERMINAL
+** ==========
+*/
+
+void			init_key_functions(t_key **fct);
+
+/*
+** Arrows
+*/
+void			clear_term(char *str);
+int				get_y_cursor(t_term *src);
+
+/*
+** Simple Keys
+*/
+char			*delchar(char *ref, int pos);
 
 /*
 ** ===================
