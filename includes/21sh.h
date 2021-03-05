@@ -360,6 +360,7 @@ int				handle_parsing_execution(t_bash *data);
 void		    line_content_to_args(t_bash *data, char *line);
 void			push_entry(t_bash *data, char *entry, char **line, int pos);
 char			*use_shell_var(char **env, char *str);
+char			is_separator(char c);
 
 /*
 ** Args

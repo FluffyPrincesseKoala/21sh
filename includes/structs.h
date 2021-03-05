@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 19:47:39 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/05 18:59:12 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct					s_term
 typedef struct					s_arg
 {
 	char						*content;
-	int							separator;
 	struct s_arg				*previous;
 	struct s_arg				*next;
 }								t_arg;

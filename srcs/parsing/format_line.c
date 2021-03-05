@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   format_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:50:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 14:51:17 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/05 19:02:38 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,31 +39,6 @@ static void	get_post_separator_args(
 		ft_strdel(&substring);
 	}
 	data->error = MALLOC_ERROR;
-}
-
-static void	parse_args(t_bash *data, t_vect *current)
-{
-	t_arg			*arg;
-	unsigned int	i;
-	unsigned int	len;
-	unsigned int	separator_idx;
-
-	i = 0;
-	len = 0;
-	separator_idx = 0;
-	arg = current->args;
-	while (arg)
-	{
-		if ((separator_idx = arg->separator) != -1)
-		{
-			current->separator = CONTENT[separator_idx];
-			if ((len = ft_strlen(CONTENT)) != separator_idx + 1)
-				get_post_separator_args(data, current, arg, separator_idx + 1);
-			detach_args(current, arg);
-			CONTENT = ft_strsub_free(&CONTENT, 0, separator_idx);
-		}
-		arg = arg->next;
-	}
 }
 
 static int	is_heredoc(t_bash *data)
@@ -101,18 +76,9 @@ void		format_line(t_bash *data)
 		if (ft_arraylen(table = ft_strsplit(tmp, ' ')))
 			line_content_to_args(data, LINE);
 	}
-	if (VECT->args && !data->error)
-	{
-		loop = VECT;
-		while (loop)
-		{
-			parse_args(data, loop);
-			loop = loop->next;
-		}
-	}
-	else
+	if (!VECT->args || data->error)
 		puterror(data->error);
-	if (is_heredoc(data))
+	else if (is_heredoc(data))
 		heredoc(data);
 	free_array(table);
 	ft_strdel(&tmp);

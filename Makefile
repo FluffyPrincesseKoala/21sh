@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
+#    By: koala <koala@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/03/05 16:45:51 by cylemair         ###   ########.fr        #
+#    Updated: 2021/03/05 19:06:37 by koala            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,63 +83,64 @@ PARSE	=	srcs/parsing/args/add_arg.c										\
 			srcs/parsing/line_content_to_args.c								\
 			srcs/parsing/push_entry.c										\
 			srcs/parsing/use_shell_var.c									\
+			srcs/parsing/utils/is_separator.c								\
 
-TERM	=	srcs/terminal/init_key_functions.c			\
-			srcs/terminal/termi.c						\
-			srcs/terminal/arrows/arrow_down.c			\
-			srcs/terminal/arrows/arrow_left.c			\
-			srcs/terminal/arrows/arrow_right.c			\
-			srcs/terminal/arrows/arrow_up.c				\
-			srcs/terminal/arrows/get_y_cursor.c			\
-			srcs/terminal/arrows/clear_term.c			\
-			srcs/terminal/ctrl_keys/ctrl_down.c			\
-			srcs/terminal/ctrl_keys/ctrl_left.c			\
-			srcs/terminal/ctrl_keys/ctrl_right.c		\
-			srcs/terminal/ctrl_keys/ctrl_up.c			\
-			srcs/terminal/ctrl_keys/init_xy.c			\
-			srcs/terminal/selections/select_back.c		\
-			srcs/terminal/selections/select_copy.c		\
-			srcs/terminal/selections/select_next.c		\
-			srcs/terminal/selections/select_paste.c		\
-			srcs/terminal/simple_keys/delchar.c			\
-			srcs/terminal/simple_keys/key_back.c		\
-			srcs/terminal/simple_keys/key_last.c		\
-			srcs/terminal/simple_keys/key_start.c		\
-			srcs/terminal/simple_keys/key_suppr.c		\
-			srcs/terminal/utils/clear_cursor_struct.c	\
-			srcs/terminal/utils/conf_term.c				\
-			srcs/terminal/utils/find_cursor_node.c		\
-			srcs/terminal/utils/get_win_max_col.c		\
-			srcs/terminal/utils/move_left.c				\
-			srcs/terminal/utils/move_right.c			\
-			srcs/terminal/utils/print_rest.c			\
-			srcs/terminal/utils/set_cursors.c			\
-			srcs/terminal/utils/uncolor.c				\
-			srcs/terminal/utils/unselect.c				\
-			srcs/terminal/utils/term_put.c				\
+TERM	=	srcs/terminal/init_key_functions.c								\
+			srcs/terminal/termi.c											\
+			srcs/terminal/arrows/arrow_down.c								\
+			srcs/terminal/arrows/arrow_left.c								\
+			srcs/terminal/arrows/arrow_right.c								\
+			srcs/terminal/arrows/arrow_up.c									\
+			srcs/terminal/arrows/get_y_cursor.c								\
+			srcs/terminal/arrows/clear_term.c								\
+			srcs/terminal/ctrl_keys/ctrl_down.c								\
+			srcs/terminal/ctrl_keys/ctrl_left.c								\
+			srcs/terminal/ctrl_keys/ctrl_right.c							\
+			srcs/terminal/ctrl_keys/ctrl_up.c								\
+			srcs/terminal/ctrl_keys/init_xy.c								\
+			srcs/terminal/selections/select_back.c							\
+			srcs/terminal/selections/select_copy.c							\
+			srcs/terminal/selections/select_next.c							\
+			srcs/terminal/selections/select_paste.c							\
+			srcs/terminal/simple_keys/delchar.c								\
+			srcs/terminal/simple_keys/key_back.c							\
+			srcs/terminal/simple_keys/key_last.c							\
+			srcs/terminal/simple_keys/key_start.c							\
+			srcs/terminal/simple_keys/key_suppr.c							\
+			srcs/terminal/utils/clear_cursor_struct.c						\
+			srcs/terminal/utils/conf_term.c									\
+			srcs/terminal/utils/find_cursor_node.c							\
+			srcs/terminal/utils/get_win_max_col.c							\
+			srcs/terminal/utils/move_left.c									\
+			srcs/terminal/utils/move_right.c								\
+			srcs/terminal/utils/print_rest.c								\
+			srcs/terminal/utils/set_cursors.c								\
+			srcs/terminal/utils/uncolor.c									\
+			srcs/terminal/utils/unselect.c									\
+			srcs/terminal/utils/term_put.c									\
 
-OTHER	=	srcs/other/boolean_tools.c				\
-			srcs/other/boolean_tools2.c				\
-			srcs/other/get_env_var_value.c			\
-			srcs/other/main.c 						\
-			srcs/other/loop.c						\
-			srcs/other/print_error.c				\
-			srcs/other/redirections_struct.c		\
-			srcs/other/signals.c					\
-			srcs/other/tmp.c						\
+OTHER	=	srcs/other/boolean_tools.c										\
+			srcs/other/boolean_tools2.c										\
+			srcs/other/get_env_var_value.c									\
+			srcs/other/main.c 												\
+			srcs/other/loop.c												\
+			srcs/other/print_error.c										\
+			srcs/other/redirections_struct.c								\
+			srcs/other/signals.c											\
+			srcs/other/tmp.c												\
 
-SROOT	=	srcs/add_value_to_array.c	\
-			srcs/free_vector.c			\
-			srcs/pchar.c				\
-			srcs/pull_line.c			\
-			srcs/vect_new.c				\
+SROOT	=	srcs/add_value_to_array.c										\
+			srcs/free_vector.c												\
+			srcs/pchar.c													\
+			srcs/pull_line.c												\
+			srcs/vect_new.c													\
 
-SRCS	=	$(BUILTINS)					\
-			$(EXEC)						\
-			$(PARSE)					\
-			$(TERM)						\
-			$(OTHER)					\
-			$(SROOT)					\
+SRCS	=	$(BUILTINS)														\
+			$(EXEC)															\
+			$(PARSE)														\
+			$(TERM)															\
+			$(OTHER)														\
+			$(SROOT)														\
 			
 
 OBJS	=	$(SRCS:.c=.o)
