@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   select_builtin.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 12:18:26 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 13:32:11 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/05 19:27:01 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void		select_builtin(t_bash *data, t_vect *command)
 	i = 0;
 	while (i != NB_BUILTIN)
 	{
-		if (ft_strequ(command->args->content, data->builtin[i].name))
+		if (command->args && ft_strequ(command->args->content, data->builtin[i].name))
 			command->builtin = data->builtin[i].f;
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/05 17:34:48 by koala             #+#    #+#             */
-/*   Updated: 2021/03/02 13:09:30 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/05 19:21:05 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	format_line_required(t_bash *data)
 
 int	is_exit(t_vect *command)
 {
-	if (ft_strequ(command->args->content, "exit"))
+	if (command->args && ft_strequ(command->args->content, "exit"))
 		return (TRUE);
 	return (FALSE);
 }
