@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:28:27 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 11:36:04 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/05 11:47:25 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,4 @@ void		fill_heredoc_array(t_bash *data, t_vect *cmd, char **line)
 		else
 			add_to_heredoc_array(cmd, line);
 	}
-}
-
-int			 is_heredoc(t_bash *data)
-{
-	t_vect	*current;
-	t_arg	*args;
-
-	if (!data->vector->doc_string && (current = data->vector))
-	{
-		if (ft_strstr(data->vector->line, "<<"))
-		{
-			while (current && (args = current->args))
-			{
-				while (args)
-				{
-					if (ft_strequ(args->content, "<<"))
-						return (TRUE);
-					args = args->next;
-				}
-				current = current->next;
-			}
-		}
-	}
-	return (FALSE);
 }

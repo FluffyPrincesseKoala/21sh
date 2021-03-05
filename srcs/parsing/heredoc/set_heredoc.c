@@ -1,57 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_newline_as_heredoc.c                         :+:      :+:    :+:   */
+/*   set_heredoc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:34:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/04 19:54:56 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/05 14:50:45 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
-
-static void	unlink_free_vector(t_vect **to_free, t_vect *new_next)
-{
-	t_vect	*vect;
-	t_vect	*nxt_vect;
-	t_arg	*nxt_arg;
-
-	if (to_free && (vect = (*to_free)->next))
-	{
-		while (vect && vect != new_next)
-		{
-			nxt_vect = vect->next;
-			ft_strdel(&vect->line);
-			free_all_args(&vect->args, FALSE);
-			free(vect);
-			vect = nxt_vect;
-		}
-		(*to_free)->next = new_next;
-		if (!new_next)
-			(*to_free)->separator = 0;
-	}
-}
-
-/*
-**	Heredoc parse line with "<<" substring to get EOF sequence
-*/
-
-int	is_eof(t_vect *cmd)
-{
-	int		current;
-	
-
-	current = 0;
-	while (cmd->doc_string && cmd->doc_string[current])
-	{
-		if (ft_strequ(cmd->eof, cmd->doc_string[current]))
-			return (1);
-		current++;
-	}
-	return (0);
-}
 
 static char	*concat_args_in_heredoc(t_arg *arg)
 {
@@ -78,14 +37,35 @@ static char	*concat_args_in_heredoc(t_arg *arg)
 	return (new);
 }
 
-static int	parse_newline_as_heredoc(t_bash *data, t_vect *cmd, t_vect *next_doc)
+static void	unlink_free_vector(t_vect **to_free, t_vect *new_next)
+{
+	t_vect	*vect;
+	t_vect	*nxt_vect;
+	t_arg	*nxt_arg;
+
+	if (to_free && (vect = (*to_free)->next))
+	{
+		while (vect && vect != new_next)
+		{
+			nxt_vect = vect->next;
+			ft_strdel(&vect->line);
+			free_all_args(&vect->args, FALSE);
+			free(vect);
+			vect = nxt_vect;
+		}
+		(*to_free)->next = new_next;
+		if (!new_next)
+			(*to_free)->separator = 0;
+	}
+}
+
+static int	parse_newline_as_heredoc(
+	t_bash *data, t_vect *cmd, t_vect *next_doc)
 {
 	char	*new;
 	int		is_finish;
 	t_vect	*to_free;
 
-	while (cmd && cmd->separator != '\n')
-		cmd = cmd->next;
 	if (cmd && cmd->separator == '\n')
 	{
 		to_free = cmd;
@@ -109,6 +89,21 @@ static int	parse_newline_as_heredoc(t_bash *data, t_vect *cmd, t_vect *next_doc)
 	return (0);
 }
 
+static int	get_content_in_new_line(t_bash *data, t_vect *cmd, t_arg *arg)
+{
+	t_vect *to_free;
+
+	ft_strdel(&cmd->eof);
+	if (!arg->content)
+		data->error = UNEXPECT_COMMAND_END_ERROR;
+	if (!(cmd->eof = ft_strdup(arg->content)))
+		data->error = MALLOC_ERROR;
+	to_free = cmd;
+	while (cmd && cmd->separator != '\n')
+		cmd = cmd->next;
+	return (parse_newline_as_heredoc(data, cmd, to_free));
+}
+
 /*
 **	parse lst to:
 **	get vect->eof
@@ -117,26 +112,19 @@ static int	parse_newline_as_heredoc(t_bash *data, t_vect *cmd, t_vect *next_doc)
 **	return the first arg to free
 */
 
-t_arg	*set_heredoc(t_bash *data, t_vect **cmd)
+t_arg		*set_heredoc(t_bash *data, t_vect **cmd)
 {
 	t_arg		*arg;
 	t_arg		*to_free;
 	int			is_doc;
 
-	to_free	= NULL;
+	to_free = NULL;
 	is_doc = 0;
 	arg = (*cmd)->args;
 	while (arg && is_doc != -1)
 	{
 		if (is_doc == 1)
-		{
-			ft_strdel(&(*cmd)->eof);
-			if (!arg->content)
-				data->error = UNEXPECT_COMMAND_END_ERROR;
-			if (!((*cmd)->eof = ft_strdup(arg->content)))
-				data->error = MALLOC_ERROR;
-			is_doc = parse_newline_as_heredoc(data, *cmd, *cmd);
-		}
+			is_doc = get_content_in_new_line(data, *cmd, arg);
 		if (arg->content && ft_strstr(arg->content, "<<"))
 		{
 			if (!to_free)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/03/04 17:43:29 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/05 14:50:07 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **	beware there's sexy redirection inside
 */
 
-static void	free_args_until_eof(t_vect *cmd, t_arg **current)
+static void		free_args_until_eof(t_vect *cmd, t_arg **current)
 {
 	if (!ft_strequ((*current)->content, cmd->eof))
 		free_args_until_eof(cmd, &(*current)->next);
@@ -29,7 +29,7 @@ static void	free_args_until_eof(t_vect *cmd, t_arg **current)
 **	by spliting on << character
 */
 
-static int	format_heredoc(t_vect **vect, t_arg **to_check)
+static int		format_heredoc(t_vect **vect, t_arg **to_check)
 {
 	t_arg	*new;
 	char	**splited;
@@ -65,7 +65,7 @@ static t_arg	*reset_data_heredoc(t_bash *data)
 	return (NULL);
 }
 
-static int	check_heredoc_format(t_bash *data, t_vect *cmd, t_arg *to_free)
+static int		check_heredoc_format(t_bash *data, t_vect *cmd, t_arg *to_free)
 {
 	if (to_free && !to_free->previous)
 	{
@@ -90,7 +90,7 @@ static int	check_heredoc_format(t_bash *data, t_vect *cmd, t_arg *to_free)
 **	and vector (for heredoc string)
 */
 
-void		heredoc(t_bash *data)
+void			heredoc(t_bash *data)
 {
 	t_vect	*cmd;
 	int		count;

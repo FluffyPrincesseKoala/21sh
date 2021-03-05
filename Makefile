@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/03/04 19:28:19 by cylemair         ###   ########.fr        #
+#    Updated: 2021/03/05 12:01:08 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,6 +64,12 @@ PARSE	=	srcs/parsing/args/add_arg.c										\
 			srcs/parsing/args/free_all_args.c								\
 			srcs/parsing/args/insert_new_arg.c								\
 			srcs/parsing/args/parse_var.c									\
+			srcs/parsing/heredoc/fill_heredoc_array.c						\
+			srcs/parsing/heredoc/heredoc.c									\
+			srcs/parsing/heredoc/is_eof.c									\
+			srcs/parsing/heredoc/is_heredoc_end.c							\
+			srcs/parsing/heredoc/set_heredoc.c								\
+			srcs/parsing/heredoc/update_heredoc.c							\
 			srcs/parsing/redirections/init_redirections_setup_functions.c	\
 			srcs/parsing/redirections/is_stdout_and_stderr_redirection.c	\
 			srcs/parsing/redirections/search_file_word.c					\
@@ -77,11 +83,6 @@ PARSE	=	srcs/parsing/args/add_arg.c										\
 			srcs/parsing/line_content_to_args.c								\
 			srcs/parsing/push_entry.c										\
 			srcs/parsing/use_shell_var.c									\
-
-HEREDOC	=	srcs/heredoc/fill_heredoc_array.c		\
-			srcs/heredoc/heredoc.c					\
-			srcs/heredoc/parse_newline_as_heredoc.c	\
-			srcs/heredoc/update_heredoc.c			\
 
 TERM	=	srcs/terminal/arrow_left_right.c		\
 			srcs/terminal/arrow_up_down.c			\
@@ -114,7 +115,6 @@ SROOT	=	srcs/add_value_to_array.c	\
 SRCS	=	$(BUILTINS)					\
 			$(EXEC)						\
 			$(PARSE)					\
-			$(HEREDOC)					\
 			$(TERM)						\
 			$(OTHER)					\
 			$(SROOT)					\

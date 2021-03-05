@@ -112,7 +112,6 @@ struct termios	new_term;
 t_bash	*data_g;
 
 
-int			handle_parsing_execution(t_bash *data);
 /*
 **	t_vect manipulation (keep current and old entry)
 */
@@ -170,7 +169,6 @@ void		*free_bash(t_bash *data);
 
 int			next_delim(char **array, int start);
 void		read_separator(char **table, t_bash *data);
-void		format_line(t_bash *data);
 int			pending_line(char *str);
 
 
@@ -244,6 +242,8 @@ void		reset_conf_term();
 */
 int			get_win_max_col();
 char			*get_env_var_value(char **env, char *name);
+void			clean_screen(t_bash *data);
+void			return_exit(t_bash *data);
 
 /*
 ** Redirections
@@ -269,18 +269,14 @@ int     	    using_heredoc(t_vect *command);
 
 int			    ft_strlendelim(char *str, char delim, int start);
 void		    pull_line(t_vect **head);
-void		    push_entry(t_bash *data, char *entry, char **line, int pos);
 
 
 
 /*
 ** End of line
 */
-int   		    end_of_line(t_bash **data);
 int				format_line_required(t_bash *data);
 int             is_quote(char c);
-void		    line_content_to_args(t_bash *data, char *line);
-char			*use_shell_var(char **env, char *str);
 
 /*
 ** ==========
@@ -289,8 +285,14 @@ char			*use_shell_var(char **env, char *str);
 */
 
 void		    clear_struct(t_term **cursor);
-void		    free_array(char **array);
 void			free_redirections(t_vect *command);
+
+
+
+
+
+
+
 
 /*
 ** ===========
@@ -347,26 +349,17 @@ int           	execute_redirections(t_bash *data, t_vect *command, t_redirection
 void            restore_directions(t_redirection *redirection);
 
 /*
-** ===========
-**	HEREDOC
-** ===========
-*/
-
-t_arg	*set_heredoc(t_bash *data, t_vect **cmd);
-void			custom_return(void);
-void			clean_screen(t_bash *data);
-void			return_exit(t_bash *data);
-int				update_heredoc(t_bash *data);
-void			heredoc(t_bash *data);
-void			fill_heredoc_array(t_bash *data, t_vect *cmd, char **line);
-int			 	is_heredoc(t_bash *data);
-int				is_eof(t_vect *cmd);
-
-/*
 ** =========
 **  PARSING
 ** =========
 */
+
+int   		    end_of_line(t_bash **data);
+void			format_line(t_bash *data);
+void		    free_array(char **array);
+int				handle_parsing_execution(t_bash *data);
+void		    line_content_to_args(t_bash *data, char *line);
+char			*use_shell_var(char **env, char *str);
 
 /*
 ** Args
@@ -380,6 +373,16 @@ void		    detach_arg(t_arg *arg, t_vect *cmd);
 void    	    free_all_args(t_arg **arg, int flag);
 int    		    insert_new_arg(t_vect *command, t_arg *previous, char *s);
 void		    parse_var(t_arg *head, char **env);
+
+/*
+** Heredoc
+*/
+void			fill_heredoc_array(t_bash *data, t_vect *cmd, char **line);
+void			heredoc(t_bash *data);
+int				is_eof(t_vect *cmd);
+int				is_heredoc_end(t_bash *data, char *line, t_vect *vector);
+t_arg			*set_heredoc(t_bash *data, t_vect **cmd);
+int				update_heredoc(t_bash *data);
 
 /*
 ** Redirections

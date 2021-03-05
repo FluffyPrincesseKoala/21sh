@@ -7,6 +7,7 @@
 		"curses.h": "c",
 		"21sh.h": "c",
 		"cstdlib": "c",
-		"structs.h": "c"
+		"structs.h": "c",
+		"libft.h": "c"
 	}
 }
