@@ -1,18 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pchar.c                                            :+:      :+:    :+:   */
+/*   is_child.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/04 19:01:39 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/04 19:01:52 by cylemair         ###   ########.fr       */
+/*   Created: 2021/03/05 18:19:41 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/05 18:19:50 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-int pchar(int c)
+int    is_child(pid_t pid)
 {
-	return(write(1, &c, 1));
+    if (pid == 0)
+        return (TRUE);
+    else
+        return (FALSE);   
 }

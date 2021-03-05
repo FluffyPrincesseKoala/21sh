@@ -158,7 +158,7 @@ int			prompt(char **env, int short_prompt);
 void		loop(t_bash *data);
 void		handle_fork(t_bash *data, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
-void		puterror(int error);
+void		put_error_code(int error);
 void 		setup_signals();
 void		put_error_msg(char *error);
 void		*free_bash(t_bash *data);

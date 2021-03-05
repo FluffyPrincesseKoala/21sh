@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 19:15:20 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 11:27:53 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/05 18:25:52 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,14 @@ static int	is_pending_line(t_bash *data)
 		ft_putchar('\n');
 	}
 	return (data->expend);
+}
+
+static int	format_line_required(t_bash *data)
+{
+	if ((!data->vector->doc_string && !data->finish_heredoc)
+		|| !data->vector->args)
+		return (TRUE);
+	return (FALSE);
 }
 
 int			handle_parsing_execution(t_bash *data)

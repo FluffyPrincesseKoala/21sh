@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:50:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 14:51:17 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/05 18:59:23 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void		format_line(t_bash *data)
 		}
 	}
 	else
-		puterror(data->error);
+		put_error_code(data->error);
 	if (is_heredoc(data))
 		heredoc(data);
 	free_array(table);

@@ -6,11 +6,21 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:03:22 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 18:36:47 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/05 18:21:29 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
+
+static int	using_heredoc(t_vect *command)
+{
+    if (command->doc_string != NULL)
+    {
+        return TRUE;
+    }
+    else
+        return FALSE;    
+}
 
 /*
 ** Create a pipe, redirect pipe reading file descriptor to the command STDIN.
@@ -18,7 +28,7 @@
 **  command in the parent.
 */
 
-void	handle_heredoc(t_bash *data, t_vect *command)
+void		handle_heredoc(t_bash *data, t_vect *command)
 {
 	int	pipe_fd[2];
 

@@ -3,26 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   print_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:27:52 by koala             #+#    #+#             */
-/*   Updated: 2021/02/10 20:43:18 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/05 18:59:23 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <21sh.h>
 
-void		put_error_msg(char *error)
-{
-	if (error)
-	{
-		ft_putstr_fd(RED, STDERR);
-		ft_putstr_fd(error, STDERR);
-		ft_putstr_fd(RESET, STDERR);
-	}
-}
-
-void		puterror(int error)
+void		put_error_code(int error)
 {
 	ft_putstr_fd(RED, STDERR);
 	ft_putnbr_fd(error, STDERR);

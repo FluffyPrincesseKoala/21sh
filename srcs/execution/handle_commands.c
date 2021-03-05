@@ -6,11 +6,43 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 17:57:53 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 18:46:44 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/05 18:26:20 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
+
+static int	is_exit(t_vect *command)
+{
+	if (ft_strequ(command->args->content, "exit"))
+		return (TRUE);
+	return (FALSE);
+}
+
+static int	fork_is_required(t_vect *command)
+{
+    if (command->builtin && !command_is_piped(command))
+        return FALSE;
+    else
+        return TRUE;    
+}
+
+/*
+** If the arg match a builtin command, add it to the current command structure
+*/
+
+static void	select_builtin(t_bash *data, t_vect *command)
+{
+	int	i;
+
+	i = 0;
+	while (i != NB_BUILTIN)
+	{
+		if (ft_strequ(command->args->content, data->builtin[i].name))
+			command->builtin = data->builtin[i].f;
+		i++;
+	}
+}
 
 /*
 ** After setting fields in the command structure, handle its execution inside

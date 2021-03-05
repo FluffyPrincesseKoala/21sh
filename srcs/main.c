@@ -73,6 +73,24 @@ static void	free_all_vectors(t_vect *vect)
 	}
 }
 
+static void	free_builtin(t_built **fct)
+{
+	int		i;
+
+	i = 0;
+	while (i != NB_BUILTIN && *fct)
+	{
+		ft_strdel(&(*fct)[i].name);
+		(*fct)[i].name = NULL;
+		(*fct)[i].f = NULL;
+		i++;
+	}
+	free(*fct);
+	*fct = NULL;
+	fct = NULL;
+}
+
+
 void		*free_bash(t_bash *data)
 {
 	if (data->env)
@@ -121,7 +139,7 @@ int		main(int argc, char **argv, char **env)
 	if (argc == 1)
 	{
 		if (!(data = initialize_bash(env)))
-			puterror(MALLOC_ERROR);
+			put_error_code(MALLOC_ERROR);
 		else if (!conf_term())
 		{
 			data_g = data;

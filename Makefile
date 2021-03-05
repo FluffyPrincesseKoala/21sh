@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/03/05 16:45:51 by cylemair         ###   ########.fr        #
+#    Updated: 2021/03/05 18:53:18 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,11 +37,9 @@ BUILTINS=	srcs/builtins/commands/change_directory.c	\
 			srcs/builtins/commands/print_env.c			\
 			srcs/builtins/commands/set_env.c			\
 			srcs/builtins/commands/unset_env.c			\
-			srcs/builtins/change_value_in_array.c		\
-			srcs/builtins/env_key_exists.c				\
-			srcs/builtins/free_builtin.c				\
+			srcs/builtins/utils/change_value_in_array.c	\
+			srcs/builtins/utils/env_key_exists.c		\
 			srcs/builtins/init_builtin.c				\
-			srcs/builtins/select_builtin.c 				\
 
 EXEC	=	srcs/execution/handle_commands.c					\
 			srcs/execution/handle_execution.c					\
@@ -55,7 +53,11 @@ EXEC	=	srcs/execution/handle_commands.c					\
 			srcs/execution/redirections/execute_redirections.c	\
 			srcs/execution/redirections/restore_redirections.c	\
 
-PARSE	=	srcs/parsing/args/add_arg.c										\
+PARSE	=	srcs/parsing/end_of_line.c										\
+			srcs/parsing/format_line.c										\
+			srcs/parsing/handle_parsing_execution.c							\
+			srcs/parsing/line_content_to_args.c								\
+			srcs/parsing/args/add_arg.c										\
 			srcs/parsing/args/create_arg.c									\
 			srcs/parsing/args/create_quoted_arg.c							\
 			srcs/parsing/args/create_non_quoted_arg.c						\
@@ -76,13 +78,11 @@ PARSE	=	srcs/parsing/args/add_arg.c										\
 			srcs/parsing/redirections/search_left_fd.c						\
 			srcs/parsing/redirections/search_right_fd.c						\
 			srcs/parsing/redirections/setup_command_redirections.c			\
-			srcs/parsing/end_of_line.c										\
-			srcs/parsing/format_line.c										\
-			srcs/parsing/free_array.c										\
-			srcs/parsing/handle_parsing_execution.c							\
-			srcs/parsing/line_content_to_args.c								\
-			srcs/parsing/push_entry.c										\
-			srcs/parsing/use_shell_var.c									\
+			srcs/parsing/utils/add_value_to_array.c							\
+			srcs/parsing/utils/free_array.c									\
+			srcs/parsing/utils/free_vector.c								\
+			srcs/parsing/utils/push_entry.c									\
+			srcs/parsing/utils/use_shell_var.c								\
 
 TERM	=	srcs/terminal/init_key_functions.c			\
 			srcs/terminal/termi.c						\
@@ -118,21 +118,21 @@ TERM	=	srcs/terminal/init_key_functions.c			\
 			srcs/terminal/utils/unselect.c				\
 			srcs/terminal/utils/term_put.c				\
 
-OTHER	=	srcs/other/boolean_tools.c				\
-			srcs/other/boolean_tools2.c				\
-			srcs/other/get_env_var_value.c			\
+OTHER	=	srcs/other/get_env_var_value.c			\
 			srcs/other/main.c 						\
 			srcs/other/loop.c						\
 			srcs/other/print_error.c				\
 			srcs/other/redirections_struct.c		\
 			srcs/other/signals.c					\
 			srcs/other/tmp.c						\
+			srcs/boolean/command_is_piped.c			\
+			srcs/boolean/fork_failed.c				\
+			srcs/boolean/is_child.c					\
+			srcs/boolean/is_quote.c					\
 
-SROOT	=	srcs/add_value_to_array.c	\
-			srcs/free_vector.c			\
-			srcs/pchar.c				\
-			srcs/pull_line.c			\
-			srcs/vect_new.c				\
+SROOT	=	srcs/utils/pchar.c			\
+			srcs/utils/pull_line.c		\
+			srcs/utils/vect_new.c		\
 
 SRCS	=	$(BUILTINS)					\
 			$(EXEC)						\
