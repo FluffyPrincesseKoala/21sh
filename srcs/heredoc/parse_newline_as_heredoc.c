@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_newline_as_heredoc.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:34:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/04 17:18:18 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/04 19:54:56 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,16 @@ static void	unlink_free_vector(t_vect **to_free, t_vect *new_next)
 **	Heredoc parse line with "<<" substring to get EOF sequence
 */
 
-static int	is_eof(t_bash *data, t_vect *cmd)
+int	is_eof(t_vect *cmd)
 {
 	int		current;
 	
 
 	current = 0;
-	while (cmd->doc_string[current])
+	while (cmd->doc_string && cmd->doc_string[current])
 	{
 		if (ft_strequ(cmd->eof, cmd->doc_string[current]))
-		{
-			data->is_heredoc = data->nb_heredoc - ++data->finish_heredoc;
 			return (1);
-		}
 		current++;
 	}
 	return (0);
@@ -84,9 +81,12 @@ static char	*concat_args_in_heredoc(t_arg *arg)
 static int	parse_newline_as_heredoc(t_bash *data, t_vect *cmd, t_vect *next_doc)
 {
 	char	*new;
+	int		is_finish;
 	t_vect	*to_free;
 
-	if (cmd->separator == '\n')
+	while (cmd && cmd->separator != '\n')
+		cmd = cmd->next;
+	if (cmd && cmd->separator == '\n')
 	{
 		to_free = cmd;
 		while (cmd = cmd->next)
@@ -96,8 +96,10 @@ static int	parse_newline_as_heredoc(t_bash *data, t_vect *cmd, t_vect *next_doc)
 				fill_heredoc_array(data, next_doc, &new);
 				ft_strdel(&new);
 			}
-			if (is_eof(data, next_doc))
+			if ((is_finish = is_eof(next_doc)))
 			{
+				data->finish_heredoc += 1;
+				data->is_heredoc = data->nb_heredoc - data->finish_heredoc;
 				unlink_free_vector(&to_free, cmd->next);
 				return (-1);
 			}

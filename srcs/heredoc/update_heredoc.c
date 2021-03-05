@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   update_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:22:31 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 18:59:17 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/04 19:39:42 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
+
+/*
+**	explicitly return the current vector ( one that's not finish )
+*/
+
+t_vect	*get_current_heredoc_vector(t_bash *data)
+{
+	t_vect	*current;
+
+	current = data->vector->up;
+	while (current)
+	{
+		if (current->eof && !is_eof(current))
+			return (current);
+		current = current->next;
+	}
+	return (NULL);
+}
 
 /*
 **	on sub-prompt all line are added to the previous with a "\n" between
@@ -33,31 +51,22 @@ static void	add_at_end_of_last_line(char **dest, char **src)
 
 static void	eof_update_heredoc(t_bash *data)
 {
-	t_vect	*vect;
+	t_vect	*cmd;
 	int		i;
 
-	i = ++data->finish_heredoc;
-	vect = data->vector->up;
-	while (vect)
+	++data->finish_heredoc;
+	cmd = get_current_heredoc_vector(data);
+	if (cmd)
+		fill_heredoc_array(data, cmd, &LINE);
+	add_at_end_of_last_line(&data->vector->up->line, &LINE);
+	ft_putchar('\n');
+	if (VECT_UP && data->nb_heredoc == data->finish_heredoc)
 	{
-		if (vect->eof)
-			i--;
-		if (!i)
-		{
-			if (data->vector->up)
-				fill_heredoc_array(data, data->vector->up, &LINE);
-			add_at_end_of_last_line(&data->vector->up->line, &LINE);
-			ft_putchar('\n');
-			if (VECT_UP && data->nb_heredoc == data->finish_heredoc)
-			{
-				VECT = VECT_UP;
-				free_vector(&data->vector->down, FALSE);
-				data->is_heredoc = data->nb_heredoc - data->finish_heredoc;
-				data->expend = (data->is_heredoc) ? -1 : 0;
-				return ;
-			}
-		}
-		vect = vect->next;
+		VECT = VECT_UP;
+		free_vector(&data->vector->down, FALSE);
+		data->is_heredoc = data->nb_heredoc - data->finish_heredoc;
+		data->expend = (data->is_heredoc) ? -1 : 0;
+		return ;
 	}
 }
 
@@ -71,23 +80,12 @@ static void	update_docstring(t_bash *data)
 	int		i;
 
 	i = data->finish_heredoc;
-	cmd = data->vector->up;
-	while (cmd && !cmd->eof)
-		cmd = cmd->next;
-	while (cmd)
+	if (cmd = get_current_heredoc_vector(data))
 	{
-		while (cmd && !cmd->eof)
-			cmd = cmd->next;
-		if (!i)
-		{
-			fill_heredoc_array(data, cmd, &LINE);
-			ft_putchar('\n');
-			if (VECT_UP && cmd->doc_string)
-				add_at_end_of_last_line(&VECT_UP->line, &LINE);
-		}
-		if (cmd && cmd->eof)
-			i--;
-		cmd = (cmd) ? cmd->next : NULL;
+		fill_heredoc_array(data, cmd, &LINE);
+		ft_putchar('\n');
+		if (VECT_UP && cmd->doc_string)
+			add_at_end_of_last_line(&VECT_UP->line, &LINE);
 	}
 }
 

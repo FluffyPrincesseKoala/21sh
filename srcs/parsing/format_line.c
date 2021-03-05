@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/14 15:50:02 by koala             #+#    #+#             */
-/*   Updated: 2021/03/04 19:59:15 by cylemair         ###   ########.fr       */
+/*   Created: 2020/12/14 15:50:02 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/05 11:35:10 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void		format_line(t_bash *data)
 	}
 	else
 		puterror(data->error);
-	if (!data->vector->doc_string && ft_strstr(data->vector->line, "<<"))
+	if (is_heredoc(data))
 		heredoc(data);
 	free_array(table);
 	ft_strdel(&tmp);

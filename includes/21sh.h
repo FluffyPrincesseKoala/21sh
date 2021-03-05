@@ -283,20 +283,6 @@ void		    line_content_to_args(t_bash *data, char *line);
 char			*use_shell_var(char **env, char *str);
 
 /*
-** ===========
-**	HEREDOC
-** ===========
-*/
-
-t_arg	*set_heredoc(t_bash *data, t_vect **cmd);
-void			custom_return(void);
-void			clean_screen(t_bash *data);
-void			return_exit(t_bash *data);
-int				update_heredoc(t_bash *data);
-void			heredoc(t_bash *data);
-void			fill_heredoc_array(t_bash *data, t_vect *cmd, char **line);
-
-/*
 ** ==========
 **  CLEAN UP
 ** ==========
@@ -329,6 +315,7 @@ void			print_history(t_bash *data);
 void			set_env(t_bash *data, t_vect *command);
 void			unset_env(t_bash *data, t_vect *command);
 
+
 /*
 ** ===========
 **  EXECUTION
@@ -358,6 +345,22 @@ void			write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2]);
 */
 int           	execute_redirections(t_bash *data, t_vect *command, t_redirection *redirection);
 void            restore_directions(t_redirection *redirection);
+
+/*
+** ===========
+**	HEREDOC
+** ===========
+*/
+
+t_arg	*set_heredoc(t_bash *data, t_vect **cmd);
+void			custom_return(void);
+void			clean_screen(t_bash *data);
+void			return_exit(t_bash *data);
+int				update_heredoc(t_bash *data);
+void			heredoc(t_bash *data);
+void			fill_heredoc_array(t_bash *data, t_vect *cmd, char **line);
+int			 	is_heredoc(t_bash *data);
+int				is_eof(t_vect *cmd);
 
 /*
 ** =========

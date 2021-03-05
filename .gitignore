@@ -1,6 +1,5 @@
 sandbox/
-srcs/*.o
-libft/*.o
+*.o
 libft/libft.a
 21sh
 vgcore.*

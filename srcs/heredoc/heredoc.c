@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by koala             #+#    #+#             */
-/*   Updated: 2021/03/04 17:10:40 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/04 17:43:29 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int	check_heredoc_format(t_bash *data, t_vect *cmd, t_arg *to_free)
 		{
 			data->error = SNTX_ERR;
 			to_free = reset_data_heredoc(data);
-			return (1);
+			return (-1);
 		}
 		else
 			to_free = set_heredoc(data, &cmd);
