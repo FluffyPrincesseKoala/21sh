@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:22:41 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 13:31:39 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/04 18:10:43 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ static void	update_current_directory(char **env, char *pwd)
 	old = get_env_var_value(env, "PWD");
 	tmp = ft_strjoin("OLDPWD=", old);
 	if (env_key_exists(env, "OLDPWD="))
-		env = change_array_value(env, "OLDPWD", tmp);
+		env = change_value_in_array(env, "OLDPWD", tmp);
 	else
-		env = array_add_value(env, tmp);
+		env = add_value_to_array(env, tmp);
 	ft_strdel(&tmp);
 	tmp = ft_strjoin("PWD=", pwd);
-	env = change_array_value(env, "PWD", tmp);
+	env = change_value_in_array(env, "PWD", tmp);
 	ft_strdel(&tmp);
 }
 

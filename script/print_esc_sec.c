@@ -29,7 +29,7 @@ static void sigchld_handler(int sig)
     signal(sig, sigchld_handler);
 }
 
-void        set_up_signals()
+void        setup_signals()
 {
     signal(SIGINT, sigint_handler);
     signal(SIGTSTP, sigtstp_handler);
@@ -37,7 +37,7 @@ void        set_up_signals()
 }
 int main(void){
 	char buff[8];
-	set_up_signals();
+	setup_signals();
 	while (42)
 	{
 		read(0, buff, 8);

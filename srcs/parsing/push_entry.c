@@ -1,30 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_new_entry.c                                 :+:      :+:    :+:   */
+/*   push_entry.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/24 18:42:41 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/26 12:24:18 by cylemair         ###   ########.fr       */
+/*   Created: 2021/03/04 17:58:43 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/05 11:25:08 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-void		pull_line(t_vect **head)
+char		*addchar(char *str, char c, int pos)
 {
-	t_vect	*lst;
+	char	*new;
+	int		i;
+	int		j;
 
-	if (head && *head)
+	i = 0;
+	j = 0;
+	if (!(new = malloc(sizeof(char) * (ft_strlen(str) + 2))))
+		return (NULL);
+	while (str && str[i])
 	{
-		lst = *head;
-		while (lst->down)
-			lst = lst->down;
-		ft_strdel(&lst->line);
-		lst->line = ft_strdup((*head)->line);
-		*head = lst;
+		if (i == pos)
+			new[j++] = c;
+		new[j] = str[i];
+		i++;
+		j++;
 	}
+	if (i == pos)
+	{
+		new[j] = c;
+		j++;
+	}
+	new[j] = '\0';
+	return (new);
 }
 
 void		push_entry(t_bash *data, char *entry, char **line, int pos)
@@ -39,23 +51,4 @@ void		push_entry(t_bash *data, char *entry, char **line, int pos)
 	ft_strdel(line);
 	*line = ft_strdup(tmp);
 	ft_strdel(&tmp);
-}
-
-
-int		handle_new_entry(t_bash *data, char *entry, int pos)
-{
-	if (!data->vector->line)
-		data->vector->line = ft_strndup(entry, 1);
-	else
-	{
-		if (data->vector->down)
-			pull_line(&data->vector);
-		push_entry(data, entry, &data->vector->line, data->iterator);
-	}
-	SAVE_C;
-	data->iterator = pos;
-	print_rest(data->vector->line, pos, NULL);
-	RESET_C;
-	arrow_right(data);
-	return (data->iterator);
 }

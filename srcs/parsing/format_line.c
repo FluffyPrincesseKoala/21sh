@@ -1,46 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_word.c                                       :+:      :+:    :+:   */
+/*   format_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:50:02 by koala             #+#    #+#             */
-/*   Updated: 2021/03/02 18:58:42 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/04 19:59:15 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-/*
-** récupérer les quote, créer args au fur et à mesure
-** avoir une variable dans t_arg, qui indique si quote ou pas
-** reparser pour les separateur en ignorant les args qui sont des quote
-*/
-
-int		contains_sperator(char *str)
-{
-	int		i;
-	int		j;
-	char	*separator;
-
-	i = 0;
-	separator = ";\n|";
-	while (str && str[i])
-	{
-		j = 0;
-		while (separator[j])
-		{
-			if (str[i] == separator[j])
-				return (i);
-			j++;
-		}
-		i++;
-	}
-	return (-1);
-}
-
-void		detach_args(t_vect *current, t_arg *last_arg_before_doomsday)
+static void	detach_args(t_vect *current, t_arg *last_arg_before_doomsday)
 {
 	if (last_arg_before_doomsday->next)
 	{
@@ -50,7 +22,7 @@ void		detach_args(t_vect *current, t_arg *last_arg_before_doomsday)
 	}
 }
 
-void		get_post_separator_args(
+static void	get_post_separator_args(
 	t_bash *data, t_vect *cmd, t_arg *arg, int index)
 {
 	char			*substring;
@@ -69,9 +41,9 @@ void		get_post_separator_args(
 	data->error = MALLOC_ERROR;
 }
 
-void		parse_args(t_bash *data, t_vect *current)
+static void	parse_args(t_bash *data, t_vect *current)
 {
-	t_arg	*arg;
+	t_arg			*arg;
 	unsigned int	i;
 	unsigned int	len;
 	unsigned int	separator_idx;

@@ -1,31 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unquote.c                                          :+:      :+:    :+:   */
+/*   insert_new_arg.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/01 18:19:49 by cylemair         ###   ########.fr       */
+/*   Created: 2021/03/04 17:37:12 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/04 19:38:25 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-static int  is_non_escaped_quote(const char *s, char quote, int i)
-{    
-    if (s[i] == quote && (i == 0 || (s[i - 1] != '\\' || (i > 1 && s[i - 2] == '\\'))))
-        return (TRUE);
-    else
-        return (FALSE);
-}
-
-char		*unquote(char *line_substr, char quote)
+int	insert_new_arg(t_vect *command, t_arg *previous, char *s)
 {
-	size_t	len;
+	t_arg	*new;
 
-	len = 1;
-	while (line_substr[len] && !is_non_escaped_quote(line_substr, quote, len))
-		len++;
-	return ft_strsub(line_substr, 1, len - 1);
+	if (!(new = create_arg(s)))
+		return (FAIL);
+	if (previous)
+	{
+		new->next = previous->next;
+		new->previous = previous;
+		previous->next = new;
+		if (new->next)
+			new->next->previous = new;
+		return (SUCCESS);
+	}
+	else
+	{
+		new->next = command->args;
+		command->args->previous = new;
+		command->args = new;
+	}
+	return (-1);
 }

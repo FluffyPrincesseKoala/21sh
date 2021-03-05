@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 12:39:59 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 13:30:46 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/05 11:33:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,10 @@ void		set_env(t_bash *data, t_vect *command)
 			if (arg)
 				new = create_new_env_key(arg, &key_to_change);
 			if (env_key_exists(data->env, key_to_change))
-				data->env = change_array_value(data->env, key_to_change, new);
+				data->env = change_value_in_array(data->env,
+					key_to_change, new);
 			else
-				data->env = array_add_value(data->env, new);
+				data->env = add_value_to_array(data->env, new);
 			ft_strdel(&new);
 			ft_strdel(&key_to_change);
 			return ;

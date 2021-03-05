@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/03/02 19:19:33 by cylemair         ###   ########.fr        #
+#    Updated: 2021/03/04 19:28:19 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,6 +37,7 @@ BUILTINS=	srcs/builtins/commands/change_directory.c	\
 			srcs/builtins/commands/print_env.c			\
 			srcs/builtins/commands/set_env.c			\
 			srcs/builtins/commands/unset_env.c			\
+			srcs/builtins/change_value_in_array.c		\
 			srcs/builtins/env_key_exists.c				\
 			srcs/builtins/free_builtin.c				\
 			srcs/builtins/init_builtin.c				\
@@ -54,24 +55,28 @@ EXEC	=	srcs/execution/handle_commands.c					\
 			srcs/execution/redirections/execute_redirections.c	\
 			srcs/execution/redirections/restore_redirections.c	\
 
-PARSE	=	srcs/parsing/args_creation.c			\
-			srcs/parsing/args.c						\
-			srcs/parsing/array.c					\
-			srcs/parsing/create_non_quoted_arg.c	\
-			srcs/parsing/create_quoted_arg.c		\
-			srcs/parsing/end_of_line.c				\
-			srcs/parsing/get_var.c					\
-			srcs/parsing/handle_new_entry.c			\
-			srcs/parsing/line_content_to_args.c		\
-			srcs/parsing/parse_array.c				\
-			srcs/parsing/parse_word.c				\
-			srcs/parsing/redirections_parsing.c		\
-			srcs/parsing/redirections_setup.c		\
-			srcs/parsing/redirections_tools.c		\
-			srcs/parsing/split_all_whitespace.c		\
-			srcs/parsing/string.c					\
-			srcs/parsing/unquote.c					\
-			srcs/parsing/vector.c					\
+PARSE	=	srcs/parsing/args/add_arg.c										\
+			srcs/parsing/args/create_arg.c									\
+			srcs/parsing/args/create_quoted_arg.c							\
+			srcs/parsing/args/create_non_quoted_arg.c						\
+			srcs/parsing/args/del_one_arg.c									\
+			srcs/parsing/args/detach_arg.c									\
+			srcs/parsing/args/free_all_args.c								\
+			srcs/parsing/args/insert_new_arg.c								\
+			srcs/parsing/args/parse_var.c									\
+			srcs/parsing/redirections/init_redirections_setup_functions.c	\
+			srcs/parsing/redirections/is_stdout_and_stderr_redirection.c	\
+			srcs/parsing/redirections/search_file_word.c					\
+			srcs/parsing/redirections/search_left_fd.c						\
+			srcs/parsing/redirections/search_right_fd.c						\
+			srcs/parsing/redirections/setup_command_redirections.c			\
+			srcs/parsing/end_of_line.c										\
+			srcs/parsing/format_line.c										\
+			srcs/parsing/free_array.c										\
+			srcs/parsing/handle_parsing_execution.c							\
+			srcs/parsing/line_content_to_args.c								\
+			srcs/parsing/push_entry.c										\
+			srcs/parsing/use_shell_var.c									\
 
 HEREDOC	=	srcs/heredoc/fill_heredoc_array.c		\
 			srcs/heredoc/heredoc.c					\
@@ -94,17 +99,26 @@ OTHER	=	srcs/other/boolean_tools.c				\
 			srcs/other/boolean_tools2.c				\
 			srcs/other/get_env_var_value.c			\
 			srcs/other/main.c 						\
+			srcs/other/loop.c						\
 			srcs/other/print_error.c				\
 			srcs/other/redirections_struct.c		\
 			srcs/other/signals.c					\
 			srcs/other/tmp.c						\
 
-SRCS	=	$(BUILTINS)	\
-			$(EXEC)		\
-			$(PARSE)	\
-			$(HEREDOC)	\
-			$(TERM)		\
-			$(OTHER)	\
+SROOT	=	srcs/add_value_to_array.c	\
+			srcs/free_vector.c			\
+			srcs/pchar.c				\
+			srcs/pull_line.c			\
+			srcs/vect_new.c				\
+
+SRCS	=	$(BUILTINS)					\
+			$(EXEC)						\
+			$(PARSE)					\
+			$(HEREDOC)					\
+			$(TERM)						\
+			$(OTHER)					\
+			$(SROOT)					\
+			
 
 OBJS	=	$(SRCS:.c=.o)
 

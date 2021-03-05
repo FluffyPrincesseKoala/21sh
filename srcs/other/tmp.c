@@ -79,6 +79,13 @@ void		return_exit(t_bash *data)
 	}
 }
 
+static int pstr(char const *str)
+{
+	if (str)
+		return(write(1, str, ft_strlen((char *)str)));
+	return (0);
+}
+
 int			prompt(char **env, int short_prompt)
 {
 	int		len;
@@ -133,30 +140,4 @@ int			pending_line(char *str)
 	}
 	ft_strdel(&separator);
 	return (stack);
-}
-
-void		loop(t_bash *data)
-{
-	char	buff[MAX_INPUT_SIZE];
-	int		is_key;
-	int		exit;
-
-	is_key = 0;
-	exit = 0;
-	data->start_expend = 0;
-	data->expend_up = 0;
-	set_up_signals();
-	while (42 && exit != -1)
-	{
-		read(0, buff, MAX_INPUT_SIZE);
-		if (ft_strnequ(buff, "\n", 1))
-			exit = end_of_line(&data);
-		else if (!data->error && (ft_strnequ(buff, "\033", 1)
-		|| buff[0] == 127 || buff[0] == '\017'
-		|| buff[0] == '\002' || buff[0] == 4 || ft_strnequ(buff, "\f", 1)))
-			arrow_key(data, buff);
-		else if (!data->error && ft_isprint(buff[0])
-			&& !ft_strnequ(buff, "\n", 1))
-			data->iterator = handle_new_entry(data, buff, data->iterator);
-	}
 }

@@ -5,43 +5,46 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/01 11:55:45 by cylemair          #+#    #+#             */
-/*   Updated: 2020/07/30 16:12:37 by cylemair         ###   ########.fr       */
+/*   Created: 2021/03/05 11:17:30 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/05 11:22:38 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-static int  is_pending_line(t_bash *data)
+static void		update_pending_line(t_bash *data)
 {
-	if (data->expend = pending_line(LINE))
+	if (pending_line(data->vector->line) && !data->expend)
 	{
-		push_entry(data, "\n", &data->vector->line, ft_strlen(LINE));
-		ft_putchar('\n');
+		push_entry(data, "\n", &data->vector->line, data->iterator);
+		data->iterator++;
 	}
-	return (data->expend);
+	VECT_UP->line = str_join_free(&VECT_UP->line, &data->vector->line);
+	data->vector = VECT_UP;
+	free_vector(&VECT_DOWN, FALSE);
+	VECT_DOWN = NULL;
+	data->y++;
+	data->x = 0;
 }
 
-static int	handle_parsing_execution(t_bash *data)
+static t_vect	*link_history(t_vect **head, t_vect *new)
 {
-	int		is_pending;
+	t_vect	*lst;
 
-	is_pending = 0;
-	if ((data->vector->line
-		|| (data->vector->doc_string && data->vector->separator))
-		&& (!(is_pending = is_pending_line(data)))
-		|| (is_pending && data->vector->doc_string))
+	if (head && *head)
 	{
-		ft_putchar('\n');
-		if (format_line_required(data))
-			format_line(data);
-		if (!data->is_heredoc && !data->error && data->vector->args->content)
-			return (handle_commands(data, data->vector));
+		lst = *head;
+		lst->down = (new) ? new : vect_new(NULL, NULL);
+		lst->down->up = lst;
+		if (lst->up)
+			lst->up->down = lst;
+		lst = lst->down;
+		return (lst);
 	}
-	return (0);
+	return (new);
 }
 
-static void new_line(t_bash *data)
+static void		new_line(t_bash *data)
 {
 	error_code_to_message(&(data->error));
 	if (LINE)
@@ -54,19 +57,7 @@ static void new_line(t_bash *data)
 	data->history_stack = 0;
 }
 
-static void update_pending_line(t_bash *data)
-{
-	if (pending_line(LINE) && !data->expend)
-		push_entry(data, "\n", &data->vector->line, data->iterator++);
-	VECT_UP->line = str_join_free(&VECT_UP->line, &LINE);
-	VECT = VECT_UP;
-	free_vector(&VECT_DOWN, FALSE);
-	VECT_DOWN = NULL;
-	data->y++;
-	data->x = 0;
-}
-
-int			end_of_line(t_bash **data)
+int				end_of_line(t_bash **data)
 {
 	int		exit;
 
@@ -85,6 +76,6 @@ int			end_of_line(t_bash **data)
 	}
 	if ((exit = handle_parsing_execution(*data)) != -1)
 		new_line((*data));
-    reset_conf_term();
+	reset_conf_term();
 	return (exit);
 }

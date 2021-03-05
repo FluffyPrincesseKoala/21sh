@@ -60,7 +60,6 @@
 # define CUR_X				(data->iterator + data->prompt_len) % w.ws_col
 # define CUR_Y		    	(data->iterator + data->prompt_len) / w.ws_col
 # define LEN_Y				(ft_strlen(LINE) + data->prompt_len) / w.ws_col
-# define ONLY_WCHAR			(count_delim(LINE, ' ') != ft_strlen(LINE))
 # define UP					term_put("up")
 # define CDOWN				term_put("do")
 # define LEFT				term_put("le")
@@ -112,15 +111,14 @@ struct termios	old_term;
 struct termios	new_term;
 t_bash	*data_g;
 
+
+int			handle_parsing_execution(t_bash *data);
 /*
 **	t_vect manipulation (keep current and old entry)
 */
 
 t_vect		*vect_new(t_arg *args, char *line);
-t_vect		*vect_add(t_vect **head, t_vect *new);
-t_vect		*vect_push(t_vect **head, t_vect *new);
 size_t		count_arg(t_vect *head);
-t_vect		*link_history(t_vect **head, t_vect *new);
 void		free_vector(t_vect **head, int flag);
 
 /*
@@ -129,9 +127,7 @@ void		free_vector(t_vect **head, int flag);
 
 int			ft_arraylen(char **array);
 void		print_array(char **array);
-char		**array_add_value(char **src, char *value);
-char		**change_array_value(char **src, char *key, char *value);
-char		**create_array(char *first);
+char		**add_value_to_array(char **src, char *value);
 
 /*
 **	STDIN & TERM RELATED
@@ -149,14 +145,10 @@ void		key_suppr(t_bash *data);
 /*
 **	STRING FORMATING
 */
-char		*addchar(char *str, char c, int pos);
 char		*replace_delim(char *str, char delim, char new);
-int			pstr(char const *str);
 int			pchar(int c);
-size_t		count_delim(char *str, int delim);
 char		*replace_delim(char *str, char delim, char new);
 char		*ft_replace_substr(char *str, char *old, char *new);
-char		**split_all_whitespace(char const *s);
 
 /*
 **	OTHER STUFF
@@ -168,7 +160,7 @@ void		loop(t_bash *data);
 void		handle_fork(t_bash *data, t_vect *cmd);
 int			print_rest(char *str, int pos, char *old);
 void		puterror(int error);
-void 		set_up_signals();
+void 		setup_signals();
 void		put_error_msg(char *error);
 void		*free_bash(t_bash *data);
 
@@ -176,18 +168,11 @@ void		*free_bash(t_bash *data);
 **	PARSING
 */
 
-int		    contains_sperator(char *str);
 int			next_delim(char **array, int start);
 void		read_separator(char **table, t_bash *data);
 void		format_line(t_bash *data);
-size_t		count_delim(char *str, int delim);
 int			pending_line(char *str);
 
-/*
-**	LIST STUFF
-*/
-
-void		free_all_vectors(t_vect *vect);
 
 /*
 **	CURSOR TERM STRUCT
@@ -205,7 +190,6 @@ void    	select_copy(t_bash *data);
 void    	select_paste(t_bash *data);
 void		uncolor(t_bash *data);
 void		unselect(t_bash *data);
-char		*str_add_sub(char *str, char *sub, int pos);
 
 /*
 **	ERROR MANAGEMENT
@@ -218,18 +202,6 @@ void		error_code_to_message(int *error);
 
 
 
-
-/*
-** ========
-**  SET UP
-** ========
-*/
-
-/*
-** Initialize t_bash
-*/
-char		**copy_env(char **array);
-int			init_redirection_set_up_functions(t_bash *data);
 
 /*
 ** ===========
@@ -277,10 +249,6 @@ char			*get_env_var_value(char **env, char *name);
 ** Redirections
 */
 t_redirection	*new_redirection(t_vect *cmd);
-char            *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, int *error);
-int				search_left_fd(t_vect *cmd, t_arg *arg, int def, int *error);
-int             search_right_fd(t_vect *cmd, t_arg *arg, char *substring, int *error);
-int				set_up_command_redirections(t_bash *data, t_vect *cmd);
 
 
 /*
@@ -291,7 +259,6 @@ int		        fork_is_required(t_vect *command);
 int			    fork_failed(pid_t pid);
 int			    is_child(pid_t pid);
 int				is_exit(t_vect *command);
-int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
 int     	    using_heredoc(t_vect *command);
 
 /*
@@ -301,53 +268,19 @@ int     	    using_heredoc(t_vect *command);
 */
 
 int			    ft_strlendelim(char *str, char delim, int start);
-int			    handle_new_entry(t_bash *data, char *entry, int pos);
-void            parse_redirection_in_arg(t_bash *data, t_vect *cmd, t_arg *arg);
 void		    pull_line(t_vect **head);
 void		    push_entry(t_bash *data, char *entry, char **line, int pos);
 
-/*
-** Args
-*/
-t_arg  		    *add_arg(t_arg **head, t_arg *new);
-t_arg   	    *create_arg(char *content);
-int    		    insert_new_arg(t_vect *command, t_arg *previous, char *s);
 
 
 /*
 ** End of line
 */
-size_t	        create_non_quoted_arg(t_bash *data, t_vect *cmd, char *line_extract);
-size_t	        create_quoted_arg(t_bash *data, t_vect *cmd, char *line_substr, char quote);
 int   		    end_of_line(t_bash **data);
 int				format_line_required(t_bash *data);
-void		    get_var(t_arg *head, char **env);
 int             is_quote(char c);
 void		    line_content_to_args(t_bash *data, char *line);
 char			*use_shell_var(char **env, char *str);
-char		    *unquote(char *str, char delim);
-
-/*
-** ===========
-**	BUILT-INS
-** ===========
-*/
-
-int				env_key_exists(char **env, char *key);
-void			free_builtin(t_built **fct);
-int			    init_builtin(t_built **fct);
-void			select_builtin(t_bash *data, t_vect *command);
-
-/*
-** Commands
-*/
-void			change_directory(t_bash *data, t_vect *command);
-void			history(t_bash *data, t_vect *cmd);
-void			print_args(t_bash *data, t_vect *command);
-void			print_env(t_bash *data, t_vect *cmd);
-void			print_history(t_bash *data);
-void			set_env(t_bash *data, t_vect *command);
-void			unset_env(t_bash *data, t_vect *command);
 
 /*
 ** ===========
@@ -363,6 +296,38 @@ int				update_heredoc(t_bash *data);
 void			heredoc(t_bash *data);
 void			fill_heredoc_array(t_bash *data, t_vect *cmd, char **line);
 
+/*
+** ==========
+**  CLEAN UP
+** ==========
+*/
+
+void		    clear_struct(t_term **cursor);
+void		    free_array(char **array);
+void			free_redirections(t_vect *command);
+
+/*
+** ===========
+**	BUILT-INS
+** ===========
+*/
+
+char			**change_value_in_array(char **src, char *key, char *value);
+int				env_key_exists(char **env, char *key);
+void			free_builtin(t_built **fct);
+int			    init_builtin(t_built **fct);
+void			select_builtin(t_bash *data, t_vect *command);
+
+/*
+** Commands
+*/
+void			change_directory(t_bash *data, t_vect *command);
+void			history(t_bash *data, t_vect *cmd);
+void			print_args(t_bash *data, t_vect *command);
+void			print_env(t_bash *data, t_vect *cmd);
+void			print_history(t_bash *data);
+void			set_env(t_bash *data, t_vect *command);
+void			unset_env(t_bash *data, t_vect *command);
 
 /*
 ** ===========
@@ -395,17 +360,33 @@ int           	execute_redirections(t_bash *data, t_vect *command, t_redirection
 void            restore_directions(t_redirection *redirection);
 
 /*
-** ==========
-**  CLEAN UP
-** ==========
+** =========
+**  PARSING
+** =========
 */
 
-void		    clear_struct(t_term **cursor);
+/*
+** Args
+*/
+t_arg  		    *add_arg(t_arg **head, t_arg *new);
+t_arg   	    *create_arg(char *content);
+size_t	        create_non_quoted_arg(t_bash *data, t_vect *cmd, char *line_extract);
+size_t	        create_quoted_arg(t_bash *data, t_vect *cmd, char *line_substr, char quote);
 void		    del_one_arg(t_arg *arg, t_vect *cmd);
 void		    detach_arg(t_arg *arg, t_vect *cmd);
 void    	    free_all_args(t_arg **arg, int flag);
-void		    free_array(char **array);
-void			free_redirections(t_vect *command);
+int    		    insert_new_arg(t_vect *command, t_arg *previous, char *s);
+void		    parse_var(t_arg *head, char **env);
+
+/*
+** Redirections
+*/
+int				init_redirections_setup_functions(t_bash *data);
+int     		is_stdout_and_stderr_redirection(int left_fd, int right_fd);
+char            *search_file_word(t_vect *cmd, t_arg *arg, int substring_index, int *error);
+int				search_left_fd(t_vect *cmd, t_arg *arg, int def, int *error);
+int             search_right_fd(t_vect *cmd, t_arg *arg, char *substring, int *error);
+int				setup_command_redirections(t_bash *data, t_vect *cmd);
 
 /*
 ** ===================

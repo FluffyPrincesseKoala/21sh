@@ -58,7 +58,7 @@ static void sigchld_handler(int sig)
     signal(sig, sigchld_handler);
 }
 
-void        set_up_signals()
+void        setup_signals()
 {
     signal(SIGINT, &sigint_handler);
     signal(SIGTSTP, sigtstp_handler);

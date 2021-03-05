@@ -1,50 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   array.c                                            :+:      :+:    :+:   */
+/*   vect_new.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/03/26 16:35:27 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 15:00:12 by cylemair         ###   ########.fr       */
+/*   Created: 2021/03/04 19:08:24 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/04 19:08:33 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-char	**copy_env(char **array)
+t_vect		*vect_new(t_arg *args, char *line)
 {
-	char	**new;
-	int		i;
+	t_vect	*list;
 
-	i = 0;
-	new = NULL;
-	while (array[i])
-		i++;
-	if (!(new = malloc(sizeof(char*) * (i + 1))))
+	if (!(list = (t_vect*)ft_memalloc(sizeof(t_vect))))
 		return (NULL);
-	i = 0;
-	while (array && array[i])
-	{
-		new[i] = ft_strdup(array[i]);
-		i++;
-	}
-	new[i] = NULL;
-	return (new);
-}
-
-void	free_array(char **array)
-{
-	int		i;
-
-	i = 0;
-	while (array && array[i])
-	{
-		ft_strdel(&array[i]);
-		array[i] = NULL;
-		i++;
-	}
-	if (array)
-		free(array);
-	array = NULL;
+	list->args = (args) ? args : NULL;
+	list->line = (line) ? ft_strdup(line) : NULL;
+	list->next = NULL;
+	list->up = NULL;
+	list->down = NULL;
+	return (list);
 }

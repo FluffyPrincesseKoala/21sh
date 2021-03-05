@@ -72,7 +72,7 @@ SRCS	=		ft_arraylen.c			\
 				ft_strndup.c			\
 				ft_stristr.c			\
 				ft_str_is_digits.c		\
-				whitespaces.c			\
+				is_all_whitespaces.c	\
 				ft_strclen.c			\
 				ft_replace_substr.c
 

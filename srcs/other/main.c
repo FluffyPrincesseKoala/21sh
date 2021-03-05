@@ -12,6 +12,27 @@
 
 #include "21sh.h"
 
+static char	**copy_env(char **array)
+{
+	char	**new;
+	int		i;
+
+	i = 0;
+	new = NULL;
+	while (array[i])
+		i++;
+	if (!(new = malloc(sizeof(char*) * (i + 1))))
+		return (NULL);
+	i = 0;
+	while (array && array[i])
+	{
+		new[i] = ft_strdup(array[i]);
+		i++;
+	}
+	new[i] = NULL;
+	return (new);
+}
+
 void	free_redirectionss_setup(t_redirection_setup **redirections_setup)
 {
 	int		i;
@@ -29,7 +50,30 @@ void	free_redirectionss_setup(t_redirection_setup **redirections_setup)
 	}
 }
 
-void	*free_bash(t_bash *data)
+static void	free_all_vectors(t_vect *vect)
+{
+	if (vect)
+	{
+		ft_strdel(&vect->line);
+		ft_strdel(&vect->eof);
+		free_array(vect->doc_string);
+		free_all_args(&vect->args, FALSE);
+		free_all_vectors(vect->next);
+		free_all_vectors(vect->up);
+		if (vect->redirections)
+			free_redirections(vect);
+		vect->args = NULL;
+		vect->next = NULL;
+		vect->up = NULL;
+		vect->down = NULL;
+		vect->redirections = NULL;
+		vect->line = NULL;
+		free(vect);
+		vect = NULL;
+	}
+}
+
+void		*free_bash(t_bash *data)
 {
 	if (data->env)
 		free_array(data->env);
@@ -63,7 +107,7 @@ t_bash	*initialize_bash(char **env)
 		return (free_bash(data));
 	if (!(REDIRECTIONS_SETUP = malloc(sizeof(t_redirection_setup) * 4)))
 		return (free_bash(data));
-	if (init_redirection_set_up_functions(data) == FAIL)
+	if (init_redirections_setup_functions(data) == FAIL)
 		return (free_bash(data));
 	if (init_builtin(&data->builtin) == FAIL)
 		return (free_bash(data));

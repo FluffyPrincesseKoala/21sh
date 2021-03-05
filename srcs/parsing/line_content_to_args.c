@@ -6,20 +6,41 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 16:47:13 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/05 11:11:44 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "21sh.h"
 
-static void	merge_last_args(t_bash *data)
+static char		is_separator(char c)
+{
+	if (c == '\n' || c == ';' || c == '|')
+		return (c);
+	return (0);
+}
+
+static t_vect	*vect_add(t_vect **head, t_vect *new)
+{
+	t_vect	*tmp;
+
+	if (head)
+	{
+		tmp = *head;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+	return (*head);
+}
+
+static void		merge_last_args(t_bash *data)
 {
 	t_arg	*new_arg;
 	char	*new_content;
 	t_arg	*current;
 
 	current = data->vector->args;
-	while(current && current->next && current->next->next)
+	while (current && current->next && current->next->next)
 		current = current->next;
 	if (current->next)
 	{
@@ -32,17 +53,38 @@ static void	merge_last_args(t_bash *data)
 	}
 }
 
-static char	is_separator(char c)
+static int		word_to_arg(
+	t_bash *data, t_vect **current, char *word, size_t *full_word)
 {
-	if (c == '\n' || c == ';' || c == '|')
-		return (c);
-	return (0);
+	char	quote;
+	size_t	len;
+
+	len = 1;
+	if (((*current)->separator = is_separator(word[0])))
+	{
+		setup_command_redirections(data, *current);
+		*current = vect_new(NULL, NULL);
+		vect_add(&data->vector, *current);
+		*full_word = TRUE;
+	}
+	else if (ft_iswhitespace(word[0]))
+		*full_word = TRUE;
+	else
+	{
+		if (quote = is_quote(word[0]))
+			len = create_quoted_arg(data, *current, word, quote);
+		else
+			len = create_non_quoted_arg(data, *current, word);
+		if (*full_word == FALSE)
+			merge_last_args(data);
+		*full_word = FALSE;
+	}
+	return (len);
 }
 
-void		line_content_to_args(t_bash *data, char *line)
+void			line_content_to_args(t_bash *data, char *line)
 {
 	size_t	i;
-	char	quote;
 	size_t	full_word;
 	t_vect	*current;
 
@@ -51,29 +93,7 @@ void		line_content_to_args(t_bash *data, char *line)
 	current = data->vector;
 	while (line && line[i] && !data->error)
 	{
-		if ((current->separator = is_separator(line[i])))
-		{
-			set_up_command_redirections(data, current);
-			current = vect_new(NULL, NULL);
-			vect_add(&data->vector, current);
-			full_word = TRUE;
-			i++;
-		}
-		else if (ft_iswhitespace(line[i]))
-		{
-			full_word = TRUE;
-			i++;
-		}
-		else
-		{
-			if (quote = is_quote(line[i]))
-				i += create_quoted_arg(data, current, &line[i], quote);
-			else
-				i += create_non_quoted_arg(data, current, &line[i]);
-			if (full_word == FALSE)
-				merge_last_args(data);
-			full_word = FALSE;
-		}
+		i += word_to_arg(data, &current, line + i, &full_word);
 	}
-	set_up_command_redirections(data, current);
+	setup_command_redirections(data, current);
 }
