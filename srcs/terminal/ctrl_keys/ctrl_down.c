@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 15:13:16 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 15:13:28 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 11:35:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 void	ctrl_down(t_bash *data)
 {
@@ -24,7 +24,7 @@ void	ctrl_down(t_bash *data)
 	{
 		init_xy(data, &x, &y, w.ws_col);
 		expected = y + 1;
-		while (y != expected && data->iterator < ft_strlen(LINE))
+		while (y != expected && data->iterator < ft_strlen(data->vector->line))
 		{
 			init_xy(data, &x, &y, w.ws_col);
 			arrow_right(data);

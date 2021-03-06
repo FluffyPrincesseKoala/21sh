@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 16:20:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 16:50:38 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:17:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static int	len_between_last_delim(char *str, char delim, int start)
 {
@@ -47,11 +47,12 @@ static int	get_curent_line(char *str, int pos, int max, int prompt)
 
 void		init_xy(t_bash *data, int *x, int *y, int max)
 {
-	if (!(*y = get_curent_line(LINE, data->iterator, max, data->prompt_len)))
+	if (!(*y = get_curent_line(data->vector->line, data->iterator,
+		max, data->prompt_len)))
 	{
 		*y = (data->iterator + data->prompt_len) / max;
 		*x = (data->iterator + data->prompt_len) % max;
 	}
 	else if (x)
-		*x = len_between_last_delim(LINE, '\n', data->iterator);
+		*x = len_between_last_delim(data->vector->line, '\n', data->iterator);
 }

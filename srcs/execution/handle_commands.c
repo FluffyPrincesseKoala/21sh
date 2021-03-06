@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 17:57:53 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 18:26:20 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static int	is_exit(t_vect *command)
 {
@@ -21,10 +21,10 @@ static int	is_exit(t_vect *command)
 
 static int	fork_is_required(t_vect *command)
 {
-    if (command->builtin && !command_is_piped(command))
-        return FALSE;
-    else
-        return TRUE;    
+	if (command->builtin && !command_is_piped(command))
+		return (FALSE);
+	else
+		return (TRUE);
 }
 
 /*

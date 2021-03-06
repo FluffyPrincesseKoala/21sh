@@ -6,30 +6,30 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 12:46:15 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/28 13:47:13 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:31:01 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 /*
-** These functions check whether s, is a string that contains digits only. 
+** These functions check whether s, is a string that contains digits only.
 ** The values return are 0 if s is null or s does not match the condition,
 ** 1 eitherway.
 */
 
-int ft_str_is_digits(const char *s)
+int	ft_str_is_digits(const char *s)
 {
-    int i;
+	int i;
 
-    if (!s)
-        return (0);
-    i = 0;
-    while (s[i])
-    {
-        if (!ft_isdigit(s[i]))
-            return (0);
-        i++;
-    }
-    return (1);
+	if (!s)
+		return (0);
+	i = 0;
+	while (s[i])
+	{
+		if (!ft_isdigit(s[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }

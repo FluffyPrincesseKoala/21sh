@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 12:39:59 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 11:33:24 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static char	*create_new_env_key(t_arg *args, char **key)
 {

@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 18:05:26 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 17:25:26 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static int		fill_struct(char *str, char **new_line, int itt[2], int xmax)
 {

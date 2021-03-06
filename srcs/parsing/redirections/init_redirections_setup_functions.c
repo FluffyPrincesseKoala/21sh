@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/04 19:52:40 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:15:35 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 /*
 ** This file contains functions used to set up redirection structure in an
@@ -57,12 +57,12 @@ static void	setup_appending_output_redirection(
 	int	operator_idx;
 	int	substring_idx;
 
-	operator_idx = ft_stristr(CONTENT, APPENDING_OUTPUT_REDIRECTION);
+	operator_idx = ft_stristr(arg->content, APPEND_OUTPUT_REDIRECTION);
 	substring_idx = operator_idx + 2;
 	new->left_fd = search_left_fd(cmd, arg, operator_idx, error);
 	if (new->left_fd == NO_LEFT_FD)
 		new->left_fd = STDOUT;
-	if (CONTENT[substring_idx] == '&')
+	if (arg->content[substring_idx] == '&')
 		*error = NO_APPENDING_IN_FILE_DIRECTOR_ERROR;
 	else if (is_stdout_and_stderr_redirection(new->left_fd, new->right_fd))
 		setup_stdout_and_stderr_redirection(cmd, arg, substring_idx, error);
@@ -87,12 +87,13 @@ static void	setup_simple_output_redirection(
 	int	operator_idx;
 	int	substring_idx;
 
-	operator_idx = ft_stristr(CONTENT, SIMPLE_OUTPUT_REDIRECTION);
+	operator_idx = ft_stristr(arg->content, SIMPLE_OUTPUT_REDIRECTION);
 	substring_idx = operator_idx + 1;
 	new->left_fd = search_left_fd(cmd, arg, operator_idx, error);
 	if (new->left_fd == NO_LEFT_FD)
 		new->left_fd = STDOUT;
-	new->right_fd = search_right_fd(cmd, arg, &(CONTENT[substring_idx]), error);
+	new->right_fd = search_right_fd(cmd, arg,
+		&(arg->content[substring_idx]), error);
 	if (is_stdout_and_stderr_redirection(new->left_fd, new->right_fd))
 		setup_stdout_and_stderr_redirection(cmd, arg, substring_idx, error);
 	else if (new->right_fd == NO_RIGHT_FD)
@@ -115,12 +116,13 @@ static void	setup_input_redirection(
 	int	operator_idx;
 	int	substring_idx;
 
-	operator_idx = ft_stristr(CONTENT, INPUT_REDIRECTION);
+	operator_idx = ft_stristr(arg->content, INPUT_REDIRECTION);
 	substring_idx = operator_idx + 1;
 	new->left_fd = search_left_fd(cmd, arg, operator_idx, error);
 	if (new->left_fd == NO_LEFT_FD)
 		new->left_fd = STDIN;
-	new->right_fd = search_right_fd(cmd, arg, &(CONTENT[substring_idx]), error);
+	new->right_fd = search_right_fd(cmd, arg,
+		&(arg->content[substring_idx]), error);
 	if (new->right_fd == NO_RIGHT_FD)
 		new->file_word = search_file_word(cmd, arg, substring_idx, error);
 	else if (new->right_fd == AMBIGUOUS)
@@ -128,7 +130,7 @@ static void	setup_input_redirection(
 }
 
 /*
-** Initialize an array of 3 t_redirection_setup structures, that link together
+** init an array of 3 t_redirect_setup structures, that link together
 **  redirection setup function with the corresponding operator characters and
 **  their file opening flags.
 */
@@ -139,20 +141,20 @@ int			init_redirections_setup_functions(t_bash *data)
 
 	i = -1;
 	while (++i < 3)
-		if (!(REDIRECTIONS_SETUP[i] = malloc(sizeof(t_redirection_setup))))
+		if (!(data->redirect_setup[i] = malloc(sizeof(t_redirect_setup))))
 			return (FAIL);
-	REDIRECTIONS_SETUP[0]->f = &setup_appending_output_redirection;
-	REDIRECTIONS_SETUP[0]->flags = APPENDING_OUTPUT_FLAGS;
-	if (!(REDIRECTIONS_SETUP[0]->op = ft_strdup(APPENDING_OUTPUT_REDIRECTION)))
+	data->redirect_setup[0]->f = &setup_appending_output_redirection;
+	data->redirect_setup[0]->flags = APPENDING_OUTPUT_FLAGS;
+	if (!(data->redirect_setup[0]->op = ft_strdup(APPEND_OUTPUT_REDIRECTION)))
 		return (FAIL);
-	REDIRECTIONS_SETUP[1]->f = &setup_simple_output_redirection;
-	REDIRECTIONS_SETUP[1]->flags = SIMPLE_OUTPUT_FLAGS;
-	if (!(REDIRECTIONS_SETUP[1]->op = ft_strdup(SIMPLE_OUTPUT_REDIRECTION)))
+	data->redirect_setup[1]->f = &setup_simple_output_redirection;
+	data->redirect_setup[1]->flags = SIMPLE_OUTPUT_FLAGS;
+	if (!(data->redirect_setup[1]->op = ft_strdup(SIMPLE_OUTPUT_REDIRECTION)))
 		return (FAIL);
-	REDIRECTIONS_SETUP[2]->f = &setup_input_redirection;
-	REDIRECTIONS_SETUP[2]->flags = INPUT_FLAGS;
-	if (!(REDIRECTIONS_SETUP[2]->op = ft_strdup(INPUT_REDIRECTION)))
+	data->redirect_setup[2]->f = &setup_input_redirection;
+	data->redirect_setup[2]->flags = INPUT_FLAGS;
+	if (!(data->redirect_setup[2]->op = ft_strdup(INPUT_REDIRECTION)))
 		return (FAIL);
-	REDIRECTIONS_SETUP[3] = NULL;
+	data->redirect_setup[3] = NULL;
 	return (SUCCESS);
 }

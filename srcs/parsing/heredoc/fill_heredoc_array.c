@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:28:27 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 11:47:25 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static char	**create_array(char *first)
 {

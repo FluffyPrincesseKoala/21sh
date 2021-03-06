@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 11:17:30 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 15:08:12 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:14:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static void		update_pending_line(t_bash *data)
 {
@@ -19,10 +19,11 @@ static void		update_pending_line(t_bash *data)
 		push_entry(data, "\n", &data->vector->line, data->iterator);
 		data->iterator++;
 	}
-	VECT_UP->line = str_join_free(&VECT_UP->line, &data->vector->line);
-	data->vector = VECT_UP;
-	free_vector(&VECT_DOWN, FALSE);
-	VECT_DOWN = NULL;
+	data->vector->up->line = str_join_free(&data->vector->up->line,
+		&data->vector->line);
+	data->vector = data->vector->up;
+	free_vector(&data->vector->down, FALSE);
+	data->vector->down = NULL;
 	data->y++;
 	data->x = 0;
 }
@@ -47,9 +48,9 @@ static t_vect	*link_history(t_vect **head, t_vect *new)
 static void		new_line(t_bash *data)
 {
 	error_code_to_message(&(data->error));
-	if (LINE)
+	if (data->vector->line)
 	{
-		VECT = link_history(&VECT, NULL);
+		data->vector = link_history(&data->vector, NULL);
 	}
 	data->iterator = 0;
 	data->x = 0;
@@ -57,7 +58,7 @@ static void		new_line(t_bash *data)
 	data->history_stack = 0;
 }
 
-static void		reset_conf_term()
+static void		reset_conf_term(void)
 {
 	tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
 }

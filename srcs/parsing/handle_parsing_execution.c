@@ -6,17 +6,18 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 19:15:20 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 18:25:52 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:14:43 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static int	is_pending_line(t_bash *data)
 {
-	if (data->expend = pending_line(LINE))
+	if (data->expend = pending_line(data->vector->line))
 	{
-		push_entry(data, "\n", &data->vector->line, ft_strlen(LINE));
+		push_entry(data, "\n",
+			&data->vector->line, ft_strlen(data->vector->line));
 		ft_putchar('\n');
 	}
 	return (data->expend);

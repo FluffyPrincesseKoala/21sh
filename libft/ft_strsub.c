@@ -6,13 +6,13 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:38:08 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/03 19:19:02 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:36:04 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char				*ft_strsub(char const *s, unsigned int start, size_t len)
+char	*ft_strsub(char const *s, unsigned int start, size_t len)
 {
 	char			*new;
 	unsigned int	i;

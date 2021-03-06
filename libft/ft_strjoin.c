@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:33:27 by cylemair          #+#    #+#             */
-/*   Updated: 2020/02/20 14:45:56 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:36:40 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ char		*ft_strjoin_free(char **s1, char **s2, int s_to_free)
 	i = 0;
 	j = 0;
 	ret = NULL;
-	if ((ret = malloc(sizeof(char) * (ft_strlen(*s1) + ft_strlen(*s2) + 1))) == NULL)
+	if ((ret = malloc(sizeof(char) * (ft_strlen(*s1) + ft_strlen(*s2) + 1)))
+		== NULL)
 		return (NULL);
 	while (*s1 && (*s1)[i])
 	{

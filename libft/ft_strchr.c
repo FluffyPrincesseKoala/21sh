@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:32:07 by cylemair          #+#    #+#             */
-/*   Updated: 2018/12/19 16:32:07 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:31:12 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,5 @@ size_t		ft_smallest_strichr(const char *s, char *delims)
 			smallest_len = current_len;
 		i++;
 	}
-	return smallest_len;
+	return (smallest_len);
 }

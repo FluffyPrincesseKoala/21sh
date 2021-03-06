@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 15:41:42 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 16:52:54 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 11:55:10 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static char	*ncat(char *new, char *sub, int *j)
 {
@@ -60,20 +60,20 @@ void		select_paste(t_bash *data)
 	old = NULL;
 	if (data->copied)
 	{
-		if (LINE && ft_strlen(LINE))
+		if (data->vector->line && ft_strlen(data->vector->line))
 		{
-			old = ft_strdup(LINE);
-			ft_strdel(&LINE);
-			LINE = str_add_sub(old, data->copied, IDX);
+			old = ft_strdup(data->vector->line);
+			ft_strdel(&data->vector->line);
+			data->vector->line = str_add_sub(old, data->copied, data->iterator);
 		}
 		else
 		{
-			ft_strdel(&LINE);
-			LINE = ft_strdup(data->copied);
+			ft_strdel(&data->vector->line);
+			data->vector->line = ft_strdup(data->copied);
 		}
-		SAVE_C;
-		print_rest(LINE, IDX, old);
-		RESET_C;
+		term_put(SAVE);
+		print_rest(data->vector->line, data->iterator, old);
+		term_put(RESET_C);
 		ft_strdel(&old);
 	}
 }

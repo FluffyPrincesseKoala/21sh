@@ -1,31 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_error.c                                      :+:      :+:    :+:   */
+/*   error_code_to_message.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/14 15:27:52 by koala             #+#    #+#             */
-/*   Updated: 2021/03/05 18:59:23 by cylemair         ###   ########.fr       */
+/*   Created: 2021/03/05 19:19:03 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <21sh.h>
-
-void		put_error_code(int error)
-{
-	ft_putstr_fd(RED, STDERR);
-	ft_putnbr_fd(error, STDERR);
-	ft_putstr_fd(RESET, STDERR);
-}
-
-void		print_failed_fork_error(pid_t pid)
-{
-	ft_putstr_fd("fork failed at ", 2);
-	ft_putnbr_fd((int)pid, 2);
-	ft_putchar('\n');
-	exit(-1);
-}
+#include "vingt_et_un_sh.h"
 
 void		error_code_to_message(int *error)
 {
@@ -40,7 +25,7 @@ void		error_code_to_message(int *error)
 	if (*error == OPEN_ERROR)
 		put_error_msg("Open failed.\n");
 	if (*error == NO_APPENDING_IN_FILE_DIRECTOR_ERROR)
-		put_error_msg("Unexpected '&' symbole for appending output redirection.\n");
+		put_error_msg("Unexpected '&' symbole for appending output redirect\n");
 	if (*error == SNTX_ERR)
 		put_error_msg("Unexpected end of command.\n");
 	if (*error == ENV_FAIL)

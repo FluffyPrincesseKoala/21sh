@@ -6,22 +6,22 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 14:58:01 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 16:37:24 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 11:35:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 void	arrow_right(t_bash *data)
 {
-	if (data->iterator < ft_strlen(LINE))
+	if (data->iterator < ft_strlen(data->vector->line))
 	{
 		if (data->is_select)
 		{
 			unselect(data);
 			uncolor(data);
 		}
-		set_cursors(data, &data->cursor, LINE, get_win_max_col());
+		set_cursors(data, &data->cursor, data->vector->line, get_win_max_col());
 		data->cursor = find_cursor_node(&data->cursor, data->iterator,
 			get_win_max_col(), data->prompt_len);
 		move_right(data);

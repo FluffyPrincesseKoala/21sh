@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:22:31 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 14:29:37 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:15:01 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 /*
 **	explicitly return the current vector ( one that's not finish )
@@ -57,12 +57,12 @@ static void		eof_update_heredoc(t_bash *data)
 	++data->finish_heredoc;
 	cmd = get_current_heredoc_vector(data);
 	if (cmd)
-		fill_heredoc_array(data, cmd, &LINE);
-	add_at_end_of_last_line(&data->vector->up->line, &LINE);
+		fill_heredoc_array(data, cmd, &data->vector->line);
+	add_at_end_of_last_line(&data->vector->up->line, &data->vector->line);
 	ft_putchar('\n');
-	if (VECT_UP && data->nb_heredoc == data->finish_heredoc)
+	if (data->vector->up && data->nb_heredoc == data->finish_heredoc)
 	{
-		VECT = VECT_UP;
+		data->vector = data->vector->up;
 		free_vector(&data->vector->down, FALSE);
 		data->is_heredoc = data->nb_heredoc - data->finish_heredoc;
 		data->expend = (data->is_heredoc) ? -1 : 0;
@@ -82,10 +82,11 @@ static void		update_docstring(t_bash *data)
 	i = data->finish_heredoc;
 	if (cmd = get_current_heredoc_vector(data))
 	{
-		fill_heredoc_array(data, cmd, &LINE);
+		fill_heredoc_array(data, cmd, &data->vector->line);
 		ft_putchar('\n');
-		if (VECT_UP && cmd->doc_string)
-			add_at_end_of_last_line(&VECT_UP->line, &LINE);
+		if (data->vector->up && cmd->doc_string)
+			add_at_end_of_last_line(&data->vector->up->line,
+				&data->vector->line);
 	}
 }
 
@@ -98,7 +99,7 @@ int				update_heredoc(t_bash *data)
 	char	**tmp;
 	char	*str;
 
-	if (is_heredoc_end(data, LINE, data->vector->up))
+	if (is_heredoc_end(data, data->vector->line, data->vector->up))
 		eof_update_heredoc(data);
 	else
 		update_docstring(data);

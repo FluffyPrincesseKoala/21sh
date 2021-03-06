@@ -6,20 +6,20 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 15:24:30 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 16:59:34 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 11:35:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 void	key_last(t_bash *data)
 {
-	if (LINE)
+	if (data->vector->line)
 	{
-		set_cursors(data, &data->cursor, LINE, get_win_max_col());
+		set_cursors(data, &data->cursor, data->vector->line, get_win_max_col());
 		data->cursor = find_cursor_node(&data->cursor, data->iterator,
 			get_win_max_col(), data->prompt_len);
-		while (data->iterator < ft_strlen(LINE))
+		while (data->iterator < ft_strlen(data->vector->line))
 			move_right(data);
 		clear_cursor_struct(&data->cursor);
 	}

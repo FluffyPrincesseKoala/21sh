@@ -6,15 +6,14 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 19:47:39 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:13:08 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCTS_H_
-# define STRUCTS_H_
+#ifndef STRUCTS_H
+# define STRUCTS_H
 
 # define SLEFT	-1
-# define SRIGHT	1
 # define NOSLT	0
 
 typedef struct					s_term
@@ -30,13 +29,11 @@ typedef struct					s_term
 typedef struct					s_arg
 {
 	char						*content;
-	int							separator;
 	struct s_arg				*previous;
 	struct s_arg				*next;
 }								t_arg;
 
-struct							s_redirection_setup;
-
+struct s_redirection_setup;
 
 typedef struct					s_redirection
 {
@@ -49,7 +46,7 @@ typedef struct					s_redirection
 	struct s_redirection		*next;
 }								t_redirection;
 
-struct							s_bash;
+struct s_bash;
 
 typedef struct					s_vect
 {
@@ -78,9 +75,9 @@ typedef struct					s_redirection_setup
 	t_setup_ptr					*f;
 	char						*op;
 	int							flags;
-}								t_redirection_setup;
+}								t_redirect_setup;
 
-struct							s_built;
+struct s_built;
 
 typedef struct					s_bash
 {
@@ -88,18 +85,14 @@ typedef struct					s_bash
 	char						**venv;
 	int							error;
 	char						*error_msg;
-	struct	s_built				*builtin;
-/*
-**	CURSOR POSITION
-*/
+	struct s_built				*builtin;
+
 	t_term						*cursor;
 	int							x;
 	int							y;
 	int							iterator;
 	int							prompt_len;
-/*
-**	PARSING
-*/
+
 	t_vect						*vector;
 	int							history_stack;
 	int							count_separator;
@@ -107,30 +100,22 @@ typedef struct					s_bash
 	int							expend;
 	int							start_expend;
 	int							expend_up;
-/*
-**	SELECT COPY PASTE
-*/
+
 	int							start_select;
 	int							is_select;
 	int							select_direction;
 	int							end_select;
 	char						*copied;
-/*
-**	REDIRECT
-*/
-	struct s_redirection_setup  **redirections_setup;
-/*
-**	HERE DOCS
-*/
+
+	struct s_redirection_setup	**redirect_setup;
+
 	char						*doc_string;
 	char						*eof;
 	int							is_heredoc;
 	int							nb_heredoc;
 	int							finish_heredoc;
 	int							heredoc_delimiter;
-/*
-** SYSCALLS
-*/
+
 	char						**args_array;
 	char						*path;
 }								t_bash;

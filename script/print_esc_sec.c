@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
-#include "../includes/21sh.h"
+#include "../includes/vingt_et_un_sh.h"
 
 /*
 * SIGINT signal interrupts process 
@@ -35,6 +35,7 @@ void        setup_signals()
     signal(SIGTSTP, sigtstp_handler);
     signal(SIGCHLD, sigchld_handler);
 }
+
 int main(void){
 	char buff[8];
 	setup_signals();
