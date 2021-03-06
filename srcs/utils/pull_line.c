@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_env_var_value.c                                :+:      :+:    :+:   */
+/*   pull_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/02 12:48:39 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 12:49:07 by cylemair         ###   ########.fr       */
+/*   Created: 2021/03/04 17:59:39 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
-char		*get_env_var_value(char **env, char *var)
+void		pull_line(t_vect **head)
 {
-	int		i;
-	int		len;
+	t_vect	*lst;
 
-	i = 0;
-	while (env && env[i])
+	if (head && *head)
 	{
-		len = ft_strlendelim(env[i], '=', 0);
-		if (ft_strlen(var) == len && !ft_strncmp(env[i], var, len))
-			return (*(env + i) + len + 1);
-		i += 1;
+		lst = *head;
+		while (lst->down)
+			lst = lst->down;
+		ft_strdel(&lst->line);
+		lst->line = ft_strdup((*head)->line);
+		*head = lst;
 	}
-	return (NULL);
 }

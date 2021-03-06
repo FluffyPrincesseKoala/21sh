@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 17:56:55 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 16:06:23 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 11:55:10 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static int	handle_new_entry(t_bash *data, char *entry, int pos)
 {
@@ -22,10 +22,10 @@ static int	handle_new_entry(t_bash *data, char *entry, int pos)
 			pull_line(&data->vector);
 		push_entry(data, entry, &data->vector->line, data->iterator);
 	}
-	SAVE_C;
+	term_put(SAVE);
 	data->iterator = pos;
 	print_rest(data->vector->line, pos, NULL);
-	RESET_C;
+	term_put(RESET_C);
 	arrow_right(data);
 	return (data->iterator);
 }

@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 18:48:46 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/04 19:51:04 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 11:33:22 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 /*
 ** Take a look at the right of the redirection operator.
@@ -25,10 +25,10 @@ char	*search_file_word(
 	char	*file;
 
 	file = NULL;
-	if (substring_index != ft_strlen(CONTENT))
+	if (substring_index != ft_strlen(arg->content))
 	{
-		if (!(file = ft_strsub(CONTENT,
-			substring_index, ft_strlen(CONTENT) - substring_index)))
+		if (!(file = ft_strsub(arg->content,
+			substring_index, ft_strlen(arg->content) - substring_index)))
 			*error = MALLOC_ERROR;
 	}
 	else if (arg->next && arg->next->content)

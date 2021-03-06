@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 15:40:37 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 15:41:05 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:16:09 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static char	*strsub_copy(char *str, int start, int size)
 {
@@ -36,7 +36,8 @@ void		select_copy(t_bash *data)
 	{
 		if (data->copied)
 			ft_strdel(&data->copied);
-		data->copied = strsub_copy(LINE, data->start_select, data->end_select);
+		data->copied = strsub_copy(data->vector->line,
+			data->start_select, data->end_select);
 		uncolor(data);
 		unselect(data);
 	}

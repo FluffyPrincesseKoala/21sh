@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 14:45:40 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/01 16:27:14 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:38:18 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef struct		s_list
 
 int					ft_arraylen(char **array);
 int					ft_arraylen_in_char(char **array);
-size_t  			ft_count_c_in_str(char *str, int c);
+size_t				ft_count_c_in_str(char *str, int c);
 int					ft_strlendelim(char *str, char delim, int start);
 void				ft_lstadd(t_list **alst, t_list *new);
 t_list				*ft_lstnew(void const *content, size_t content_size);
@@ -98,7 +98,8 @@ void				ft_putstr_fd(char const *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
 char				*ft_strndup(const char *str, size_t size);
 int					ft_stristr(const char *str, const char *to_find);
-char				*ft_strsub_free(char **s, unsigned int start, unsigned int len);
+char				*ft_strsub_free(char **s, unsigned int start,
+	unsigned int len);
 int					is_all_whitespaces(char *str);
 int					ft_str_is_digits(const char *s);
 size_t				ft_strclen(const char *str, char c);

@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pull_line.c                                        :+:      :+:    :+:   */
+/*   vect_new.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/04 17:59:39 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/04 17:59:46 by cylemair         ###   ########.fr       */
+/*   Created: 2021/03/04 19:08:24 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
-void		pull_line(t_vect **head)
+t_vect		*vect_new(t_arg *args, char *line)
 {
-	t_vect	*lst;
+	t_vect	*list;
 
-	if (head && *head)
-	{
-		lst = *head;
-		while (lst->down)
-			lst = lst->down;
-		ft_strdel(&lst->line);
-		lst->line = ft_strdup((*head)->line);
-		*head = lst;
-	}
+	if (!(list = (t_vect*)ft_memalloc(sizeof(t_vect))))
+		return (NULL);
+	list->args = (args) ? args : NULL;
+	list->line = (line) ? ft_strdup(line) : NULL;
+	list->next = NULL;
+	list->up = NULL;
+	list->down = NULL;
+	return (list);
 }

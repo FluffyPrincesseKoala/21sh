@@ -6,20 +6,11 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 19:41:08 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 16:23:20 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/06 17:05:56 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
-
-static int	is_non_escaped_quote(const char *s, char quote, int i)
-{
-	if (s[i] == quote
-		&& (i == 0 || (s[i - 1] != '\\' || (i > 1 && s[i - 2] == '\\'))))
-		return (TRUE);
-	else
-		return (FALSE);
-}
+#include "vingt_et_un_sh.h"
 
 static char	*unquote(char *line_substr, char quote)
 {
@@ -49,17 +40,15 @@ size_t		create_quoted_arg(
 {
 	char	*unquoted_str;
 	t_arg	*new_arg;
-	size_t	len;
 
 	if (unquoted_str = unquote(line_substr, quote))
 	{
-		len = ft_strlen(line_substr) - ft_strlen(unquoted_str);
 		if (new_arg = create_arg(unquoted_str))
 		{
 			add_arg(&cmd->args, new_arg);
 			if (quote == '\"')
 				handle_double_quote(data, new_arg);
-			return (len);
+			return (ft_strlendelim(line_substr, quote, 0) + 1);
 		}
 	}
 	data->error = MALLOC_ERROR;

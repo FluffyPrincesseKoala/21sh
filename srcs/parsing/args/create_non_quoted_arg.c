@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   create_non_quoted_arg.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 19:42:42 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 18:47:55 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/06 12:13:08 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static void	get_tilt(t_arg *arg, char **env)
 {
 	char		*path_to_home;
 
-	if (CONTENT && ft_strchr(CONTENT, '~'))
+	if (arg->content && ft_strchr(arg->content, '~'))
 	{
 		path_to_home = get_env_var_value(env, "HOME");
-		CONTENT = ft_free_replaced_substr(CONTENT, "~", path_to_home);
+		arg->content = ft_free_replaced_substr(arg->content, "~", path_to_home);
 	}
 }
 
@@ -36,14 +36,14 @@ static void	parse_redirection_in_arg(t_bash *data, t_vect *cmd, t_arg *arg)
 	t_redirection	*new;
 
 	i = 0;
-	while (data->redirections_setup[i])
+	while (data->redirect_setup[i])
 	{
-		if (op = ft_strstr(arg->content, data->redirections_setup[i]->op))
+		if (op = ft_strstr(arg->content, data->redirect_setup[i]->op))
 		{
 			if (!(op[0] == '<' && op[1] == '<'))
 			{
 				new = new_redirection(cmd);
-				new->setup = data->redirections_setup[i];
+				new->setup = data->redirect_setup[i];
 				new->arg = arg;
 				break ;
 			}

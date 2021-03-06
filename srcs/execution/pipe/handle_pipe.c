@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:05:57 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 18:38:20 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:13:08 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 /*
 ** Create a new redirection structure, that redirects the pipe writting file
@@ -23,7 +23,7 @@ static void	set_stdout_pipe_redirection(
 	t_redirection *new;
 
 	new = new_redirection(command);
-	new->setup = data->redirections_setup[1];
+	new->setup = data->redirect_setup[1];
 	new->left_fd = 1;
 	new->right_fd = pipe_fd[1];
 }

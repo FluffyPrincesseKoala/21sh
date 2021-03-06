@@ -49,3 +49,22 @@ number
 ```
 - Auto Complétion dynamique contextuelle des commandes
 - La gestion des alias via les built-ins ``alias`` et ``unalias``
+
+# Error
+Invalid read of size 1 *line_content_to_args.c:87*
+
+**Input**
+```
+echo "'
+'
+\'
+\"
+"
+```
+**Output**
+```
+'
+'
+\'
+"
+```

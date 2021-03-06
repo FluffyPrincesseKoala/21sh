@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_value_to_array.c                               :+:      :+:    :+:   */
+/*   print_failed_fork_error.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/04 18:07:57 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/04 19:27:28 by cylemair         ###   ########.fr       */
+/*   Created: 2021/03/05 19:18:19 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
-char		**add_value_to_array(char **src, char *value)
+void		print_failed_fork_error(pid_t pid)
 {
-	char	**new;
-	int		i;
-
-	i = 0;
-	if (!(new = malloc(sizeof(char*) * (ft_arraylen(src) + 2))))
-		return (NULL);
-	while (src[i])
-	{
-		new[i] = ft_strdup(src[i]);
-		i++;
-	}
-	new[i++] = ft_strdup(value);
-	new[i] = NULL;
-	if (*src)
-		free_array(src);
-	return (new);
+	ft_putstr_fd("fork failed at ", 2);
+	ft_putnbr_fd((int)pid, 2);
+	ft_putchar('\n');
+	exit(-1);
 }

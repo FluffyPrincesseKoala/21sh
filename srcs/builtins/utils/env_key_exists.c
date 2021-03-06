@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_array.c                                       :+:      :+:    :+:   */
+/*   env_key_exists.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/04 17:47:33 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/04 17:47:52 by cylemair         ###   ########.fr       */
+/*   Created: 2021/03/02 12:54:14 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
-void	free_array(char **array)
+int			env_key_exists(char **env, char *key)
 {
 	int		i;
 
 	i = 0;
-	while (array && array[i])
+	while (env[i])
 	{
-		ft_strdel(&array[i]);
-		array[i] = NULL;
+		if (ft_strnequ(env[i], key, ft_strlen(key)))
+			return (1);
 		i++;
 	}
-	if (array)
-		free(array);
-	array = NULL;
+	return (0);
 }

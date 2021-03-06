@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   format_line.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:50:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 19:40:21 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/06 12:54:40 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static void	detach_args(t_vect *current, t_arg *last_arg_before_doomsday)
 {
@@ -31,7 +31,7 @@ static void	get_post_separator_args(
 
 	substring = NULL;
 	new = NULL;
-	len = ft_strlen(CONTENT);
+	len = ft_strlen(arg->content);
 	if (substring = ft_strsub(arg->content, index, len - index))
 	{
 		if (insert_new_arg(cmd, arg, substring))
@@ -71,13 +71,13 @@ void		format_line(t_bash *data)
 	char	**table;
 	char	*tmp;
 
-	if ((tmp = ft_replace_substr(LINE, "\n", " \n")))
+	if ((tmp = ft_replace_substr(data->vector->line, "\n", " \n")))
 	{
 		if (ft_arraylen(table = ft_strsplit(tmp, ' ')))
-			line_content_to_args(data, LINE);
+			line_content_to_args(data, data->vector->line);
 	}
-	if (!VECT->args || data->error)
-		puterror(data->error);
+	if (!data->vector->args || data->error)
+		error_code_to_message(&data->error);
 	else if (is_heredoc(data))
 		heredoc(data);
 	free_array(table);

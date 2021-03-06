@@ -6,11 +6,11 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 19:25:37 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/06 17:11:07 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static t_vect	*vect_add(t_vect **head, t_vect *new)
 {
@@ -88,5 +88,6 @@ void			line_content_to_args(t_bash *data, char *line)
 	{
 		i += word_to_arg(data, &current, line + i, &full_word);
 	}
-	setup_command_redirections(data, current);
+	if (!data->error)
+		setup_command_redirections(data, current);
 }

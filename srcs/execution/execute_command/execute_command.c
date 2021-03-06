@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:00:15 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 18:31:20 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 11:33:22 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static size_t	args_len(t_arg *arg)
 {
@@ -19,7 +19,7 @@ static size_t	args_len(t_arg *arg)
 	len = 0;
 	while (arg)
 	{
-		if (CONTENT)
+		if (arg->content)
 			len++;
 		arg = arg->next;
 	}
@@ -42,9 +42,9 @@ static char		**arg_to_array(t_bash *data, t_arg *arg)
 		i = 0;
 		while (arg)
 		{
-			if (CONTENT)
+			if (arg->content)
 			{
-				array[i] = ft_strdup(CONTENT);
+				array[i] = ft_strdup(arg->content);
 				i++;
 			}
 			arg = arg->next;

@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 14:57:29 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 14:57:40 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 11:42:39 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 void				move_right(t_bash *data)
 {
@@ -21,12 +21,12 @@ void				move_right(t_bash *data)
 			data->cursor = data->cursor->next;
 		data->x = 0;
 		data->y++;
-		CDOWN;
+		term_put(DOWN);
 	}
 	else
 	{
 		data->x++;
-		RIGHT;
+		term_put(RIGHT);
 	}
 	data->iterator++;
 }

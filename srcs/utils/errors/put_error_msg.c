@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_builtin.c                                     :+:      :+:    :+:   */
+/*   put_error_msg.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/02 12:16:42 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/02 15:21:07 by cylemair         ###   ########.fr       */
+/*   Created: 2021/03/05 18:55:42 by cylemair          #+#    #+#             */
+/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
-void		free_builtin(t_built **fct)
+void		put_error_msg(char *error)
 {
-	int		i;
-
-	i = 0;
-	while (i != NB_BUILTIN && *fct)
+	if (error)
 	{
-		ft_strdel(&(*fct)[i].name);
-		(*fct)[i].name = NULL;
-		(*fct)[i].f = NULL;
-		i++;
+		ft_putstr_fd(RED, STDERR);
+		ft_putstr_fd(error, STDERR);
+		ft_putstr_fd(RESET, STDERR);
 	}
-	free(*fct);
-	*fct = NULL;
-	fct = NULL;
 }

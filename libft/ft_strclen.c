@@ -6,18 +6,18 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/01/22 12:34:01 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:39:20 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t  ft_strclen(const char *str, char c)
+size_t	ft_strclen(const char *str, char c)
 {
-    size_t i;
+	size_t i;
 
-    i = 0;
-    while (str[i] && str[i] != c)
-        i++;
-    return (i);
+	i = 0;
+	while (str[i] && str[i] != c)
+		i++;
+	return (i);
 }

@@ -1,40 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   debug.c                                            :+:      :+:    :+:   */
+/*   is_non_escaped_quote.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/12/10 15:39:40 by koala             #+#    #+#             */
-/*   Updated: 2020/12/10 15:39:41 by koala            ###   ########.fr       */
+/*   Created: 2021/03/06 16:37:05 by koala             #+#    #+#             */
+/*   Updated: 2021/03/06 16:37:43 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
-void	info(char *str)
+int	is_non_escaped_quote(const char *s, char quote, int i)
 {
-	SAVE_C;
-	GOTO(0, 0);
-	hello();
-	GOTO(0, 0);
-	ft_putchar('[');
-	ft_putstr(str);
-	ft_putchar(']');
-	RESET_C;
-}
-
-void	custom_info(int x, int y, t_term *cursor)
-{
-	SAVE_C;
-	GOTO(0, 0);
-	hello();
-	GOTO(0, 0);
-	ft_putstr("[x:");
-	ft_putnbr(x);
-	ft_putstr("]\t");
-	ft_putstr("[y:");
-	ft_putnbr(y);
-	ft_putstr("]\t");
-	RESET_C;
+	if (s[i] == quote
+		&& (i == 0 || (s[i - 1] != '\\' || (i > 1 && s[i - 2] == '\\'))))
+		return (TRUE);
+	else
+		return (FALSE);
 }

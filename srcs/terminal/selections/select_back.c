@@ -6,20 +6,20 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 15:32:59 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 16:53:32 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 11:58:12 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "21sh.h"
+#include "vingt_et_un_sh.h"
 
 static void	reset_back(t_bash *data)
 {
 	data->end_select -= 1;
 	data->is_select = 0;
 	arrow_left(data);
-	SAVE_C;
-	ft_putchar(LINE[data->end_select]);
-	RESET_C;
+	term_put(SAVE);
+	ft_putchar(data->vector->line[data->end_select]);
+	term_put(RESET_C);
 	data->is_select = SRIGHT;
 	if (data->end_select == data->start_select)
 		unselect(data);
@@ -29,11 +29,11 @@ static void	add_back(t_bash *data)
 {
 	data->is_select = 0;
 	arrow_left(data);
-	SAVE_C;
+	term_put(SAVE);
 	ft_putstr(BACK_BLUE);
-	ft_putchar(LINE[data->start_select]);
+	ft_putchar(data->vector->line[data->start_select]);
 	ft_putstr(RESET);
-	RESET_C;
+	term_put(RESET_C);
 	data->is_select = SLEFT;
 }
 
