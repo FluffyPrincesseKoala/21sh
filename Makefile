@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/03/06 12:13:08 by cylemair         ###   ########.fr        #
+#    Updated: 2021/03/06 13:00:09 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,7 +71,7 @@ PARSE	=	srcs/parsing/end_of_line.c										\
 			srcs/parsing/heredoc/is_heredoc_end.c							\
 			srcs/parsing/heredoc/set_heredoc.c								\
 			srcs/parsing/heredoc/update_heredoc.c							\
-			srcs/parsing/redirections/init_redirect_setup_functions.c	\
+			srcs/parsing/redirections/init_redirections_setup_functions.c	\
 			srcs/parsing/redirections/is_stdout_and_stderr_redirection.c	\
 			srcs/parsing/redirections/search_file_word.c					\
 			srcs/parsing/redirections/search_left_fd.c						\
@@ -109,6 +109,7 @@ TERM	=	srcs/terminal/init_key_functions.c								\
 			srcs/terminal/simple_keys/key_last.c							\
 			srcs/terminal/simple_keys/key_start.c							\
 			srcs/terminal/simple_keys/key_suppr.c							\
+			srcs/terminal/utils/clear.c										\
 			srcs/terminal/utils/clear_cursor_struct.c						\
 			srcs/terminal/utils/conf_term.c									\
 			srcs/terminal/utils/find_cursor_node.c							\

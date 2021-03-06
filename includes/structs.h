@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:13:08 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:58:17 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define STRUCTS_H
 
 # define SLEFT	-1
+# define SRIGHT 1
 # define NOSLT	0
 
 typedef struct					s_term

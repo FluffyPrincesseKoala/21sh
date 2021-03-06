@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 19:54:09 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:13:08 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 12:58:41 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_bash		*init_bash(char **env)
 		return (free_bash(data));
 	if (!(data->redirect_setup = malloc(sizeof(t_redirect_setup) * 4)))
 		return (free_bash(data));
-	if (init_redirect_setup_functions(data) == FAIL)
+	if (init_redirections_setup_functions(data) == FAIL)
 		return (free_bash(data));
 	if (init_builtin(&data->builtin) == FAIL)
 		return (free_bash(data));
