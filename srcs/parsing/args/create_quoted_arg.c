@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_quoted_arg.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 19:41:08 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/05 11:04:16 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/06 16:23:20 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ size_t		create_quoted_arg(
 
 	if (unquoted_str = unquote(line_substr, quote))
 	{
-		len = ft_strlen(unquoted_str) + 2;
+		len = ft_strlen(line_substr) - ft_strlen(unquoted_str);
 		if (new_arg = create_arg(unquoted_str))
 		{
 			add_arg(&cmd->args, new_arg);
