@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/08 13:33:49 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/08 20:18:14 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,28 @@ static t_vect	*vect_add(t_vect **head, t_vect *new)
 	return (*head);
 }
 
-static void		merge_last_args(t_bash *data)
+static void		merge_last_args(t_bash *data, t_vect **current)
 {
 	t_arg	*new_arg;
 	char	*new_content;
-	t_arg	*current;
+	char	*new_quoted;
+	t_arg	*args;
 
-	current = data->vector->args;
-	while (current && current->next && current->next->next)
-		current = current->next;
-	if (current->next)
+	args = (*current)->args;
+	while (args && args->next && args->next->next)
+		args = args->next;
+	if (args->next)
 	{
-		new_content = ft_strjoin(current->content, current->next->content);
-		if (!(new_arg = create_arg(new_content)))
+		new_content = ft_strjoin(args->content, args->next->content);
+		if (args->next->quoted)
+			new_quoted =  ft_strjoin(args->quoted, args->next->quoted);
+		else
+			new_quoted =  ft_strjoin(args->quoted, args->next->content);
+		if (!(new_arg = create_arg(new_content, new_quoted)))
 			data->error = MALLOC_ERROR;
-		del_one_arg(current->next, data->vector);
-		del_one_arg(current, data->vector);
-		add_arg(&data->vector->args, new_arg);
+		del_one_arg(args->next, *current);
+		del_one_arg(args, *current);
+		add_arg(&(*current)->args, new_arg);
 	}
 }
 
@@ -69,7 +74,7 @@ static int		word_to_arg(
 		else
 			len = create_non_quoted_arg(data, *current, word);
 		if (*full_word == FALSE)
-			merge_last_args(data);
+			merge_last_args(data, current);
 		*full_word = FALSE;
 	}
 	return (len);

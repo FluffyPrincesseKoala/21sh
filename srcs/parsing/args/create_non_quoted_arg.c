@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_non_quoted_arg.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 19:42:42 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:13:08 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/08 18:49:00 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ size_t		create_non_quoted_arg(t_bash *data, t_vect *cmd, char *line_extract)
 		&& !is_quote(line_extract[len])
 		&& !is_separator(line_extract[len]))
 		len++;
-	if (!(new_arg = create_arg(ft_strsub(line_extract, 0, len))))
+	if (!(new_arg = create_arg(ft_strsub(line_extract, 0, len), NULL)))
 		data->error = MALLOC_ERROR;
 	else
 	{

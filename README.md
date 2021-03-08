@@ -51,20 +51,17 @@ number
 - La gestion des alias via les built-ins ``alias`` et ``unalias``
 
 # Error
-Invalid read of size 1 *line_content_to_args.c:87*
-
+bad output
 **Input**
 ```
-echo "'
-'
-\'
-\"
-"
+cat << lol ; cat << p
+a
+lol
+1'b'c
+p
 ```
 **Output**
 ```
-'
-'
-\'
-"
+a
+'b'c
 ```

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:19:04 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/08 18:52:40 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ static int		format_heredoc(t_vect **vect, t_arg **to_check)
 			while (splited[i])
 			{
 				if (i == 1)
-					add_arg(&new, create_arg(ft_strdup("<<")));
-				add_arg(&new, create_arg(splited[i]));
+					add_arg(&new, create_arg(ft_strdup("<<"), NULL));
+				add_arg(&new, create_arg(splited[i], NULL));
 				i++;
 			}
 			free_all_args(to_check, 0);

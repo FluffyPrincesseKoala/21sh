@@ -6,7 +6,7 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:27:32 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 16:38:25 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/08 18:48:38 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ void			line_content_to_args(t_bash *data, char *line);
 ** Args
 */
 t_arg			*add_arg(t_arg **head, t_arg *new_arg);
-t_arg			*create_arg(char *content);
+t_arg			*create_arg(char *content, char *quoted_string);
 size_t			create_non_quoted_arg(t_bash *data, t_vect *cmd,
 	char *line_extract);
 size_t			create_quoted_arg(t_bash *data, t_vect *cmd,

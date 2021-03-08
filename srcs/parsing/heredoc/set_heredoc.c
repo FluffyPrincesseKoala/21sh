@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_heredoc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:34:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/08 19:43:00 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,33 @@
 
 static char	*concat_args_in_heredoc(t_arg *arg)
 {
-	char	*new;
-	char	*tmp;
-	char	*tmp_nxt;
+	char	*concated_args;
+	char	*str_with_space;
+	char	*merged_string;
 
-	new = NULL;
-	tmp = NULL;
-	tmp_nxt = NULL;
+	concated_args = NULL;
+	str_with_space = NULL;
+	merged_string = NULL;
 	while (arg)
 	{
-		if (!new && arg->content)
-			new = ft_strdup(arg->content);
+		if (!concated_args)
+			if (arg->quoted)
+				concated_args = ft_strdup(arg->quoted);
+			else if (arg->content)
+				concated_args = ft_strdup(arg->content);
 		else
 		{
-			tmp = ft_strjoin(new, " ");
-			tmp_nxt = str_join_free(&tmp, &arg->content);
-			new = ft_strdup(tmp_nxt);
-			ft_strdel(&tmp_nxt);
+			str_with_space = ft_strjoin(concated_args, " ");
+			if (arg->quoted)
+				merged_string = str_join_free(&str_with_space, &arg->quoted);
+			else if (arg->content)
+				merged_string = str_join_free(&str_with_space, &arg->content);
+			concated_args = ft_strdup(merged_string);
+			ft_strdel(&merged_string);
 		}
 		arg = arg->next;
 	}
-	return (new);
+	return (concated_args);
 }
 
 static void	unlink_free_vector(t_vect **to_free, t_vect *new_next)

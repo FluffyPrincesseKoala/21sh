@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_all_args.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 17:42:44 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/08 20:27:18 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@ void	free_all_args(t_arg **arg, int flag)
 		}
 		free_all_args(&(*arg)->next, flag);
 		ft_strdel(&(*arg)->content);
+		ft_strdel(&(*arg)->quoted);
 		(*arg)->previous = NULL;
 		(*arg)->next = NULL;
 		(*arg)->content = NULL;
+		(*arg)->quoted = NULL;
 		free(*arg);
 		*arg = NULL;
 		arg = NULL;
