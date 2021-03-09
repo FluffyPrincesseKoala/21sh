@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vingt_et_un_sh.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:27:32 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/08 18:48:38 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/09 17:48:39 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ int				is_eof(t_vect *cmd);
 int				is_heredoc_end(t_bash *data, char *line, t_vect *vector);
 t_arg			*set_heredoc(t_bash *data, t_vect **cmd);
 int				update_heredoc(t_bash *data);
+char			*concat_args_in_heredoc(t_arg *arg);
 
 /*
 ** Redirections

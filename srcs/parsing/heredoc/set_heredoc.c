@@ -6,42 +6,11 @@
 /*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:34:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/08 19:43:00 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/09 17:45:54 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
-
-static char	*concat_args_in_heredoc(t_arg *arg)
-{
-	char	*concated_args;
-	char	*str_with_space;
-	char	*merged_string;
-
-	concated_args = NULL;
-	str_with_space = NULL;
-	merged_string = NULL;
-	while (arg)
-	{
-		if (!concated_args)
-			if (arg->quoted)
-				concated_args = ft_strdup(arg->quoted);
-			else if (arg->content)
-				concated_args = ft_strdup(arg->content);
-		else
-		{
-			str_with_space = ft_strjoin(concated_args, " ");
-			if (arg->quoted)
-				merged_string = str_join_free(&str_with_space, &arg->quoted);
-			else if (arg->content)
-				merged_string = str_join_free(&str_with_space, &arg->content);
-			concated_args = ft_strdup(merged_string);
-			ft_strdel(&merged_string);
-		}
-		arg = arg->next;
-	}
-	return (concated_args);
-}
 
 static void	unlink_free_vector(t_vect **to_free, t_vect *new_next)
 {

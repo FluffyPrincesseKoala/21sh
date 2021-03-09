@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: koala <koala@student.42.fr>                +#+  +:+       +#+         #
+#    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/03/06 16:38:55 by koala            ###   ########.fr        #
+#    Updated: 2021/03/09 17:49:31 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,6 +72,7 @@ PARSE	=	srcs/parsing/end_of_line.c										\
 			srcs/parsing/heredoc/is_heredoc_end.c							\
 			srcs/parsing/heredoc/set_heredoc.c								\
 			srcs/parsing/heredoc/update_heredoc.c							\
+			srcs/parsing/heredoc/concat_args_in_heredoc.c					\
 			srcs/parsing/redirections/init_redirections_setup_functions.c	\
 			srcs/parsing/redirections/is_stdout_and_stderr_redirection.c	\
 			srcs/parsing/redirections/search_file_word.c					\

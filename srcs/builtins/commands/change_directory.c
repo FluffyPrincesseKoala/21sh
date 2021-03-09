@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   change_directory.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:22:41 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/09 13:02:38 by koala            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	update_current_directory(char **env, char *pwd)
 
 	old = get_env_var_value(env, "PWD");
 	tmp = ft_strjoin("OLDPWD=", old);
-	if (env_key_exists(env, "OLDPWD="))
+	if (env_key_exists(env, "OLDPWD"))
 		env = change_value_in_array(env, "OLDPWD", tmp);
 	else
 		env = add_value_to_array(env, tmp);

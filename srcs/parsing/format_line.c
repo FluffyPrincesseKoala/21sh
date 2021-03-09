@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:50:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:54:40 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/09 18:12:43 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,25 +43,9 @@ static void	get_post_separator_args(
 
 static int	is_heredoc(t_bash *data)
 {
-	t_vect	*current;
-	t_arg	*args;
-
-	if (!data->vector->doc_string && (current = data->vector))
-	{
+	if (!data->vector->doc_string)
 		if (ft_strstr(data->vector->line, "<<"))
-		{
-			while (current && (args = current->args))
-			{
-				while (args)
-				{
-					if (ft_strequ(args->content, "<<"))
-						return (TRUE);
-					args = args->next;
-				}
-				current = current->next;
-			}
-		}
-	}
+			return (TRUE);
 	return (FALSE);
 }
 
