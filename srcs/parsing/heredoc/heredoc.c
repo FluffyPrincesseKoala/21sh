@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/08 18:52:40 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/10 12:06:52 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int		check_heredoc_format(t_bash *data, t_vect *cmd, t_arg *to_free)
 			to_free = reset_data_heredoc(data);
 			return (-1);
 		}
-		else
+		else // !error
 			to_free = set_heredoc(data, &cmd);
 	}
 	if (to_free && !data->error)
@@ -108,6 +108,9 @@ void			heredoc(t_bash *data)
 	if (!data->error)
 	{
 		data->nb_heredoc = count;
-		data->expend = (data->is_heredoc) ? -1 : 0;
+		if (data->is_heredoc && data->finish_heredoc < count )
+			data->expend = -1;
+		else
+			data->expend = 0;
 	}
 }

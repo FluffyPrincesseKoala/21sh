@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_heredoc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:34:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/09 17:45:54 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/10 11:54:10 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,7 @@ t_arg		*set_heredoc(t_bash *data, t_vect **cmd)
 	}
 	if (!(*cmd)->eof && is_doc)
 		data->error = UNEXPECT_COMMAND_END_ERROR;
+	else
+		data->error = 0;
 	return (to_free);
 }
