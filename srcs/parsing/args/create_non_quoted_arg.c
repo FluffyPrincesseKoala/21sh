@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_non_quoted_arg.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 19:42:42 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/08 18:49:00 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/10 12:50:05 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	parse_redirection_in_arg(t_bash *data, t_vect *cmd, t_arg *arg)
 	i = 0;
 	while (data->redirect_setup[i])
 	{
-		if (op = ft_strstr(arg->content, data->redirect_setup[i]->op))
+		if ((op = ft_strstr(arg->content, data->redirect_setup[i]->op)))
 		{
 			if (!(op[0] == '<' && op[1] == '<'))
 			{

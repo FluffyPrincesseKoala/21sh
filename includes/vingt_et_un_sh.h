@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:27:32 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/09 17:48:39 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/10 12:52:27 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ void			line_content_to_args(t_bash *data, char *line);
 /*
 ** Args
 */
-t_arg			*add_arg(t_arg **head, t_arg *new_arg);
+void			add_arg(t_arg **head, t_arg *new_arg);
 t_arg			*create_arg(char *content, char *quoted_string);
 size_t			create_non_quoted_arg(t_bash *data, t_vect *cmd,
 	char *line_extract);
@@ -199,7 +199,7 @@ void			heredoc(t_bash *data);
 int				is_eof(t_vect *cmd);
 int				is_heredoc_end(t_bash *data, char *line, t_vect *vector);
 t_arg			*set_heredoc(t_bash *data, t_vect **cmd);
-int				update_heredoc(t_bash *data);
+void			update_heredoc(t_bash *data);
 char			*concat_args_in_heredoc(t_arg *arg);
 
 /*

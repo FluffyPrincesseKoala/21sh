@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_arg.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 17:39:22 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/08 19:00:34 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/10 12:49:21 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_arg		*create_arg(char *content, char *quoted_string)
 {
 	t_arg	*new;
 
-	if (new = ft_memalloc(sizeof(t_arg)))
+	if ((new = ft_memalloc(sizeof(t_arg))))
 	{
 		new->content = content;
 		new->quoted = quoted_string;

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:22:31 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:15:01 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/10 12:52:14 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void		update_docstring(t_bash *data)
 	int		i;
 
 	i = data->finish_heredoc;
-	if (cmd = get_current_heredoc_vector(data))
+	if ((cmd = get_current_heredoc_vector(data)))
 	{
 		fill_heredoc_array(data, cmd, &data->vector->line);
 		ft_putchar('\n');
@@ -94,7 +94,7 @@ static void		update_docstring(t_bash *data)
 **	update heredoc_array
 */
 
-int				update_heredoc(t_bash *data)
+void			update_heredoc(t_bash *data)
 {
 	char	**tmp;
 	char	*str;

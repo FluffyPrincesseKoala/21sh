@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 18:05:26 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/10 12:51:12 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,18 @@ static void		link_cursor(t_term **head, t_term *new)
 {
 	t_term	*lst;
 
-	if (!*head && new)
+	if (head)
 	{
-		*head = new;
-	}
-	else
-	{
-		lst = *head;
-		while (lst->next)
-			lst = lst->next;
-		lst->next = new;
-		new->prev = lst;
+		if (!*head && new)
+			*head = new;
+		else
+		{
+			lst = *head;
+			while (lst->next)
+				lst = lst->next;
+			lst->next = new;
+			new->prev = lst;
+		}
 	}
 }
 
@@ -65,6 +66,7 @@ static t_term	*new_cursor_struct(char *line, int start,
 	cursor->line_len = ft_strlen(line);
 	cursor->next = NULL;
 	cursor->prev = NULL;
+	return (cursor);
 }
 
 void			set_cursors(t_bash *data, t_term **cursor, char *str, int max)

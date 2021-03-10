@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 19:45:24 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/09 18:02:30 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/10 12:39:39 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	pending_line(char *str)
 	i = 0;
 	while (str && str[i])
 	{
-		if (quote = is_quote(str[i++]))
+		if ((quote = is_quote(str[i++])))
 		{
 			while (str[i] && !is_non_escaped_quote(str, quote, i))
 				i++;

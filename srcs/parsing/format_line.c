@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:50:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/09 18:12:43 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/10 12:29:54 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	get_post_separator_args(
 	substring = NULL;
 	new = NULL;
 	len = ft_strlen(arg->content);
-	if (substring = ft_strsub(arg->content, index, len - index))
+	if ((substring = ft_strsub(arg->content, index, len - index)))
 	{
 		if (insert_new_arg(cmd, arg, substring))
 			return ;

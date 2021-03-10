@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_quoted_arg.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 19:41:08 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/08 20:11:14 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/10 12:49:50 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ size_t			create_quoted_arg(
 	char	*quoted_str;
 	t_arg	*new_arg;
 
-	if (unquoted_str = unquote(line_substr, quote))
+	if ((unquoted_str = unquote(line_substr, quote)))
 	{
 		quoted_str = extract_quoted_str(line_substr, quote);
-		if (new_arg = create_arg(unquoted_str, quoted_str))
+		if ((new_arg = create_arg(unquoted_str, quoted_str)))
 		{
 			add_arg(&cmd->args, new_arg);
 			if (quote == '\"')

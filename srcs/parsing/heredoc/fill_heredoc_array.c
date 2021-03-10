@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_heredoc_array.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:28:27 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/08 18:31:59 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/10 12:41:56 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,11 @@ static char	**create_array(char *first)
 	return (ret);
 }
 
-static char	**add_to_heredoc_array(t_vect *cmd, char **line)
+static void	add_to_heredoc_array(t_vect *cmd, char **line)
 {
 	if (cmd->doc_string)
 		cmd->doc_string = add_value_to_array(cmd->doc_string, *line);
-	else
-		cmd->doc_string = create_array(*line);
+	cmd->doc_string = create_array(*line);
 }
 
 void		fill_heredoc_array(t_bash *data, t_vect *cmd, char **line)

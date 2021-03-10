@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   line_content_to_args.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/09 12:48:10 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/10 12:30:22 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int		word_to_arg(
 		*full_word = TRUE;
 	else
 	{
-		if (quote = is_quote(word[0]))
+		if ((quote = is_quote(word[0])))
 			len = create_quoted_arg(data, *current, word, quote);
 		else
 			len = create_non_quoted_arg(data, *current, word);

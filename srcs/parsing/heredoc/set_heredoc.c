@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:34:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 11:54:10 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/10 12:40:18 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ static int	parse_newline_as_heredoc(
 	if (cmd && cmd->separator == '\n')
 	{
 		to_free = cmd;
-		while (cmd = cmd->next)
+		while ((cmd = cmd->next))
 		{
-			if (new = concat_args_in_heredoc(cmd->args))
+			if ((new = concat_args_in_heredoc(cmd->args)))
 			{
 				fill_heredoc_array(data, next_doc, &new);
 				ft_strdel(&new);
