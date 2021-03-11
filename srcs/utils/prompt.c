@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 19:44:18 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 17:26:04 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/11 18:35:38 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int			prompt(char **env, int short_prompt)
 		{
 			pstr(BACK_BLUE);
 			len += pstr("Heredoc");
+			pstr(RESET);
 		}
 		pstr(CYAN);
 		len += pstr(" > ");

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/15 14:45:40 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:38:18 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/11 18:12:19 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void				ft_putnbr_fd(int n, int fd);
 char				*ft_strndup(const char *str, size_t size);
 int					ft_stristr(const char *str, const char *to_find);
 char				*ft_strsub_free(char **s, unsigned int start,
-	unsigned int len);
+									unsigned int len);
 int					is_all_whitespaces(char *str);
 int					ft_str_is_digits(const char *s);
 size_t				ft_strclen(const char *str, char c);

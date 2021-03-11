@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 16:01:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/11 18:32:17 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ static void	init_selection_functions(t_key **fct)
 	(*fct)[13].name = ft_strdup("\033[1;2C");
 	(*fct)[13].len = 6;
 	(*fct)[14].f = &select_copy;
-	(*fct)[14].name = ft_strdup("\033[1;6D");
-	(*fct)[14].len = 6;
+	(*fct)[14].name = ft_strdup("\002");
+	(*fct)[14].len = 1;
 	(*fct)[15].f = &select_paste;
-	(*fct)[15].name = ft_strdup("\033[1;6C");
-	(*fct)[15].len = 6;
+	(*fct)[15].name = ft_strdup("\016");
+	(*fct)[15].len = 1;
 }
 
 static void	init_simple_key_functions(t_key **fct)

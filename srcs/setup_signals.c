@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:02:40 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/11 17:03:17 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/11 19:08:21 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void	custom_return(void)
 {
+	t_vect	*cmd;
+
 	term_put(DOWN);
 	ft_putstr(tgetstr("cr", NULL));
 	prompt(g_data->env, 0);
@@ -23,15 +25,13 @@ static void	custom_return(void)
 	g_data->iterator = 0;
 	g_data->history_stack = 0;
 	g_data->expend = 0;
-	if (g_data->vector)
-		free_array(g_data->vector->doc_string);
-	if (g_data->vector->down)
+	if ((cmd = g_data->vector))
 	{
-		while (g_data->vector->down)
-			g_data->vector = g_data->vector->down;
+		while (cmd && cmd->down)
+			cmd = cmd->down;
+		ft_strdel(&cmd->line);
+		free_array(cmd->doc_string);
 	}
-	else
-		ft_strdel(&g_data->vector->line);
 }
 
 /*

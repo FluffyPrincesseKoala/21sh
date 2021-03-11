@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 17:56:55 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:55:10 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/11 18:25:51 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ void		loop(t_bash *data)
 		if (ft_strnequ(buff, "\n", 1))
 			exit = end_of_line(&data);
 		else if (!data->error && (ft_strnequ(buff, "\033", 1)
-		|| buff[0] == 127 || buff[0] == '\017'
-		|| buff[0] == '\002' || buff[0] == 4 || ft_strnequ(buff, "\f", 1)))
+			|| !ft_isprint(buff[0]) || ft_strnequ(buff, "\f", 1)))
 			termi(data, buff);
 		else if (!data->error && ft_isprint(buff[0])
 			&& !ft_strnequ(buff, "\n", 1))
