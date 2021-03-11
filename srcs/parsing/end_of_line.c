@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 11:17:30 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:14:34 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/10 17:17:39 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static void		new_line(t_bash *data)
 	}
 	data->iterator = 0;
 	data->x = 0;
+	data->venv = data->env;
 	data->prompt_len = prompt(data->env, data->expend);
 	data->history_stack = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 12:06:52 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/11 16:55:04 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static int		format_heredoc(t_vect **vect, t_arg **to_check)
 
 	i = 0;
 	new = NULL;
-	if ((splited = ft_strsplit((*to_check)->content, '<')))
+	if (ft_strstr((*to_check)->content, "<<")
+		&& (splited = ft_strsplit((*to_check)->content, '<')))
 	{
 		if ((len = ft_arraylen(splited)) >= 2)
 		{
@@ -46,15 +47,19 @@ static int		format_heredoc(t_vect **vect, t_arg **to_check)
 			{
 				if (i == 1)
 					add_arg(&new, create_arg(ft_strdup("<<"), NULL));
-				add_arg(&new, create_arg(splited[i], NULL));
+				add_arg(&new, create_arg(ft_strdup(splited[i]), NULL));
 				i++;
 			}
 			free_all_args(to_check, 0);
 			(*vect)->args = new;
-			return (1);
+			i = TRUE;
 		}
 	}
-	return (0);
+	free_array(splited);
+	if (i == TRUE)
+		return (TRUE);
+	free_all_args(&new, 0);
+	return (FALSE);
 }
 
 static t_arg	*reset_data_heredoc(t_bash *data)
@@ -75,7 +80,7 @@ static int		check_heredoc_format(t_bash *data, t_vect *cmd, t_arg *to_free)
 			to_free = reset_data_heredoc(data);
 			return (-1);
 		}
-		else // !error
+		else 
 			to_free = set_heredoc(data, &cmd);
 	}
 	if (to_free && !data->error)
@@ -108,9 +113,12 @@ void			heredoc(t_bash *data)
 	if (!data->error)
 	{
 		data->nb_heredoc = count;
-		if (data->is_heredoc && data->finish_heredoc < count )
+		if (data->is_heredoc && data->finish_heredoc < count)
 			data->expend = -1;
 		else
+		{
 			data->expend = 0;
+			data->is_heredoc = 0;
+		}
 	}
 }

@@ -6,28 +6,32 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 18:07:57 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/10 19:53:38 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
 
-char		**add_value_to_array(char **src, char *value)
+void		add_value_to_array(char ***src, char *value)
 {
 	char	**new;
+	int		len;
 	int		i;
 
-	i = 0;
-	if (!(new = malloc(sizeof(char*) * (ft_arraylen(src) + 2))))
-		return (NULL);
-	while (src[i])
+	i = -1;
+	len = ft_arraylen((*src));
+	if (!(new = malloc(sizeof(char*) * (len + 2))))
 	{
-		new[i] = ft_strdup(src[i]);
-		i++;
+		g_data->error = MALLOC_ERROR;
+		return ;
 	}
-	new[i++] = ft_strdup(value);
-	new[i] = NULL;
-	if (*src)
-		free_array(src);
-	return (new);
+	while ((*src) && (*src)[++i])
+		new[i] = ft_strdup((*src)[i]);
+	new[i] = ft_strdup(value);
+	new[i + 1] = NULL;
+	if ((*src) && *(*src))
+	{
+		free_array((*src));
+		(*src) = new;
+	}
 }

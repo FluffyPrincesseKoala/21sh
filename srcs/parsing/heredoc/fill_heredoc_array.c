@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:28:27 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 12:41:56 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/10 19:49:17 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ static char	**create_array(char *first)
 static void	add_to_heredoc_array(t_vect *cmd, char **line)
 {
 	if (cmd->doc_string)
-		cmd->doc_string = add_value_to_array(cmd->doc_string, *line);
-	cmd->doc_string = create_array(*line);
+		add_value_to_array(&cmd->doc_string, *line);
+	else
+		cmd->doc_string = create_array(*line);
 }
 
 void		fill_heredoc_array(t_bash *data, t_vect *cmd, char **line)

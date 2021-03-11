@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_env_var_value.c                                :+:      :+:    :+:   */
+/*   get_value_from_env.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "vingt_et_un_sh.h"
 
-char		*get_env_var_value(char **env, char *var)
+char		*get_value_from_env(char **env, char *var)
 {
 	int		i;
 	int		len;

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 19:42:42 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 12:50:05 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/10 17:20:11 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	get_tilt(t_arg *arg, char **env)
 
 	if (arg->content && ft_strchr(arg->content, '~'))
 	{
-		path_to_home = get_env_var_value(env, "HOME");
+		path_to_home = get_value_from_env(env, "HOME");
 		arg->content = ft_free_replaced_substr(arg->content, "~", path_to_home);
 	}
 }

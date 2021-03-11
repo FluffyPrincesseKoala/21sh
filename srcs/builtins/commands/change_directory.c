@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   change_directory.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:22:41 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/09 13:02:38 by koala            ###   ########.fr       */
+/*   Updated: 2021/03/10 19:49:07 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,12 @@ static void	update_current_directory(char **env, char *pwd)
 	char		*old;
 	char		*tmp;
 
-	old = get_env_var_value(env, "PWD");
+	old = get_value_from_env(env, "PWD");
 	tmp = ft_strjoin("OLDPWD=", old);
 	if (env_key_exists(env, "OLDPWD"))
 		env = change_value_in_array(env, "OLDPWD", tmp);
 	else
-		env = add_value_to_array(env, tmp);
+		add_value_to_array(&env, tmp);
 	ft_strdel(&tmp);
 	tmp = ft_strjoin("PWD=", pwd);
 	env = change_value_in_array(env, "PWD", tmp);
@@ -71,12 +71,12 @@ void		change_directory(t_bash *data, t_vect *command)
 		if ((argument = argument->next))
 		{
 			if (ft_strequ(argument->content, "-"))
-				path = get_env_var_value(data->env, "OLDPWD");
+				path = get_value_from_env(data->env, "OLDPWD");
 			else
 				path = argument->content;
 		}
 		else
-			path = get_env_var_value(data->env, "HOME");
+			path = get_value_from_env(data->env, "HOME");
 		if (path)
 		{
 			move_to_directory(data->env, path);

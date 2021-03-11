@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:34:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 12:40:18 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/10 19:16:44 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	parse_newline_as_heredoc(
 				fill_heredoc_array(data, next_doc, &new);
 				ft_strdel(&new);
 			}
-			if ((is_finish = is_eof(next_doc)))
+			if (next_doc && (is_finish = is_eof(next_doc)))
 			{
 				data->finish_heredoc += 1;
 				data->is_heredoc = data->nb_heredoc - data->finish_heredoc;

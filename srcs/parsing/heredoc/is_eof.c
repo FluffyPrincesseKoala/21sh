@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 11:50:35 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 12:01:14 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/10 19:45:47 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_eof(t_vect *cmd)
 	int		current;
 
 	current = 0;
-	while (cmd->doc_string && cmd->doc_string[current])
+	while (cmd->doc_string && cmd->doc_string && cmd->doc_string[current])
 	{
 		if (ft_strequ(cmd->eof, cmd->doc_string[current]))
 			return (1);

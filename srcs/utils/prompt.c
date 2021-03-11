@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 19:44:18 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/10 17:26:04 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,31 @@ static int	pstr(char const *str)
 
 int			prompt(char **env, int short_prompt)
 {
+	char	*value;
 	int		len;
 
 	len = 0;
-	if (short_prompt == 1)
-		return (0);
 	if (!short_prompt)
 	{
 		pstr(BLUE);
-		len += pstr(getenv("USER"));
+		len += pstr(get_value_from_env(env, "USER"));
 		pstr(RESET);
 		len += pchar('@');
 		pstr(GREEN);
-		len += pstr(get_env_var_value(env, "PWD"));
+		len += pstr(get_value_from_env(env, "PWD"));
 		pstr(CYAN);
 		len += pstr(" > ");
-		pstr(RESET);
 	}
-	else if (short_prompt == -1)
+	else
 	{
-		len += pstr(">");
+		if (short_prompt == -1)
+		{
+			pstr(BACK_BLUE);
+			len += pstr("Heredoc");
+		}
+		pstr(CYAN);
+		len += pstr(" > ");
 	}
+	pstr(RESET);
 	return (len);
 }

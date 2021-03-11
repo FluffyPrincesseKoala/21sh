@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:27:32 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 12:52:27 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/10 19:49:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,7 @@ int				setup_command_redirections(t_bash *data, t_vect *cmd);
 /*
 ** Utils
 */
-char			**add_value_to_array(char **src, char *value);
+void			add_value_to_array(char ***src, char *value);
 void			free_array(char **array);
 void			free_vector(t_vect **head, int flag);
 char			is_separator(char c);
@@ -297,7 +297,7 @@ void			unselect(t_bash *data);
 */
 
 void			free_redirections(t_vect *command);
-char			*get_env_var_value(char **env, char *name);
+char			*get_value_from_env(char **env, char *name);
 t_redirection	*new_redirection(t_vect *cmd);
 int				pchar(int c);
 int				prompt(char **env, int short_prompt);

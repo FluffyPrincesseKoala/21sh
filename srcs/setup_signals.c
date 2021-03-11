@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:02:40 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:06:19 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/11 17:03:17 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ static void	custom_return(void)
 	g_data->iterator = 0;
 	g_data->history_stack = 0;
 	g_data->expend = 0;
-	free_array(g_data->vector->doc_string);
+	if (g_data->vector)
+		free_array(g_data->vector->doc_string);
 	if (g_data->vector->down)
 	{
 		while (g_data->vector->down)

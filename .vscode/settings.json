@@ -8,6 +8,7 @@
 		"21sh.h": "c",
 		"cstdlib": "c",
 		"structs.h": "c",
-		"libft.h": "c"
+		"libft.h": "c",
+		"vingt_et_un_sh.h": "c"
 	}
 }
