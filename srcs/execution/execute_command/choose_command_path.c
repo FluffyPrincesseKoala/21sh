@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 17:20:11 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/12 12:23:35 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,58 @@
 /*
 ** Join given path with the command name, but separate them by a '\'.
 */
+char		*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*new;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (s1 && s1[i])
+		i++;
+	while (s2 && s2[j])
+		j++;
+	if ((new = malloc(sizeof(char) * (i + j + 1))) == NULL)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1 && s1[i])
+	{
+		new[i] = (char)s1[i];
+		i += 1;
+	}
+	while (s2 && s2[j])
+		new[i++] = s2[j++];
+	new[i] = '\0';
+	return (new);
+}
+
+char		*kikoo(char **s1, char **s2, int s_to_free)
+{
+	char	*ret;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	ret = NULL;
+	if (!(ret = malloc(sizeof(char) * (ft_strlen(*s1) + ft_strlen(*s2) + 1))))
+		return (NULL);
+	while (*s1 && (*s1)[i])
+	{
+		ret[i] = (char)(*s1)[i];
+		i += 1;
+	}
+	while (*s2 && (*s2)[j])
+		ret[i++] = (*s2)[j++];
+	ret[i] = '\0';
+	if (s_to_free == FREE_S1 || s_to_free == FREE_BOTH)
+		ft_strdel(s1);
+	if (s_to_free == FREE_S2 || s_to_free == FREE_BOTH)
+		ft_strdel(s2);
+	return (ret);
+}
 
 static char	*build_command_path(char *env_path, char *cmd_name)
 {
@@ -27,8 +79,11 @@ static char	*build_command_path(char *env_path, char *cmd_name)
 
 	if (!(cmd_path = ft_strjoin(env_path, "/")))
 		return (NULL);
-	if (!(cmd_path = ft_strjoin_free(&cmd_path, &cmd_name, FREE_S1)))
+	if (!(cmd_path = kikoo(&cmd_path, &cmd_name, FREE_S1)))
+	{
+		ft_strdel(&cmd_path);
 		return (NULL);
+	}
 	return (cmd_path);
 }
 
@@ -68,7 +123,8 @@ static char	*get_command_path_from_env(char **env, char *command_name)
 static int	path_is_given(char *name)
 {
 	if ((ft_strnequ(name, "./", 2) || ft_strnequ(name, "../", 3)
-		|| ft_strnequ(name, "/", 1)) && !access(name, F_OK | X_OK | R_OK))
+		|| ft_strnequ(name, "/", 1)) && !access(name, F_OK | X_OK | R_OK)
+		&& !ft_strequ(name, ".") && !ft_strequ(name, ".."))
 		return (TRUE);
 	else
 		return (FALSE);
@@ -88,7 +144,7 @@ char		*choose_command_path(t_bash *data, char *command_name)
 	path = NULL;
 	if (path_is_given(command_name))
 		path = ft_strdup(command_name);
-	else
+	else if (!ft_strequ(command_name, ".") && !ft_strequ(command_name, ".."))
 		path = get_command_path_from_env(data->env, command_name);
 	if (!path || (lstat(path, &sb) == 0 && S_ISDIR(sb.st_mode)))
 	{
