@@ -6,19 +6,18 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:02:40 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/11 19:08:21 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/12 14:07:56 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
 
-static void	custom_return(void)
+static int	custom_return(void)
 {
 	t_vect	*cmd;
 
 	term_put(DOWN);
-	ft_putstr(tgetstr("cr", NULL));
-	prompt(g_data->env, 0);
+	ft_putstr(tgetstr("ve", NULL));
 	g_data->x = 0;
 	g_data->y = 0;
 	g_data->is_heredoc = 0;
@@ -32,6 +31,9 @@ static void	custom_return(void)
 		ft_strdel(&cmd->line);
 		free_array(cmd->doc_string);
 	}
+	if (g_data->vector && !g_data->vector->args)
+		return (g_data->prompt_len = prompt(g_data->env, 0));
+	return (0);
 }
 
 /*
@@ -40,8 +42,8 @@ static void	custom_return(void)
 
 static void	sigint_handler(int sig)
 {
-	signal(sig, sigint_handler);
 	custom_return();
+	signal(sig, sigint_handler);
 }
 
 /*
@@ -64,7 +66,22 @@ static void	sigchld_handler(int sig)
 
 void		setup_signals(void)
 {
-	signal(SIGINT, &sigint_handler);
+	signal(SIGINT, sigint_handler);
 	signal(SIGTSTP, sigtstp_handler);
 	signal(SIGCHLD, sigchld_handler);
+	signal (SIGQUIT, sigint_handler);
+}
+
+void		sig_exec(void)
+{
+	signal(SIGINT, SIG_DFL);
+	/*signal(SIGKILL, SIG_DFL);
+	signal(SIGHUP, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGILL, SIG_DFL);
+	signal(SIGTRAP, SIG_DFL);
+	signal(SIGABRT, SIG_DFL);
+	signal(SIGKILL, SIG_DFL);
+	signal(SIGTERM, SIG_DFL);
+	signal(SIGTSTP, SIG_DFL);*/
 }

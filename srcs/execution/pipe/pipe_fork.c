@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:08:37 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/12 14:03:56 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,7 @@ void	pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc)
 		exit(0);
 	}
 	wait(&status);
+	g_data->started = FALSE;
+	setup_signals();
 	close(pipe_fd[1]);
 }

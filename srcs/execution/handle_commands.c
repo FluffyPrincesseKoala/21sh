@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 17:57:53 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:56:46 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/12 14:04:21 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ static int	handle_command(t_bash *data, t_vect *command)
 				error_code_to_message(&data->error);
 				exit(EXIT);
 			}
+		signal(SIGINT, SIG_IGN);
 		wait(&status);
+		setup_signals();
+		g_data->started = FALSE;
 	}
 	else if (handle_execution(data, command) == FAIL)
 		return (FAIL);
