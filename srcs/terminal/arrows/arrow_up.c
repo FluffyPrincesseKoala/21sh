@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 16:38:43 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:16:51 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 20:29:17 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,12 @@ void	arrow_up(t_bash *data)
 			data->vector = data->vector->up;
 		print_rest(data->vector->line, data->iterator, NULL);
 		set_cursors(data, &data->cursor, data->vector->line, get_win_max_col());
-		data->cursor = find_cursor_node(&data->cursor,
-			ft_strlen(data->vector->line), get_win_max_col(), data->prompt_len);
-		data->x = ft_strlen(data->cursor->line);
-		data->y = get_y_cursor(data->cursor);
+		if ((data->cursor = find_cursor_node(&data->cursor,
+			ft_strlen(data->vector->line), get_win_max_col(), data->prompt_len)))
+		{	
+			data->x = ft_strlen(data->cursor->line);
+			data->y = get_y_cursor(data->cursor);
+		}
 		data->iterator = ft_strlen(data->vector->line);
 	}
 }
