@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 19:45:24 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 12:39:39 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 17:42:36 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int			old_pending_line(char *str)
 	return (stack);
 }
 
-int	pending_line(char *str)
+int			pending_line(char *str)
 {
 	int		i;
 	char	quote;

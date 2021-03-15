@@ -6,7 +6,7 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/03/10 17:21:27 by cylemair         ###   ########.fr        #
+#    Updated: 2021/03/15 18:13:20 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,6 +73,7 @@ PARSE	=	srcs/parsing/end_of_line.c										\
 			srcs/parsing/heredoc/set_heredoc.c								\
 			srcs/parsing/heredoc/update_heredoc.c							\
 			srcs/parsing/heredoc/concat_args_in_heredoc.c					\
+			srcs/parsing/heredoc/format_heredoc.c							\
 			srcs/parsing/redirections/init_redirections_setup_functions.c	\
 			srcs/parsing/redirections/is_stdout_and_stderr_redirection.c	\
 			srcs/parsing/redirections/search_file_word.c					\

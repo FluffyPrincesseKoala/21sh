@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/09 17:47:24 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/09 18:04:26 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 17:46:18 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*concat_args_in_heredoc_line(t_arg *arg, char *concated_args)
 {
 	char	*str_with_space;
 	char	*merged_string;
-	
+
 	merged_string = NULL;
 	str_with_space = NULL;
 	if (arg->content)

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:27:32 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 19:49:24 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 18:12:55 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@
 ** NEW_FILE_MODE = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH
 ** SIMPLE_OUTPUT_FLAGS = O_WRONLY | O_CREAT
 */
+
 # define APPENDING_OUTPUT_FLAGS 1089
 # define INPUT_FLAGS 0
 # define NEW_FILE_MODE 436
@@ -124,6 +125,11 @@ void			print_env(t_bash *data, t_vect *cmd);
 void			print_history(t_bash *data);
 void			set_env(t_bash *data, t_vect *command);
 void			unset_env(t_bash *data, t_vect *command);
+
+/*
+** Signial
+*/
+void			sig_exec(void);
 
 /*
 ** Utils
@@ -201,6 +207,7 @@ int				is_heredoc_end(t_bash *data, char *line, t_vect *vector);
 t_arg			*set_heredoc(t_bash *data, t_vect **cmd);
 void			update_heredoc(t_bash *data);
 char			*concat_args_in_heredoc(t_arg *arg);
+int				format_heredoc(t_vect **vect, t_arg **to_check);
 
 /*
 ** Redirections

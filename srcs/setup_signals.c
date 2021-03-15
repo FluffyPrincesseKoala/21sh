@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:02:40 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 15:26:39 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 18:14:07 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,10 @@ static void	sigtstp_handler(int sig)
 	signal(sig, sigtstp_handler);
 }
 
-/*
-** SIGCHLD signal is sent to parent process when child process dies
-*/
-
-static void	sigchld_handler(int sig)
-{
-	signal(sig, sigchld_handler);
-}
-
 void		setup_signals(void)
 {
 	signal(SIGINT, sigint_handler);
 	signal(SIGTSTP, sigtstp_handler);
-	signal(SIGCHLD, sigchld_handler);
 }
 
 void		sig_exec(void)

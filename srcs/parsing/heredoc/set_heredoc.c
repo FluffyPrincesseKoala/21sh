@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:34:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 19:16:44 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 17:54:21 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,7 @@ t_arg		*set_heredoc(t_bash *data, t_vect **cmd)
 		{
 			if (!to_free)
 				to_free = arg;
-			data->nb_heredoc++;
-			data->is_heredoc = 1;
+			data->nb_heredoc += (data->is_heredoc = 1);
 			is_doc = 1;
 		}
 		arg = arg->next;

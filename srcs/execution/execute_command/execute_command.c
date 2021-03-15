@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:00:15 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/12 13:44:15 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 16:35:19 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ static void		execute_syscall(t_bash *data, t_vect *command)
 		data->args_array = arg_to_array(data, command->args);
 		g_data->started = TRUE;
 		if (!data->error)
+		{
+			sig_exec();
 			execve(data->path, data->args_array, data->env);
+		}
 	}
 	error_code_to_message(&(data->error));
 	free_bash(data);

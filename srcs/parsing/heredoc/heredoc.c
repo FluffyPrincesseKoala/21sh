@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/11 16:55:04 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 18:11:44 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,44 +22,6 @@ static void		free_args_until_eof(t_vect *cmd, t_arg **current)
 	if (!ft_strequ((*current)->content, cmd->eof))
 		free_args_until_eof(cmd, &(*current)->next);
 	del_one_arg(*current, cmd);
-}
-
-/*
-**	create args how are badlly formated (ex: "cat<<lol")
-**	by spliting on << character
-*/
-
-static int		format_heredoc(t_vect **vect, t_arg **to_check)
-{
-	t_arg	*new;
-	char	**splited;
-	int		len;
-	int		i;
-
-	i = 0;
-	new = NULL;
-	if (ft_strstr((*to_check)->content, "<<")
-		&& (splited = ft_strsplit((*to_check)->content, '<')))
-	{
-		if ((len = ft_arraylen(splited)) >= 2)
-		{
-			while (splited[i])
-			{
-				if (i == 1)
-					add_arg(&new, create_arg(ft_strdup("<<"), NULL));
-				add_arg(&new, create_arg(ft_strdup(splited[i]), NULL));
-				i++;
-			}
-			free_all_args(to_check, 0);
-			(*vect)->args = new;
-			i = TRUE;
-		}
-	}
-	free_array(splited);
-	if (i == TRUE)
-		return (TRUE);
-	free_all_args(&new, 0);
-	return (FALSE);
 }
 
 static t_arg	*reset_data_heredoc(t_bash *data)
@@ -80,7 +42,7 @@ static int		check_heredoc_format(t_bash *data, t_vect *cmd, t_arg *to_free)
 			to_free = reset_data_heredoc(data);
 			return (-1);
 		}
-		else 
+		else
 			to_free = set_heredoc(data, &cmd);
 	}
 	if (to_free && !data->error)

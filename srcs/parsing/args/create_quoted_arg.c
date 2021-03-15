@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 19:41:08 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 12:49:50 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 17:43:44 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static size_t	len_until_non_escaped_quote(char *s, char quote)
 {
 	size_t	len;
+
 	len = 1;
 	while (s[len] && !is_non_escaped_quote(s, quote, len))
 		len++;

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 17:57:53 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/12 14:04:21 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 17:41:48 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static void	select_builtin(t_bash *data, t_vect *command)
 	i = 0;
 	while (i != NB_BUILTIN)
 	{
-		if (command->args && ft_strequ(command->args->content, data->builtin[i].name))
+		if (command->args
+		&& ft_strequ(command->args->content, data->builtin[i].name))
 			command->builtin = data->builtin[i].f;
 		i++;
 	}

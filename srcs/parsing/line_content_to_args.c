@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 12:30:22 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 17:58:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ static void		merge_last_args(t_bash *data, t_vect **current)
 		new_content = ft_strjoin(args->content, args->next->content);
 		if (args->next->quoted)
 			if (args->quoted)
-				new_quoted =  ft_strjoin(args->quoted, args->next->quoted);
+				new_quoted = ft_strjoin(args->quoted, args->next->quoted);
 			else
-				new_quoted =  ft_strjoin(args->content, args->next->quoted);
+				new_quoted = ft_strjoin(args->content, args->next->quoted);
 		else
-			new_quoted =  ft_strjoin(args->quoted, args->next->content);
+			new_quoted = ft_strjoin(args->quoted, args->next->content);
 		if (!(new_arg = create_arg(new_content, new_quoted)))
 			data->error = MALLOC_ERROR;
 		del_one_arg(args->next, *current);
