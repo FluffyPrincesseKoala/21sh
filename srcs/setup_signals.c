@@ -6,18 +6,18 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:02:40 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 18:14:07 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 20:07:21 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
 
-static int	custom_return(void)
+static void	custom_return(void)
 {
 	t_vect	*cmd;
 
-	term_put(DOWN);
 	ft_putstr(tgetstr("ve", NULL));
+	term_put(DOWN);
 	g_data->x = 0;
 	g_data->y = 0;
 	g_data->is_heredoc = 0;
@@ -31,9 +31,7 @@ static int	custom_return(void)
 		ft_strdel(&cmd->line);
 		free_array(cmd->doc_string);
 	}
-	if (g_data->vector && !g_data->vector->args)
-		return (g_data->prompt_len = prompt(g_data->env, 0));
-	return (0);
+	g_data->prompt_len = prompt(g_data->env, 0);
 }
 
 /*
@@ -59,10 +57,12 @@ void		setup_signals(void)
 {
 	signal(SIGINT, sigint_handler);
 	signal(SIGTSTP, sigtstp_handler);
+	signal(SIGCHLD, sigtstp_handler);
 }
 
 void		sig_exec(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGTSTP, SIG_DFL);
+	signal(SIGCHLD, SIG_DFL);
 }
