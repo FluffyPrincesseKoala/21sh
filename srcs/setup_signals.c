@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:02:40 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 20:07:21 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 20:45:36 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,23 @@ static void	sigtstp_handler(int sig)
 	signal(sig, sigtstp_handler);
 }
 
-void		setup_signals(void)
+static void	sigchild_handler(int sig)
 {
-	signal(SIGINT, sigint_handler);
-	signal(SIGTSTP, sigtstp_handler);
-	signal(SIGCHLD, sigtstp_handler);
+	signal(sig, sigchild_handler);
 }
 
-void		sig_exec(void)
+void		setup_signals(int mode)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGTSTP, SIG_DFL);
-	signal(SIGCHLD, SIG_DFL);
+	if (!mode)
+	{
+		signal(SIGINT, sigint_handler);
+		signal(SIGTSTP, sigtstp_handler);
+		signal(SIGCHLD, sigchild_handler);
+	}
+	else
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGTSTP, SIG_DFL);
+		signal(SIGCHLD, SIG_DFL);
+	}
 }

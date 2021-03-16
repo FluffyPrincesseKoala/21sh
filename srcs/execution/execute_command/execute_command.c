@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:00:15 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 16:35:19 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 20:48:08 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static void		execute_syscall(t_bash *data, t_vect *command)
 		g_data->started = TRUE;
 		if (!data->error)
 		{
-			sig_exec();
+			setup_signals(1);
 			execve(data->path, data->args_array, data->env);
 		}
 	}

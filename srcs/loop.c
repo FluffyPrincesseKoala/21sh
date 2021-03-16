@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 17:56:55 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/11 18:25:51 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 20:48:31 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void		loop(t_bash *data)
 	exit = 0;
 	data->start_expend = 0;
 	data->expend_up = 0;
-	setup_signals();
+	setup_signals(0);
 	while (42 && exit != -1)
 	{
 		read(0, buff, MAX_INPUT_SIZE);

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:27:32 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 18:12:55 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/15 20:46:21 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_bash			*g_data;
 void			*free_bash(t_bash *data);
 t_bash			*init_bash(char **env);
 void			loop(t_bash *data);
-void			setup_signals(void);
+void			setup_signals(int mode);
 
 /*
 ** ===========
@@ -125,11 +125,6 @@ void			print_env(t_bash *data, t_vect *cmd);
 void			print_history(t_bash *data);
 void			set_env(t_bash *data, t_vect *command);
 void			unset_env(t_bash *data, t_vect *command);
-
-/*
-** Signial
-*/
-void			sig_exec(void);
 
 /*
 ** Utils
