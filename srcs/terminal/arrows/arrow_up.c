@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 16:38:43 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/16 13:26:21 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/16 13:54:08 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void			arrow_up(t_bash *data)
 		term_put(SAVE);
 		clear_term(data->vector->line);
 		term_put(RESET_C);
-		go_back(data);
+		data->vector = go_back(data);
 		print_rest(data->vector->line, data->iterator, NULL);
 		set_cursors(data, &data->cursor,
 			data->vector->line, get_win_max_col());
