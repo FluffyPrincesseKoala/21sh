@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 19:44:18 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 18:19:51 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/16 13:56:26 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int			prompt(char **env, int short_prompt)
 		len += pstr(" > ");
 	}
 	else
-		new_line_prompt(short_prompt);
+		len += new_line_prompt(short_prompt);
 	pstr(RESET);
 	return (len);
 }
