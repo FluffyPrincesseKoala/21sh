@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
+#    By: lgaveria <lgaveria@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/03/15 18:13:20 by cylemair         ###   ########.fr        #
+#    Updated: 2021/03/26 22:28:34 by lgaveria         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC		=	clang-9 -g3
+CC		=	clang
 
 CFLAGS	+=	-Werror -Wall -Wextra
 

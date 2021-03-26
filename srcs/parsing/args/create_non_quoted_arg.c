@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_non_quoted_arg.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgaveria <lgaveria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 19:42:42 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 17:20:11 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/26 22:36:59 by lgaveria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	parse_redirection_in_arg(t_bash *data, t_vect *cmd, t_arg *arg)
 		{
 			if (!(op[0] == '<' && op[1] == '<'))
 			{
-				new = new_redirection(cmd);
+				new = new_redirection(cmd, FALSE);
 				new->setup = data->redirect_setup[i];
 				new->arg = arg;
 				break ;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_redirections_setup_functions.c                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgaveria <lgaveria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:15:35 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/26 22:36:59 by lgaveria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	setup_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
 	stdout_redirection->right_fd = NO_RIGHT_FD;
 	stdout_redirection->file_word = search_file_word(
 		cmd, arg, substring_index, error);
-	stdout_redirection->next = new_redirection(cmd);
+	stdout_redirection->next = new_redirection(cmd, FALSE);
 	stdout_redirection->next->left_fd = STDERR;
 	stdout_redirection->next->right_fd = STDOUT;
 }

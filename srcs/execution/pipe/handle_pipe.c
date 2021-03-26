@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipe.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgaveria <lgaveria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:05:57 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:13:08 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/26 22:36:15 by lgaveria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	set_stdout_pipe_redirection(
 {
 	t_redirection *new;
 
-	new = new_redirection(command);
+	new = new_redirection(command, TRUE);
 	new->setup = data->redirect_setup[1];
 	new->left_fd = 1;
 	new->right_fd = pipe_fd[1];

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vingt_et_un_sh.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgaveria <lgaveria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:27:32 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 20:46:21 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/26 22:37:15 by lgaveria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,7 +300,7 @@ void			unselect(t_bash *data);
 
 void			free_redirections(t_vect *command);
 char			*get_value_from_env(char **env, char *name);
-t_redirection	*new_redirection(t_vect *cmd);
+t_redirection	*new_redirection(t_vect *cmd, int first);
 int				pchar(int c);
 int				prompt(char **env, int short_prompt);
 void			pull_line(t_vect **head);

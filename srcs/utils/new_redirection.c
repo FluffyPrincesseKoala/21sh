@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   new_redirection.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lgaveria <lgaveria@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 19:30:48 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/26 22:36:09 by lgaveria         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
+
+static void		insert_first_redirection(t_vect *command, t_redirection *new)
+{
+	new->next = command->redirections;
+	command->redirections = new;
+}
 
 /*
 ** Insert the given redirection structure at the end of the command redirections
@@ -37,13 +43,16 @@ static void		insert_new_redirection(t_vect *command, t_redirection *new)
 **  command structure.
 */
 
-t_redirection	*new_redirection(t_vect *command)
+t_redirection	*new_redirection(t_vect *command, int first)
 {
 	t_redirection	*new;
 	t_redirection	*cursor;
 
 	if (!(new = ft_memalloc(sizeof(t_redirection))))
 		return (NULL);
-	insert_new_redirection(command, new);
+	if (first)
+		insert_first_redirection(command, new);
+	else
+		insert_new_redirection(command, new);
 	return (new);
 }
