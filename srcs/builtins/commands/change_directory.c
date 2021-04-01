@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:22:41 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 19:49:07 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/03/26 21:38:38 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 static int	is_file(const char *path)
 {
 	struct stat	sb;
+	int ret;
 
 	if (lstat(path, &sb) == -1)
-		put_error_msg("lstat error\n");
+		return (0);
 	return (S_ISREG(sb.st_mode));
 }
 
@@ -43,21 +44,23 @@ static void	move_to_directory(char **env, char *path)
 	char		*pwd;
 	char		buff[4096 + 1];
 
-	if (!access(path, F_OK))
+	if (!access(path, (F_OK & R_OK)))
 	{
-		if (chdir(path) == E_CHDIR)
-			put_error_msg(is_file(path) ?
-				"cd : no such file or directory"
-				:
-				"cd : permission denied");
+		if (!is_file(path) && chdir(path) == E_CHDIR)
+			put_error_msg("cd : permission denied\n");
 		else
 		{
 			if (!(pwd = getcwd(buff, 4096)))
-				put_error_msg("cd : permission denied");
+				put_error_msg("cd : permission denied\n");
 			else
 				update_current_directory(env, pwd);
 		}
 	}
+	else
+		if (!is_file(path))
+			put_error_msg("cd : no such file or directory\n");
+		else
+			put_error_msg("cd : permission denied\n");
 }
 
 void		change_directory(t_bash *data, t_vect *command)
@@ -68,7 +71,7 @@ void		change_directory(t_bash *data, t_vect *command)
 	argument = command->args;
 	if (ft_strequ(argument->content, "cd"))
 	{
-		if ((argument = argument->next))
+		if (argument->next && (argument = argument->next))
 		{
 			if (ft_strequ(argument->content, "-"))
 				path = get_value_from_env(data->env, "OLDPWD");
