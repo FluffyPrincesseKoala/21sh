@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2021/04/02 20:09:04 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/02 21:18:20 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int	word_to_arg(t_bash *data, t_vect **current, char *word,
 		*current = vect_new(NULL, NULL);
 		vect_add(&data->vector, *current);
 	}
-	if (!ft_iswhitespace(word[0]))
+	else if (!ft_iswhitespace(word[0]))
 	{
 		quote = is_quote(word[0]);
 		if (quote)

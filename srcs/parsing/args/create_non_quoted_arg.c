@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 19:42:42 by cylemair          #+#    #+#             */
-/*   Updated: 2021/04/01 21:50:36 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/02 21:03:03 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	parse_redirection_in_arg(t_bash *data, t_vect *cmd, t_arg *arg)
 	t_redirection	*new;
 
 	i = 0;
-	while (data->redirect_setup[i])
+	while (arg->content && data->redirect_setup[i])
 	{
 		op = ft_strstr(arg->content, data->redirect_setup[i]->op);
 		if (op)
