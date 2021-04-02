@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:27:32 by cylemair          #+#    #+#             */
-/*   Updated: 2021/04/01 21:55:39 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/02 19:50:27 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,7 +312,7 @@ t_vect			*vect_new(t_arg *args, char *line);
 ** Booleans
 */
 int				command_is_piped(t_vect *command);
-int				check_failed_fork(pid_t pid);
+void			check_failed_fork(pid_t pid);
 int				is_child(pid_t pid);
 int				is_quote(char c);
 
@@ -320,7 +320,6 @@ int				is_quote(char c);
 ** Errors
 */
 void			error_code_to_message(int *error);
-void			print_failed_fork_error(pid_t pid);
 void			put_error_msg(char *error);
 
 /*

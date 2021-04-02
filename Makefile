@@ -6,11 +6,11 @@
 #    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/04/01 21:56:43 by cylemair         ###   ########.fr        #
+#    Updated: 2021/04/02 19:59:32 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC		=	clang
+CC		=	clang -g3
 
 CFLAGS	+=	-Werror -Wall -Wextra
 
@@ -66,6 +66,7 @@ PARSE	=	srcs/parsing/end_of_line.c										\
 			srcs/parsing/args/insert_new_arg.c								\
 			srcs/parsing/args/is_non_escaped_quote.c						\
 			srcs/parsing/args/parse_var.c									\
+			srcs/parsing/args/get_arg_befor_last.c							\
 			srcs/parsing/heredoc/fill_heredoc_array.c						\
 			srcs/parsing/heredoc/heredoc.c									\
 			srcs/parsing/heredoc/is_eof.c									\
@@ -135,7 +136,6 @@ UTILS	=	srcs/free_bash.c												\
 			srcs/utils/booleans/is_quote.c									\
 			srcs/utils/errors/check_failed_fork.c							\
 			srcs/utils/errors/error_code_to_message.c						\
-			srcs/utils/errors/print_failed_fork_error.c						\
 			srcs/utils/errors/put_error_msg.c								\
 			srcs/utils/free_redirections.c									\
 			srcs/utils/get_env_var_value.c									\

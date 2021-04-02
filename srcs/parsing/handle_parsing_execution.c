@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 19:15:20 by cylemair          #+#    #+#             */
-/*   Updated: 2021/04/01 19:53:34 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/02 20:24:21 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static int	is_pending_line(t_bash *data)
 {
-	data->expend = pending_line(data->vector->line);
+	if (!data->is_heredoc)
+		data->expend = pending_line(data->vector->line);
 	if (data->expend)
 	{
 		push_entry(data, "\n",
@@ -36,16 +37,19 @@ int	handle_parsing_execution(t_bash *data)
 {
 	int		is_pending;
 
-	is_pending = is_pending_line(data);
 	if ((data->vector->line
-			|| (data->vector->doc_string && data->vector->separator))
-		&& ((!is_pending) || (is_pending && data->vector->doc_string)))
+			|| (data->vector->doc_string && data->vector->separator)))
 	{
-		ft_putchar('\n');
-		if (format_line_required(data))
-			format_line(data);
-		if (!data->is_heredoc && !data->error && data->vector->args->content)
-			return (handle_commands(data, data->vector));
+		is_pending = is_pending_line(data);
+		if ((!is_pending) || (is_pending && data->vector->doc_string))
+		{
+			ft_putchar('\n');
+			if (format_line_required(data))
+				format_line(data);
+			if (!data->is_heredoc && !data->error
+				&& data->vector->args->content)
+				return (handle_commands(data, data->vector));
+		}
 	}
 	return (0);
 }

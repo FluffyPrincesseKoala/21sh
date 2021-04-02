@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:17:06 by cylemair          #+#    #+#             */
-/*   Updated: 2021/04/01 20:12:11 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/02 20:09:04 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,23 @@ static void	merge_last_args(t_bash *data, t_vect **current)
 	}
 }
 
-static size_t	handle_inner_word(t_bash *data, t_vect **current,
-									char *word, size_t len)
+static int	word_to_arg(t_bash *data, t_vect **current, char *word,
+						size_t *full_word)
 {
+	size_t	len;
 	char	quote;
 
-	if (ft_iswhitespace(word[0]))
+	len = 1;
+	(*current)->separator = is_separator(word[0]);
+	if (ft_iswhitespace(word[0]) || (*current)->separator)
 		*full_word = TRUE;
-	else
+	if ((*current)->separator)
+	{
+		setup_command_redirections(data, *current);
+		*current = vect_new(NULL, NULL);
+		vect_add(&data->vector, *current);
+	}
+	if (!ft_iswhitespace(word[0]))
 	{
 		quote = is_quote(word[0]);
 		if (quote)
@@ -73,25 +82,6 @@ static size_t	handle_inner_word(t_bash *data, t_vect **current,
 			merge_last_args(data, current);
 		*full_word = FALSE;
 	}
-	return (*full_word);
-}
-
-static int	word_to_arg(t_bash *data, t_vect **current, char *word,
-						size_t *full_word)
-{
-	size_t	len;
-
-	len = 1;
-	(*current)->separator = is_separator(word[0]);
-	if ((*current)->separator)
-	{
-		setup_command_redirections(data, *current);
-		*current = vect_new(NULL, NULL);
-		vect_add(&data->vector, *current);
-		*full_word = TRUE;
-	}
-	else
-		*full_word = handle_inner_word(data, current, word, len);
 	return (len);
 }
 

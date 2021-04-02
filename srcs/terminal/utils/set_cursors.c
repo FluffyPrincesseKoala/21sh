@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 18:05:26 by cylemair          #+#    #+#             */
-/*   Updated: 2021/04/01 20:53:20 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/02 20:23:57 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,13 @@ static t_term	*new_cursor_struct(char *line, int start,
 	return (cursor);
 }
 
-static int	lol(t_term **cursor, char *new_line, int itt[2], int max)
+static int	post_push_cursor(t_term **cursor, char *line, int itt[2], int max)
 {
 	t_term	*new;
 	int		start;
 
 	start = itt[0] - itt[1];
-	new = new_cursor_struct(new_line, start, max, g_data->prompt_len);
+	new = new_cursor_struct(line, start, max, g_data->prompt_len);
 	link_cursor(cursor, new);
 	return (FALSE);
 }
@@ -108,10 +108,10 @@ void	set_cursors(t_bash *data, t_term **cursor, char *str, int max)
 			x_max = max;
 		if (fill_struct(str, &new_line, itt, x_max) == 1)
 		{
-			itt[1] = lolilol(cursor, new_line, itt, max);
+			itt[1] = post_push_cursor(cursor, new_line, itt, max);
 			ft_bzero(new_line, len);
 		}
 	}
-	lolilol(cursor, new_line, itt, max);
+	post_push_cursor(cursor, new_line, itt, max);
 	ft_strdel(&new_line);
 }
