@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:22:31 by cylemair          #+#    #+#             */
-/*   Updated: 2021/04/01 21:37:35 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/02 22:22:45 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static void	add_at_end_of_last_line(char **dest, char **src)
 	tmp = ft_strjoin(*dest, "\n");
 	ft_strdel(dest);
 	*dest = ft_strjoin(tmp, *src);
-	ft_strdel(src);
 	ft_strdel(&tmp);
 }
 
@@ -56,9 +55,10 @@ static void	eof_update_heredoc(t_bash *data)
 
 	++data->finish_heredoc;
 	cmd = get_current_heredoc_vector(data);
+	add_at_end_of_last_line(&data->vector->up->line, &data->vector->line);
 	if (cmd)
 		fill_heredoc_array(data, cmd, &data->vector->line);
-	add_at_end_of_last_line(&data->vector->up->line, &data->vector->line);
+	ft_strdel(&data->vector->line);
 	ft_putchar('\n');
 	if (data->vector->up && data->nb_heredoc == data->finish_heredoc)
 	{
@@ -85,11 +85,12 @@ static void	update_docstring(t_bash *data)
 	cmd = get_current_heredoc_vector(data);
 	if ((cmd))
 	{
-		fill_heredoc_array(data, cmd, &data->vector->line);
-		ft_putchar('\n');
-		if (data->vector->up && cmd->doc_string)
+		if (data->vector->up->line)
 			add_at_end_of_last_line(&data->vector->up->line,
 				&data->vector->line);
+		fill_heredoc_array(data, cmd, &data->vector->line);
+		ft_strdel(&data->vector->line);
+		ft_putchar('\n');
 	}
 }
 
