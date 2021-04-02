@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 15:06:43 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/12 13:48:06 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:25:28 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,27 @@
 # define SRIGHT 1
 # define NOSLT	0
 
-typedef struct					s_term
+typedef struct s_term
 {
-	int							line_start;
-	int							x_max;
-	int							line_len;
-	char						*line;
-	struct s_term				*next;
-	struct s_term				*prev;
-}								t_term;
+	int				line_start;
+	int				x_max;
+	int				line_len;
+	char			*line;
+	struct s_term	*next;
+	struct s_term	*prev;
+}					t_term;
 
-typedef struct					s_arg
+typedef struct s_arg
 {
-	char						*content;
-	char						*quoted;
-	struct s_arg				*previous;
-	struct s_arg				*next;
-}								t_arg;
+	char			*content;
+	char			*quoted;
+	struct s_arg	*previous;
+	struct s_arg	*next;
+}					t_arg;
 
-struct s_redirection_setup;
+struct	s_redirection_setup;
 
-typedef struct					s_redirection
+typedef struct s_redirection
 {
 	int							left_fd;
 	int							right_fd;
@@ -48,9 +48,9 @@ typedef struct					s_redirection
 	struct s_redirection		*next;
 }								t_redirection;
 
-struct s_bash;
+struct	s_bash;
 
-typedef struct					s_vect
+typedef struct s_vect
 {
 	char						*line;
 	t_arg						*args;
@@ -69,19 +69,18 @@ typedef struct					s_vect
 	struct s_vect				*down;
 }								t_vect;
 
-typedef	void					(t_setup_ptr)(t_vect *, t_arg *,
-								t_redirection *, int *);
+typedef	void (t_setup_ptr)(t_vect *, t_arg *, t_redirection *, int *);
 
-typedef struct					s_redirection_setup
+typedef struct s_redirection_setup
 {
 	t_setup_ptr					*f;
 	char						*op;
 	int							flags;
 }								t_redirect_setup;
 
-struct s_built;
+struct	s_built;
 
-typedef struct					s_bash
+typedef struct s_bash
 {
 	char						**env;
 	char						**venv;
@@ -123,14 +122,14 @@ typedef struct					s_bash
 	int							started;
 }								t_bash;
 
-typedef struct					s_built
+typedef struct s_built
 {
 	void						(*f)(struct s_bash *, struct s_vect *);
 	int							len;
 	char						*name;
 }								t_built;
 
-typedef struct					s_key
+typedef struct s_key
 {
 	void						(*f)(struct s_bash *);
 	int							len;

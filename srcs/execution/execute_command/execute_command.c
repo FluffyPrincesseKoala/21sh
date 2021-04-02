@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:00:15 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 20:48:08 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 19:39:20 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static size_t	args_len(t_arg *arg)
 {
-	size_t len;
+	size_t	len;
 
 	len = 0;
 	while (arg)
@@ -30,12 +30,13 @@ static size_t	args_len(t_arg *arg)
 ** Convert the contents of a t_arg chained list to an array of strings
 */
 
-static char		**arg_to_array(t_bash *data, t_arg *arg)
+static char	**arg_to_array(t_bash *data, t_arg *arg)
 {
 	char	**array;
 	int		i;
 
-	if (!(array = malloc(sizeof(char*) * (args_len(arg) + 1))))
+	array = malloc(sizeof(char *) * (args_len(arg) + 1));
+	if (!array)
 		data->error = MALLOC_ERROR;
 	else
 	{
@@ -60,7 +61,7 @@ static char		**arg_to_array(t_bash *data, t_arg *arg)
 ** Call execve with those parameters.
 */
 
-static void		execute_syscall(t_bash *data, t_vect *command)
+static void	execute_syscall(t_bash *data, t_vect *command)
 {
 	ft_strdel(&(data->path));
 	if (command->args
@@ -85,7 +86,7 @@ static void		execute_syscall(t_bash *data, t_vect *command)
 ** If it's a builtin, use the appropriate custom function, otherway use execve.
 */
 
-void			execute_command(t_bash *data, t_vect *command)
+void	execute_command(t_bash *data, t_vect *command)
 {
 	if (command->redirections)
 		execute_redirections(data, command, command->redirections);

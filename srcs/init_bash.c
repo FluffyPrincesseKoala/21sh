@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 19:54:09 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:58:41 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 18:34:57 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ static char	**copy_env(char **array)
 	new = NULL;
 	while (array[i])
 		i++;
-	if (!(new = malloc(sizeof(char*) * (i + 1))))
+	new = malloc(sizeof(char *) * (i + 1));
+	if (!new)
 		return (NULL);
 	i = 0;
 	while (array && array[i])
@@ -35,7 +36,8 @@ static char	**copy_env(char **array)
 
 static int	init_builtin(t_built **fct)
 {
-	if (!(*fct = ft_memalloc(sizeof(t_built) * NB_BUILTIN)))
+	*fct = ft_memalloc(sizeof(t_built) * NB_BUILTIN);
+	if (!(*fct))
 		return (FAIL);
 	(*fct)[0].f = &set_env;
 	(*fct)[0].name = ft_strdup("setenv");
@@ -58,18 +60,22 @@ static int	init_builtin(t_built **fct)
 	return (SUCCESS);
 }
 
-t_bash		*init_bash(char **env)
+t_bash	*init_bash(char **env)
 {
 	t_bash	*data;
 
-	if (!(data = ft_memalloc(sizeof(t_bash))))
+	data = ft_memalloc(sizeof(t_bash));
+	if (!data)
 		return (NULL);
-	if (!(data->env = copy_env(env)))
+	data->env = copy_env(env);
+	if (!data->env)
 		return (free_bash(data));
 	data->venv = env;
-	if (!(data->vector = vect_new(NULL, NULL)))
+	data->vector = vect_new(NULL, NULL);
+	if (!data->vector)
 		return (free_bash(data));
-	if (!(data->redirect_setup = malloc(sizeof(t_redirect_setup) * 4)))
+	data->redirect_setup = malloc(sizeof(t_redirect_setup) * 4);
+	if (!data->redirect_setup)
 		return (free_bash(data));
 	if (init_redirections_setup_functions(data) == FAIL)
 		return (free_bash(data));

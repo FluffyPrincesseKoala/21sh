@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:02:40 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 20:45:36 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 18:38:18 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ static void	custom_return(void)
 	g_data->iterator = 0;
 	g_data->history_stack = 0;
 	g_data->expend = 0;
-	if ((cmd = g_data->vector))
+	cmd = g_data->vector;
+	if (cmd)
 	{
 		while (cmd && cmd->down)
 			cmd = cmd->down;
@@ -58,7 +59,7 @@ static void	sigchild_handler(int sig)
 	signal(sig, sigchild_handler);
 }
 
-void		setup_signals(int mode)
+void	setup_signals(int mode)
 {
 	if (!mode)
 	{

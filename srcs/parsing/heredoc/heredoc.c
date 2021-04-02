@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/22 17:11:30 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 18:11:44 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:44:50 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 **	beware there's sexy redirection inside
 */
 
-static void		free_args_until_eof(t_vect *cmd, t_arg **current)
+static void	free_args_until_eof(t_vect *cmd, t_arg **current)
 {
 	if (!ft_strequ((*current)->content, cmd->eof))
 		free_args_until_eof(cmd, &(*current)->next);
@@ -32,7 +32,7 @@ static t_arg	*reset_data_heredoc(t_bash *data)
 	return (NULL);
 }
 
-static int		check_heredoc_format(t_bash *data, t_vect *cmd, t_arg *to_free)
+static int	check_heredoc_format(t_bash *data, t_vect *cmd, t_arg *to_free)
 {
 	if (to_free && !to_free->previous)
 	{
@@ -57,14 +57,15 @@ static int		check_heredoc_format(t_bash *data, t_vect *cmd, t_arg *to_free)
 **	and vector (for heredoc string)
 */
 
-void			heredoc(t_bash *data)
+void	heredoc(t_bash *data)
 {
 	t_vect	*cmd;
 	int		count;
 
 	reset_data_heredoc(data);
 	count = 0;
-	if ((cmd = data->vector))
+	cmd = data->vector;
+	if (cmd)
 	{
 		while (cmd && cmd->args && !data->error)
 		{

@@ -6,13 +6,13 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/12 18:05:26 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 12:51:12 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:53:20 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
 
-static int		fill_struct(char *str, char **new_line, int itt[2], int xmax)
+static int	fill_struct(char *str, char **new_line, int itt[2], int xmax)
 {
 	if (itt[1] != xmax && str[itt[0]] != '\n')
 	{
@@ -34,7 +34,7 @@ static int		fill_struct(char *str, char **new_line, int itt[2], int xmax)
 	}
 }
 
-static void		link_cursor(t_term **head, t_term *new)
+static void	link_cursor(t_term **head, t_term *new)
 {
 	t_term	*lst;
 
@@ -58,10 +58,17 @@ static t_term	*new_cursor_struct(char *line, int start,
 {
 	t_term			*cursor;
 
-	if (!(cursor = ft_memalloc(sizeof(t_term))))
+	cursor = ft_memalloc(sizeof(t_term));
+	if (!cursor)
 		return (NULL);
-	cursor->line = (line) ? ft_strdup(line) : NULL;
-	cursor->x_max = (start == 0) ? max - prompt : max;
+	if (line)
+		cursor->line = ft_strdup(line);
+	else
+		cursor->line = NULL;
+	if (start == 0)
+		cursor->x_max = max - prompt;
+	else
+		cursor->x_max = max;
 	cursor->line_start = start;
 	cursor->line_len = ft_strlen(line);
 	cursor->next = NULL;
@@ -69,7 +76,18 @@ static t_term	*new_cursor_struct(char *line, int start,
 	return (cursor);
 }
 
-void			set_cursors(t_bash *data, t_term **cursor, char *str, int max)
+static int	lol(t_term **cursor, char *new_line, int itt[2], int max)
+{
+	t_term	*new;
+	int		start;
+
+	start = itt[0] - itt[1];
+	new = new_cursor_struct(new_line, start, max, g_data->prompt_len);
+	link_cursor(cursor, new);
+	return (FALSE);
+}
+
+void	set_cursors(t_bash *data, t_term **cursor, char *str, int max)
 {
 	int		itt[2];
 	int		x_max;
@@ -79,21 +97,21 @@ void			set_cursors(t_bash *data, t_term **cursor, char *str, int max)
 	itt[0] = 0;
 	itt[1] = 0;
 	len = ft_strlen(str);
-	if (!str
-		|| !(new_line = ft_memalloc(sizeof(char) * (len + 1))))
+	new_line = ft_memalloc(sizeof(char) * (len + 1));
+	if (!str || !new_line)
 		return ;
 	while (str && str[itt[0]])
 	{
-		x_max = (!*cursor) ? max - data->prompt_len : max;
+		if (!*cursor)
+			x_max = max - data->prompt_len;
+		else
+			x_max = max;
 		if (fill_struct(str, &new_line, itt, x_max) == 1)
 		{
-			link_cursor(cursor, new_cursor_struct(new_line,
-				itt[0] - itt[1], max, data->prompt_len));
-			itt[1] = 0;
+			itt[1] = lolilol(cursor, new_line, itt, max);
 			ft_bzero(new_line, len);
 		}
 	}
-	link_cursor(cursor, new_cursor_struct(new_line,
-		itt[0] - itt[1], max, data->prompt_len));
+	lolilol(cursor, new_line, itt, max);
 	ft_strdel(&new_line);
 }

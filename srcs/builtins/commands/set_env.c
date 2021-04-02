@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 12:39:59 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 19:49:12 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 19:21:25 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ static char	*create_new_env_key(t_arg *args, char **key)
 	char	*tmp;
 
 	new = NULL;
-	if ((var = ft_strdup(ft_strchr(args->content, '='))))
+	var = ft_strdup(ft_strchr(args->content, '='));
+	if (var)
 	{
 		*key = ft_strndup(args->content, ft_strlendelim(args->content, '=', 0));
 		tmp = ft_strjoin(*key, "=");
@@ -39,7 +40,7 @@ static char	*create_new_env_key(t_arg *args, char **key)
 	return (new);
 }
 
-void		set_env(t_bash *data, t_vect *command)
+void	set_env(t_bash *data, t_vect *command)
 {
 	char	*key_to_change;
 	char	*new;
@@ -57,7 +58,7 @@ void		set_env(t_bash *data, t_vect *command)
 				new = create_new_env_key(arg, &key_to_change);
 			if (env_key_exists(data->env, key_to_change))
 				data->env = change_value_in_array(data->env,
-					key_to_change, new);
+						key_to_change, new);
 			else
 				add_value_to_array(&data->env, new);
 			ft_strdel(&new);

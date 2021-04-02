@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:03:22 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 19:39:37 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	using_heredoc(t_vect *command)
 **  command in the parent.
 */
 
-void		handle_heredoc(t_bash *data, t_vect *command)
+void	handle_heredoc(t_bash *data, t_vect *command)
 {
 	int	pipe_fd[2];
 

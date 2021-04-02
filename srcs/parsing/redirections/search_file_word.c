@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 18:48:46 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:33:22 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:28:26 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,15 @@ char	*search_file_word(
 	file = NULL;
 	if (substring_index != ft_strlen(arg->content))
 	{
-		if (!(file = ft_strsub(arg->content,
-			substring_index, ft_strlen(arg->content) - substring_index)))
+		file = ft_strsub(arg->content, substring_index,
+				ft_strlen(arg->content) - substring_index);
+		if (!file)
 			*error = MALLOC_ERROR;
 	}
 	else if (arg->next && arg->next->content)
 	{
-		if (!(file = ft_strdup(arg->next->content)))
+		file = ft_strdup(arg->next->content);
+		if (!file)
 			*error = MALLOC_ERROR;
 		del_one_arg(arg->next, cmd);
 	}

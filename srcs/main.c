@@ -6,19 +6,20 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:01:42 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:06:19 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 18:37:07 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
 
-int		main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
 	t_bash	*data;
 
 	if (argc == 1)
 	{
-		if (!(data = init_bash(env)))
+		data = init_bash(env);
+		if (!data)
 			put_error_msg("Malloc failed.\n");
 		else if (!conf_term())
 		{

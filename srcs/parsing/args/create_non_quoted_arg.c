@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_non_quoted_arg.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgaveria <lgaveria@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 19:42:42 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/26 22:36:59 by lgaveria         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:50:36 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static void	parse_redirection_in_arg(t_bash *data, t_vect *cmd, t_arg *arg)
 	i = 0;
 	while (data->redirect_setup[i])
 	{
-		if ((op = ft_strstr(arg->content, data->redirect_setup[i]->op)))
+		op = ft_strstr(arg->content, data->redirect_setup[i]->op);
+		if (op)
 		{
 			if (!(op[0] == '<' && op[1] == '<'))
 			{
@@ -52,7 +53,7 @@ static void	parse_redirection_in_arg(t_bash *data, t_vect *cmd, t_arg *arg)
 	}
 }
 
-size_t		create_non_quoted_arg(t_bash *data, t_vect *cmd, char *line_extract)
+size_t	create_non_quoted_arg(t_bash *data, t_vect *cmd, char *line_extract)
 {
 	size_t	len;
 	t_arg	*new_arg;
@@ -63,7 +64,8 @@ size_t		create_non_quoted_arg(t_bash *data, t_vect *cmd, char *line_extract)
 		&& !is_quote(line_extract[len])
 		&& !is_separator(line_extract[len]))
 		len++;
-	if (!(new_arg = create_arg(ft_strsub(line_extract, 0, len), NULL)))
+	new_arg = create_arg(ft_strsub(line_extract, 0, len), NULL);
+	if (!new_arg)
 		data->error = MALLOC_ERROR;
 	else
 	{

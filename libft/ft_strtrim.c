@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:38:16 by cylemair          #+#    #+#             */
-/*   Updated: 2018/12/19 16:38:17 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 22:04:04 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char				*ft_strtrim(char const *s)
+char	*ft_strtrim(char const *s)
 {
 	int				i;
 	int				len;
@@ -28,7 +28,7 @@ char				*ft_strtrim(char const *s)
 		len--;
 	if (len <= 0)
 		len = 0;
-	str = (char*)malloc(sizeof(char) * (len + 1));
+	str = (char *)malloc(sizeof(char) * (len + 1));
 	if (str == NULL)
 		return (NULL);
 	s += i;

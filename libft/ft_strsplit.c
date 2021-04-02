@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:37:46 by cylemair          #+#    #+#             */
-/*   Updated: 2020/01/28 12:00:25 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 22:08:18 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static size_t	ft_count_words(char const *s, char c)
 	return (words);
 }
 
-char			**ft_strsplit(char const *s, char c)
+char	**ft_strsplit(char const *s, char c)
 {
 	size_t		words;
 	char		**tab;
@@ -44,20 +44,20 @@ char			**ft_strsplit(char const *s, char c)
 	if (!s)
 		return (NULL);
 	words = ft_count_words(s, c);
-	if (!(tab = (char**)malloc(sizeof(char*) * (words + 1))))
+	tab = (char **)malloc(sizeof(char *) * (words + 1));
+	if (!tab)
 		return (NULL);
-	i = 0;
+	i = -1;
 	j = 0;
-	while (s[i])
+	while (s[++i])
 	{
 		if (s[i] != c)
 		{
-			if (!(tab[j++] = ft_strndup(s + i, ft_strclen(s + i, c))))
+			tab[j] = ft_strndup(s + i, ft_strclen(s + i, c));
+			if (!(tab[j++]))
 				return (NULL);
-			i += ft_strclen(s + i, c);
+			i += ft_strclen(s + i, c) - 1;
 		}
-		else
-			i++;
 	}
 	tab[j] = NULL;
 	return (tab);

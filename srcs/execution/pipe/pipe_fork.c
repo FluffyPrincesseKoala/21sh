@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:08:37 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/26 20:03:32 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:58:06 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,8 @@ void	pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc)
 	pid_t	cpid;
 
 	cpid = fork();
-	if (fork_failed(cpid))
-		print_failed_fork_error(cpid);
-	else if (is_child(cpid))
+	check_failed_fork(cpid);
+	if (is_child(cpid))
 	{
 		close(pipe_fd[0]);
 		if (heredoc == TRUE)
@@ -40,7 +39,6 @@ void	pipe_fork(t_bash *data, t_vect *command, int pipe_fd[2], int heredoc)
 		}
 		exit(0);
 	}
-	//wait(&status);
 	g_data->started = FALSE;
 	setup_signals(0);
 	close(pipe_fd[1]);

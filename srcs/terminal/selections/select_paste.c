@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 15:41:42 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:55:10 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:00:46 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static char	*str_add_sub(char *str, char *sub, int pos)
 	i = 0;
 	j = -1;
 	ok = 0;
-	if (!(new = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(sub) + 1))))
+	new = malloc(sizeof(char) * (ft_strlen(str) + ft_strlen(sub) + 1));
+	if (!new)
 		return (NULL);
 	while (str && str[i])
 	{
@@ -53,7 +54,7 @@ static char	*str_add_sub(char *str, char *sub, int pos)
 	return (new);
 }
 
-void		select_paste(t_bash *data)
+void	select_paste(t_bash *data)
 {
 	char	*old;
 

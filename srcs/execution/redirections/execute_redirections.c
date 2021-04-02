@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:12:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/26 19:39:05 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 19:43:29 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@
 static int	is_file_word_authorized(
 	t_bash *data, t_vect *command, t_redirection *redirection)
 {
-	int new_fd;
+	int	new_fd;
 
 	if (redirection->file_word)
 	{
-		new_fd = open(
-			redirection->file_word, redirection->setup->flags, NEW_FILE_MODE);
+		new_fd = open(redirection->file_word, redirection->setup->flags,
+				NEW_FILE_MODE);
 		if (new_fd == -1)
 		{
 			put_error_msg("Permission non accordée: ");
@@ -48,8 +48,8 @@ static int	is_file_word_authorized(
 ** Recursively call the function on the next redirection.
 */
 
-int			execute_redirections(
-	t_bash *data, t_vect *command, t_redirection *redirection)
+int	execute_redirections(t_bash *data, t_vect *command,
+	t_redirection *redirection)
 {
 	if (!is_file_word_authorized(data, command, redirection))
 		return (FAIL);

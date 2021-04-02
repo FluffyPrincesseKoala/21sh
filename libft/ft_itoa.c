@@ -3,54 +3,72 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:29:03 by cylemair          #+#    #+#             */
-/*   Updated: 2018/12/19 16:29:03 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/02 19:03:49 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <string.h>
 
-static size_t	digit_count(long n)
+static int	countchar(int n)
 {
-	size_t i;
+	int	count;
 
-	i = 1;
+	if (n == -2147483648)
+		return (11);
+	if (n == 0 || n == -0)
+		return (1);
+	count = 0;
 	if (n < 0)
-		n = -n;
-	while (n >= 10)
 	{
-		i++;
-		n /= 10;
+		n = -n;
+		count += 1;
 	}
-	return (i);
+	while (n >= 1)
+	{
+		count += 1;
+		n = n / 10;
+	}
+	return (count);
 }
 
-char			*ft_itoa(int n)
+static char	*putinchar(int n, char *ret, int i)
 {
-	long		v;
-	size_t		count;
-	char		*str;
-	char		sig;
+	if (n == -0)
+		ret[0] = '0';
+	else if (n < 0)
+	{
+		ret[0] = '-';
+		if (n == -2147483648)
+		{
+			ret[1] = '2';
+			ret = putinchar(147483648, ret, i);
+		}
+		else
+			ret = putinchar(-n, ret, i);
+	}
+	else
+	{
+		if (n > 9)
+			ret = putinchar(n / 10, ret, i - 1);
+		ret[i] = (n % 10) + 48;
+	}
+	return (ret);
+}
 
-	v = n;
-	sig = (v < 0 ? 1 : 0);
-	count = digit_count(v);
-	str = ft_strnew(count + sig);
-	if (str == NULL)
+char	*ft_itoa(int n)
+{
+	char	*ret;
+	int		i;
+
+	i = countchar(n);
+	ret = malloc(sizeof(char) * (i + 1));
+	if (!ret)
 		return (NULL);
-	if (sig)
-	{
-		v = -v;
-		str[0] = '-';
-	}
-	while (count > 0)
-	{
-		str[count + sig - 1] = (v % 10) + '0';
-		count--;
-		v /= 10;
-	}
-	return (str);
+	ret[i] = '\0';
+	ret = putinchar(n, ret, i - 1);
+	return (ret);
 }

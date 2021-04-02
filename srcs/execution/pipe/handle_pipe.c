@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 18:05:57 by cylemair          #+#    #+#             */
-/*   Updated: 2021/04/01 12:17:19 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 19:40:48 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@
 static int	is_file_word_authorized(
 	t_bash *data, t_vect *command, t_redirection *redirection)
 {
-	int new_fd;
+	int	new_fd;
 
 	if (redirection->file_word)
 	{
-		new_fd = open(
-			redirection->file_word, redirection->setup->flags, NEW_FILE_MODE);
+		new_fd = open(redirection->file_word, redirection->setup->flags,
+				NEW_FILE_MODE);
 		if (new_fd == -1)
 		{
 			put_error_msg("Permission non accordée: ");
@@ -76,7 +76,7 @@ static void	create_redirection_files(t_bash *data, t_vect *command)
 static void	set_stdout_pipe_redirection(
 	t_bash *data, t_vect *command, int pipe_fd[2])
 {
-	t_redirection *new;
+	t_redirection	*new;
 
 	new = new_redirection(command, TRUE);
 	new->setup = data->redirect_setup[1];
@@ -92,7 +92,7 @@ static void	set_stdout_pipe_redirection(
 **  potential redirections.
 */
 
-int			handle_pipe(t_bash *data, t_vect *command)
+int	handle_pipe(t_bash *data, t_vect *command)
 {
 	int	pipe_fd[2];
 

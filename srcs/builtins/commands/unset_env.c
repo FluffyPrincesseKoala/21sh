@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 12:39:03 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/09 13:08:12 by koala            ###   ########.fr       */
+/*   Updated: 2021/04/01 19:23:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,20 @@ static char	**del_env_key(char **env, char *key)
 	int		i;
 	int		j;
 
-	i = 0;
+	i = -1;
 	j = 0;
-	if ((new = malloc(sizeof(char*) * (ft_arraylen(env)))))
+	new = malloc(sizeof(char *) * (ft_arraylen(env)));
+	if (new)
 	{
 		if (env)
 		{
-			while (env[i])
+			while (env[++i])
 			{
 				if (!ft_strnequ(env[i], key, ft_strlen(key)))
 				{
 					new[j] = ft_strdup(env[i]);
 					j++;
 				}
-				i++;
 			}
 			new[j] = NULL;
 			free_array(env);
@@ -41,7 +41,7 @@ static char	**del_env_key(char **env, char *key)
 	return (NULL);
 }
 
-void		unset_env(t_bash *data, t_vect *command)
+void	unset_env(t_bash *data, t_vect *command)
 {
 	t_arg	*argument;
 	char	**tmp;
@@ -50,7 +50,8 @@ void		unset_env(t_bash *data, t_vect *command)
 	argument = command->args;
 	if (ft_strequ(argument->content, "unsetenv"))
 	{
-		if ((argument = argument->next))
+		argument = argument->next;
+		if (argument)
 		{
 			if (env_key_exists(data->env, argument->content))
 				data->env = del_env_key(data->env, argument->content);

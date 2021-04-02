@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_redirections_setup_functions.c                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgaveria <lgaveria@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/26 22:36:59 by lgaveria         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:34:31 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	setup_stdout_and_stderr_redirection(t_vect *cmd, t_arg *arg,
 	stdout_redirection->left_fd = STDOUT;
 	stdout_redirection->right_fd = NO_RIGHT_FD;
 	stdout_redirection->file_word = search_file_word(
-		cmd, arg, substring_index, error);
+			cmd, arg, substring_index, error);
 	stdout_redirection->next = new_redirection(cmd, FALSE);
 	stdout_redirection->next->left_fd = STDERR;
 	stdout_redirection->next->right_fd = STDOUT;
@@ -93,7 +93,7 @@ static void	setup_simple_output_redirection(
 	if (new->left_fd == NO_LEFT_FD)
 		new->left_fd = STDOUT;
 	new->right_fd = search_right_fd(cmd, arg,
-		&(arg->content[substring_idx]), error);
+			&(arg->content[substring_idx]), error);
 	if (is_stdout_and_stderr_redirection(new->left_fd, new->right_fd))
 		setup_stdout_and_stderr_redirection(cmd, arg, substring_idx, error);
 	else if (new->right_fd == NO_RIGHT_FD)
@@ -122,7 +122,7 @@ static void	setup_input_redirection(
 	if (new->left_fd == NO_LEFT_FD)
 		new->left_fd = STDIN;
 	new->right_fd = search_right_fd(cmd, arg,
-		&(arg->content[substring_idx]), error);
+			&(arg->content[substring_idx]), error);
 	if (new->right_fd == NO_RIGHT_FD)
 		new->file_word = search_file_word(cmd, arg, substring_idx, error);
 	else if (new->right_fd == AMBIGUOUS)
@@ -135,25 +135,28 @@ static void	setup_input_redirection(
 **  their file opening flags.
 */
 
-int			init_redirections_setup_functions(t_bash *data)
+int	init_redirections_setup_functions(t_bash *data)
 {
-	int	i;
-
-	i = -1;
-	while (++i < 3)
-		if (!(data->redirect_setup[i] = malloc(sizeof(t_redirect_setup))))
-			return (FAIL);
+	data->redirect_setup[0] = malloc(sizeof(t_redirect_setup));
+	data->redirect_setup[1] = malloc(sizeof(t_redirect_setup));
+	data->redirect_setup[2] = malloc(sizeof(t_redirect_setup));
+	if (!(data->redirect_setup[0]) || !(data->redirect_setup[1])
+		|| !(data->redirect_setup[2]))
+		return (FAIL);
 	data->redirect_setup[0]->f = &setup_appending_output_redirection;
 	data->redirect_setup[0]->flags = APPENDING_OUTPUT_FLAGS;
-	if (!(data->redirect_setup[0]->op = ft_strdup(APPEND_OUTPUT_REDIRECTION)))
+	data->redirect_setup[0]->op = ft_strdup(APPEND_OUTPUT_REDIRECTION);
+	if (!(data->redirect_setup[0]->op))
 		return (FAIL);
 	data->redirect_setup[1]->f = &setup_simple_output_redirection;
 	data->redirect_setup[1]->flags = SIMPLE_OUTPUT_FLAGS;
-	if (!(data->redirect_setup[1]->op = ft_strdup(SIMPLE_OUTPUT_REDIRECTION)))
+	data->redirect_setup[1]->op = ft_strdup(SIMPLE_OUTPUT_REDIRECTION);
+	if (!(data->redirect_setup[1]->op))
 		return (FAIL);
 	data->redirect_setup[2]->f = &setup_input_redirection;
 	data->redirect_setup[2]->flags = INPUT_FLAGS;
-	if (!(data->redirect_setup[2]->op = ft_strdup(INPUT_REDIRECTION)))
+	data->redirect_setup[2]->op = ft_strdup(INPUT_REDIRECTION);
+	if (!(data->redirect_setup[2]->op))
 		return (FAIL);
 	data->redirect_setup[3] = NULL;
 	return (SUCCESS);

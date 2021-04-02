@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/14 15:50:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 12:29:54 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 19:48:19 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ static void	get_post_separator_args(
 	substring = NULL;
 	new = NULL;
 	len = ft_strlen(arg->content);
-	if ((substring = ft_strsub(arg->content, index, len - index)))
+	substring = ft_strsub(arg->content, index, len - index);
+	if (substring)
 	{
 		if (insert_new_arg(cmd, arg, substring))
 			return ;
@@ -49,15 +50,17 @@ static int	is_heredoc(t_bash *data)
 	return (FALSE);
 }
 
-void		format_line(t_bash *data)
+void	format_line(t_bash *data)
 {
 	t_vect	*loop;
 	char	**table;
 	char	*tmp;
 
-	if ((tmp = ft_replace_substr(data->vector->line, "\n", " \n")))
+	tmp = ft_replace_substr(data->vector->line, "\n", " \n");
+	if (tmp)
 	{
-		if (ft_arraylen(table = ft_strsplit(tmp, ' ')))
+		table = ft_strsplit(tmp, ' ');
+		if (ft_arraylen(table))
 			line_content_to_args(data, data->vector->line);
 	}
 	if (!data->vector->args || data->error)

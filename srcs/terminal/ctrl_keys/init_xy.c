@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/22 16:20:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:17:24 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:03:42 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ static int	len_between_last_delim(char *str, char delim, int start)
 {
 	int				i;
 
-	i = (str[start] == delim) ? 1 : 0;
+	if (str[start] == delim)
+		i = 1;
+	else
+		i = 0;
 	while (start - i > 0 && str[start - i] != delim)
 		i++;
 	return (i);
@@ -45,10 +48,11 @@ static int	get_curent_line(char *str, int pos, int max, int prompt)
 	return (y);
 }
 
-void		init_xy(t_bash *data, int *x, int *y, int max)
+void	init_xy(t_bash *data, int *x, int *y, int max)
 {
-	if (!(*y = get_curent_line(data->vector->line, data->iterator,
-		max, data->prompt_len)))
+	*y = get_curent_line(data->vector->line, data->iterator,
+			max, data->prompt_len);
+	if (!(*y))
 	{
 		*y = (data->iterator + data->prompt_len) / max;
 		*x = (data->iterator + data->prompt_len) % max;

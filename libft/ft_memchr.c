@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:29:59 by cylemair          #+#    #+#             */
-/*   Updated: 2018/12/19 16:29:59 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/02 19:00:55 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void				*ft_memchr(const void *s, int c, size_t n)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
 	unsigned char	*cur;
 	int				i;
 
-	cur = (unsigned char*)s;
+	cur = (unsigned char *)s;
 	i = 0;
 	while (n--)
 	{

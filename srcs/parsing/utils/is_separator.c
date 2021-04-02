@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 18:43:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:19:20 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:22:49 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char		is_separator(char c)
+char	is_separator(char c)
 {
 	if (c == '\n' || c == ';' || c == '|')
 		return (c);

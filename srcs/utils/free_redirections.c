@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/04 22:59:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:29:41 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	free_redirection(t_redirection *redirection)
 ** Free the whole redirections chained list, set pointers to null.
 */
 
-void		free_redirections(t_vect *command)
+void	free_redirections(t_vect *command)
 {
 	if (command->redirections)
 		free_redirection(command->redirections);

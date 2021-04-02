@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 17:56:55 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 20:48:31 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 18:36:13 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	handle_new_entry(t_bash *data, char *entry, int pos)
 	return (data->iterator);
 }
 
-void		loop(t_bash *data)
+void	loop(t_bash *data)
 {
 	char	buff[MAX_INPUT_SIZE];
 	int		is_key;
@@ -47,7 +47,7 @@ void		loop(t_bash *data)
 		if (ft_strnequ(buff, "\n", 1))
 			exit = end_of_line(&data);
 		else if (!data->error && (ft_strnequ(buff, "\033", 1)
-			|| !ft_isprint(buff[0]) || ft_strnequ(buff, "\f", 1)))
+				|| !ft_isprint(buff[0]) || ft_strnequ(buff, "\f", 1)))
 			termi(data, buff);
 		else if (!data->error && ft_isprint(buff[0])
 			&& !ft_strnequ(buff, "\n", 1))

@@ -6,13 +6,13 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 18:17:32 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 18:17:34 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:29:26 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
 
-char		*get_value_from_env(char **env, char *var)
+char	*get_value_from_env(char **env, char *var)
 {
 	int		i;
 	int		len;

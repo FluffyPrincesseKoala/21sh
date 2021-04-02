@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 15:40:37 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:16:09 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:01:30 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static char	*strsub_copy(char *str, int start, int size)
 	int		i;
 
 	i = 0;
-	if (!str || !(ret = malloc(sizeof(char) * (size - start + 1))))
+	ret = malloc(sizeof(char) * (size - start + 1));
+	if (!str || !ret)
 		return (NULL);
 	while (str[start] && start != size)
 	{
@@ -30,14 +31,14 @@ static char	*strsub_copy(char *str, int start, int size)
 	return (ret);
 }
 
-void		select_copy(t_bash *data)
+void	select_copy(t_bash *data)
 {
 	if (data->is_select)
 	{
 		if (data->copied)
 			ft_strdel(&data->copied);
 		data->copied = strsub_copy(data->vector->line,
-			data->start_select, data->end_select);
+				data->start_select, data->end_select);
 		uncolor(data);
 		unselect(data);
 	}

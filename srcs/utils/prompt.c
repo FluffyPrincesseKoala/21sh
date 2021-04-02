@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 19:44:18 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/16 13:56:26 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:28:15 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	new_line_prompt(int type)
 	return (len);
 }
 
-int			prompt(char **env, int short_prompt)
+int	prompt(char **env, int short_prompt)
 {
 	char	*value;
 	int		len;

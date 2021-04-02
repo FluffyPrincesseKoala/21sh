@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vingt_et_un_sh.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgaveria <lgaveria@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/06 11:27:32 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/26 22:37:15 by lgaveria         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:55:39 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@
 # define NO_APPENDING_IN_FILE_DIRECTOR_ERROR 5
 # define ENV_FAIL 6
 
-struct termios	old_term;
-struct termios	new_term;
+struct termios	g_old_term;
+struct termios	g_new_term;
 t_bash			*g_data;
 
 void			*free_bash(t_bash *data);
@@ -153,16 +153,16 @@ void			execute_command(t_bash *data, t_vect *command);
 void			handle_heredoc(t_bash *data, t_vect *command);
 int				handle_pipe(t_bash *data, t_vect *command);
 void			pipe_fork(t_bash *data, t_vect *command,
-	int pipe_fd[2], int heredoc);
+					int pipe_fd[2], int heredoc);
 void			set_stdin_pipe_redirection(t_bash *data, t_vect *command,
-	int pipe_fd[2]);
+					int pipe_fd[2]);
 void			write_heredoc(t_bash *data, t_vect *command, int pipe_fd[2]);
 
 /*
 ** Redirections
 */
 int				execute_redirections(t_bash *data, t_vect *command,
-	t_redirection *redirection);
+					t_redirection *redirection);
 void			restore_directions(t_redirection *redirection);
 
 /*
@@ -182,15 +182,16 @@ void			line_content_to_args(t_bash *data, char *line);
 void			add_arg(t_arg **head, t_arg *new_arg);
 t_arg			*create_arg(char *content, char *quoted_string);
 size_t			create_non_quoted_arg(t_bash *data, t_vect *cmd,
-	char *line_extract);
+					char *line_extract);
 size_t			create_quoted_arg(t_bash *data, t_vect *cmd,
-	char *line_substr, char quote);
+					char *line_substr, char quote);
 void			del_one_arg(t_arg *arg, t_vect *cmd);
 void			detach_arg(t_arg *arg, t_vect *cmd);
 void			free_all_args(t_arg **arg, int flag);
 int				insert_new_arg(t_vect *command, t_arg *previous, char *s);
 int				is_non_escaped_quote(const char *s, char quote, int i);
 void			parse_var(t_arg *head, char **env);
+t_arg			*get_arg_befor_last(t_vect **current);
 
 /*
 ** Heredoc
@@ -210,10 +211,10 @@ int				format_heredoc(t_vect **vect, t_arg **to_check);
 int				init_redirections_setup_functions(t_bash *data);
 int				is_stdout_and_stderr_redirection(int left_fd, int right_fd);
 char			*search_file_word(t_vect *cmd, t_arg *arg,
-	int substring_index, int *error);
+					int substring_index, int *error);
 int				search_left_fd(t_vect *cmd, t_arg *arg, int def, int *error);
 int				search_right_fd(t_vect *cmd, t_arg *arg,
-	char *substring, int *error);
+					char *substring, int *error);
 int				setup_command_redirections(t_bash *data, t_vect *cmd);
 
 /*
@@ -277,19 +278,20 @@ void			key_suppr(t_bash *data);
 /*
 ** Utils
 */
+
 void			clear(void);
 void			clear_cursor_struct(t_term **cursor);
-int				conf_term();
+int				conf_term(void);
 t_term			*find_cursor_node(t_term **head, int idx,
-	int idx_max, int plen);
-int				get_win_max_col();
+					int idx_max, int plen);
+int				get_win_max_col(void);
 void			move_left(t_bash *data);
 void			move_right(t_bash *data);
 int				print_rest(char *str, int pos, char *old);
 void			set_cursors(t_bash *data, t_term **cursor, char *str, int max);
 void			term_put(char *esc);
 void			uncolor(t_bash *data);
-void			unconf_term();
+void			unconf_term(void);
 void			unselect(t_bash *data);
 
 /*
@@ -310,7 +312,7 @@ t_vect			*vect_new(t_arg *args, char *line);
 ** Booleans
 */
 int				command_is_piped(t_vect *command);
-int				fork_failed(pid_t pid);
+int				check_failed_fork(pid_t pid);
 int				is_child(pid_t pid);
 int				is_quote(char c);
 
@@ -328,7 +330,7 @@ void			put_error_msg(char *error);
 */
 
 void			currsor_info(t_term *curr, int count);
-void			hello();
+void			hello(void);
 void			info(char *str);
 
 #endif

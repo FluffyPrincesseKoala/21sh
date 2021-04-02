@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 17:39:22 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 12:49:21 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:50:55 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ static int	contains_sperator(char *str)
 	return (-1);
 }
 
-t_arg		*create_arg(char *content, char *quoted_string)
+t_arg	*create_arg(char *content, char *quoted_string)
 {
 	t_arg	*new;
 
-	if ((new = ft_memalloc(sizeof(t_arg))))
+	new = ft_memalloc(sizeof(t_arg));
+	if (new)
 	{
 		new->content = content;
 		new->quoted = quoted_string;

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 16:11:39 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 19:06:58 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,14 @@ static void	print_nb_history(t_vect *lst, int nb)
 	}
 }
 
-void		print_history(t_bash *data)
+void	print_history(t_bash *data)
 {
 	t_vect	*vect;
 	int		i;
 
 	i = 0;
-	if ((vect = data->vector))
+	vect = data->vector;
+	if (vect)
 	{
 		while (vect->up)
 			vect = vect->up;
@@ -54,7 +55,7 @@ void		print_history(t_bash *data)
 	}
 }
 
-void		history(t_bash *data, t_vect *cmd)
+void	history(t_bash *data, t_vect *cmd)
 {
 	int		i;
 	t_vect	*lst;
@@ -63,7 +64,8 @@ void		history(t_bash *data, t_vect *cmd)
 		&& ft_str_is_digits(cmd->args->next->content))
 	{
 		lst = cmd;
-		if ((i = ft_atoi(cmd->args->next->content)))
+		i = ft_atoi(cmd->args->next->content);
+		if (i)
 			print_nb_history(lst, i);
 	}
 	else

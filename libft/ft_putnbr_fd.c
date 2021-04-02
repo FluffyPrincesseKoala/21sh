@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:31:46 by cylemair          #+#    #+#             */
-/*   Updated: 2018/12/19 16:31:46 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/02 18:30:10 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ inline static void	putlong(long n, int fd)
 	ft_putchar_fd(n % 10 + '0', fd);
 }
 
-void				ft_putnbr_fd(int n, int fd)
+void	ft_putnbr_fd(int n, int fd)
 {
-	long			ln;
+	long	ln;
 
 	ln = n;
 	if (ln < 0)

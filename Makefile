@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lgaveria <lgaveria@student.42.fr>          +#+  +:+       +#+         #
+#    By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/12 18:36:13 by cylemair          #+#    #+#              #
-#    Updated: 2021/03/26 22:28:34 by lgaveria         ###   ########.fr        #
+#    Updated: 2021/04/01 21:56:43 by cylemair         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -131,9 +131,9 @@ UTILS	=	srcs/free_bash.c												\
 			srcs/loop.c														\
 			srcs/setup_signals.c											\
 			srcs/utils/booleans/command_is_piped.c							\
-			srcs/utils/booleans/fork_failed.c								\
 			srcs/utils/booleans/is_child.c									\
 			srcs/utils/booleans/is_quote.c									\
+			srcs/utils/errors/check_failed_fork.c							\
 			srcs/utils/errors/error_code_to_message.c						\
 			srcs/utils/errors/print_failed_fork_error.c						\
 			srcs/utils/errors/put_error_msg.c								\

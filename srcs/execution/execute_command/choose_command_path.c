@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/27 20:10:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 17:40:55 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 19:37:43 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,13 @@
 
 static char	*build_command_path(char *env_path, char *cmd_name)
 {
-	char *cmd_path;
+	char	*cmd_path;
 
-	if (!(cmd_path = ft_strjoin(env_path, "/")))
+	cmd_path = ft_strjoin(env_path, "/");
+	if (!cmd_path)
 		return (NULL);
-	if (!(cmd_path = ft_strjoin_free(&cmd_path, &cmd_name, FREE_S1)))
+	cmd_path = ft_strjoin_free(&cmd_path, &cmd_name, FREE_S1);
+	if (!cmd_path)
 	{
 		ft_strdel(&cmd_path);
 		return (NULL);
@@ -67,7 +69,7 @@ static char	*get_command_path_from_env(char **env, char *command_name)
 static int	path_is_given(char *name)
 {
 	if ((ft_strnequ(name, "./", 2) || ft_strnequ(name, "../", 3)
-		|| ft_strnequ(name, "/", 1)) && !access(name, F_OK | X_OK | R_OK)
+			|| ft_strnequ(name, "/", 1)) && !access(name, F_OK | X_OK | R_OK)
 		&& !ft_strequ(name, ".") && !ft_strequ(name, ".."))
 		return (TRUE);
 	else
@@ -80,7 +82,7 @@ static int	path_is_given(char *name)
 ** Make sure we have a valid path.
 */
 
-char		*choose_command_path(t_bash *data, char *command_name)
+char	*choose_command_path(t_bash *data, char *command_name)
 {
 	struct stat	sb;
 	char		*path;

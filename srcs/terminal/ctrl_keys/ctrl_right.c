@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 15:12:31 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:17:02 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:04:09 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 
 void	ctrl_right(t_bash *data)
 {
-	t_term			*curr;
-	int				len;
+	t_term	*curr;
+	int		len;
 
-	if (data->iterator < (len = ft_strlen(data->vector->line)))
+	len = ft_strlen(data->vector->line);
+	if (data->iterator < len)
 	{
 		while (data->iterator < len
 			&& ft_iswhitespace(data->vector->line[data->iterator]))

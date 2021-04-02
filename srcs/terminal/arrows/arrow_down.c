@@ -6,15 +6,22 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 15:04:17 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:16:37 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:13:22 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
 
+static void	init_position(t_bash *data, t_term *cursor)
+{
+	data->x = ft_strlen(cursor->line);
+	data->y = get_y_cursor(cursor);
+}
+
 void	arrow_down(t_bash *data)
 {
-	int				count;
+	int	count;
+	int	win_max;
 
 	if (data->vector->down || data->history_stack)
 	{
@@ -30,13 +37,12 @@ void	arrow_down(t_bash *data)
 		else
 			data->vector = data->vector->down;
 		print_rest(data->vector->line, data->iterator, NULL);
-		set_cursors(data, &data->cursor, data->vector->line, get_win_max_col());
+		win_max = get_win_max_col();
+		set_cursors(data, &data->cursor, data->vector->line, win_max);
 		data->cursor = find_cursor_node(&data->cursor,
-			ft_strlen(data->vector->line), get_win_max_col(), data->prompt_len);
+				ft_strlen(data->vector->line), win_max, data->prompt_len);
 		if (data->cursor)
-			data->x = ft_strlen(data->cursor->line);
-		if (data->cursor)
-			data->y = get_y_cursor(data->cursor);
+			init_position(data, data->cursor);
 		data->iterator = ft_strlen(data->vector->line);
 	}
 }

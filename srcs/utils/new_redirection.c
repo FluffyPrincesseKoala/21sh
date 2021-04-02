@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   new_redirection.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lgaveria <lgaveria@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 19:30:48 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/26 22:36:09 by lgaveria         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:29:06 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
 
-static void		insert_first_redirection(t_vect *command, t_redirection *new)
+static void	insert_first_redirection(t_vect *command, t_redirection *new)
 {
 	new->next = command->redirections;
 	command->redirections = new;
@@ -23,9 +23,9 @@ static void		insert_first_redirection(t_vect *command, t_redirection *new)
 **  chained list.
 */
 
-static void		insert_new_redirection(t_vect *command, t_redirection *new)
+static void	insert_new_redirection(t_vect *command, t_redirection *new)
 {
-	t_redirection *cursor;
+	t_redirection	*cursor;
 
 	if (command->redirections)
 	{
@@ -48,7 +48,8 @@ t_redirection	*new_redirection(t_vect *command, int first)
 	t_redirection	*new;
 	t_redirection	*cursor;
 
-	if (!(new = ft_memalloc(sizeof(t_redirection))))
+	new = ft_memalloc(sizeof(t_redirection));
+	if (!new)
 		return (NULL);
 	if (first)
 		insert_first_redirection(command, new);

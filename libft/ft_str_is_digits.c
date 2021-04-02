@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/24 12:46:15 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:31:01 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 22:03:40 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 int	ft_str_is_digits(const char *s)
 {
-	int i;
+	int	i;
 
 	if (!s)
 		return (0);

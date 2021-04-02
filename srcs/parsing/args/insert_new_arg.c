@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   insert_new_arg.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: koala <koala@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 17:37:12 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/08 18:52:16 by koala            ###   ########.fr       */
+/*   Updated: 2021/04/01 21:47:21 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	insert_new_arg(t_vect *command, t_arg *previous, char *s)
 {
 	t_arg	*new;
 
-	if (!(new = create_arg(s, NULL)))
+	new = create_arg(s, NULL);
+	if (!new)
 		return (FAIL);
 	if (previous)
 	{

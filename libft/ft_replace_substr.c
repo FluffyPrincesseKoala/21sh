@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:34:05 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:37:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 22:20:42 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ static size_t	new_len(char *str, char *old, char *new)
 			j = 0;
 			while (old[j] && str[i + j])
 				j++;
-			len_ret += (j == ft_strlen(old)) ? ft_strlen(new) + 1 : 1;
+			if (j == ft_strlen(old))
+				len_ret += ft_strlen(new);
+			len_ret++;
 			i += ft_strlen(old);
 		}
 		else
@@ -39,27 +41,26 @@ static size_t	new_len(char *str, char *old, char *new)
 	return (len_ret);
 }
 
-char			*ft_replace_substr(char *str, char *old, char *new)
+char	*ft_replace_substr(char *str, char *old, char *new)
 {
 	char		*ret;
 	int			i;
 	int			j;
 	int			k;
-	size_t		len_old;
 
-	len_old = ft_strlen(old);
-	if (!(ret = malloc(sizeof(char) * (new_len(str, old, new) + 1))))
+	ret = malloc(sizeof(char) * (new_len(str, old, new) + 1));
+	if (!ret)
 		return (NULL);
 	i = 0;
 	j = 0;
 	while (str[i])
 	{
-		if (!ft_strncmp((str + i), old, len_old))
+		if (!ft_strncmp((str + i), old, ft_strlen(old)))
 		{
 			k = 0;
 			while (new[k])
 				ret[j++] = new[k++];
-			i += len_old;
+			i += ft_strlen(old);
 		}
 		else
 			ret[j++] = str[i++];
@@ -68,9 +69,9 @@ char			*ft_replace_substr(char *str, char *old, char *new)
 	return (ret);
 }
 
-char			*ft_free_replaced_substr(char *str, char *old, char *new)
+char	*ft_free_replaced_substr(char *str, char *old, char *new)
 {
-	char *result;
+	char	*result;
 
 	if (!new)
 	{

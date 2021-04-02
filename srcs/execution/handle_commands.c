@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/02 17:57:53 by cylemair          #+#    #+#             */
-/*   Updated: 2021/04/01 16:59:13 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:58:09 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	select_builtin(t_bash *data, t_vect *command)
 	while (i != NB_BUILTIN)
 	{
 		if (command->args
-		&& ft_strequ(command->args->content, data->builtin[i].name))
+			&& ft_strequ(command->args->content, data->builtin[i].name))
 			command->builtin = data->builtin[i].f;
 		i++;
 	}
@@ -60,14 +60,15 @@ static int	handle_command(t_bash *data, t_vect *command)
 	if (fork_is_required(command))
 	{
 		cpid = fork();
-		if (fork_failed(cpid))
-			print_failed_fork_error(cpid);
-		else if (is_child(cpid))
+		check_failed_fork(cpid);
+		if (is_child(cpid))
+		{
 			if (handle_execution(data, command) == FAIL)
 			{
 				error_code_to_message(&data->error);
 				exit(EXIT);
 			}
+		}
 		signal(SIGINT, SIG_IGN);
 		wait(&status);
 		setup_signals(0);
@@ -83,7 +84,7 @@ static int	handle_command(t_bash *data, t_vect *command)
 ** Piped commands are executed concomitantly.
 */
 
-int			handle_commands(t_bash *data, t_vect *command)
+int	handle_commands(t_bash *data, t_vect *command)
 {
 	while (command)
 	{

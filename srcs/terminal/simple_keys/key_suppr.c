@@ -6,17 +6,17 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 16:59:03 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:55:10 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:56:59 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
 
-void				key_suppr(t_bash *data)
+void	key_suppr(t_bash *data)
 {
-	char			*tmp;
-	char			*old;
-	int				expected;
+	char	*tmp;
+	char	*old;
+	int		expected;
 
 	if (data->iterator < ft_strlen(data->vector->line))
 	{

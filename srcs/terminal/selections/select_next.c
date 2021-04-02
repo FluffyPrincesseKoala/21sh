@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 15:34:05 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:58:12 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:01:01 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	reset_next(t_bash *data)
 		unselect(data);
 }
 
-void		select_next(t_bash *data)
+void	select_next(t_bash *data)
 {
 	if (data->iterator < ft_strlen(data->vector->line))
 	{

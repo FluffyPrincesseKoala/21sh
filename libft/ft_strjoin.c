@@ -6,14 +6,14 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:33:27 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:36:40 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 22:14:40 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
 
-char		*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*new;
 	int		i;
@@ -25,7 +25,8 @@ char		*ft_strjoin(char const *s1, char const *s2)
 		i++;
 	while (s2 && s2[j])
 		j++;
-	if ((new = malloc(sizeof(char) * (i + j + 1))) == NULL)
+	new = malloc(sizeof(char) * (i + j + 1));
+	if (!new)
 		return (NULL);
 	i = 0;
 	j = 0;
@@ -40,7 +41,7 @@ char		*ft_strjoin(char const *s1, char const *s2)
 	return (new);
 }
 
-char		*ft_strjoin_free(char **s1, char **s2, int s_to_free)
+char	*ft_strjoin_free(char **s1, char **s2, int s_to_free)
 {
 	char	*ret;
 	int		i;
@@ -49,8 +50,8 @@ char		*ft_strjoin_free(char **s1, char **s2, int s_to_free)
 	i = 0;
 	j = 0;
 	ret = NULL;
-	if ((ret = malloc(sizeof(char) * (ft_strlen(*s1) + ft_strlen(*s2) + 1)))
-		== NULL)
+	ret = malloc(sizeof(char) * (ft_strlen(*s1) + ft_strlen(*s2) + 1));
+	if (!ret)
 		return (NULL);
 	while (*s1 && (*s1)[i])
 	{

@@ -6,13 +6,13 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 18:07:57 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 19:53:38 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:24:46 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
 
-void		add_value_to_array(char ***src, char *value)
+void	add_value_to_array(char ***src, char *value)
 {
 	char	**new;
 	int		len;
@@ -20,7 +20,8 @@ void		add_value_to_array(char ***src, char *value)
 
 	i = -1;
 	len = ft_arraylen((*src));
-	if (!(new = malloc(sizeof(char*) * (len + 2))))
+	new = malloc(sizeof(char *) * (len + 2));
+	if (!new)
 	{
 		g_data->error = MALLOC_ERROR;
 		return ;

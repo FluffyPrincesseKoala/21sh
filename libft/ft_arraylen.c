@@ -6,11 +6,11 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 18:37:15 by cylemair          #+#    #+#             */
-/*   Updated: 2021/02/12 17:57:05 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/02 18:43:06 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int			ft_arraylen(char **array)
+int	ft_arraylen(char **array)
 {
 	int		i;
 

@@ -6,18 +6,21 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:32:46 by cylemair          #+#    #+#             */
-/*   Updated: 2020/06/10 15:58:07 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 22:16:11 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_strdup(const char *src)
+char	*ft_strdup(const char *src)
 {
 	char	*str;
 	int		i;
 
-	if (!src || !(str = (char *)malloc(sizeof(char) * (ft_strlen(src) + 1))))
+	if (!src)
+		return (NULL);
+	str = (char *)malloc(sizeof(char) * (ft_strlen(src) + 1));
+	if (!str)
 		return (NULL);
 	i = 0;
 	while (src[i])
@@ -29,9 +32,9 @@ char		*ft_strdup(const char *src)
 	return (str);
 }
 
-char		*ft_strdup_free(char **src)
+char	*ft_strdup_free(char **src)
 {
-	char *dup;
+	char	*dup;
 
 	dup = ft_strdup(*src);
 	ft_strdel(src);

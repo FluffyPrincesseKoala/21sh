@@ -6,15 +6,15 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:51:15 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 17:04:38 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 19:19:20 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
 
-void			print_env(t_bash *data, t_vect *cmd)
+void	print_env(t_bash *data, t_vect *cmd)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (data->env && data->env[i])

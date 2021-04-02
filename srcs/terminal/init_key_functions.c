@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 16:01:47 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/11 18:32:17 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:07:49 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,10 @@ static void	init_simple_key_functions(t_key **fct)
 	(*fct)[11].len = 3;
 }
 
-void		init_key_functions(t_key **fct)
+void	init_key_functions(t_key **fct)
 {
-	if (!(*fct = ft_memalloc(sizeof(t_key) * MAX_KEY)))
+	*fct = ft_memalloc(sizeof(t_key) * MAX_KEY);
+	if (!(*fct))
 		return ;
 	init_arrow_functions(fct);
 	init_ctrl_key_functions(fct);

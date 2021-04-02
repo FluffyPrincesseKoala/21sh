@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 18:46:14 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:57:39 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:26:58 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	search_left_fd(t_vect *cmd, t_arg *arg, int operator_idx, int *error)
 	return_value = NO_LEFT_FD;
 	if (operator_idx > 0)
 	{
-		if (!(substring = ft_strsub(arg->content, 0, operator_idx)))
+		substring = ft_strsub(arg->content, 0, operator_idx);
+		if (!substring)
 			*error = MALLOC_ERROR;
 		else if (ft_str_is_digits(substring))
 			return_value = ft_atoi(substring);
@@ -38,7 +39,7 @@ int	search_left_fd(t_vect *cmd, t_arg *arg, int operator_idx, int *error)
 		else
 		{
 			if (insert_new_arg(
-				cmd, arg->previous, ft_strdup(substring)) == FAIL)
+					cmd, arg->previous, ft_strdup(substring)) == FAIL)
 				*error = MALLOC_ERROR;
 		}
 		ft_strdel(&substring);

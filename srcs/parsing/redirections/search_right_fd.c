@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 18:47:13 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:26:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	search_right_fd(t_vect *cmd, t_arg *arg, char *substring, int *error)
 			if (ft_strlen(substring) != 2)
 			{
 				if (!insert_new_arg(cmd, arg,
-					ft_strsub(substring, 2, ft_strlen(substring) - 2)))
+						ft_strsub(substring, 2, ft_strlen(substring) - 2)))
 					*error = MALLOC_ERROR;
 			}
 			return (CLOSE_FD);

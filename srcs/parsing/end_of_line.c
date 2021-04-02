@@ -6,13 +6,13 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 11:17:30 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 17:17:39 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:18:47 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
 
-static void		update_pending_line(t_bash *data)
+static void	update_pending_line(t_bash *data)
 {
 	if (pending_line(data->vector->line) && !data->expend)
 	{
@@ -20,7 +20,7 @@ static void		update_pending_line(t_bash *data)
 		data->iterator++;
 	}
 	data->vector->up->line = str_join_free(&data->vector->up->line,
-		&data->vector->line);
+			&data->vector->line);
 	data->vector = data->vector->up;
 	free_vector(&data->vector->down, FALSE);
 	data->vector->down = NULL;
@@ -35,7 +35,10 @@ static t_vect	*link_history(t_vect **head, t_vect *new)
 	if (head && *head)
 	{
 		lst = *head;
-		lst->down = (new) ? new : vect_new(NULL, NULL);
+		if (new)
+			lst->down = new;
+		else
+			lst->down = vect_new(NULL, NULL);
 		lst->down->up = lst;
 		if (lst->up)
 			lst->up->down = lst;
@@ -45,13 +48,11 @@ static t_vect	*link_history(t_vect **head, t_vect *new)
 	return (new);
 }
 
-static void		new_line(t_bash *data)
+static void	new_line(t_bash *data)
 {
 	error_code_to_message(&(data->error));
 	if (data->vector->line)
-	{
 		data->vector = link_history(&data->vector, NULL);
-	}
 	data->iterator = 0;
 	data->x = 0;
 	data->venv = data->env;
@@ -59,14 +60,14 @@ static void		new_line(t_bash *data)
 	data->history_stack = 0;
 }
 
-static void		reset_conf_term(void)
+static void	reset_conf_term(void)
 {
-	tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
+	tcsetattr(STDIN_FILENO, TCSANOW, &g_new_term);
 }
 
-int				end_of_line(t_bash **data)
+int	end_of_line(t_bash **data)
 {
-	int		exit;
+	int	exit;
 
 	exit = 0;
 	key_last((*data));
@@ -81,7 +82,8 @@ int				end_of_line(t_bash **data)
 		ft_putchar('\n');
 		ft_strdel(&(*data)->vector->line);
 	}
-	if ((exit = handle_parsing_execution(*data)) != -1)
+	exit = handle_parsing_execution(*data);
+	if (exit != -1)
 		new_line((*data));
 	reset_conf_term();
 	return (exit);

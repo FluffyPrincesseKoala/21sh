@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 19:57:42 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:13:08 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 18:12:24 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	free_builtin(t_built **fct)
 	fct = NULL;
 }
 
-void		*free_bash(t_bash *data)
+void	*free_bash(t_bash *data)
 {
 	if (data->env)
 		free_array(data->env);

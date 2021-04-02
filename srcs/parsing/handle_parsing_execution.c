@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 19:15:20 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 17:44:26 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 19:53:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static int	is_pending_line(t_bash *data)
 {
-	if ((data->expend = pending_line(data->vector->line)))
+	data->expend = pending_line(data->vector->line);
+	if (data->expend)
 	{
 		push_entry(data, "\n",
 			&data->vector->line, ft_strlen(data->vector->line));
@@ -31,15 +32,14 @@ static int	format_line_required(t_bash *data)
 	return (FALSE);
 }
 
-int			handle_parsing_execution(t_bash *data)
+int	handle_parsing_execution(t_bash *data)
 {
 	int		is_pending;
 
-	is_pending = 0;
+	is_pending = is_pending_line(data);
 	if ((data->vector->line
-		|| (data->vector->doc_string && data->vector->separator))
-	&& ((!(is_pending = is_pending_line(data)))
-	|| (is_pending && data->vector->doc_string)))
+			|| (data->vector->doc_string && data->vector->separator))
+		&& ((!is_pending) || (is_pending && data->vector->doc_string)))
 	{
 		ft_putchar('\n');
 		if (format_line_required(data))

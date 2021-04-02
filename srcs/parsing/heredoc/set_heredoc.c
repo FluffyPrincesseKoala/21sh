@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:34:02 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 17:54:21 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:43:49 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ static void	unlink_free_vector(t_vect **to_free, t_vect *new_next)
 	t_vect	*nxt_vect;
 	t_arg	*nxt_arg;
 
-	if (to_free && (vect = (*to_free)->next))
+	if (to_free && (*to_free)->next)
 	{
+		vect = (*to_free)->next;
 		while (vect && vect != new_next)
 		{
 			nxt_vect = vect->next;
@@ -44,14 +45,14 @@ static int	parse_newline_as_heredoc(
 	if (cmd && cmd->separator == '\n')
 	{
 		to_free = cmd;
-		while ((cmd = cmd->next))
+		while (cmd->next)
 		{
-			if ((new = concat_args_in_heredoc(cmd->args)))
-			{
+			cmd = cmd->next;
+			new = concat_args_in_heredoc(cmd->args);
+			if (new)
 				fill_heredoc_array(data, next_doc, &new);
-				ft_strdel(&new);
-			}
-			if (next_doc && (is_finish = is_eof(next_doc)))
+			is_finish = is_eof(next_doc);
+			if (is_finish)
 			{
 				data->finish_heredoc += 1;
 				data->is_heredoc = data->nb_heredoc - data->finish_heredoc;
@@ -66,12 +67,13 @@ static int	parse_newline_as_heredoc(
 
 static int	get_content_in_new_line(t_bash *data, t_vect *cmd, t_arg *arg)
 {
-	t_vect *to_free;
+	t_vect	*to_free;
 
 	ft_strdel(&cmd->eof);
 	if (!arg->content)
 		data->error = UNEXPECT_COMMAND_END_ERROR;
-	if (!(cmd->eof = ft_strdup(arg->content)))
+	cmd->eof = ft_strdup(arg->content);
+	if (!(cmd->eof))
 		data->error = MALLOC_ERROR;
 	to_free = cmd;
 	while (cmd && cmd->separator != '\n')
@@ -87,7 +89,7 @@ static int	get_content_in_new_line(t_bash *data, t_vect *cmd, t_arg *arg)
 **	return the first arg to free
 */
 
-t_arg		*set_heredoc(t_bash *data, t_vect **cmd)
+t_arg	*set_heredoc(t_bash *data, t_vect **cmd)
 {
 	t_arg		*arg;
 	t_arg		*to_free;

@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/18 15:22:41 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/26 21:38:38 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 18:42:08 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	is_file(const char *path)
 {
 	struct stat	sb;
-	int ret;
+	int			ret;
 
 	if (lstat(path, &sb) == -1)
 		return (0);
@@ -50,20 +50,23 @@ static void	move_to_directory(char **env, char *path)
 			put_error_msg("cd : permission denied\n");
 		else
 		{
-			if (!(pwd = getcwd(buff, 4096)))
+			pwd = getcwd(buff, 4096);
+			if (!pwd)
 				put_error_msg("cd : permission denied\n");
 			else
 				update_current_directory(env, pwd);
 		}
 	}
 	else
+	{
 		if (!is_file(path))
 			put_error_msg("cd : no such file or directory\n");
 		else
 			put_error_msg("cd : permission denied\n");
+	}
 }
 
-void		change_directory(t_bash *data, t_vect *command)
+void	change_directory(t_bash *data, t_vect *command)
 {
 	t_arg		*argument;
 	char		*path;
@@ -71,8 +74,9 @@ void		change_directory(t_bash *data, t_vect *command)
 	argument = command->args;
 	if (ft_strequ(argument->content, "cd"))
 	{
-		if (argument->next && (argument = argument->next))
+		if (argument->next)
 		{
+			argument = argument->next;
 			if (ft_strequ(argument->content, "-"))
 				path = get_value_from_env(data->env, "OLDPWD");
 			else

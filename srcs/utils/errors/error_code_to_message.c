@@ -6,13 +6,13 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 19:19:03 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:54:08 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 20:26:03 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
 
-void		error_code_to_message(int *error)
+void	error_code_to_message(int *error)
 {
 	if (*error)
 		put_error_msg("21sh:\t");

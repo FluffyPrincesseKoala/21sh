@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/01 16:28:27 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/10 19:49:17 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:45:48 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ static char	**create_array(char *first)
 {
 	char	**ret;
 
-	if (!(ret = malloc(sizeof(char *) * (2))))
+	ret = malloc(sizeof(char *) * (2));
+	if (!ret)
 		return (NULL);
 	ret[0] = ft_strdup(first);
 	ret[1] = NULL;
@@ -31,7 +32,7 @@ static void	add_to_heredoc_array(t_vect *cmd, char **line)
 		cmd->doc_string = create_array(*line);
 }
 
-void		fill_heredoc_array(t_bash *data, t_vect *cmd, char **line)
+void	fill_heredoc_array(t_bash *data, t_vect *cmd, char **line)
 {
 	char	*new;
 
@@ -46,4 +47,5 @@ void		fill_heredoc_array(t_bash *data, t_vect *cmd, char **line)
 		else
 			add_to_heredoc_array(cmd, line);
 	}
+	ft_strdel(line);
 }

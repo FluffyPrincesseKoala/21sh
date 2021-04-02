@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/15 18:12:00 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/15 18:12:14 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:45:19 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	parse_splited_heredoc(char **array, t_arg **new)
 	return (TRUE);
 }
 
-int			format_heredoc(t_vect **vect, t_arg **to_check)
+int	format_heredoc(t_vect **vect, t_arg **to_check)
 {
 	t_arg	*new;
 	char	**splited;
@@ -44,7 +44,8 @@ int			format_heredoc(t_vect **vect, t_arg **to_check)
 	if (ft_strstr((*to_check)->content, "<<")
 		&& (splited = ft_strsplit((*to_check)->content, '<')))
 	{
-		if ((len = ft_arraylen(splited)) >= 2)
+		len = ft_arraylen(splited);
+		if (len >= 2)
 		{
 			ret = parse_splited_heredoc(splited, &new);
 			free_all_args(to_check, 0);

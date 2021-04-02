@@ -6,13 +6,13 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/05 19:42:18 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/26 21:50:15 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:01:55 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vingt_et_un_sh.h"
 
-void		return_exit(t_bash *data)
+void	return_exit(t_bash *data)
 {
 	if (!data->vector->line && data->expend)
 	{

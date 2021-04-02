@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/04 17:58:43 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 11:30:00 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 21:21:06 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static char	*addchar(char *str, char c, int pos)
 
 	i = 0;
 	j = 0;
-	if (!(new = malloc(sizeof(char) * (ft_strlen(str) + 2))))
+	new = malloc(sizeof(char) * (ft_strlen(str) + 2));
+	if (!new)
 		return (NULL);
 	while (str && str[i])
 	{
@@ -39,7 +40,7 @@ static char	*addchar(char *str, char c, int pos)
 	return (new);
 }
 
-void		push_entry(t_bash *data, char *entry, char **line, int pos)
+void	push_entry(t_bash *data, char *entry, char **line, int pos)
 {
 	char	*tmp;
 

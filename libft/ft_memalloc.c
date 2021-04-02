@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memalloc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cylemair <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:29:13 by cylemair          #+#    #+#             */
-/*   Updated: 2018/12/19 16:29:13 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/02 19:01:34 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void		*ft_memalloc(size_t size)
+void	*ft_memalloc(size_t size)
 {
 	void	*new;
 
-	if ((new = malloc(size)) == NULL)
+	new = malloc(size);
+	if (!new)
 		return (NULL);
 	return (ft_memset(new, 0, size));
 }

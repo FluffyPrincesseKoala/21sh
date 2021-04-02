@@ -6,7 +6,7 @@
 /*   By: cylemair <cylemair@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/19 16:38:08 by cylemair          #+#    #+#             */
-/*   Updated: 2021/03/06 12:36:04 by cylemair         ###   ########.fr       */
+/*   Updated: 2021/04/01 22:04:52 by cylemair         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len)
 
 	i = 0;
 	j = 0;
-	if (!s || !(new = ft_strnew(len)))
+	new = ft_strnew(len);
+	if (!s || !len)
 		return (NULL);
 	while (s[j] && j != start)
 		j += 1;
@@ -48,7 +49,8 @@ char	*ft_strsub_free(char **s, unsigned int start, unsigned int len)
 		ft_strdel(s);
 		return (NULL);
 	}
-	if (!s || !*s || !(ret = ft_strnew(len)))
+	ret = ft_strnew(len);
+	if (!s || !*s || !ret)
 		return (NULL);
 	i = start;
 	while (i - start < len)
